@@ -48,6 +48,7 @@ const GROUPS: NavGroup[] = [
       { to: "/app/menu",        icon: UtensilsCrossed, key: "menu.menu",        nav: "menu" },
       { to: "/app/recipes",     icon: Wheat,           key: "menu.recipes",     nav: "recipes" },
       { to: "/app/suppliers",   icon: Truck,           key: "menu.suppliers",   nav: "suppliers" },
+      { to: "/app/purchasing",  icon: ShoppingCart,    key: "menu.purchasing",  nav: "purchasing" },
     ],
   },
   {
@@ -55,12 +56,19 @@ const GROUPS: NavGroup[] = [
     items: [
       { to: "/app/stock",       icon: Boxes,           key: "menu.stock",       nav: "stock" },
       { to: "/app/waste",       icon: Trash2,          key: "menu.waste",       nav: "waste" },
+      { to: "/app/recalls",     icon: PackageX,        key: "menu.recalls",     nav: "recalls" },
     ],
   },
   {
     labelKey: "nav.group.people",
     items: [
       { to: "/app/training",    icon: Users,           key: "menu.training",    nav: "training" },
+    ],
+  },
+  {
+    labelKey: "nav.group.assets",
+    items: [
+      { to: "/app/assets",      icon: Wrench,          key: "menu.assets",      nav: "assets" },
     ],
   },
   {
@@ -75,6 +83,7 @@ const GROUPS: NavGroup[] = [
   {
     labelKey: "nav.group.audit",
     items: [
+      { to: "/app/audits",      icon: ClipboardList,   key: "menu.audits",      nav: "audits" },
       { to: "/app/inspection",  icon: Gavel,           key: "menu.audit",       nav: "audit" },
     ],
   },
