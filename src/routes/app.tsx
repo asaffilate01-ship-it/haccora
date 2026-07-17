@@ -8,6 +8,7 @@ import {
   Wheat, Truck, Users, Gavel, Settings, ArrowLeft, Bell, Search, LogOut,
   ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, Clock, Command,
   BellRing, CalendarClock, FileArchive, History,
+  ListChecks, UtensilsCrossed, CalendarDays, Trash2, Boxes,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app")({
@@ -25,6 +26,13 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
+    labelKey: "nav.group.routines",
+    items: [
+      { to: "/app/routines",    icon: ListChecks,      key: "menu.routines",    nav: "routines" },
+      { to: "/app/rota",        icon: CalendarDays,    key: "menu.rota",        nav: "rota" },
+    ],
+  },
+  {
     labelKey: "nav.group.compliance",
     items: [
       { to: "/app/haccp",       icon: ShieldCheck,     key: "menu.haccp",       nav: "haccp" },
@@ -36,8 +44,16 @@ const GROUPS: NavGroup[] = [
   {
     labelKey: "nav.group.kitchen",
     items: [
+      { to: "/app/menu",        icon: UtensilsCrossed, key: "menu.menu",        nav: "menu" },
       { to: "/app/recipes",     icon: Wheat,           key: "menu.recipes",     nav: "recipes" },
       { to: "/app/suppliers",   icon: Truck,           key: "menu.suppliers",   nav: "suppliers" },
+    ],
+  },
+  {
+    labelKey: "nav.group.inventory",
+    items: [
+      { to: "/app/stock",       icon: Boxes,           key: "menu.stock",       nav: "stock" },
+      { to: "/app/waste",       icon: Trash2,          key: "menu.waste",       nav: "waste" },
     ],
   },
   {
@@ -105,6 +121,11 @@ function AppShell() {
       { prefix: "/app/logs",        nav: "logs" },
       { prefix: "/app/inspection",  nav: "audit" },
       { prefix: "/app/settings",    nav: "settings" },
+      { prefix: "/app/routines",    nav: "routines" },
+      { prefix: "/app/menu",        nav: "menu" },
+      { prefix: "/app/rota",        nav: "rota" },
+      { prefix: "/app/waste",       nav: "waste" },
+      { prefix: "/app/stock",       nav: "stock" },
     ];
     const match = PATH_KEY.find((p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"));
     if (match && !canAccess(user.role, match.nav)) {

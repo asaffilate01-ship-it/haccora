@@ -204,6 +204,13 @@ const de: Dict = {
   "menu.expiry": "Ablauf & MHD",
   "menu.documents": "Dokumente",
   "menu.logs": "Protokolle",
+  "menu.routines": "Routinen (Öffnen/Schließen)",
+  "menu.menu": "Speisekarte & Allergene",
+  "menu.rota": "Dienstplan & Stempeluhr",
+  "menu.waste": "Abfall",
+  "menu.stock": "Bestand & Wareneingang",
+  "nav.group.routines": "Betrieb",
+  "nav.group.inventory": "Bestand & Waste",
 
   // Dashboard
   "dash.hello": "Guten Morgen, Aylin",
@@ -967,6 +974,13 @@ const en: Dict = {
   "menu.expiry": "Expiry & shelf life",
   "menu.documents": "Documents",
   "menu.logs": "Audit log",
+  "menu.routines": "Routines (open/close)",
+  "menu.menu": "Menu & allergens",
+  "menu.rota": "Rota & clock-in",
+  "menu.waste": "Waste",
+  "menu.stock": "Stock & receiving",
+  "nav.group.routines": "Operations",
+  "nav.group.inventory": "Stock & waste",
 
   "dash.hello": "Good morning, Aylin",
   "dash.sub": "Your compliance today — as of now.",

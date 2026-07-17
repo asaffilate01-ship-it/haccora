@@ -23,11 +23,16 @@ import { Route as LegalImprintRouteImport } from './routes/legal.imprint'
 import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
 import { Route as LegalComplaintsRouteImport } from './routes/legal.complaints'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AppWasteRouteImport } from './routes/app.waste'
 import { Route as AppTrainingRouteImport } from './routes/app.training'
 import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
+import { Route as AppStockRouteImport } from './routes/app.stock'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppRoutinesRouteImport } from './routes/app.routines'
+import { Route as AppRotaRouteImport } from './routes/app.rota'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
+import { Route as AppMenuRouteImport } from './routes/app.menu'
 import { Route as AppLogsRouteImport } from './routes/app.logs'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
@@ -107,6 +112,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
+const AppWasteRoute = AppWasteRouteImport.update({
+  id: '/waste',
+  path: '/waste',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppTrainingRoute = AppTrainingRouteImport.update({
   id: '/training',
   path: '/training',
@@ -122,14 +132,34 @@ const AppSuppliersRoute = AppSuppliersRouteImport.update({
   path: '/suppliers',
   getParentRoute: () => AppRoute,
 } as any)
+const AppStockRoute = AppStockRouteImport.update({
+  id: '/stock',
+  path: '/stock',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRoutinesRoute = AppRoutinesRouteImport.update({
+  id: '/routines',
+  path: '/routines',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRotaRoute = AppRotaRouteImport.update({
+  id: '/rota',
+  path: '/rota',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRecipesRoute = AppRecipesRouteImport.update({
   id: '/recipes',
   path: '/recipes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMenuRoute = AppMenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
   getParentRoute: () => AppRoute,
 } as any)
 const AppLogsRoute = AppLogsRouteImport.update({
@@ -188,11 +218,16 @@ export interface FileRoutesByFullPath {
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/logs': typeof AppLogsRoute
+  '/app/menu': typeof AppMenuRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/rota': typeof AppRotaRoute
+  '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/stock': typeof AppStockRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
+  '/app/waste': typeof AppWasteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/legal/complaints': typeof LegalComplaintsRoute
   '/legal/cookies': typeof LegalCookiesRoute
@@ -215,11 +250,16 @@ export interface FileRoutesByTo {
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/logs': typeof AppLogsRoute
+  '/app/menu': typeof AppMenuRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/rota': typeof AppRotaRoute
+  '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/stock': typeof AppStockRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
+  '/app/waste': typeof AppWasteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/legal/complaints': typeof LegalComplaintsRoute
   '/legal/cookies': typeof LegalCookiesRoute
@@ -245,11 +285,16 @@ export interface FileRoutesById {
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/logs': typeof AppLogsRoute
+  '/app/menu': typeof AppMenuRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/rota': typeof AppRotaRoute
+  '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/stock': typeof AppStockRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
+  '/app/waste': typeof AppWasteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/legal/complaints': typeof LegalComplaintsRoute
   '/legal/cookies': typeof LegalCookiesRoute
@@ -276,11 +321,16 @@ export interface FileRouteTypes {
     | '/app/haccp'
     | '/app/inspection'
     | '/app/logs'
+    | '/app/menu'
     | '/app/recipes'
+    | '/app/rota'
+    | '/app/routines'
     | '/app/settings'
+    | '/app/stock'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
+    | '/app/waste'
     | '/blog/$slug'
     | '/legal/complaints'
     | '/legal/cookies'
@@ -303,11 +353,16 @@ export interface FileRouteTypes {
     | '/app/haccp'
     | '/app/inspection'
     | '/app/logs'
+    | '/app/menu'
     | '/app/recipes'
+    | '/app/rota'
+    | '/app/routines'
     | '/app/settings'
+    | '/app/stock'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
+    | '/app/waste'
     | '/blog/$slug'
     | '/legal/complaints'
     | '/legal/cookies'
@@ -332,11 +387,16 @@ export interface FileRouteTypes {
     | '/app/haccp'
     | '/app/inspection'
     | '/app/logs'
+    | '/app/menu'
     | '/app/recipes'
+    | '/app/rota'
+    | '/app/routines'
     | '/app/settings'
+    | '/app/stock'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
+    | '/app/waste'
     | '/blog/$slug'
     | '/legal/complaints'
     | '/legal/cookies'
@@ -456,6 +516,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
+    '/app/waste': {
+      id: '/app/waste'
+      path: '/waste'
+      fullPath: '/app/waste'
+      preLoaderRoute: typeof AppWasteRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/training': {
       id: '/app/training'
       path: '/training'
@@ -477,6 +544,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSuppliersRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/stock': {
+      id: '/app/stock'
+      path: '/stock'
+      fullPath: '/app/stock'
+      preLoaderRoute: typeof AppStockRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/settings': {
       id: '/app/settings'
       path: '/settings'
@@ -484,11 +558,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/routines': {
+      id: '/app/routines'
+      path: '/routines'
+      fullPath: '/app/routines'
+      preLoaderRoute: typeof AppRoutinesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/rota': {
+      id: '/app/rota'
+      path: '/rota'
+      fullPath: '/app/rota'
+      preLoaderRoute: typeof AppRotaRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/recipes': {
       id: '/app/recipes'
       path: '/recipes'
       fullPath: '/app/recipes'
       preLoaderRoute: typeof AppRecipesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/menu': {
+      id: '/app/menu'
+      path: '/menu'
+      fullPath: '/app/menu'
+      preLoaderRoute: typeof AppMenuRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/logs': {
@@ -559,11 +654,16 @@ interface AppRouteChildren {
   AppHaccpRoute: typeof AppHaccpRoute
   AppInspectionRoute: typeof AppInspectionRoute
   AppLogsRoute: typeof AppLogsRoute
+  AppMenuRoute: typeof AppMenuRoute
   AppRecipesRoute: typeof AppRecipesRoute
+  AppRotaRoute: typeof AppRotaRoute
+  AppRoutinesRoute: typeof AppRoutinesRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  AppStockRoute: typeof AppStockRoute
   AppSuppliersRoute: typeof AppSuppliersRoute
   AppTemperatureRoute: typeof AppTemperatureRoute
   AppTrainingRoute: typeof AppTrainingRoute
+  AppWasteRoute: typeof AppWasteRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -576,11 +676,16 @@ const AppRouteChildren: AppRouteChildren = {
   AppHaccpRoute: AppHaccpRoute,
   AppInspectionRoute: AppInspectionRoute,
   AppLogsRoute: AppLogsRoute,
+  AppMenuRoute: AppMenuRoute,
   AppRecipesRoute: AppRecipesRoute,
+  AppRotaRoute: AppRotaRoute,
+  AppRoutinesRoute: AppRoutinesRoute,
   AppSettingsRoute: AppSettingsRoute,
+  AppStockRoute: AppStockRoute,
   AppSuppliersRoute: AppSuppliersRoute,
   AppTemperatureRoute: AppTemperatureRoute,
   AppTrainingRoute: AppTrainingRoute,
+  AppWasteRoute: AppWasteRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
