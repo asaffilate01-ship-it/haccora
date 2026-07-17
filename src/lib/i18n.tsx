@@ -198,7 +198,34 @@ const de: Dict = {
   "reg.eyebrow": "Deutsche Regulatorik",
   "reg.title": "Gebaut für die deutsche Lebensmittelaufsicht.",
   "reg.body": "Behördenfinder Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug – versioniert und mit Handlungscheckliste bei Rechtsänderungen.",
+
+  // Auth / roles
+  "auth.title": "Bei GastroSafe anmelden",
+  "auth.sub": "Wählen Sie eine Rolle für die Demo. Jede Rolle sieht ihr eigenes Dashboard und ihre Berechtigungen.",
+  "auth.continue": "Als {role} fortfahren",
+  "auth.signout": "Abmelden",
+  "auth.signedInAs": "Angemeldet als",
+  "auth.switch": "Rolle wechseln",
+  "auth.demo": "Demo-Modus · keine echte Anmeldung erforderlich",
+  "auth.back": "Zurück zur Startseite",
+  "role.owner": "Inhaberin / Geschäftsführung",
+  "role.owner.desc": "Voller Zugriff: Compliance, Finanzen, Standorte, Team, Regulatorik.",
+  "role.manager": "Betriebsleitung",
+  "role.manager.desc": "Tagesgeschäft, Aufgaben, Personal, Inspektionen – ohne Preis- & Vertragsbereich.",
+  "role.chef": "Küchenleitung / Head Chef",
+  "role.chef.desc": "HACCP, Temperaturen, Rezepte, Allergene und Küchenteam.",
+  "role.staff": "Mitarbeiter:in",
+  "role.staff.desc": "Nur eigene Aufgaben, Checklisten und Schulungen.",
+  "role.inspector": "Lebensmittelaufsicht",
+  "role.inspector.desc": "Schreibgeschützter Inspector Mode – Nachweise, kein Zugriff auf operative Daten.",
+  "dash.hello": "Guten Tag",
+  "dash.role.owner": "Ihr Compliance-Überblick über alle Standorte.",
+  "dash.role.manager": "Heute im Betrieb – Aufgaben, Personal und offene Punkte.",
+  "dash.role.chef": "Küche heute – HACCP, Temperaturen, Freigaben.",
+  "dash.role.staff": "Ihre offenen Aufgaben für heute.",
+  "dash.role.inspector": "Nachweisansicht – schreibgeschützt für die Aufsicht.",
 };
+
 
 
 const en: Dict = {
