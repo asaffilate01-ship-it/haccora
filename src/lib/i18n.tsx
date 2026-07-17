@@ -406,7 +406,34 @@ const en: Dict = {
   "reg.eyebrow": "German regulatory layer",
   "reg.title": "Built for the German inspector.",
   "reg.body": "Authority finder for Berlin & NRW, EU 852/2004, 178/2002, 1169/2011, IfSG tracker, LMHV matrix, LFGB references — versioned with an action checklist when the law changes.",
+
+  // Auth / roles
+  "auth.title": "Sign in to GastroSafe",
+  "auth.sub": "Pick a role for the demo. Each role gets its own dashboard and permissions.",
+  "auth.continue": "Continue as {role}",
+  "auth.signout": "Sign out",
+  "auth.signedInAs": "Signed in as",
+  "auth.switch": "Switch role",
+  "auth.demo": "Demo mode · no real credentials required",
+  "auth.back": "Back to homepage",
+  "role.owner": "Owner / Executive",
+  "role.owner.desc": "Full access: compliance, finance, locations, team, regulation.",
+  "role.manager": "Location Manager",
+  "role.manager.desc": "Day-to-day operations, tasks, staff, inspections — no pricing or contracts.",
+  "role.chef": "Head Chef",
+  "role.chef.desc": "HACCP, temperatures, recipes, allergens and kitchen team.",
+  "role.staff": "Team Member",
+  "role.staff.desc": "Only own tasks, checklists and training modules.",
+  "role.inspector": "Food Authority",
+  "role.inspector.desc": "Read-only Inspector Mode — evidence only, no operational access.",
+  "dash.hello.role": "Hello",
+  "dash.role.owner": "Your compliance overview across every location.",
+  "dash.role.manager": "Today at the location — tasks, staff and open items.",
+  "dash.role.chef": "Kitchen today — HACCP, temperatures, sign-offs.",
+  "dash.role.staff": "Your open tasks for today.",
+  "dash.role.inspector": "Evidence view — read-only for the authority.",
 };
+
 
 
 const dicts: Record<Language, Dict> = { de, en };
