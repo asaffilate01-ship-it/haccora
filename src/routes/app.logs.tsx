@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/app/logs")({
-  component: LogsPage;
+  component: LogsPage,
 });
 
 type Action = "view" | "create" | "update" | "delete" | "login" | "logout" | "approve" | "reject";
