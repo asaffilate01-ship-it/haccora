@@ -9,6 +9,7 @@ import {
   ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, Clock, Command,
   BellRing, CalendarClock, FileArchive, History,
   ListChecks, UtensilsCrossed, CalendarDays, Trash2, Boxes,
+  ShoppingCart, Wrench, PackageX, ClipboardList,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app")({
