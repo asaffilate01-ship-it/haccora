@@ -204,6 +204,13 @@ const de: Dict = {
   "menu.expiry": "Ablauf & MHD",
   "menu.documents": "Dokumente",
   "menu.logs": "Protokolle",
+  "menu.routines": "Routinen (Öffnen/Schließen)",
+  "menu.menu": "Speisekarte & Allergene",
+  "menu.rota": "Dienstplan & Stempeluhr",
+  "menu.waste": "Abfall",
+  "menu.stock": "Bestand & Wareneingang",
+  "nav.group.routines": "Betrieb",
+  "nav.group.inventory": "Bestand & Waste",
 
   // Dashboard
   "dash.hello": "Guten Morgen, Aylin",
