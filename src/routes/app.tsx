@@ -88,6 +88,31 @@ function AppShell() {
     }
   }, [user, pathname, navigate]);
 
+  // Enforce role gating on direct URL entry.
+  useEffect(() => {
+    if (!user) return;
+    const PATH_KEY: Array<{ prefix: string; nav: NavKey }> = [
+      { prefix: "/app/haccp",       nav: "haccp" },
+      { prefix: "/app/checks",      nav: "checks" },
+      { prefix: "/app/temperature", nav: "temperature" },
+      { prefix: "/app/cleaning",    nav: "cleaning" },
+      { prefix: "/app/recipes",     nav: "recipes" },
+      { prefix: "/app/suppliers",   nav: "suppliers" },
+      { prefix: "/app/training",    nav: "training" },
+      { prefix: "/app/alerts",      nav: "alerts" },
+      { prefix: "/app/expiry",      nav: "expiry" },
+      { prefix: "/app/documents",   nav: "documents" },
+      { prefix: "/app/logs",        nav: "logs" },
+      { prefix: "/app/inspection",  nav: "audit" },
+      { prefix: "/app/settings",    nav: "settings" },
+    ];
+    const match = PATH_KEY.find((p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"));
+    if (match && !canAccess(user.role, match.nav)) {
+      navigate({ to: homeFor(user.role) as never, replace: true });
+    }
+  }, [user, pathname, navigate]);
+
+
   // Global Cmd/Ctrl+K -> command palette.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
