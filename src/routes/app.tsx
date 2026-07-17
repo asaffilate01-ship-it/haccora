@@ -150,7 +150,10 @@ function AppShell() {
       { prefix: "/app/assets",      nav: "assets" },
       { prefix: "/app/recalls",     nav: "recalls" },
       { prefix: "/app/audits",      nav: "audits" },
+      { prefix: "/app/labels",      nav: "labels" },
+      { prefix: "/app/incidents",   nav: "incidents" },
     ];
+
     const match = PATH_KEY.find((p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"));
     if (match && !canAccess(user.role, match.nav)) {
       navigate({ to: homeFor(user.role) as never, replace: true });
