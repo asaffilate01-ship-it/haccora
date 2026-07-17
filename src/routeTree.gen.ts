@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -32,6 +33,8 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRoutinesRouteImport } from './routes/app.routines'
 import { Route as AppRotaRouteImport } from './routes/app.rota'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
+import { Route as AppRecallsRouteImport } from './routes/app.recalls'
+import { Route as AppPurchasingRouteImport } from './routes/app.purchasing'
 import { Route as AppMenuRouteImport } from './routes/app.menu'
 import { Route as AppLogsRouteImport } from './routes/app.logs'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
@@ -40,11 +43,18 @@ import { Route as AppExpiryRouteImport } from './routes/app.expiry'
 import { Route as AppDocumentsRouteImport } from './routes/app.documents'
 import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
 import { Route as AppChecksRouteImport } from './routes/app.checks'
+import { Route as AppAuditsRouteImport } from './routes/app.audits'
+import { Route as AppAssetsRouteImport } from './routes/app.assets'
 import { Route as AppAlertsRouteImport } from './routes/app.alerts'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -157,6 +167,16 @@ const AppRecipesRoute = AppRecipesRouteImport.update({
   path: '/recipes',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRecallsRoute = AppRecallsRouteImport.update({
+  id: '/recalls',
+  path: '/recalls',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPurchasingRoute = AppPurchasingRouteImport.update({
+  id: '/purchasing',
+  path: '/purchasing',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMenuRoute = AppMenuRouteImport.update({
   id: '/menu',
   path: '/menu',
@@ -197,6 +217,16 @@ const AppChecksRoute = AppChecksRouteImport.update({
   path: '/checks',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAuditsRoute = AppAuditsRouteImport.update({
+  id: '/audits',
+  path: '/audits',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAssetsRoute = AppAssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAlertsRoute = AppAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -209,8 +239,11 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/audits': typeof AppAuditsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/documents': typeof AppDocumentsRoute
@@ -219,6 +252,8 @@ export interface FileRoutesByFullPath {
   '/app/inspection': typeof AppInspectionRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
+  '/app/purchasing': typeof AppPurchasingRoute
+  '/app/recalls': typeof AppRecallsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
@@ -241,8 +276,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/audits': typeof AppAuditsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/documents': typeof AppDocumentsRoute
@@ -251,6 +289,8 @@ export interface FileRoutesByTo {
   '/app/inspection': typeof AppInspectionRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
+  '/app/purchasing': typeof AppPurchasingRoute
+  '/app/recalls': typeof AppRecallsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
@@ -276,8 +316,11 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/audits': typeof AppAuditsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/documents': typeof AppDocumentsRoute
@@ -286,6 +329,8 @@ export interface FileRoutesById {
   '/app/inspection': typeof AppInspectionRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
+  '/app/purchasing': typeof AppPurchasingRoute
+  '/app/recalls': typeof AppRecallsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
@@ -312,8 +357,11 @@ export interface FileRouteTypes {
     | '/blog'
     | '/legal'
     | '/login'
+    | '/onboarding'
     | '/sitemap.xml'
     | '/app/alerts'
+    | '/app/assets'
+    | '/app/audits'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/documents'
@@ -322,6 +370,8 @@ export interface FileRouteTypes {
     | '/app/inspection'
     | '/app/logs'
     | '/app/menu'
+    | '/app/purchasing'
+    | '/app/recalls'
     | '/app/recipes'
     | '/app/rota'
     | '/app/routines'
@@ -344,8 +394,11 @@ export interface FileRouteTypes {
     | '/'
     | '/legal'
     | '/login'
+    | '/onboarding'
     | '/sitemap.xml'
     | '/app/alerts'
+    | '/app/assets'
+    | '/app/audits'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/documents'
@@ -354,6 +407,8 @@ export interface FileRouteTypes {
     | '/app/inspection'
     | '/app/logs'
     | '/app/menu'
+    | '/app/purchasing'
+    | '/app/recalls'
     | '/app/recipes'
     | '/app/rota'
     | '/app/routines'
@@ -378,8 +433,11 @@ export interface FileRouteTypes {
     | '/blog'
     | '/legal'
     | '/login'
+    | '/onboarding'
     | '/sitemap.xml'
     | '/app/alerts'
+    | '/app/assets'
+    | '/app/audits'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/documents'
@@ -388,6 +446,8 @@ export interface FileRouteTypes {
     | '/app/inspection'
     | '/app/logs'
     | '/app/menu'
+    | '/app/purchasing'
+    | '/app/recalls'
     | '/app/recipes'
     | '/app/rota'
     | '/app/routines'
@@ -413,6 +473,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   LegalRoute: typeof LegalRouteWithChildren
   LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -423,6 +484,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -579,6 +647,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRecipesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/recalls': {
+      id: '/app/recalls'
+      path: '/recalls'
+      fullPath: '/app/recalls'
+      preLoaderRoute: typeof AppRecallsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/purchasing': {
+      id: '/app/purchasing'
+      path: '/purchasing'
+      fullPath: '/app/purchasing'
+      preLoaderRoute: typeof AppPurchasingRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/menu': {
       id: '/app/menu'
       path: '/menu'
@@ -635,6 +717,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChecksRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/audits': {
+      id: '/app/audits'
+      path: '/audits'
+      fullPath: '/app/audits'
+      preLoaderRoute: typeof AppAuditsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/assets': {
+      id: '/app/assets'
+      path: '/assets'
+      fullPath: '/app/assets'
+      preLoaderRoute: typeof AppAssetsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/alerts': {
       id: '/app/alerts'
       path: '/alerts'
@@ -647,6 +743,8 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAlertsRoute: typeof AppAlertsRoute
+  AppAssetsRoute: typeof AppAssetsRoute
+  AppAuditsRoute: typeof AppAuditsRoute
   AppChecksRoute: typeof AppChecksRoute
   AppCleaningRoute: typeof AppCleaningRoute
   AppDocumentsRoute: typeof AppDocumentsRoute
@@ -655,6 +753,8 @@ interface AppRouteChildren {
   AppInspectionRoute: typeof AppInspectionRoute
   AppLogsRoute: typeof AppLogsRoute
   AppMenuRoute: typeof AppMenuRoute
+  AppPurchasingRoute: typeof AppPurchasingRoute
+  AppRecallsRoute: typeof AppRecallsRoute
   AppRecipesRoute: typeof AppRecipesRoute
   AppRotaRoute: typeof AppRotaRoute
   AppRoutinesRoute: typeof AppRoutinesRoute
@@ -669,6 +769,8 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAlertsRoute: AppAlertsRoute,
+  AppAssetsRoute: AppAssetsRoute,
+  AppAuditsRoute: AppAuditsRoute,
   AppChecksRoute: AppChecksRoute,
   AppCleaningRoute: AppCleaningRoute,
   AppDocumentsRoute: AppDocumentsRoute,
@@ -677,6 +779,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppInspectionRoute: AppInspectionRoute,
   AppLogsRoute: AppLogsRoute,
   AppMenuRoute: AppMenuRoute,
+  AppPurchasingRoute: AppPurchasingRoute,
+  AppRecallsRoute: AppRecallsRoute,
   AppRecipesRoute: AppRecipesRoute,
   AppRotaRoute: AppRotaRoute,
   AppRoutinesRoute: AppRoutinesRoute,
@@ -727,6 +831,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   LegalRoute: LegalRouteWithChildren,
   LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport

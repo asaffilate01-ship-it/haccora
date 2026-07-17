@@ -10,7 +10,7 @@ export const Route = createFileRoute("/app/audits")({
 type Template = { id: string; nameDe: string; nameEn: string; sections: number; questions: number; refDe: string; refEn: string };
 
 const TEMPLATES: Template[] = [
-  { id: "T-DIN",  nameDe: "DIN 10514 Selbstkontrolle", nameEn: "DIN 10514 self-check",       sections: 8, questions: 62, refDe: "DIN 10514",       enL: "DIN 10514", refEn: "DIN 10514" } as any,
+  { id: "T-DIN",  nameDe: "DIN 10514 Selbstkontrolle", nameEn: "DIN 10514 self-check",       sections: 8, questions: 62, refDe: "DIN 10514",       refEn: "DIN 10514" },
   { id: "T-IFS",  nameDe: "IFS Food v8 Vorbereitung", nameEn: "IFS Food v8 pre-audit",       sections: 12, questions: 240, refDe: "IFS Food v8", refEn: "IFS Food v8" },
   { id: "T-LMHV", nameDe: "LMHV Küchenrundgang",       nameEn: "LMHV kitchen walk-through",   sections: 6, questions: 34, refDe: "LMHV",            refEn: "LMHV" },
   { id: "T-ALL",  nameDe: "Allergen-Kreuzkontamination",nameEn: "Allergen cross-contamination", sections: 4, questions: 22, refDe: "LMIV 1169/2011", refEn: "EU 1169/2011" },
