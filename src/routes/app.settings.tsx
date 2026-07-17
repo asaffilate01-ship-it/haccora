@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth, canAccess, ROLES, type Role } from "@/lib/auth";
 import { ACTION_GROUPS, ACTION_LABEL_DE, ACTION_LABEL_EN, ROLE_ACTIONS, type Action } from "@/lib/permissions";
@@ -224,8 +224,8 @@ function PermissionsMatrix({ currentRole }: { currentRole: Role }) {
           </thead>
           <tbody>
             {ACTION_GROUPS.map((g) => (
-              <>
-                <tr key={`h-${g.groupEn}`}>
+              <Fragment key={g.groupEn}>
+                <tr>
                   <td colSpan={ROLES.length + 1} className="pt-4 pb-1 text-[10px] uppercase tracking-widest font-bold text-foreground/60">
                     {lang === "de" ? g.groupDe : g.groupEn}
                   </td>
@@ -236,8 +236,9 @@ function PermissionsMatrix({ currentRole }: { currentRole: Role }) {
                     {ROLES.map((r) => <PermCell key={r} role={r} action={a} highlight={r === currentRole} />)}
                   </tr>
                 ))}
-              </>
+              </Fragment>
             ))}
+
           </tbody>
         </table>
       </div>
