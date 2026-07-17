@@ -321,6 +321,71 @@ const de: Dict = {
   "dash.role.chef": "Küche heute – HACCP, Temperaturen, Freigaben.",
   "dash.role.staff": "Ihre offenen Aufgaben für heute.",
   "dash.role.inspector": "Nachweisansicht – schreibgeschützt für die Aufsicht.",
+
+  // Nav groups
+  "nav.group.overview": "Übersicht",
+  "nav.group.compliance": "Compliance",
+  "nav.group.kitchen": "Küche & Einkauf",
+  "nav.group.people": "Team",
+  "nav.group.audit": "Audit",
+
+  // Notifications
+  "notif.title": "Benachrichtigungen",
+  "notif.new": "neu",
+  "notif.empty": "Keine offenen Meldungen.",
+  "notif.viewAll": "Alle Nachweise anzeigen",
+  "notif.temp.t": "Kühlhaus 2 über 5 °C",
+  "notif.temp.m": "Temperatur · vor 12 Min.",
+  "notif.ifsg.t": "IfSG-Unterweisung fällig",
+  "notif.ifsg.m": "Team · 2 Mitarbeitende",
+  "notif.clean.t": "Reinigungsfoto ausstehend",
+  "notif.clean.m": "Reinigung · Küchenboden",
+  "notif.audit.t": "Prüferbericht bereit",
+  "notif.audit.m": "Audit · letzte 30 Tage",
+
+  // Command palette
+  "palette.placeholder": "Modul suchen…",
+  "palette.empty": "Keine Treffer.",
+
+  // Settings
+  "settings.title": "Einstellungen",
+  "settings.sub": "Konto, Sprache und Benachrichtigungen.",
+  "settings.profile": "Profil",
+  "settings.name": "Name",
+  "settings.email": "E-Mail",
+  "settings.role": "Rolle",
+  "settings.location": "Standort",
+  "settings.language": "Sprache",
+  "settings.language.hint": "Wechseln Sie jederzeit zwischen Deutsch und Englisch.",
+  "settings.notifications": "Benachrichtigungen",
+  "settings.n.email": "E-Mail-Benachrichtigungen",
+  "settings.n.email.hint": "Kritische Warnungen und Prüfungsberichte per E-Mail.",
+  "settings.n.push": "Push-Benachrichtigungen",
+  "settings.n.push.hint": "Sofortmeldungen im Browser und auf dem Mobilgerät.",
+  "settings.n.digest": "Tageszusammenfassung",
+  "settings.n.digest.hint": "Morgens um 07:00 – offene Aufgaben und Kennzahlen.",
+  "settings.danger": "Konto",
+  "settings.danger.body": "Demo-Daten zurücksetzen oder Rolle wechseln.",
+  "settings.reset": "Demo-Daten zurücksetzen",
+
+  // Owner dashboard
+  "owner.locations": "Standorte",
+  "owner.revenue": "Umsatz (30T)",
+  "owner.revenue.hint": "+6% vs. Vormonat",
+  "owner.byLocation": "Standorte im Vergleich",
+  "owner.last30": "Letzte 30 Tage",
+  "owner.alerts": "Alarme",
+
+  // Chef dashboard
+  "chef.temps": "Temperaturen OK",
+  "chef.haccp": "HACCP-Plan",
+  "chef.approved": "Freigegeben",
+  "chef.recipes": "Rezepte",
+  "chef.brigade": "Küchenteam",
+
+  // Staff dashboard
+  "staff.training.t": "Meine Schulungen",
+  "staff.training.b": "Offene Module und Zertifikate anzeigen.",
 };
 
 
