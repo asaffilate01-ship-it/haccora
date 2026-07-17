@@ -205,3 +205,18 @@
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-alert-red) 20%, transparent);
   }
 }
+
+/* Smooth language crossfade — uses the View Transitions API when available. */
+@keyframes gs-fade-in  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes gs-fade-out { from { opacity: 1 } to { opacity: 0 } }
+::view-transition-old(root) {
+  animation: gs-fade-out 220ms ease-in both;
+}
+::view-transition-new(root) {
+  animation: gs-fade-in 260ms ease-out both;
+}
+/* Fallback for browsers without startViewTransition. */
+body.lang-swap {
+  transition: opacity 140ms ease;
+  opacity: 0.05;
+}

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowRight, ShieldCheck, TrendingUp,
 } from "lucide-react";
@@ -8,6 +9,7 @@ import { useState } from "react";
 export const Route = createFileRoute("/app/")({
   component: Dashboard,
 });
+
 
 interface Task { id: string; title: string; category: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 
@@ -27,28 +29,38 @@ const actions = [
 
 function Dashboard() {
   const { t, lang } = useI18n();
+  const { user } = useAuth();
   const [tasks, setTasks] = useState(initialTasks);
   const done = (id: string) => setTasks((prev) => prev.map((x) => x.id === id ? { ...x, status: "done" } : x));
 
-  const pending  = tasks.filter((x) => x.status === "pending").length;
-  const overdue  = tasks.filter((x) => x.status === "overdue").length;
+  // For staff, only their own tasks.
+  const visibleTasks = user?.role === "staff"
+    ? tasks.filter((x) => x.who === user.name.split(" ")[0] || x.who === "Aylin")
+    : tasks;
 
-  const metrics = [
-    { l: t("dash.metric.score"),    v: "94%",  hint: "+2 vs. letzte Woche" },
-    { l: t("dash.metric.pending"),  v: pending },
-    { l: t("dash.metric.overdue"),  v: overdue },
-    { l: t("dash.metric.actions"),  v: 3 },
-    { l: t("dash.metric.failed"),   v: 1 },
-    { l: t("dash.metric.training"), v: 3 },
+  const pending  = visibleTasks.filter((x) => x.status === "pending").length;
+  const overdue  = visibleTasks.filter((x) => x.status === "overdue").length;
+
+  const allMetrics = [
+    { l: t("dash.metric.score"),    v: "94%",  hint: "+2 vs. letzte Woche", roles: ["owner","manager","chef","inspector"] },
+    { l: t("dash.metric.pending"),  v: pending, roles: ["owner","manager","chef","staff"] },
+    { l: t("dash.metric.overdue"),  v: overdue, roles: ["owner","manager","chef","staff"] },
+    { l: t("dash.metric.actions"),  v: 3,       roles: ["owner","manager","chef","inspector"] },
+    { l: t("dash.metric.failed"),   v: 1,       roles: ["owner","manager","chef","inspector"] },
+    { l: t("dash.metric.training"), v: 3,       roles: ["owner","manager","staff"] },
   ];
+  const metrics = allMetrics.filter((m) => !user || m.roles.includes(user.role));
+  const firstName = user?.name.split(" ")[0] ?? "";
+  const roleSub = user ? t(`dash.role.${user.role}`) : t("dash.sub");
 
   return (
     <div className="p-6 md:p-10 space-y-8">
       <div>
-        <div className="eyebrow">Kreuzberg Kitchen · {new Date().toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", { weekday: "long", day: "numeric", month: "long" })}</div>
-        <h1 className="mt-1 text-3xl md:text-4xl">{t("dash.hello")}</h1>
-        <p className="text-muted-foreground mt-1">{t("dash.sub")}</p>
+        <div className="eyebrow">{user?.location ?? "Kreuzberg Kitchen"} · {new Date().toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", { weekday: "long", day: "numeric", month: "long" })}</div>
+        <h1 className="mt-1 text-3xl md:text-4xl">{t("dash.hello.role")}{firstName ? `, ${firstName}` : ""}</h1>
+        <p className="text-muted-foreground mt-1">{roleSub}</p>
       </div>
+
 
       {/* metrics */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -68,7 +80,7 @@ function Dashboard() {
             <Link to="/app/checks" className="text-xs text-primary hover:underline">Alle · All →</Link>
           </div>
           <div className="mt-4 divide-y divide-border">
-            {tasks.map((task) => (
+            {visibleTasks.map((task) => (
               <div key={task.id} className="py-3 flex items-center gap-3">
                 <StatusPill status={task.status} />
                 <div className="flex-1 min-w-0">
