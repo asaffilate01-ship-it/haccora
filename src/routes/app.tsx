@@ -162,8 +162,39 @@ function AppShell() {
   const paletteResults = visibleFlat.filter((i) => !q || t(i.key).toLowerCase().includes(q));
 
   return (
-    <div className="min-h-screen bg-secondary/40 flex">
+    <div className="min-h-screen bg-secondary/40 flex flex-col">
+      {/* Demo mode banner */}
+      <div className="sticky top-0 z-40 bg-black text-white text-xs md:text-sm">
+        <div className="px-4 md:px-6 h-9 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="inline-flex items-center rounded-full bg-[color:var(--color-alert-red)] px-2 py-0.5 text-[10px] font-black uppercase tracking-widest shrink-0">
+              {t("demo.tag")}
+            </span>
+            <span className="truncate text-white/80 hidden sm:inline">
+              {t("demo.body").replace("{role}", t(`role.${user.role}`))}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              to="/login"
+              onClick={() => signOut()}
+              className="hidden md:inline-flex items-center gap-1 rounded-full border border-white/20 px-3 py-1 text-[11px] font-semibold hover:bg-white/10 transition"
+            >
+              {t("demo.switch")}
+            </Link>
+            <button
+              onClick={() => { signOut(); navigate({ to: "/" }); }}
+              className="inline-flex items-center gap-1 rounded-full bg-white text-black px-3 py-1 text-[11px] font-bold hover:bg-white/90 transition"
+            >
+              <LogOut size={12} /> {t("demo.exit")}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 flex min-h-0">
       <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-card">
+
         <div className="px-5 h-16 flex items-center gap-2 border-b border-border">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <ShieldCheck size={18} />
