@@ -209,8 +209,13 @@ const de: Dict = {
   "menu.rota": "Dienstplan & Stempeluhr",
   "menu.waste": "Abfall",
   "menu.stock": "Bestand & Wareneingang",
+  "menu.purchasing": "Einkauf & Bestellungen",
+  "menu.assets": "Geräte & Wartung",
+  "menu.recalls": "Rückrufe & Quarantäne",
+  "menu.audits": "Interne Audits",
   "nav.group.routines": "Betrieb",
   "nav.group.inventory": "Bestand & Waste",
+  "nav.group.assets": "Geräte",
 
   // Dashboard
   "dash.hello": "Guten Morgen, Aylin",
