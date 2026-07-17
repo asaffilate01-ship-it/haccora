@@ -10,7 +10,8 @@ export const Route = createFileRoute("/app")({
   component: AppShell,
 });
 
-const NAV = [
+type NavItem = { to: string; icon: typeof LayoutDashboard; key: string; exact?: boolean };
+const NAV: NavItem[] = [
   { to: "/app",             icon: LayoutDashboard, key: "menu.dashboard", exact: true },
   { to: "/app/haccp",       icon: ShieldCheck,     key: "menu.haccp" },
   { to: "/app/checks",      icon: ClipboardCheck,  key: "menu.checks" },
@@ -20,7 +21,7 @@ const NAV = [
   { to: "/app/suppliers",   icon: Truck,           key: "menu.suppliers" },
   { to: "/app/training",    icon: Users,           key: "menu.training" },
   { to: "/app/inspection",  icon: Gavel,           key: "menu.audit" },
-] as const;
+];
 
 function AppShell() {
   const { t } = useI18n();
