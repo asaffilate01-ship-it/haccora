@@ -2,11 +2,11 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ShareBar, FollowBar } from "@/components/SocialIcons";
-import { posts, getPost, formatDate, type BlogBlock } from "@/lib/blog";
+import { posts, getPost, formatDate, type BlogBlock, type BlogPost } from "@/lib/blog";
 import { ArrowLeft, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): BlogPost => {
     const post = getPost(params.slug);
     if (!post) throw notFound();
     return post;
