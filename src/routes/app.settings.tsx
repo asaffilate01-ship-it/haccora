@@ -183,3 +183,76 @@ function Toggle({ icon, label, hint, checked, onChange }: {
     </label>
   );
 }
+
+function PermissionsMatrix({ currentRole }: { currentRole: Role }) {
+  const { t, lang } = useI18n();
+  const labels = lang === "de" ? ACTION_LABEL_DE : ACTION_LABEL_EN;
+  const roleLabel = (r: Role) => t(`role.${r}`);
+  return (
+    <section className="surface p-6">
+      <div className="flex items-center gap-2 mb-1">
+        <KeyRound size={18} className="text-primary" />
+        <h2 className="font-display text-lg">{t("settings.perms.title")}</h2>
+      </div>
+      <p className="text-sm text-muted-foreground mb-4">{t("settings.perms.sub")}</p>
+
+      <div className="mb-4 flex flex-wrap items-center gap-3 text-xs">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-4 w-4 rounded grid place-items-center bg-success/15 text-success"><Check size={12} /></span>
+          {t("settings.perms.legend.yes")}
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-4 w-4 rounded grid place-items-center bg-destructive/10 text-destructive"><X size={12} /></span>
+          {t("settings.perms.legend.no")}
+        </span>
+        <span className="ml-auto text-muted-foreground">
+          {t("settings.perms.yourRole")}: <span className="font-bold text-foreground">{roleLabel(currentRole)}</span>
+        </span>
+      </div>
+
+      <div className="overflow-x-auto -mx-6 px-6">
+        <table className="w-full text-sm min-w-[560px]">
+          <thead>
+            <tr className="text-[10px] uppercase tracking-widest text-muted-foreground">
+              <th className="text-left font-medium py-2 pr-4">{t("settings.perms.action")}</th>
+              {ROLES.map((r) => (
+                <th key={r} className={`text-center font-medium px-2 py-2 ${r === currentRole ? "text-primary" : ""}`}>
+                  {roleLabel(r)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {ACTION_GROUPS.map((g) => (
+              <>
+                <tr key={`h-${g.groupEn}`}>
+                  <td colSpan={ROLES.length + 1} className="pt-4 pb-1 text-[10px] uppercase tracking-widest font-bold text-foreground/60">
+                    {lang === "de" ? g.groupDe : g.groupEn}
+                  </td>
+                </tr>
+                {g.actions.map((a) => (
+                  <tr key={a} className="border-t border-border">
+                    <td className="py-2 pr-4">{labels[a]}</td>
+                    {ROLES.map((r) => <PermCell key={r} role={r} action={a} highlight={r === currentRole} />)}
+                  </tr>
+                ))}
+              </>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function PermCell({ role, action, highlight }: { role: Role; action: Action; highlight: boolean }) {
+  const allowed = ROLE_ACTIONS[role].includes(action);
+  return (
+    <td className={`text-center px-2 py-2 ${highlight ? "bg-primary/5" : ""}`}>
+      {allowed
+        ? <span className="inline-grid h-6 w-6 place-items-center rounded-full bg-success/15 text-success"><Check size={12} /></span>
+        : <span className="inline-grid h-6 w-6 place-items-center rounded-full bg-destructive/10 text-destructive"><X size={12} /></span>}
+    </td>
+  );
+}
+
