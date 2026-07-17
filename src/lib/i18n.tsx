@@ -582,6 +582,10 @@ const en: Dict = {
   "menu.training": "Team & training",
   "menu.audit": "Audit & inspection",
   "menu.settings": "Settings",
+  "menu.alerts": "Alerts",
+  "menu.expiry": "Expiry & shelf life",
+  "menu.documents": "Documents",
+  "menu.logs": "Audit log",
 
   "dash.hello": "Good morning, Aylin",
   "dash.sub": "Your compliance today — as of now.",
