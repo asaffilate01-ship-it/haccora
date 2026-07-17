@@ -369,7 +369,8 @@ function Regulation() {
         </div>
         <div className="md:col-span-2 grid sm:grid-cols-2 gap-5">
           {cards.map((c) => (
-            <div key={c.title} className="card-polished p-6">
+            <div key={c.k} className="card-polished p-6">
+
               <div className="flex items-center gap-3">
                 <span className="icon-3d" style={{ height: "2.75rem", width: "2.75rem", borderRadius: "0.85rem" }}>
                   <Building2 size={18} strokeWidth={2.4} />
