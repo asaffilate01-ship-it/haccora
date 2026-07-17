@@ -3,7 +3,7 @@ import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowRight, ShieldCheck, TrendingUp,
-  MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen,
+  MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen, ClipboardList,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -46,12 +46,8 @@ function Dashboard() {
   const overdue = visibleTasks.filter((x) => x.status === "overdue").length;
 
   return (
-    <div className="p-6 md:p-10 space-y-8">
-      <div>
-        <div className="eyebrow">{user.location} · {dateStr}</div>
-        <h1 className="mt-1 text-3xl md:text-4xl">{t("dash.hello.role")}, {firstName}</h1>
-        <p className="text-muted-foreground mt-1">{t(`dash.role.${user.role}`)}</p>
-      </div>
+    <div className="p-4 md:p-8 lg:p-10 space-y-6 md:space-y-8">
+      {user.role !== "inspector" && <RoleHero role={user.role} firstName={firstName} dateStr={dateStr} location={user.location} />}
 
       {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
       {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
@@ -61,6 +57,39 @@ function Dashboard() {
     </div>
   );
 }
+
+/* ---------------- Role hero band ---------------- */
+function RoleHero({ role, firstName, dateStr, location }: { role: string; firstName: string; dateStr: string; location: string }) {
+  const { t } = useI18n();
+  const theme = {
+    owner:     { bg: "bg-[#0b0f1a] text-white", accent: "text-[#f4b544]",                       icon: DollarSign,   eye: "dash.owner.hero.eye",   ti: "dash.owner.hero.t",   bo: "dash.owner.hero.b" },
+    manager:   { bg: "bg-[color:var(--color-alert-red)] text-white", accent: "text-white",       icon: ClipboardList,eye: "dash.manager.hero.eye", ti: "dash.manager.hero.t", bo: "dash.manager.hero.b" },
+    chef:      { bg: "bg-gradient-to-br from-emerald-700 to-emerald-900 text-white", accent: "text-emerald-200", icon: ChefHat, eye: "dash.chef.hero.eye", ti: "dash.chef.hero.t", bo: "dash.chef.hero.b" },
+    staff:     { bg: "bg-gradient-to-br from-sky-600 to-indigo-700 text-white", accent: "text-sky-100", icon: BookOpen, eye: "dash.staff.hero.eye", ti: "dash.staff.hero.t", bo: "dash.staff.hero.b" },
+    inspector: { bg: "bg-white border border-border text-foreground", accent: "text-[color:var(--color-alert-red)]", icon: Gavel, eye: "inspector.eyebrow", ti: "inspector.title", bo: "inspector.body" },
+  }[role as "owner"|"manager"|"chef"|"staff"|"inspector"];
+  const Icon = theme.icon;
+  return (
+    <div className={`rounded-2xl overflow-hidden ${theme.bg} shadow-lg`}>
+      <div className="p-5 md:p-8 flex items-start gap-4 md:gap-6">
+        <div className="hidden sm:grid h-12 w-12 md:h-14 md:w-14 place-items-center rounded-2xl bg-white/10 backdrop-blur">
+          <Icon size={26} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className={`text-[10px] md:text-xs font-black uppercase tracking-[0.18em] ${theme.accent}`}>{t(theme.eye)}</div>
+          <h1 className="mt-1.5 font-display text-2xl md:text-4xl leading-tight">
+            {t("dash.hello.role")}, {firstName}
+          </h1>
+          <p className="mt-1.5 text-sm md:text-base opacity-85 max-w-2xl">{t(theme.bo)}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] md:text-xs uppercase tracking-wider opacity-70">
+            <span>{location}</span><span>·</span><span>{dateStr}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 /* ---------------- Owner ---------------- */
 function OwnerView({ pending, overdue, tasks, done }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void }) {
@@ -121,6 +150,17 @@ function ManagerView({ pending, overdue, tasks, done }: { pending: number; overd
   const { t } = useI18n();
   return (
     <>
+      {/* Live shift strip — unique to manager */}
+      <div className="rounded-2xl border border-[color:var(--color-alert-red)]/30 bg-[color:var(--color-alert-red)]/5 p-4 md:p-5 flex items-center gap-4">
+        <span className="relative flex h-3 w-3 shrink-0">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--color-alert-red)] opacity-60"></span>
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-[color:var(--color-alert-red)]"></span>
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-alert-red)]">{t("dash.manager.shift")}</div>
+          <div className="text-sm font-semibold truncate">{t("dash.manager.shiftBody")}</div>
+        </div>
+      </div>
       <MetricRow items={[
         { l: t("dash.metric.score"),    v: "94%", hint: t("time.trend"), icon: ShieldCheck },
         { l: t("dash.metric.pending"),  v: pending, icon: Clock },
@@ -153,15 +193,23 @@ function ChefView({ tasks, done }: { pending: number; overdue: number; tasks: Ta
   ];
   return (
     <>
+      {/* Kitchen line status */}
+      <div className="rounded-2xl border border-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/20 p-4 md:p-5 flex items-center gap-4">
+        <span className="h-10 w-10 shrink-0 rounded-xl bg-emerald-600 text-white grid place-items-center"><Thermometer size={18} /></span>
+        <div className="min-w-0 flex-1">
+          <div className="text-[10px] font-black uppercase tracking-widest text-emerald-700">{t("dash.chef.line")}</div>
+          <div className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">{t("dash.chef.lineBody")}</div>
+        </div>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {kitchen.map((k) => (
-          <Link key={k.l} to={k.to as never} className="surface p-4 hover:shadow-md transition group">
+          <Link key={k.l} to={k.to as never} className="surface p-4 md:p-5 hover:shadow-md transition group">
             <div className="flex items-center justify-between">
-              <span className="h-9 w-9 rounded-lg bg-primary/10 text-primary grid place-items-center"><k.icon size={16} /></span>
+              <span className="h-10 w-10 rounded-xl bg-emerald-600/10 text-emerald-700 grid place-items-center"><k.icon size={18} /></span>
               <ArrowRight size={14} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition" />
             </div>
             <div className="mt-3 text-xs text-muted-foreground">{k.l}</div>
-            <div className="font-display text-2xl">{k.v}</div>
+            <div className="font-display text-2xl md:text-3xl">{k.v}</div>
           </Link>
         ))}
       </div>
@@ -176,32 +224,48 @@ function ChefView({ tasks, done }: { pending: number; overdue: number; tasks: Ta
 /* ---------------- Staff (focus view) ---------------- */
 function StaffView({ tasks, done }: { tasks: Task[]; done: (id: string) => void }) {
   const { t } = useI18n();
-  const pending = tasks.filter((x) => x.status !== "done").length;
+  const total = tasks.length;
+  const completed = tasks.filter((x) => x.status === "done").length;
+  const pending = total - completed;
   const overdue = tasks.filter((x) => x.status === "overdue").length;
+  const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 max-w-md">
-        <div className="surface p-4">
-          <div className="text-xs text-muted-foreground">{t("dash.metric.pending")}</div>
-          <div className="mt-2 font-display text-3xl">{pending}</div>
+      {/* Big progress card — staff feels different from manager/owner */}
+      <div className="rounded-2xl bg-gradient-to-br from-sky-600 to-indigo-700 text-white p-5 md:p-7">
+        <div className="flex items-baseline justify-between gap-3">
+          <div className="text-xs font-black uppercase tracking-widest text-sky-100">{t("dash.staff.progress")}</div>
+          <div className="font-display text-4xl md:text-5xl">{pct}%</div>
         </div>
-        <div className={`surface p-4 ${overdue > 0 ? "border-destructive/30" : ""}`}>
-          <div className="text-xs text-muted-foreground">{t("dash.metric.overdue")}</div>
-          <div className={`mt-2 font-display text-3xl ${overdue > 0 ? "text-destructive" : ""}`}>{overdue}</div>
+        <div className="mt-3 h-2.5 rounded-full bg-white/20 overflow-hidden">
+          <div className="h-full bg-white transition-all duration-500" style={{ width: `${pct}%` }} />
+        </div>
+        <div className="mt-3 flex items-center gap-4 text-xs md:text-sm text-sky-50">
+          <span>{completed}/{total} {t("dash.completed").toLowerCase()}</span>
+          {pending > 0 && <span>· {pending} {t("dash.pending").toLowerCase()}</span>}
+          {overdue > 0 && <span className="font-bold">· {overdue} {t("dash.overdue").toLowerCase()}</span>}
         </div>
       </div>
-      <TasksCard tasks={tasks} done={done} big />
-      <Link to="/app/training" className="surface p-6 flex items-center gap-4 hover:shadow-md transition">
-        <span className="h-11 w-11 rounded-xl bg-primary text-primary-foreground grid place-items-center"><BookOpen size={20} /></span>
-        <div className="flex-1">
-          <div className="font-display text-lg">{t("staff.training.t")}</div>
-          <div className="text-sm text-muted-foreground">{t("staff.training.b")}</div>
+      {total === completed ? (
+        <div className="surface p-6 md:p-8 text-center">
+          <CheckCircle2 size={40} className="mx-auto text-success" />
+          <div className="mt-3 font-display text-xl">{t("dash.staff.allDone")}</div>
         </div>
-        <ArrowRight size={18} className="text-muted-foreground" />
+      ) : (
+        <TasksCard tasks={tasks} done={done} big />
+      )}
+      <Link to="/app/training" className="surface p-5 md:p-6 flex items-center gap-4 hover:shadow-md transition">
+        <span className="h-11 w-11 rounded-xl bg-primary text-primary-foreground grid place-items-center shrink-0"><BookOpen size={20} /></span>
+        <div className="flex-1 min-w-0">
+          <div className="font-display text-lg truncate">{t("staff.training.t")}</div>
+          <div className="text-sm text-muted-foreground truncate">{t("staff.training.b")}</div>
+        </div>
+        <ArrowRight size={18} className="text-muted-foreground shrink-0" />
       </Link>
     </>
   );
 }
+
 
 /* ---------------- Inspector ---------------- */
 function InspectorView() {
