@@ -259,19 +259,16 @@ function ModulePillars() {
           </h2>
           <p className="mt-5 text-black/60 max-w-2xl">{t("pillars.subtitle")}</p>
         </div>
-        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map(({ icon: Icon, k }) => (
-            <div
-              key={k}
-              className="group relative rounded-2xl border border-black/10 bg-white p-8 hover:border-black transition"
-            >
+            <div key={k} className="group card-polished p-8">
               <div className="flex items-start justify-between">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-alert-red)]/10 text-[color:var(--color-alert-red)]">
-                  <Icon size={24} strokeWidth={2.2} />
-                </div>
-                <ChevronRight size={18} className="text-black/30 group-hover:text-[color:var(--color-alert-red)] transition" />
+                <span className="icon-3d">
+                  <Icon size={28} strokeWidth={2.4} />
+                </span>
+                <ChevronRight size={18} className="text-black/25 group-hover:text-[color:var(--color-alert-red)] group-hover:translate-x-1 transition" />
               </div>
-              <h3 className="mt-6 display-black text-xl md:text-2xl">
+              <h3 className="mt-7 display-black text-xl md:text-2xl">
                 {t(`pillar.${k}.title`) ?? k}
               </h3>
               <p className="mt-3 text-sm text-black/60 leading-relaxed">
