@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { useAuth, canAccess } from "@/lib/auth";
-import { Settings as SettingsIcon, Bell, Globe2, Shield, LogOut, RefreshCw, Mail } from "lucide-react";
+import { useAuth, canAccess, ROLES, type Role } from "@/lib/auth";
+import { ACTION_GROUPS, ACTION_LABEL_DE, ACTION_LABEL_EN, ROLE_ACTIONS, type Action } from "@/lib/permissions";
+import { Settings as SettingsIcon, Bell, Globe2, Shield, LogOut, RefreshCw, Mail, KeyRound, Check, X } from "lucide-react";
+
 
 export const Route = createFileRoute("/app/settings")({
   head: () => ({
