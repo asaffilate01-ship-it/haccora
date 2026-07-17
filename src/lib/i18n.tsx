@@ -784,7 +784,18 @@ const de: Dict = {
   "faq.a4": "Ja. Ihre Nachweise können Sie jederzeit als PDF exportieren – auch nach Kündigung bleiben Ihre Aufzeichnungen für Sie zugänglich.",
   "faq.q5": "Welche Sprachen unterstützt das Team?",
   "faq.a5": "Die Oberfläche ist deutsch und englisch. Mikrolernen für Mitarbeitende ist zusätzlich in Türkisch, Arabisch, Polnisch, Rumänisch und Ukrainisch verfügbar.",
+  // New modules & permissions matrix (DE)
+  "menu.labels": "Etiketten",
+  "menu.incidents": "Vorfälle",
+  "nav.group.kitchenOps": "Küchenbetrieb",
+  "settings.perms.title": "Berechtigungsmatrix",
+  "settings.perms.sub": "Rollenbasierte Aktionen – abgestimmt auf IfSG, ArbSchG und LMIV.",
+  "settings.perms.action": "Aktion",
+  "settings.perms.yourRole": "Ihre Rolle",
+  "settings.perms.legend.yes": "Erlaubt",
+  "settings.perms.legend.no": "Gesperrt",
 };
+
 
 
 
@@ -1550,7 +1561,18 @@ const en: Dict = {
   "faq.a4": "Yes. You can export your records to PDF at any time — even after cancellation your records remain accessible to you.",
   "faq.q5": "Which staff languages are supported?",
   "faq.a5": "The interface is German and English. Microlearning for staff is additionally available in Turkish, Arabic, Polish, Romanian and Ukrainian.",
+  // New modules & permissions matrix (EN)
+  "menu.labels": "Labels",
+  "menu.incidents": "Incidents",
+  "nav.group.kitchenOps": "Kitchen ops",
+  "settings.perms.title": "Permissions matrix",
+  "settings.perms.sub": "Role-based actions — mapped to IfSG, ArbSchG and EU-1169/2011.",
+  "settings.perms.action": "Action",
+  "settings.perms.yourRole": "Your role",
+  "settings.perms.legend.yes": "Allowed",
+  "settings.perms.legend.no": "Blocked",
 };
+
 
 
 

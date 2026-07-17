@@ -18,16 +18,17 @@ const DEMO_USERS: Record<Role, AuthUser> = {
   inspector: { name: "Dr. K. Braun", email: "kbraun@ba-fk.berlin.de",    initials: "KB", role: "inspector", location: "Bezirksamt Friedrichshain-Kreuzberg" },
 };
 
-const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","alerts","expiry","documents","logs","audit","settings"] as const;
+const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","labels","incidents","alerts","expiry","documents","logs","audit","settings"] as const;
 export type NavKey = typeof NAV_KEYS[number];
 
 export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
-  owner:     ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","alerts","expiry","documents","logs","audit","settings"],
-  manager:   ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","alerts","expiry","documents","logs","audit","settings"],
-  chef:      ["dashboard","haccp","checks","temperature","cleaning","routines","menu","waste","stock","recipes","purchasing","assets","recalls","training","alerts","expiry","documents","settings"],
-  staff:     ["dashboard","checks","temperature","cleaning","routines","rota","waste","training","alerts","expiry"],
-  inspector: ["dashboard","documents","logs","audit","audits","recalls"],
+  owner:     ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","labels","incidents","alerts","expiry","documents","logs","audit","settings"],
+  manager:   ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","labels","incidents","alerts","expiry","documents","logs","audit","settings"],
+  chef:      ["dashboard","haccp","checks","temperature","cleaning","routines","menu","waste","stock","recipes","purchasing","assets","recalls","training","labels","incidents","alerts","expiry","documents","settings"],
+  staff:     ["dashboard","checks","temperature","cleaning","routines","rota","waste","training","labels","incidents","alerts","expiry"],
+  inspector: ["dashboard","documents","logs","audit","audits","recalls","incidents"],
 };
+
 
 export function canAccess(role: Role, key: NavKey) {
   return ROLE_PERMISSIONS[role].includes(key);

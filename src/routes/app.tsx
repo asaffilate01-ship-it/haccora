@@ -9,8 +9,9 @@ import {
   ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, Clock, Command,
   BellRing, CalendarClock, FileArchive, History,
   ListChecks, UtensilsCrossed, CalendarDays, Trash2, Boxes,
-  ShoppingCart, Wrench, PackageX, ClipboardList,
+  ShoppingCart, Wrench, PackageX, ClipboardList, Tag, AlertOctagon,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/app")({
   component: AppShell,
@@ -66,14 +67,22 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
+    labelKey: "nav.group.kitchenOps",
+    items: [
+      { to: "/app/labels",      icon: Tag,             key: "menu.labels",      nav: "labels" },
+    ],
+  },
+  {
     labelKey: "nav.group.assets",
     items: [
       { to: "/app/assets",      icon: Wrench,          key: "menu.assets",      nav: "assets" },
     ],
   },
+
   {
     labelKey: "nav.group.records",
     items: [
+      { to: "/app/incidents",   icon: AlertOctagon,    key: "menu.incidents",   nav: "incidents" },
       { to: "/app/alerts",      icon: BellRing,        key: "menu.alerts",      nav: "alerts" },
       { to: "/app/expiry",      icon: CalendarClock,   key: "menu.expiry",      nav: "expiry" },
       { to: "/app/documents",   icon: FileArchive,     key: "menu.documents",   nav: "documents" },
@@ -87,6 +96,7 @@ const GROUPS: NavGroup[] = [
       { to: "/app/inspection",  icon: Gavel,           key: "menu.audit",       nav: "audit" },
     ],
   },
+
 ];
 
 const ALL_ITEMS: NavItem[] = GROUPS.flatMap((g) => g.items);
@@ -140,7 +150,10 @@ function AppShell() {
       { prefix: "/app/assets",      nav: "assets" },
       { prefix: "/app/recalls",     nav: "recalls" },
       { prefix: "/app/audits",      nav: "audits" },
+      { prefix: "/app/labels",      nav: "labels" },
+      { prefix: "/app/incidents",   nav: "incidents" },
     ];
+
     const match = PATH_KEY.find((p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"));
     if (match && !canAccess(user.role, match.nav)) {
       navigate({ to: homeFor(user.role) as never, replace: true });
