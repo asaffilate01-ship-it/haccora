@@ -480,7 +480,7 @@ function SiteFooter() {
           <p className="mt-3 text-white/50 text-xs leading-relaxed max-w-xs">{t("brand.tag")}</p>
         </div>
         <div>
-          <div className="text-white text-xs font-black uppercase tracking-widest">Platform</div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">{t("footer.section.platform")}</div>
           <ul className="mt-3 space-y-2">
             <li><a href="#pillars" className="hover:text-white">{t("nav.modules")}</a></li>
             <li><a href="#inspector" className="hover:text-white">Inspector Mode</a></li>
@@ -489,21 +489,23 @@ function SiteFooter() {
           </ul>
         </div>
         <div>
-          <div className="text-white text-xs font-black uppercase tracking-widest">Support</div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">{t("footer.section.support")}</div>
           <ul className="mt-3 space-y-2">
-            <li><a href="#" className="hover:text-white">Help centre</a></li>
-            <li><a href="#" className="hover:text-white">API</a></li>
-            <li><a href="#" className="hover:text-white">Status</a></li>
+            <li><Link to="/legal/complaints" className="hover:text-white">{t("footer.complaints")}</Link></li>
+            <li><a href="#" className="hover:text-white">{t("footer.help")}</a></li>
+            <li><a href="#" className="hover:text-white">{t("footer.status")}</a></li>
           </ul>
         </div>
         <div>
-          <div className="text-white text-xs font-black uppercase tracking-widest">Legal</div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">{t("footer.section.legal")}</div>
           <ul className="mt-3 space-y-2">
-            <li><a href="#" className="hover:text-white">{t("footer.imprint")}</a></li>
-            <li><a href="#" className="hover:text-white">{t("footer.privacy")}</a></li>
-            <li><a href="#" className="hover:text-white">{t("footer.terms")}</a></li>
+            <li><Link to="/legal/imprint" className="hover:text-white">{t("footer.imprint")}</Link></li>
+            <li><Link to="/legal/privacy" className="hover:text-white">{t("footer.privacy")}</Link></li>
+            <li><Link to="/legal/terms" className="hover:text-white">{t("footer.terms")}</Link></li>
+            <li><Link to="/legal/cookies" className="hover:text-white">{t("footer.cookies")}</Link></li>
           </ul>
         </div>
+
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-5 text-xs text-white/40">
