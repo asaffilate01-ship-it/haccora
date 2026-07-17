@@ -9,8 +9,9 @@ import {
   ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, Clock, Command,
   BellRing, CalendarClock, FileArchive, History,
   ListChecks, UtensilsCrossed, CalendarDays, Trash2, Boxes,
-  ShoppingCart, Wrench, PackageX, ClipboardList,
+  ShoppingCart, Wrench, PackageX, ClipboardList, Tag, AlertOctagon,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/app")({
   component: AppShell,
@@ -66,11 +67,18 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
+    labelKey: "nav.group.kitchenOps",
+    items: [
+      { to: "/app/labels",      icon: Tag,             key: "menu.labels",      nav: "labels" },
+    ],
+  },
+  {
     labelKey: "nav.group.assets",
     items: [
       { to: "/app/assets",      icon: Wrench,          key: "menu.assets",      nav: "assets" },
     ],
   },
+
   {
     labelKey: "nav.group.records",
     items: [

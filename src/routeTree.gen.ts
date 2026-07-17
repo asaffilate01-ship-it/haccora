@@ -37,7 +37,9 @@ import { Route as AppRecallsRouteImport } from './routes/app.recalls'
 import { Route as AppPurchasingRouteImport } from './routes/app.purchasing'
 import { Route as AppMenuRouteImport } from './routes/app.menu'
 import { Route as AppLogsRouteImport } from './routes/app.logs'
+import { Route as AppLabelsRouteImport } from './routes/app.labels'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
+import { Route as AppIncidentsRouteImport } from './routes/app.incidents'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
 import { Route as AppExpiryRouteImport } from './routes/app.expiry'
 import { Route as AppDocumentsRouteImport } from './routes/app.documents'
@@ -187,9 +189,19 @@ const AppLogsRoute = AppLogsRouteImport.update({
   path: '/logs',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLabelsRoute = AppLabelsRouteImport.update({
+  id: '/labels',
+  path: '/labels',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInspectionRoute = AppInspectionRouteImport.update({
   id: '/inspection',
   path: '/inspection',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppIncidentsRoute = AppIncidentsRouteImport.update({
+  id: '/incidents',
+  path: '/incidents',
   getParentRoute: () => AppRoute,
 } as any)
 const AppHaccpRoute = AppHaccpRouteImport.update({
@@ -249,7 +261,9 @@ export interface FileRoutesByFullPath {
   '/app/documents': typeof AppDocumentsRoute
   '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/labels': typeof AppLabelsRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
   '/app/purchasing': typeof AppPurchasingRoute
@@ -286,7 +300,9 @@ export interface FileRoutesByTo {
   '/app/documents': typeof AppDocumentsRoute
   '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/labels': typeof AppLabelsRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
   '/app/purchasing': typeof AppPurchasingRoute
@@ -326,7 +342,9 @@ export interface FileRoutesById {
   '/app/documents': typeof AppDocumentsRoute
   '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/labels': typeof AppLabelsRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
   '/app/purchasing': typeof AppPurchasingRoute
@@ -367,7 +385,9 @@ export interface FileRouteTypes {
     | '/app/documents'
     | '/app/expiry'
     | '/app/haccp'
+    | '/app/incidents'
     | '/app/inspection'
+    | '/app/labels'
     | '/app/logs'
     | '/app/menu'
     | '/app/purchasing'
@@ -404,7 +424,9 @@ export interface FileRouteTypes {
     | '/app/documents'
     | '/app/expiry'
     | '/app/haccp'
+    | '/app/incidents'
     | '/app/inspection'
+    | '/app/labels'
     | '/app/logs'
     | '/app/menu'
     | '/app/purchasing'
@@ -443,7 +465,9 @@ export interface FileRouteTypes {
     | '/app/documents'
     | '/app/expiry'
     | '/app/haccp'
+    | '/app/incidents'
     | '/app/inspection'
+    | '/app/labels'
     | '/app/logs'
     | '/app/menu'
     | '/app/purchasing'
@@ -675,11 +699,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLogsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/labels': {
+      id: '/app/labels'
+      path: '/labels'
+      fullPath: '/app/labels'
+      preLoaderRoute: typeof AppLabelsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/inspection': {
       id: '/app/inspection'
       path: '/inspection'
       fullPath: '/app/inspection'
       preLoaderRoute: typeof AppInspectionRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/incidents': {
+      id: '/app/incidents'
+      path: '/incidents'
+      fullPath: '/app/incidents'
+      preLoaderRoute: typeof AppIncidentsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/haccp': {
@@ -750,7 +788,9 @@ interface AppRouteChildren {
   AppDocumentsRoute: typeof AppDocumentsRoute
   AppExpiryRoute: typeof AppExpiryRoute
   AppHaccpRoute: typeof AppHaccpRoute
+  AppIncidentsRoute: typeof AppIncidentsRoute
   AppInspectionRoute: typeof AppInspectionRoute
+  AppLabelsRoute: typeof AppLabelsRoute
   AppLogsRoute: typeof AppLogsRoute
   AppMenuRoute: typeof AppMenuRoute
   AppPurchasingRoute: typeof AppPurchasingRoute
@@ -776,7 +816,9 @@ const AppRouteChildren: AppRouteChildren = {
   AppDocumentsRoute: AppDocumentsRoute,
   AppExpiryRoute: AppExpiryRoute,
   AppHaccpRoute: AppHaccpRoute,
+  AppIncidentsRoute: AppIncidentsRoute,
   AppInspectionRoute: AppInspectionRoute,
+  AppLabelsRoute: AppLabelsRoute,
   AppLogsRoute: AppLogsRoute,
   AppMenuRoute: AppMenuRoute,
   AppPurchasingRoute: AppPurchasingRoute,
@@ -837,13 +879,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
