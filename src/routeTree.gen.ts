@@ -15,6 +15,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
+import { Route as AppChecksRouteImport } from './routes/app.checks'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -46,10 +47,16 @@ const AppHaccpRoute = AppHaccpRouteImport.update({
   path: '/haccp',
   getParentRoute: () => AppRoute,
 } as any)
+const AppChecksRoute = AppChecksRouteImport.update({
+  id: '/checks',
+  path: '/checks',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/checks': typeof AppChecksRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/temperature': typeof AppTemperatureRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/checks': typeof AppChecksRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/temperature': typeof AppTemperatureRoute
@@ -66,6 +74,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/checks': typeof AppChecksRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/temperature': typeof AppTemperatureRoute
@@ -76,16 +85,24 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/app/checks'
     | '/app/haccp'
     | '/app/recipes'
     | '/app/temperature'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/haccp' | '/app/recipes' | '/app/temperature' | '/app'
+  to:
+    | '/'
+    | '/app/checks'
+    | '/app/haccp'
+    | '/app/recipes'
+    | '/app/temperature'
+    | '/app'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/app/checks'
     | '/app/haccp'
     | '/app/recipes'
     | '/app/temperature'
@@ -141,10 +158,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHaccpRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/checks': {
+      id: '/app/checks'
+      path: '/checks'
+      fullPath: '/app/checks'
+      preLoaderRoute: typeof AppChecksRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppChecksRoute: typeof AppChecksRoute
   AppHaccpRoute: typeof AppHaccpRoute
   AppRecipesRoute: typeof AppRecipesRoute
   AppTemperatureRoute: typeof AppTemperatureRoute
@@ -152,6 +177,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppChecksRoute: AppChecksRoute,
   AppHaccpRoute: AppHaccpRoute,
   AppRecipesRoute: AppRecipesRoute,
   AppTemperatureRoute: AppTemperatureRoute,
