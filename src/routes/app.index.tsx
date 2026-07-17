@@ -11,21 +11,22 @@ export const Route = createFileRoute("/app/")({
 });
 
 
-interface Task { id: string; title: string; category: string; time: string; status: "pending" | "overdue" | "done"; who: string }
+interface Task { id: string; tKey: string; catKey: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 
 const initialTasks: Task[] = [
-  { id: "1", title: "Kühltemperaturen prüfen", category: "Temperatur",   time: "08:00", status: "overdue", who: "Aylin" },
-  { id: "2", title: "Lieferkontrolle Metro",   category: "Wareneingang", time: "11:30", status: "pending", who: "Omar" },
-  { id: "3", title: "Reinigungsplan Küche",    category: "Reinigung",    time: "15:00", status: "pending", who: "Marta" },
-  { id: "4", title: "Frittieröl-Qualität",     category: "Produktion",   time: "09:00", status: "done",    who: "Omar" },
-  { id: "5", title: "Allergenmappe prüfen",    category: "Allergene",    time: "17:00", status: "pending", who: "Aylin" },
+  { id: "1", tKey: "task.cool.t",     catKey: "task.cool.cat",     time: "08:00", status: "overdue", who: "Aylin" },
+  { id: "2", tKey: "task.delivery.t", catKey: "task.delivery.cat", time: "11:30", status: "pending", who: "Omar" },
+  { id: "3", tKey: "task.clean.t",    catKey: "task.clean.cat",    time: "15:00", status: "pending", who: "Marta" },
+  { id: "4", tKey: "task.oil.t",      catKey: "task.oil.cat",      time: "09:00", status: "done",    who: "Omar" },
+  { id: "5", tKey: "task.allerg.t",   catKey: "task.allerg.cat",   time: "17:00", status: "pending", who: "Aylin" },
 ];
 
 const actions = [
-  { id: "a1", title: "Kühlhaus 2 über 5 °C",         severity: "high" as const,   status: "in_progress", due: "Heute 12:00", source: "Temperatur" },
-  { id: "a2", title: "Fehlende IfSG-Unterweisung",   severity: "medium" as const, status: "open",        due: "20.07.",     source: "Personal" },
-  { id: "a3", title: "Reinigungsfoto Küchenboden",   severity: "low" as const,    status: "open",        due: "Heute",      source: "Reinigung" },
+  { id: "a1", tKey: "action.cool.t",  severity: "high" as const,   status: "in_progress", dueKey: "time.todayAt", sourceKey: "action.source.temp" },
+  { id: "a2", tKey: "action.ifsg.t",  severity: "medium" as const, status: "open",        due: "20.07.",          sourceKey: "action.source.staff" },
+  { id: "a3", tKey: "action.clean.t", severity: "low" as const,    status: "open",        dueKey: "time.today",   sourceKey: "action.source.clean" },
 ];
+
 
 function Dashboard() {
   const { t, lang } = useI18n();
@@ -42,7 +43,7 @@ function Dashboard() {
   const overdue  = visibleTasks.filter((x) => x.status === "overdue").length;
 
   const allMetrics = [
-    { l: t("dash.metric.score"),    v: "94%",  hint: "+2 vs. letzte Woche", roles: ["owner","manager","chef","inspector"] },
+    { l: t("dash.metric.score"),    v: "94%",  hint: t("time.trend"), roles: ["owner","manager","chef","inspector"] },
     { l: t("dash.metric.pending"),  v: pending, roles: ["owner","manager","chef","staff"] },
     { l: t("dash.metric.overdue"),  v: overdue, roles: ["owner","manager","chef","staff"] },
     { l: t("dash.metric.actions"),  v: 3,       roles: ["owner","manager","chef","inspector"] },
@@ -77,15 +78,15 @@ function Dashboard() {
         <div className="lg:col-span-2 surface p-6">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-xl">{t("dash.today")}</h2>
-            <Link to="/app/checks" className="text-xs text-primary hover:underline">Alle · All →</Link>
+            <Link to="/app/checks" className="text-xs text-primary hover:underline">{t("dash.allTasks")} →</Link>
           </div>
           <div className="mt-4 divide-y divide-border">
             {visibleTasks.map((task) => (
               <div key={task.id} className="py-3 flex items-center gap-3">
                 <StatusPill status={task.status} />
                 <div className="flex-1 min-w-0">
-                  <div className={`text-sm font-medium ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>{task.title}</div>
-                  <div className="text-xs text-muted-foreground">{task.category} · {task.who} · {task.time}</div>
+                  <div className={`text-sm font-medium ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>{t(task.tKey)}</div>
+                  <div className="text-xs text-muted-foreground">{t(task.catKey)} · {task.who} · {task.time}</div>
                 </div>
                 {task.status !== "done" ? (
                   <button
@@ -100,6 +101,7 @@ function Dashboard() {
               </div>
             ))}
           </div>
+
         </div>
 
         <div className="space-y-6">
@@ -123,11 +125,12 @@ function Dashboard() {
                 <div key={a.id} className="flex items-start gap-3 p-3 rounded-lg bg-secondary/60">
                   <SeverityBadge sev={a.severity} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium truncate">{a.title}</div>
-                    <div className="text-xs text-muted-foreground">{a.source} · {a.due}</div>
+                    <div className="text-sm font-medium truncate">{t(a.tKey)}</div>
+                    <div className="text-xs text-muted-foreground">{t(a.sourceKey)} · {a.dueKey ? t(a.dueKey) : a.due}</div>
                   </div>
                 </div>
               ))}
+
             </div>
           </div>
         </div>
