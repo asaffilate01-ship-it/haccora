@@ -2,275 +2,331 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import {
-  ShieldCheck, ClipboardCheck, Thermometer, Wheat, Users, Scale,
-  ArrowRight, CheckCircle2, FileCheck2, Sparkles, Building2, PhoneCall,
+  Search, Phone, ArrowRight, ChevronRight,
+  FileText, Clock, AlertTriangle, ShieldCheck, ClipboardCheck,
+  Thermometer, Wheat, Users, Scale, CheckCircle2, Building2,
 } from "lucide-react";
+import heroChef from "@/assets/hero-chef.jpg";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "GastroSafe — Food safety software for German gastronomy" },
+      {
+        name: "description",
+        content:
+          "Simplify HACCP, temperature, cleaning, allergens, staff compliance and inspection prep — one bilingual platform built for German food businesses.",
+      },
+      { property: "og:title", content: "GastroSafe — Food safety software for Germany" },
+      { property: "og:description", content: "HACCP, IfSG, LMHV and inspector-ready evidence in one platform." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Landing,
 });
 
 function Landing() {
-  const { t } = useI18n();
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <SiteNav />
+    <div className="min-h-screen bg-white text-foreground">
+      <TopBar />
+      <SubNav />
       <Hero />
-      <TrustBar />
-      <Pillars />
-      <InspectorSection />
-      <ModuleShowcase />
+      <Support360 />
+      <ModulePillars />
+      <InspectorBand />
+      <Regulation />
       <Pricing />
-      <Guarantee />
       <CtaFooter />
       <SiteFooter />
     </div>
   );
 }
 
-/* -------------------------------------------------- nav */
-function SiteNav() {
+/* ────────────────────────────────────────────── top bar (black) */
+function TopBar() {
   const { t } = useI18n();
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-md bg-background/85 border-b border-border/60">
-      <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <Logo />
-          <span className="font-display text-lg font-medium tracking-tight">GastroSafe</span>
-        </Link>
-        <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-          <a href="#pillars" className="hover:text-foreground">{t("nav.modules")}</a>
-          <a href="#inspector" className="hover:text-foreground">Inspector Mode</a>
-          <a href="#pricing" className="hover:text-foreground">{t("nav.pricing")}</a>
-          <a href="#regulation" className="hover:text-foreground">{t("nav.regulation")}</a>
-        </nav>
-        <div className="flex items-center gap-3">
-          <LanguageToggle />
-          <Link to="/app" className="hidden sm:inline-flex btn-outline text-sm py-2 px-4">
-            {t("nav.demo")}
-          </Link>
-          <Link to="/app" className="btn-primary text-sm py-2 px-4">
-            {t("nav.tryFree")}
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-function Logo() {
-  return (
-    <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-      <ShieldCheck size={18} strokeWidth={2.2} />
-    </span>
-  );
-}
-
-/* -------------------------------------------------- hero */
-function Hero() {
-  const { t } = useI18n();
-  return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-[oklch(0.97_0.03_155)] via-background to-[oklch(0.96_0.04_88)]" />
-        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-[oklch(0.78_0.14_65_/_0.15)] blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[oklch(0.38_0.08_155_/_0.12)] blur-3xl" />
-      </div>
-      <div className="mx-auto max-w-7xl px-6 pt-20 pb-24 md:pt-28 md:pb-32">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
-            <Sparkles size={12} /> {t("hero.eyebrow")}
-          </div>
-          <h1 className="mt-6 text-5xl md:text-7xl leading-[1.02] font-medium">
-            {t("hero.title")}
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-            {t("hero.subtitle")}
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link to="/app" className="btn-primary">
-              {t("hero.cta.primary")} <ArrowRight size={16} />
-            </Link>
-            <a href="#pricing" className="btn-outline">
-              {t("hero.cta.secondary")}
-            </a>
-          </div>
-          <p className="mt-8 text-sm text-muted-foreground max-w-lg">{t("hero.trust")}</p>
-        </div>
-
-        <HeroCard />
-      </div>
-    </section>
-  );
-}
-
-function HeroCard() {
-  const { t } = useI18n();
-  return (
-    <div className="mt-16 grid md:grid-cols-5 gap-6 items-stretch">
-      <div className="md:col-span-3 surface p-6 md:p-8 grain">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="eyebrow">GastroSafe · Dashboard</div>
-            <h3 className="font-display text-2xl mt-1">Kreuzberg Kitchen — Berlin</h3>
-          </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-success/10 text-success px-2.5 py-1 text-xs font-semibold">
-            <CheckCircle2 size={14} /> Inspector-ready
+    <div className="bg-black text-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+        <Link to="/" className="flex items-center gap-2 min-w-0">
+          <span className="font-display text-2xl md:text-3xl tracking-tight text-white">
+            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
           </span>
-        </div>
-        <div className="mt-6 grid grid-cols-3 gap-3">
-          {[
-            { v: "94%", l: t("dash.metric.score") },
-            { v: "8", l: t("dash.metric.pending") },
-            { v: "1", l: t("dash.metric.overdue") },
-          ].map((m) => (
-            <div key={m.l} className="rounded-lg border border-border bg-secondary/50 p-4">
-              <div className="text-2xl font-display font-medium">{m.v}</div>
-              <div className="text-xs text-muted-foreground mt-1">{m.l}</div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-5 space-y-2.5">
-          {[
-            { ok: true,  title: "Kühltemperaturen — Kühlhaus 1",  meta: "3,8 °C · Aylin" },
-            { ok: false, title: "Kühlhaus 2 — Grenzwert überschritten", meta: "6,4 °C · Maßnahme offen" },
-            { ok: true,  title: "Lieferkontrolle Metro",           meta: "Charge #A-2181 · Omar" },
-            { ok: true,  title: "Reinigungsplan Küche",            meta: "Fotobeleg · Marta" },
-          ].map((r) => (
-            <div key={r.title} className="flex items-center gap-3 rounded-lg bg-background border border-border/70 px-3 py-2.5">
-              <span className={`h-2 w-2 rounded-full ${r.ok ? "bg-success" : "bg-destructive"}`} />
-              <div className="flex-1">
-                <div className="text-sm font-medium">{r.title}</div>
-                <div className="text-xs text-muted-foreground">{r.meta}</div>
-              </div>
-              <span className="text-xs text-muted-foreground">{r.ok ? "✓" : "!"}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="md:col-span-2 flex flex-col gap-6">
-        <div className="surface p-6">
-          <div className="eyebrow">Inspector Mode</div>
-          <p className="mt-3 text-sm">
-            {t("inspector.body")}
-          </p>
-          <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-            <FileCheck2 size={14} className="text-primary" /> HACCP · Temperatur · Reinigung · Allergene · IfSG
+        </Link>
+        <div className="flex items-center gap-2 md:gap-3 shrink-0">
+          <div className="hidden md:flex items-center h-10 rounded-full bg-white/8 border border-white/12 px-4 min-w-[220px]">
+            <Search size={14} className="text-white/60" />
+            <input
+              placeholder={t("nav.search") ?? "Search"}
+              className="ml-2 bg-transparent text-sm placeholder:text-white/50 outline-none w-full"
+            />
           </div>
-        </div>
-        <div className="surface p-6 bg-primary text-primary-foreground border-primary">
-          <div className="eyebrow !text-primary-foreground/70">Complete</div>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-display text-5xl">€69</span>
-            <span className="text-sm opacity-80">{t("pricing.perMonth")} · {t("pricing.perLocation")}</span>
-          </div>
-          <p className="mt-3 text-sm opacity-90">{t("pricing.plan.complete.desc")}</p>
+          <LanguageToggle variant="dark" />
+          <Link to="/app" className="btn-red-outline hidden sm:inline-flex">
+            {t("nav.login") ?? "Login"}
+          </Link>
+          <a href="#contact" className="btn-red">
+            {t("nav.contact") ?? "Contact Us"}
+          </a>
         </div>
       </div>
     </div>
   );
 }
 
-/* -------------------------------------------------- trust bar */
-function TrustBar() {
+/* ────────────────────────────────────────────── sub nav (white) */
+function SubNav() {
   const { t } = useI18n();
-  const stats = [
-    { v: "1.200+", l: t("stats.locations") },
-    { v: "3,8 M",  l: t("stats.checks") },
-    { v: "7",      l: t("stats.languages") },
-    { v: "< 1 h",  l: t("stats.inspection") },
+  const links = [
+    { href: "#pillars", label: t("nav.modules") ?? "Food Safety Software" },
+    { href: "#regulation", label: t("nav.regulation") ?? "Regulation" },
+    { href: "#inspector", label: "Inspector Mode" },
+    { href: "#pricing", label: t("nav.pricing") ?? "Pricing" },
   ];
   return (
-    <section className="border-y border-border/60 bg-secondary/40">
-      <div className="mx-auto max-w-7xl px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
-        {stats.map((s) => (
-          <div key={s.l}>
-            <div className="font-display text-3xl md:text-4xl">{s.v}</div>
-            <div className="text-xs text-muted-foreground mt-1">{s.l}</div>
-          </div>
-        ))}
+    <div className="border-b border-black/10 bg-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-14 flex items-center justify-between gap-4 overflow-x-auto">
+        <nav className="flex items-center gap-6 md:gap-10 text-[0.95rem] font-bold text-black whitespace-nowrap">
+          {links.map((l) => (
+            <a key={l.href} href={l.href} className="hover:text-[color:var(--color-alert-red)] transition">
+              {l.label}
+            </a>
+          ))}
+        </nav>
+        <a
+          href="tel:+49301234567"
+          className="hidden md:inline-flex items-center gap-2 text-black font-black text-lg"
+        >
+          <Phone size={16} className="text-[color:var(--color-alert-red)]" /> 030 1234 567
+        </a>
       </div>
-    </section>
+    </div>
   );
 }
 
-/* -------------------------------------------------- pillars */
-function Pillars() {
+/* ────────────────────────────────────────────── hero (red→orange) */
+function Hero() {
   const { t } = useI18n();
-  const items = [
-    { icon: ShieldCheck,    k: "haccp" },
-    { icon: ClipboardCheck, k: "ops" },
-    { icon: Wheat,          k: "recipes" },
-    { icon: Users,          k: "team" },
-    { icon: Scale,          k: "regulation" },
-  ] as const;
   return (
-    <section id="pillars" className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-      <div className="max-w-2xl">
-        <div className="eyebrow">Modules</div>
-        <h2 className="mt-3 text-4xl md:text-5xl">{t("pillars.title")}</h2>
-        <p className="mt-4 text-muted-foreground">{t("pillars.subtitle")}</p>
+    <section className="relative overflow-hidden bg-black">
+      {/* photo layer */}
+      <div className="absolute inset-0">
+        <img
+          src={heroChef}
+          alt=""
+          width={1600}
+          height={1200}
+          className="w-full h-full object-cover object-[center_30%]"
+        />
+        {/* red-orange overlay bleeding from bottom-left */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(105deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 30%, rgba(255,90,40,0.55) 60%, rgba(255,60,25,0.92) 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 h-1/2"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,60,25,0) 0%, rgba(255,60,25,0.85) 60%, rgba(255,50,15,1) 100%)",
+          }}
+        />
       </div>
-      <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {items.map(({ icon: Icon, k }) => (
-          <div key={k} className="group surface p-7 transition hover:shadow-[var(--shadow-elevated)] hover:-translate-y-0.5">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Icon size={22} />
-            </div>
-            <h3 className="mt-5 text-xl font-display">{t(`pillar.${k}.title`)}</h3>
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{t(`pillar.${k}.body`)}</p>
-          </div>
-        ))}
-        <div className="rounded-xl border border-dashed border-primary/30 bg-primary/5 p-7 flex flex-col justify-between">
-          <div>
-            <div className="eyebrow">+ AI Assistant</div>
-            <p className="mt-3 text-sm text-foreground/80">
-              „Welche Kontrollen sind heute fällig?", „Welche Gerichte enthalten Sesam?" —
-              mit Zitat der zutreffenden Regel und ohne Auto-Änderung freigegebener HACCP-Pläne.
+
+      <div className="relative mx-auto max-w-[1400px] px-4 md:px-8 pt-16 md:pt-24 pb-24 md:pb-40">
+        <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-10 md:gap-16 items-start">
+          <div className="text-white">
+            <h1 className="display-black text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem]">
+              {t("hero.title")}
+            </h1>
+            <p className="mt-7 max-w-xl text-base md:text-lg text-white/90 leading-relaxed">
+              {t("hero.subtitle")}
             </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <div className="inline-flex items-center gap-3 rounded-2xl bg-black/70 backdrop-blur-sm px-4 py-3 text-sm">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
+                  ▶
+                </span>
+                <span className="leading-tight">
+                  <span className="block font-bold">{t("hero.video.title") ?? "Watch how we can support your business"}</span>
+                  <span className="block text-[color:var(--color-alert-green)] text-xs font-bold tracking-widest mt-0.5">
+                    PLAY NOW
+                  </span>
+                </span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-3 text-black text-xs font-bold">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-black text-white text-[10px]">★</span>
+                REVIEWS<span className="text-[color:var(--color-alert-red)]">.io</span>
+                <span className="mx-2 h-4 w-px bg-black/15" />
+                Read our <span className="text-[color:var(--color-alert-red)]">5 star</span> reviews
+              </div>
+            </div>
           </div>
-          <div className="mt-6 text-xs text-muted-foreground">Guardrails included by design.</div>
+
+          <ContactCard />
         </div>
       </div>
     </section>
   );
 }
 
-/* -------------------------------------------------- inspector */
-function InspectorSection() {
+function ContactCard() {
   const { t } = useI18n();
-  const items = ["plan","temp","clean","allergen","training","traceability"] as const;
   return (
-    <section id="inspector" className="relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <form
+      id="contact"
+      onSubmit={(e) => e.preventDefault()}
+      className="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-black/5"
+    >
+      <h3 className="display-black text-2xl md:text-3xl text-black text-center">
+        {t("contact.title") ?? "Get More Information"}
+      </h3>
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        <input placeholder={t("contact.first") ?? "First Name"} className="fld" />
+        <input placeholder={t("contact.last") ?? "Last Name"} className="fld" />
+      </div>
+      <div className="mt-3 grid gap-3">
+        <input type="email" placeholder={t("contact.email") ?? "Email Address"} className="fld" />
+        <input placeholder={t("contact.phone") ?? "Phone Number"} className="fld" />
+        <input placeholder={t("contact.business") ?? "Business Name"} className="fld" />
+      </div>
+      <button type="submit" className="btn-primary w-full mt-5 uppercase tracking-widest text-sm">
+        {t("contact.cta") ?? "Get In Touch"}
+      </button>
+      <p className="mt-3 text-[11px] text-black/50 text-center">
+        {t("contact.legal") ?? "By submitting this form, you agree to our privacy policy."}
+      </p>
+    </form>
+  );
+}
+
+/* ────────────────────────────────────────────── 360° support (white cards on gradient) */
+function Support360() {
+  const { t } = useI18n();
+  const items = [
+    { icon: FileText, k: "docs", title: t("s360.docs.t") ?? "Digital records", body: t("s360.docs.b") ?? "HACCP, checklists and evidence — all in one place." },
+    { icon: Clock, k: "realtime", title: t("s360.time.t") ?? "24/7 monitoring", body: t("s360.time.b") ?? "Temperature and task alerts around the clock." },
+    { icon: AlertTriangle, k: "alerts", title: t("s360.alert.t") ?? "Incident response", body: t("s360.alert.b") ?? "Corrective actions with photo evidence and sign-off." },
+  ];
+  return (
+    <section className="relative alert-gradient text-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 pt-16 pb-24 md:pt-20 md:pb-32">
+        <h2 className="display-black text-4xl md:text-6xl text-center text-black">
+          360° <span className="text-white">{t("s360.title") ?? "food health & safety support"}</span>
+        </h2>
+        <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-6">
+          {items.map(({ icon: Icon, k, title, body }) => (
+            <div key={k} className="rounded-3xl bg-white text-black p-8 md:p-10 border border-white/40">
+              <Icon size={40} className="text-[color:var(--color-alert-red)]" strokeWidth={2.2} />
+              <h3 className="display-black text-2xl md:text-3xl mt-5">{title}</h3>
+              <p className="mt-3 text-black/70 text-sm leading-relaxed">{body}</p>
+              <a href="#pillars" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[color:var(--color-alert-red)]">
+                {t("s360.more") ?? "Learn more"} <ArrowRight size={14} />
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────────── module pillars */
+function ModulePillars() {
+  const { t } = useI18n();
+  const items = [
+    { icon: ShieldCheck, k: "haccp" },
+    { icon: ClipboardCheck, k: "ops" },
+    { icon: Thermometer, k: "temp" },
+    { icon: Wheat, k: "recipes" },
+    { icon: Users, k: "team" },
+    { icon: Scale, k: "regulation" },
+  ] as const;
+
+  return (
+    <section id="pillars" className="bg-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+        <div className="max-w-3xl">
+          <div className="eyebrow">{t("pillars.eyebrow") ?? "The Platform"}</div>
+          <h2 className="mt-4 display-black text-4xl md:text-6xl">
+            {t("pillars.title")}
+          </h2>
+          <p className="mt-5 text-black/60 max-w-2xl">{t("pillars.subtitle")}</p>
+        </div>
+        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {items.map(({ icon: Icon, k }) => (
+            <div
+              key={k}
+              className="group relative rounded-2xl border border-black/10 bg-white p-8 hover:border-black transition"
+            >
+              <div className="flex items-start justify-between">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-alert-red)]/10 text-[color:var(--color-alert-red)]">
+                  <Icon size={24} strokeWidth={2.2} />
+                </div>
+                <ChevronRight size={18} className="text-black/30 group-hover:text-[color:var(--color-alert-red)] transition" />
+              </div>
+              <h3 className="mt-6 display-black text-xl md:text-2xl">
+                {t(`pillar.${k}.title`) ?? k}
+              </h3>
+              <p className="mt-3 text-sm text-black/60 leading-relaxed">
+                {t(`pillar.${k}.body`) ?? ""}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────────── inspector band (black) */
+function InspectorBand() {
+  const { t } = useI18n();
+  const items = ["plan", "temp", "clean", "allergen", "training", "traceability"] as const;
+  return (
+    <section id="inspector" className="bg-black text-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+        <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-start">
           <div>
-            <div className="eyebrow text-accent-foreground">{t("inspector.eyebrow")}</div>
-            <h2 className="mt-3 text-4xl md:text-5xl">{t("inspector.title")}</h2>
-            <p className="mt-5 text-muted-foreground max-w-xl">{t("inspector.body")}</p>
+            <div className="text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
+              {t("inspector.eyebrow") ?? "Inspector Mode"}
+            </div>
+            <h2 className="mt-4 display-black text-4xl md:text-6xl">
+              {t("inspector.title")}
+            </h2>
+            <p className="mt-5 text-white/70 max-w-xl">{t("inspector.body")}</p>
             <ul className="mt-8 grid sm:grid-cols-2 gap-3">
               {items.map((k) => (
                 <li key={k} className="flex items-start gap-2 text-sm">
-                  <CheckCircle2 size={18} className="text-primary shrink-0 mt-0.5" />
+                  <CheckCircle2 size={18} className="text-[color:var(--color-alert-green)] shrink-0 mt-0.5" />
                   <span>{t(`inspector.item.${k}`)}</span>
                 </li>
               ))}
             </ul>
-            <Link to="/app/inspection" className="btn-primary mt-8">
+            <Link to="/app/inspection" className="btn-red mt-9">
               {t("inspector.cta")} <ArrowRight size={16} />
             </Link>
           </div>
 
-          <div className="surface p-6 md:p-8 bg-forest-deep text-primary-foreground border-transparent">
+          <div className="rounded-3xl bg-white text-black p-6 md:p-8 border-4 border-[color:var(--color-alert-red)]/80">
             <div className="flex items-center justify-between">
-              <div className="eyebrow !text-primary-foreground/70">Read-only · Behördenansicht</div>
-              <span className="text-xs opacity-70">DE</span>
+              <div className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-alert-red)]">
+                Read-only · Behördenansicht
+              </div>
+              <span className="text-xs font-bold text-black/60">DE</span>
             </div>
-            <h3 className="mt-3 font-display text-2xl">Nachweispaket — Juli 2026</h3>
-            <p className="mt-1 text-sm opacity-80">Kreuzberg Kitchen · Bezirksamt Friedrichshain-Kreuzberg</p>
+            <h3 className="mt-3 display-black text-2xl md:text-3xl">
+              Nachweispaket — Juli 2026
+            </h3>
+            <p className="mt-1 text-sm text-black/60">
+              Kreuzberg Kitchen · Bezirksamt Friedrichshain-Kreuzberg
+            </p>
 
-            <div className="mt-6 divide-y divide-white/10">
+            <div className="mt-6 divide-y divide-black/10">
               {[
                 ["HACCP-Plan v3", "Freigegeben 12.06.2026 · A. Yılmaz"],
                 ["Temperaturhistorie", "218 Messungen · 1 Abweichung behoben"],
@@ -280,11 +336,11 @@ function InspectorSection() {
                 ["Rückverfolgbarkeit", "Lieferant → Charge → Portion"],
               ].map(([a, b]) => (
                 <div key={a} className="flex items-center justify-between py-3">
-                  <div>
-                    <div className="text-sm font-medium">{a}</div>
-                    <div className="text-xs opacity-70">{b}</div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-bold truncate">{a}</div>
+                    <div className="text-xs text-black/55 truncate">{b}</div>
                   </div>
-                  <CheckCircle2 size={18} className="text-accent" />
+                  <CheckCircle2 size={18} className="text-[color:var(--color-alert-green)] shrink-0" />
                 </div>
               ))}
             </div>
@@ -295,35 +351,38 @@ function InspectorSection() {
   );
 }
 
-/* -------------------------------------------------- module showcase */
-function ModuleShowcase() {
+/* ────────────────────────────────────────────── regulation */
+function Regulation() {
+  const { t } = useI18n();
+  const cards = [
+    { title: "Berlin Bezirksämter", body: "12 Bezirke · Kontakte, Formulare, Zuständigkeit." },
+    { title: "NRW Kreise/Städte", body: "396 Kommunen · Registrierung und Änderungsmeldung." },
+    { title: "EU 852/2004", body: "HACCP-Rahmen mit Übersetzung in Ihre Prozesse." },
+    { title: "EU 1169/2011", body: "14 Allergene automatisch aus Rezeptdaten." },
+    { title: "IfSG §§42–43", body: "Fristen, Belehrungen, Wiederholungen." },
+    { title: "LMHV", body: "Schulungsmatrix je Rolle und Standort." },
+  ];
   return (
-    <section id="regulation" className="bg-secondary/50 border-y border-border/60">
-      <div className="mx-auto max-w-7xl px-6 py-24 md:py-32 grid md:grid-cols-3 gap-8">
+    <section id="regulation" className="bg-[color:var(--color-cream)]">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
         <div className="md:col-span-1">
-          <div className="eyebrow">German regulatory layer</div>
-          <h2 className="mt-3 text-4xl">Built for the German inspector.</h2>
-          <p className="mt-4 text-muted-foreground">
-            Behördenfinder für Berlin und NRW, EU 852/2004, 178/2002, 1169/2011,
-            IfSG-Tracker, LMHV-Matrix, LFGB-Bezug — alles versioniert und mit
-            Handlungscheckliste bei Rechtsänderungen.
+          <div className="eyebrow">{t("reg.eyebrow") ?? "German regulatory layer"}</div>
+          <h2 className="mt-4 display-black text-3xl md:text-5xl">
+            {t("reg.title") ?? "Built for the German inspector."}
+          </h2>
+          <p className="mt-5 text-black/60">
+            {t("reg.body") ??
+              "Behördenfinder für Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug — versioniert und mit Handlungscheckliste bei Rechtsänderungen."}
           </p>
         </div>
         <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
-          {[
-            { title: "Berlin Bezirksämter", body: "12 Bezirke · Kontakte, Formulare, Zuständigkeit." },
-            { title: "NRW Kreise/Städte",   body: "396 Kommunen · Registrierung und Änderungsmeldung." },
-            { title: "EU 852/2004",         body: "HACCP-Rahmen mit Übersetzung in Ihre Prozesse." },
-            { title: "EU 1169/2011",        body: "14 Allergene automatisch aus Rezeptdaten." },
-            { title: "IfSG §§42–43",        body: "Fristen, Belehrungen, Wiederholungen." },
-            { title: "LMHV",                body: "Schulungsmatrix je Rolle und Standort." },
-          ].map((c) => (
-            <div key={c.title} className="rounded-xl border border-border bg-card p-5">
+          {cards.map((c) => (
+            <div key={c.title} className="rounded-2xl bg-white border border-black/10 p-6">
               <div className="flex items-center gap-2">
-                <Building2 size={16} className="text-primary" />
-                <h4 className="font-medium">{c.title}</h4>
+                <Building2 size={16} className="text-[color:var(--color-alert-red)]" />
+                <h4 className="font-black text-base">{c.title}</h4>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">{c.body}</p>
+              <p className="mt-2 text-sm text-black/60">{c.body}</p>
             </div>
           ))}
         </div>
@@ -332,98 +391,82 @@ function ModuleShowcase() {
   );
 }
 
-/* -------------------------------------------------- pricing */
+/* ────────────────────────────────────────────── pricing */
 function Pricing() {
   const { t } = useI18n();
   const plans = [
-    { k: "solo",         price: "€39",  featured: false },
-    { k: "complete",     price: "€69",  featured: true },
-    { k: "completePlus", price: "€99",  featured: false },
-    { k: "group",        price: "€179", featured: false },
-    { k: "growing",      price: "€349", featured: false },
-    { k: "enterprise",   price: "€699+", featured: false },
+    { k: "solo", price: "€39", featured: false },
+    { k: "complete", price: "€69", featured: true },
+    { k: "completePlus", price: "€99", featured: false },
+    { k: "group", price: "€179", featured: false },
+    { k: "growing", price: "€349", featured: false },
+    { k: "enterprise", price: "€699+", featured: false },
   ] as const;
   return (
-    <section id="pricing" className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-      <div className="max-w-2xl">
-        <div className="eyebrow">{t("pricing.eyebrow")}</div>
-        <h2 className="mt-3 text-4xl md:text-5xl">{t("pricing.title")}</h2>
-        <p className="mt-4 text-muted-foreground">{t("pricing.subtitle")}</p>
-      </div>
-      <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {plans.map((p) => (
-          <div
-            key={p.k}
-            className={`rounded-2xl border p-7 relative ${
-              p.featured
-                ? "bg-primary text-primary-foreground border-primary shadow-[var(--shadow-elevated)]"
-                : "bg-card border-border"
-            }`}
-          >
-            {p.featured && (
-              <span className="absolute -top-3 left-6 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-widest">
-                {t("pricing.featured")}
-              </span>
-            )}
-            <h3 className={`font-display text-2xl ${p.featured ? "" : ""}`}>
-              {t(`pricing.plan.${p.k}`)}
-            </h3>
-            <p className={`text-sm mt-1 ${p.featured ? "opacity-80" : "text-muted-foreground"}`}>
-              {t(`pricing.plan.${p.k}.desc`)}
-            </p>
-            <div className="mt-6 flex items-baseline gap-2">
-              <span className="font-display text-5xl">{p.price}</span>
-              <span className={`text-sm ${p.featured ? "opacity-80" : "text-muted-foreground"}`}>
-                {t("pricing.perMonth")}
-              </span>
-            </div>
-            <Link
-              to="/app"
-              className={`mt-6 inline-flex w-full items-center justify-center rounded-full py-2.5 text-sm font-medium transition ${
+    <section id="pricing" className="bg-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+        <div className="max-w-3xl">
+          <div className="eyebrow">{t("pricing.eyebrow") ?? "Plans"}</div>
+          <h2 className="mt-4 display-black text-4xl md:text-6xl">{t("pricing.title")}</h2>
+          <p className="mt-5 text-black/60">{t("pricing.subtitle")}</p>
+        </div>
+        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {plans.map((p) => (
+            <div
+              key={p.k}
+              className={`relative rounded-2xl p-8 ${
                 p.featured
-                  ? "bg-accent text-accent-foreground hover:brightness-95"
-                  : "bg-primary text-primary-foreground hover:brightness-110"
+                  ? "bg-black text-white ring-4 ring-[color:var(--color-alert-red)]/60"
+                  : "bg-white border border-black/10 text-black"
               }`}
             >
-              {t("pricing.cta")}
-            </Link>
-          </div>
-        ))}
+              {p.featured && (
+                <span className="absolute -top-3 left-6 rounded-full px-3 py-1 text-[10px] font-black tracking-widest uppercase text-white bg-[color:var(--color-alert-red)]">
+                  {t("pricing.featured") ?? "Most Popular"}
+                </span>
+              )}
+              <h3 className="display-black text-2xl">{t(`pricing.plan.${p.k}`)}</h3>
+              <p className={`text-sm mt-2 ${p.featured ? "text-white/70" : "text-black/60"}`}>
+                {t(`pricing.plan.${p.k}.desc`)}
+              </p>
+              <div className="mt-6 flex items-baseline gap-2">
+                <span className="display-black text-5xl">{p.price}</span>
+                <span className={`text-sm ${p.featured ? "text-white/70" : "text-black/60"}`}>
+                  {t("pricing.perMonth")}
+                </span>
+              </div>
+              <Link
+                to="/app"
+                className={`mt-7 inline-flex w-full items-center justify-center rounded-full py-3 text-sm font-black tracking-wider uppercase transition ${
+                  p.featured
+                    ? "bg-[color:var(--color-alert-green)] text-white hover:brightness-110"
+                    : "bg-black text-white hover:bg-[color:var(--color-alert-red)]"
+                }`}
+              >
+                {t("pricing.cta")}
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
-      <p className="mt-10 max-w-3xl text-sm text-muted-foreground">
-        {t("pricing.promise")}
-      </p>
     </section>
   );
 }
 
-/* -------------------------------------------------- guarantee */
-function Guarantee() {
-  const { t } = useI18n();
-  return (
-    <section className="bg-forest-deep text-primary-foreground">
-      <div className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <div className="eyebrow !text-primary-foreground/70">Compliance Promise</div>
-        <h2 className="mt-3 text-3xl md:text-4xl">{t("guarantee.title")}</h2>
-        <p className="mt-4 opacity-80 max-w-2xl mx-auto">{t("guarantee.body")}</p>
-      </div>
-    </section>
-  );
-}
-
-/* -------------------------------------------------- cta */
+/* ────────────────────────────────────────────── cta */
 function CtaFooter() {
   const { t } = useI18n();
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-      <div className="surface p-10 md:p-14 flex flex-col md:flex-row md:items-center gap-8 justify-between">
-        <div className="max-w-xl">
-          <h2 className="text-4xl">{t("cta.title")}</h2>
-          <p className="mt-3 text-muted-foreground">{t("cta.body")}</p>
-        </div>
+    <section className="alert-gradient text-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-20 md:py-28 grid md:grid-cols-[minmax(0,1fr)_auto] gap-8 items-center">
+        <h2 className="display-black text-4xl md:text-6xl">{t("cta.title")}</h2>
         <div className="flex flex-wrap gap-3">
-          <Link to="/app" className="btn-primary">{t("cta.primary")} <ArrowRight size={16} /></Link>
-          <a href="mailto:sales@gastrosafe.de" className="btn-outline"><PhoneCall size={16} /> {t("cta.secondary")}</a>
+          <Link to="/app" className="btn-primary">
+            {t("cta.primary")} <ArrowRight size={16} />
+          </Link>
+          <a href="#contact" className="btn-red-outline">
+            {t("cta.secondary")}
+          </a>
         </div>
       </div>
     </section>
@@ -433,20 +476,44 @@ function CtaFooter() {
 function SiteFooter() {
   const { t } = useI18n();
   return (
-    <footer className="border-t border-border/60">
-      <div className="mx-auto max-w-7xl px-6 py-10 flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <Logo />
-          <span className="font-display text-base text-foreground">GastroSafe</span>
-          <span className="mx-2 hidden md:inline">·</span>
-          <span className="hidden md:inline">{t("brand.tag")}</span>
+    <footer className="bg-black text-white/70">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-12 grid md:grid-cols-4 gap-8 text-sm">
+        <div>
+          <div className="font-display text-2xl text-white">
+            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
+          </div>
+          <p className="mt-3 text-white/50 text-xs leading-relaxed max-w-xs">{t("brand.tag")}</p>
         </div>
-        <div className="flex gap-6">
-          <a href="#" className="hover:text-foreground">{t("footer.imprint")}</a>
-          <a href="#" className="hover:text-foreground">{t("footer.privacy")}</a>
-          <a href="#" className="hover:text-foreground">{t("footer.terms")}</a>
+        <div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">Platform</div>
+          <ul className="mt-3 space-y-2">
+            <li><a href="#pillars" className="hover:text-white">{t("nav.modules")}</a></li>
+            <li><a href="#inspector" className="hover:text-white">Inspector Mode</a></li>
+            <li><a href="#regulation" className="hover:text-white">{t("nav.regulation")}</a></li>
+            <li><a href="#pricing" className="hover:text-white">{t("nav.pricing")}</a></li>
+          </ul>
         </div>
-        <div>{t("footer.rights")}</div>
+        <div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">Support</div>
+          <ul className="mt-3 space-y-2">
+            <li><a href="#" className="hover:text-white">Help centre</a></li>
+            <li><a href="#" className="hover:text-white">API</a></li>
+            <li><a href="#" className="hover:text-white">Status</a></li>
+          </ul>
+        </div>
+        <div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">Legal</div>
+          <ul className="mt-3 space-y-2">
+            <li><a href="#" className="hover:text-white">{t("footer.imprint")}</a></li>
+            <li><a href="#" className="hover:text-white">{t("footer.privacy")}</a></li>
+            <li><a href="#" className="hover:text-white">{t("footer.terms")}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-5 text-xs text-white/40">
+          {t("footer.rights")}
+        </div>
       </div>
     </footer>
   );
