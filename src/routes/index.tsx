@@ -7,6 +7,7 @@ import {
   Thermometer, Wheat, Users, Scale, CheckCircle2, Building2,
 } from "lucide-react";
 import heroChef from "@/assets/hero-chef.jpg";
+import { FollowBar } from "@/components/SocialIcons";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -93,6 +94,9 @@ function SubNav() {
               {l.label}
             </a>
           ))}
+          <Link to="/blog" className="hover:text-[color:var(--color-alert-red)] transition">
+            {t("nav.blog") ?? "Blog"}
+          </Link>
         </nav>
         <a
           href="tel:+49301234567"
@@ -478,6 +482,9 @@ function SiteFooter() {
             Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
           </div>
           <p className="mt-3 text-white/50 text-xs leading-relaxed max-w-xs">{t("brand.tag")}</p>
+          <div className="mt-5">
+            <FollowBar dark />
+          </div>
         </div>
         <div>
           <div className="text-white text-xs font-black uppercase tracking-widest">{t("footer.section.platform")}</div>
@@ -486,6 +493,7 @@ function SiteFooter() {
             <li><a href="#inspector" className="hover:text-white">Inspector Mode</a></li>
             <li><a href="#regulation" className="hover:text-white">{t("nav.regulation")}</a></li>
             <li><a href="#pricing" className="hover:text-white">{t("nav.pricing")}</a></li>
+            <li><Link to="/blog" className="hover:text-white">{t("nav.blog") ?? "Blog"}</Link></li>
           </ul>
         </div>
         <div>
