@@ -28,6 +28,7 @@ import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRoutinesRouteImport } from './routes/app.routines'
+import { Route as AppRotaRouteImport } from './routes/app.rota'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
 import { Route as AppMenuRouteImport } from './routes/app.menu'
 import { Route as AppLogsRouteImport } from './routes/app.logs'
@@ -134,6 +135,11 @@ const AppRoutinesRoute = AppRoutinesRouteImport.update({
   path: '/routines',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRotaRoute = AppRotaRouteImport.update({
+  id: '/rota',
+  path: '/rota',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRecipesRoute = AppRecipesRouteImport.update({
   id: '/recipes',
   path: '/recipes',
@@ -202,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -231,6 +238,7 @@ export interface FileRoutesByTo {
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -263,6 +271,7 @@ export interface FileRoutesById {
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -296,6 +305,7 @@ export interface FileRouteTypes {
     | '/app/logs'
     | '/app/menu'
     | '/app/recipes'
+    | '/app/rota'
     | '/app/routines'
     | '/app/settings'
     | '/app/suppliers'
@@ -325,6 +335,7 @@ export interface FileRouteTypes {
     | '/app/logs'
     | '/app/menu'
     | '/app/recipes'
+    | '/app/rota'
     | '/app/routines'
     | '/app/settings'
     | '/app/suppliers'
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/app/logs'
     | '/app/menu'
     | '/app/recipes'
+    | '/app/rota'
     | '/app/routines'
     | '/app/settings'
     | '/app/suppliers'
@@ -515,6 +527,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRoutinesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/rota': {
+      id: '/app/rota'
+      path: '/rota'
+      fullPath: '/app/rota'
+      preLoaderRoute: typeof AppRotaRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/recipes': {
       id: '/app/recipes'
       path: '/recipes'
@@ -599,6 +618,7 @@ interface AppRouteChildren {
   AppLogsRoute: typeof AppLogsRoute
   AppMenuRoute: typeof AppMenuRoute
   AppRecipesRoute: typeof AppRecipesRoute
+  AppRotaRoute: typeof AppRotaRoute
   AppRoutinesRoute: typeof AppRoutinesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppSuppliersRoute: typeof AppSuppliersRoute
@@ -618,6 +638,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppLogsRoute: AppLogsRoute,
   AppMenuRoute: AppMenuRoute,
   AppRecipesRoute: AppRecipesRoute,
+  AppRotaRoute: AppRotaRoute,
   AppRoutinesRoute: AppRoutinesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppSuppliersRoute: AppSuppliersRoute,
