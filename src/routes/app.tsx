@@ -82,6 +82,7 @@ const GROUPS: NavGroup[] = [
   {
     labelKey: "nav.group.records",
     items: [
+      { to: "/app/incidents",   icon: AlertOctagon,    key: "menu.incidents",   nav: "incidents" },
       { to: "/app/alerts",      icon: BellRing,        key: "menu.alerts",      nav: "alerts" },
       { to: "/app/expiry",      icon: CalendarClock,   key: "menu.expiry",      nav: "expiry" },
       { to: "/app/documents",   icon: FileArchive,     key: "menu.documents",   nav: "documents" },
@@ -95,6 +96,7 @@ const GROUPS: NavGroup[] = [
       { to: "/app/inspection",  icon: Gavel,           key: "menu.audit",       nav: "audit" },
     ],
   },
+
 ];
 
 const ALL_ITEMS: NavItem[] = GROUPS.flatMap((g) => g.items);
