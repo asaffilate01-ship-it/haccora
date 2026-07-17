@@ -34,13 +34,13 @@ function LoginPage() {
 
   useEffect(() => {
     if (hydrated && user) {
-      navigate({ to: (search?.redirect as string) || "/app" });
+      navigate({ to: (search?.redirect as string) || homeFor(user.role) });
     }
   }, [hydrated, user, navigate, search]);
 
   const pick = (role: Role) => {
     signIn(role);
-    navigate({ to: role === "inspector" ? "/app/inspection" : "/app" });
+    navigate({ to: homeFor(role) });
   };
 
   return (
