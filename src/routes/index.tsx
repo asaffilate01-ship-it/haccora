@@ -220,9 +220,11 @@ function Support360() {
         </h2>
         <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-6">
           {items.map(({ icon: Icon, k, title, body }) => (
-            <div key={k} className="rounded-3xl bg-white text-black p-8 md:p-10 border border-white/40">
-              <Icon size={40} className="text-[color:var(--color-alert-red)]" strokeWidth={2.2} />
-              <h3 className="display-black text-2xl md:text-3xl mt-5">{title}</h3>
+            <div key={k} className="card-polished p-8 md:p-10 text-black">
+              <span className="icon-3d">
+                <Icon size={30} strokeWidth={2.4} />
+              </span>
+              <h3 className="display-black text-2xl md:text-3xl mt-6">{title}</h3>
               <p className="mt-3 text-black/70 text-sm leading-relaxed">{body}</p>
               <a href="#pillars" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[color:var(--color-alert-red)]">
                 {t("s360.more") ?? "Learn more"} <ArrowRight size={14} />
@@ -257,19 +259,16 @@ function ModulePillars() {
           </h2>
           <p className="mt-5 text-black/60 max-w-2xl">{t("pillars.subtitle")}</p>
         </div>
-        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map(({ icon: Icon, k }) => (
-            <div
-              key={k}
-              className="group relative rounded-2xl border border-black/10 bg-white p-8 hover:border-black transition"
-            >
+            <div key={k} className="group card-polished p-8">
               <div className="flex items-start justify-between">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-alert-red)]/10 text-[color:var(--color-alert-red)]">
-                  <Icon size={24} strokeWidth={2.2} />
-                </div>
-                <ChevronRight size={18} className="text-black/30 group-hover:text-[color:var(--color-alert-red)] transition" />
+                <span className="icon-3d">
+                  <Icon size={28} strokeWidth={2.4} />
+                </span>
+                <ChevronRight size={18} className="text-black/25 group-hover:text-[color:var(--color-alert-red)] group-hover:translate-x-1 transition" />
               </div>
-              <h3 className="mt-6 display-black text-xl md:text-2xl">
+              <h3 className="mt-7 display-black text-xl md:text-2xl">
                 {t(`pillar.${k}.title`) ?? k}
               </h3>
               <p className="mt-3 text-sm text-black/60 leading-relaxed">
@@ -375,14 +374,16 @@ function Regulation() {
               "Behördenfinder für Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug — versioniert und mit Handlungscheckliste bei Rechtsänderungen."}
           </p>
         </div>
-        <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
+        <div className="md:col-span-2 grid sm:grid-cols-2 gap-5">
           {cards.map((c) => (
-            <div key={c.title} className="rounded-2xl bg-white border border-black/10 p-6">
-              <div className="flex items-center gap-2">
-                <Building2 size={16} className="text-[color:var(--color-alert-red)]" />
+            <div key={c.title} className="card-polished p-6">
+              <div className="flex items-center gap-3">
+                <span className="icon-3d" style={{ height: "2.75rem", width: "2.75rem", borderRadius: "0.85rem" }}>
+                  <Building2 size={18} strokeWidth={2.4} />
+                </span>
                 <h4 className="font-black text-base">{c.title}</h4>
               </div>
-              <p className="mt-2 text-sm text-black/60">{c.body}</p>
+              <p className="mt-3 text-sm text-black/60">{c.body}</p>
             </div>
           ))}
         </div>
