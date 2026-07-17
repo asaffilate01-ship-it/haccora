@@ -220,9 +220,11 @@ function Support360() {
         </h2>
         <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-6">
           {items.map(({ icon: Icon, k, title, body }) => (
-            <div key={k} className="rounded-3xl bg-white text-black p-8 md:p-10 border border-white/40">
-              <Icon size={40} className="text-[color:var(--color-alert-red)]" strokeWidth={2.2} />
-              <h3 className="display-black text-2xl md:text-3xl mt-5">{title}</h3>
+            <div key={k} className="card-polished p-8 md:p-10 text-black">
+              <span className="icon-3d">
+                <Icon size={30} strokeWidth={2.4} />
+              </span>
+              <h3 className="display-black text-2xl md:text-3xl mt-6">{title}</h3>
               <p className="mt-3 text-black/70 text-sm leading-relaxed">{body}</p>
               <a href="#pillars" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[color:var(--color-alert-red)]">
                 {t("s360.more") ?? "Learn more"} <ArrowRight size={14} />
