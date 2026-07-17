@@ -7,6 +7,7 @@ import {
   Thermometer, Wheat, Users, Scale, CheckCircle2, Building2,
 } from "lucide-react";
 import heroChef from "@/assets/hero-chef.jpg";
+import { FollowBar } from "@/components/SocialIcons";
 
 export const Route = createFileRoute("/")({
   head: () => ({
