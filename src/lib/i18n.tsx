@@ -297,7 +297,7 @@ const de: Dict = {
   "pillar.temp.title": "Temperatur & Sensoren",
   "pillar.temp.body": "Manuelle Eingabe oder Sensor-Anbindung – Grenzwerte, Alarme und Maßnahmen automatisch dokumentiert.",
   "reg.eyebrow": "Deutsche Regulatorik",
-  "reg.title": "Gebaut für die deutsche Lebensmittelaufsicht.",
+  "reg.title": "Gebaut für die deutsche Lebensmittel\u00ADaufsicht.",
   "reg.body": "Behördenfinder Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug – versioniert und mit Handlungscheckliste bei Rechtsänderungen.",
 
   // Auth / roles
