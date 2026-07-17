@@ -7,12 +7,13 @@ export const Route = createFileRoute("/app/temperature")({
   component: TemperaturePage,
 });
 
-const equipment = [
-  { id: "kh1", name: "Kühlhaus 1",  min: 0, max: 5,  last: 3.8,  method: "Sensor",    at: "vor 12 Min",  ok: true },
-  { id: "kh2", name: "Kühlhaus 2",  min: 0, max: 5,  last: 6.4,  method: "Sensor",    at: "vor 4 Min",   ok: false },
-  { id: "gk",  name: "Gefrierkombi", min: -22, max: -18, last: -19.8, method: "Manuell", at: "vor 2 Std", ok: true },
-  { id: "hh",  name: "Heißhaltung Buffet", min: 65, max: 90, last: 71.2, method: "Sonde",   at: "vor 30 Min", ok: true },
-  { id: "ea",  name: "Eintauch-Anzeige", min: 0, max: 5, last: 4.1, method: "QR + Foto", at: "vor 1 Std",  ok: true },
+type Equipment = { id: string; nameK: string; min: number; max: number; last: number; methodK: string; agoK: string; n: number; ok: boolean };
+const equipment: Equipment[] = [
+  { id: "kh1", nameK: "temp.eq.cold1",   min: 0,   max: 5,  last: 3.8,   methodK: "temp.method.sensor", agoK: "temp.ago.min", n: 12, ok: true  },
+  { id: "kh2", nameK: "temp.eq.cold2",   min: 0,   max: 5,  last: 6.4,   methodK: "temp.method.sensor", agoK: "temp.ago.min", n: 4,  ok: false },
+  { id: "gk",  nameK: "temp.eq.freezer", min: -22, max: -18,last: -19.8, methodK: "temp.method.manual", agoK: "temp.ago.hr",  n: 2,  ok: true  },
+  { id: "hh",  nameK: "temp.eq.hot",     min: 65,  max: 90, last: 71.2,  methodK: "temp.method.probe",  agoK: "temp.ago.min", n: 30, ok: true  },
+  { id: "ea",  nameK: "temp.eq.probe",   min: 0,   max: 5,  last: 4.1,   methodK: "temp.method.qr",     agoK: "temp.ago.hr",  n: 1,  ok: true  },
 ];
 
 function TemperaturePage() {
@@ -25,7 +26,7 @@ function TemperaturePage() {
     const v = parseFloat(value);
     if (Number.isNaN(v)) return;
     const ok = v >= selected.min && v <= selected.max;
-    setToast(ok ? "Temperatur gespeichert" : "Abweichung — Maßnahme erstellt");
+    setToast(ok ? t("temp.saved") : t("temp.deviation"));
     setValue("");
     setTimeout(() => setToast(""), 2500);
   };
@@ -40,7 +41,7 @@ function TemperaturePage() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 surface p-6">
-          <h2 className="font-display text-xl">Geräte · Equipment</h2>
+          <h2 className="font-display text-xl">{t("temp.equipment.title")}</h2>
           <div className="mt-4 divide-y divide-border">
             {equipment.map((e) => (
               <button
@@ -52,8 +53,8 @@ function TemperaturePage() {
                   {e.ok ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
                 </div>
                 <div className="flex-1">
-                  <div className="text-sm font-medium">{e.name}</div>
-                  <div className="text-xs text-muted-foreground">{e.method} · {e.at}</div>
+                  <div className="text-sm font-medium">{t(e.nameK)}</div>
+                  <div className="text-xs text-muted-foreground">{t(e.methodK)} · {t(e.agoK).replace("{n}", String(e.n))}</div>
                 </div>
                 <div className="text-right">
                   <div className={`font-display text-lg ${e.ok ? "" : "text-destructive"}`}>{e.last.toFixed(1)} °C</div>
@@ -66,7 +67,7 @@ function TemperaturePage() {
 
         <div className="surface p-6">
           <h2 className="font-display text-xl">{t("temp.record")}</h2>
-          <p className="text-xs text-muted-foreground mt-1">{selected.name} · {selected.min}–{selected.max} °C</p>
+          <p className="text-xs text-muted-foreground mt-1">{t(selected.nameK)} · {selected.min}–{selected.max} °C</p>
 
           <div className="mt-5">
             <label className="text-xs font-medium text-muted-foreground">{t("temp.value")} (°C)</label>
@@ -80,13 +81,13 @@ function TemperaturePage() {
             />
           </div>
 
-          <button onClick={submit} className="btn-primary w-full mt-4"><Thermometer size={16} /> Speichern</button>
+          <button onClick={submit} className="btn-primary w-full mt-4"><Thermometer size={16} /> {t("common.save")}</button>
 
           <div className="mt-6 grid grid-cols-3 gap-2 text-[11px]">
             {[
               { i: QrCode,     l: "QR" },
               { i: Bluetooth,  l: "Bluetooth" },
-              { i: Camera,     l: "Foto" },
+              { i: Camera,     l: t("temp.method.qr").split(" ")[2] ?? "Photo" },
             ].map(({ i: Icon, l }) => (
               <button key={l} className="rounded-lg border border-border bg-secondary/50 py-2.5 flex flex-col items-center gap-1 hover:bg-secondary">
                 <Icon size={16} /> {l}

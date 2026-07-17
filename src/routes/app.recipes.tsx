@@ -6,16 +6,18 @@ export const Route = createFileRoute("/app/recipes")({
   component: RecipesPage,
 });
 
-const ALLERGENS_DE = ["Gluten","Krebs","Ei","Fisch","Erdnuss","Soja","Milch","Nüsse","Sellerie","Senf","Sesam","SO₂","Lupine","Weichtier"];
+const ALLERGENS = [
+  "gluten","crustacean","egg","fish","peanut","soy","milk","nuts","celery","mustard","sesame","sulphite","lupin","mollusc",
+] as const;
 
 const recipes = [
-  { name: "Berliner Currywurst",        allergens: ["Gluten","Senf","SO₂"],        cost: 2.10, price: 8.5,  flagged: false },
-  { name: "Sesam-Nudeln (vegan)",       allergens: ["Gluten","Sesam","Soja"],       cost: 1.85, price: 9.9,  flagged: true },
-  { name: "Königsberger Klopse",        allergens: ["Gluten","Ei","Milch"],         cost: 3.20, price: 12.5, flagged: false },
-  { name: "Fischsuppe Nordsee",         allergens: ["Fisch","Sellerie","Weichtier"], cost: 4.10, price: 14.9, flagged: false },
-  { name: "Käsespätzle",                 allergens: ["Gluten","Ei","Milch"],         cost: 2.40, price: 11.5, flagged: false },
-  { name: "Falafel-Bowl",                allergens: ["Sesam","Senf"],                cost: 2.60, price: 10.9, flagged: false },
-];
+  { nameK: "recipe.currywurst",    allergens: ["gluten","mustard","sulphite"],  cost: 2.10, price: 8.5,  flagged: false },
+  { nameK: "recipe.sesameNoodles", allergens: ["gluten","sesame","soy"],         cost: 1.85, price: 9.9,  flagged: true },
+  { nameK: "recipe.klopse",        allergens: ["gluten","egg","milk"],           cost: 3.20, price: 12.5, flagged: false },
+  { nameK: "recipe.fishSoup",      allergens: ["fish","celery","mollusc"],       cost: 4.10, price: 14.9, flagged: false },
+  { nameK: "recipe.kaesespaetzle", allergens: ["gluten","egg","milk"],           cost: 2.40, price: 11.5, flagged: false },
+  { nameK: "recipe.falafel",       allergens: ["sesame","mustard"],              cost: 2.60, price: 10.9, flagged: false },
+] as const;
 
 function RecipesPage() {
   const { t } = useI18n();
@@ -31,15 +33,15 @@ function RecipesPage() {
         {recipes.map((r) => {
           const margin = ((r.price - r.cost) / r.price * 100).toFixed(0);
           return (
-            <div key={r.name} className="surface p-5 flex flex-col">
+            <div key={r.nameK} className="surface p-5 flex flex-col">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary grid place-items-center"><Wheat size={16} /></div>
-                  <h3 className="font-display text-lg leading-tight">{r.name}</h3>
+                  <h3 className="font-display text-lg leading-tight">{t(r.nameK)}</h3>
                 </div>
                 {r.flagged && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-warning/20 text-warning-foreground border border-warning/40 px-2 py-0.5 text-[10px] font-semibold uppercase">
-                    <AlertTriangle size={10} /> Zutat neu
+                    <AlertTriangle size={10} /> {t("recipes.newIngredient")}
                   </span>
                 )}
               </div>
@@ -47,8 +49,8 @@ function RecipesPage() {
               <div className="mt-4">
                 <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{t("recipes.allergen")}</div>
                 <div className="mt-2 flex flex-wrap gap-1.5">
-                  {ALLERGENS_DE.map((a) => {
-                    const active = r.allergens.includes(a);
+                  {ALLERGENS.map((a) => {
+                    const active = (r.allergens as readonly string[]).includes(a);
                     return (
                       <span
                         key={a}
@@ -58,7 +60,7 @@ function RecipesPage() {
                             : "border-border text-muted-foreground/60"
                         }`}
                       >
-                        {a}
+                        {t(`allergen.${a}`)}
                       </span>
                     );
                   })}
