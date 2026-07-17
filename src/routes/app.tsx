@@ -421,6 +421,8 @@ function AppShell() {
           })}
         </nav>
       </div>
+      </div>
+
 
       {/* Command palette */}
       {paletteOpen && (
