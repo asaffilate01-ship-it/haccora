@@ -705,6 +705,7 @@ const en: Dict = {
   "nav.group.compliance": "Compliance",
   "nav.group.kitchen": "Kitchen & Sourcing",
   "nav.group.people": "Team",
+  "nav.group.records": "Records",
   "nav.group.audit": "Audit",
 
   // Notifications
