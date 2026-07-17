@@ -121,6 +121,11 @@ function AppShell() {
       { prefix: "/app/logs",        nav: "logs" },
       { prefix: "/app/inspection",  nav: "audit" },
       { prefix: "/app/settings",    nav: "settings" },
+      { prefix: "/app/routines",    nav: "routines" },
+      { prefix: "/app/menu",        nav: "menu" },
+      { prefix: "/app/rota",        nav: "rota" },
+      { prefix: "/app/waste",       nav: "waste" },
+      { prefix: "/app/stock",       nav: "stock" },
     ];
     const match = PATH_KEY.find((p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"));
     if (match && !canAccess(user.role, match.nav)) {
