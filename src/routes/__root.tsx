@@ -13,6 +13,8 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LanguageProvider } from "@/lib/i18n";
 import { AuthProvider } from "@/lib/auth";
+import { CookieBanner } from "@/components/CookieBanner";
+
 
 function NotFoundComponent() {
   return (
@@ -116,8 +118,10 @@ function RootComponent() {
       <LanguageProvider>
         <AuthProvider>
           <Outlet />
+          <CookieBanner />
         </AuthProvider>
       </LanguageProvider>
+
     </QueryClientProvider>
   );
 }
