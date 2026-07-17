@@ -18,8 +18,7 @@ const de: Dict = {
 
   // Hero
   "hero.eyebrow": "HACCP · IfSG · LMHV · Prüfungsbereit",
-  "hero.title": "Ein System für Ihre gesamte Lebensmittelsicherheit.",
-  "hero.subtitle": "GastroSafe ersetzt HACCP-Ordner, Temperaturlisten, Reinigungspläne, Allergenmappen, Personalzertifikate und Prüfungsvorbereitung – in einer mehrsprachigen Plattform, gebaut für die deutsche Lebensmittelaufsicht.",
+  
   "hero.cta.primary": "Live-Demo öffnen",
   "hero.cta.secondary": "Preise ansehen",
   "hero.trust": "Vertraut von Restaurants, Filialisten und Franchise-Betrieben in Berlin, NRW, Bayern und Hamburg.",
@@ -170,7 +169,37 @@ const de: Dict = {
   "inspection.generate": "Nachweispaket generieren",
   "inspection.from": "Von",
   "inspection.to": "Bis",
+
+  // Landing extras (FoodAlert-inspired)
+  "nav.search": "Suchen",
+  "nav.contact": "Kontakt",
+  "hero.title": "Ein System für die gesamte Lebensmittelsicherheit.",
+  "hero.subtitle": "GastroSafe ersetzt HACCP-Ordner, Temperaturlisten, Reinigungspläne, Allergenmappen, Personalzertifikate und Prüfungsvorbereitung – in einer mehrsprachigen Plattform, gebaut für Gastronomie in Deutschland.",
+  "hero.video.title": "So unterstützen wir Ihren Betrieb",
+  "contact.title": "Mehr Informationen anfordern",
+  "contact.first": "Vorname",
+  "contact.last": "Nachname",
+  "contact.email": "E-Mail-Adresse",
+  "contact.phone": "Telefonnummer",
+  "contact.business": "Firmenname",
+  "contact.cta": "Kontakt aufnehmen",
+  "contact.legal": "Mit dem Absenden dieses Formulars stimmen Sie unserer Datenschutzerklärung zu.",
+  "s360.title": "Lebensmittelsicherheit rundum",
+  "s360.more": "Mehr erfahren",
+  "s360.docs.t": "Digitale Nachweise",
+  "s360.docs.b": "HACCP, Checklisten und Belege – lückenlos an einem Ort.",
+  "s360.time.t": "24/7 Überwachung",
+  "s360.time.b": "Temperatur- und Aufgaben-Alarme rund um die Uhr.",
+  "s360.alert.t": "Vorfallsmanagement",
+  "s360.alert.b": "Korrekturmaßnahmen mit Fotobeleg und Freigabe.",
+  "pillars.eyebrow": "Die Plattform",
+  "pillar.temp.title": "Temperatur & Sensoren",
+  "pillar.temp.body": "Manuelle Eingabe oder Sensor-Anbindung – Grenzwerte, Alarme und Maßnahmen automatisch dokumentiert.",
+  "reg.eyebrow": "Deutsche Regulatorik",
+  "reg.title": "Gebaut für die deutsche Lebensmittelaufsicht.",
+  "reg.body": "Behördenfinder Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug – versioniert und mit Handlungscheckliste bei Rechtsänderungen.",
 };
+
 
 const en: Dict = {
   "nav.product": "Product",
@@ -323,7 +352,35 @@ const en: Dict = {
   "inspection.generate": "Generate evidence pack",
   "inspection.from": "From",
   "inspection.to": "To",
+
+  // Landing extras (FoodAlert-inspired)
+  "nav.search": "Search",
+  "nav.contact": "Contact us",
+  "hero.video.title": "Watch how we support your business",
+  "contact.title": "Get more information",
+  "contact.first": "First name",
+  "contact.last": "Last name",
+  "contact.email": "Email address",
+  "contact.phone": "Phone number",
+  "contact.business": "Business name",
+  "contact.cta": "Get in touch",
+  "contact.legal": "By submitting this form you agree to our privacy policy.",
+  "s360.title": "food health & safety support",
+  "s360.more": "Learn more",
+  "s360.docs.t": "Digital records",
+  "s360.docs.b": "HACCP, checklists and evidence — all in one place.",
+  "s360.time.t": "24/7 monitoring",
+  "s360.time.b": "Temperature and task alerts around the clock.",
+  "s360.alert.t": "Incident response",
+  "s360.alert.b": "Corrective actions with photo evidence and sign-off.",
+  "pillars.eyebrow": "The platform",
+  "pillar.temp.title": "Temperature & sensors",
+  "pillar.temp.body": "Manual entry or sensor integration — thresholds, alerts and corrective actions documented automatically.",
+  "reg.eyebrow": "German regulatory layer",
+  "reg.title": "Built for the German inspector.",
+  "reg.body": "Authority finder for Berlin & NRW, EU 852/2004, 178/2002, 1169/2011, IfSG tracker, LMHV matrix, LFGB references — versioned with an action checklist when the law changes.",
 };
+
 
 const dicts: Record<Language, Dict> = { de, en };
 
