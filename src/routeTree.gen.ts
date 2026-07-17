@@ -32,6 +32,7 @@ import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
 import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
 import { Route as AppChecksRouteImport } from './routes/app.checks'
+import { Route as AppAlertsRouteImport } from './routes/app.alerts'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -148,6 +149,11 @@ const AppChecksRoute = AppChecksRouteImport.update({
   path: '/checks',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAlertsRoute = AppAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/haccp': typeof AppHaccpRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/haccp': typeof AppHaccpRoute
@@ -205,6 +213,7 @@ export interface FileRoutesById {
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/haccp': typeof AppHaccpRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/login'
     | '/sitemap.xml'
+    | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/haccp'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/login'
     | '/sitemap.xml'
+    | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/haccp'
@@ -280,6 +291,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/login'
     | '/sitemap.xml'
+    | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/haccp'
@@ -471,10 +483,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChecksRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/alerts': {
+      id: '/app/alerts'
+      path: '/alerts'
+      fullPath: '/app/alerts'
+      preLoaderRoute: typeof AppAlertsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAlertsRoute: typeof AppAlertsRoute
   AppChecksRoute: typeof AppChecksRoute
   AppCleaningRoute: typeof AppCleaningRoute
   AppHaccpRoute: typeof AppHaccpRoute
@@ -488,6 +508,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAlertsRoute: AppAlertsRoute,
   AppChecksRoute: AppChecksRoute,
   AppCleaningRoute: AppCleaningRoute,
   AppHaccpRoute: AppHaccpRoute,
