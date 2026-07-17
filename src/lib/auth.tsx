@@ -18,15 +18,15 @@ const DEMO_USERS: Record<Role, AuthUser> = {
   inspector: { name: "Dr. K. Braun", email: "kbraun@ba-fk.berlin.de",    initials: "KB", role: "inspector", location: "Bezirksamt Friedrichshain-Kreuzberg" },
 };
 
-const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit","settings"] as const;
+const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","alerts","expiry","documents","logs","audit","settings"] as const;
 export type NavKey = typeof NAV_KEYS[number];
 
 export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
-  owner:     ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit","settings"],
-  manager:   ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit","settings"],
-  chef:      ["dashboard","haccp","checks","temperature","cleaning","recipes","training","settings"],
-  staff:     ["dashboard","checks","temperature","cleaning","training"],
-  inspector: ["dashboard","audit"],
+  owner:     ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","alerts","expiry","documents","logs","audit","settings"],
+  manager:   ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","alerts","expiry","documents","logs","audit","settings"],
+  chef:      ["dashboard","haccp","checks","temperature","cleaning","recipes","training","alerts","expiry","documents","settings"],
+  staff:     ["dashboard","checks","temperature","cleaning","training","alerts","expiry"],
+  inspector: ["dashboard","documents","logs","audit"],
 };
 
 export function canAccess(role: Role, key: NavKey) {
