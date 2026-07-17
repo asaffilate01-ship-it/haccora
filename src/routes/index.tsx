@@ -363,7 +363,7 @@ function Regulation() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
         <div className="md:col-span-1">
           <div className="eyebrow">{t("reg.eyebrow") ?? "German regulatory layer"}</div>
-          <h2 className="mt-4 display-black text-3xl md:text-5xl">
+          <h2 lang="de" className="mt-4 display-black text-3xl md:text-4xl lg:text-[2.75rem] leading-[1.05] [overflow-wrap:anywhere] [hyphens:auto]">
             {t("reg.title") ?? "Built for the German inspector."}
           </h2>
           <p className="mt-5 text-black/60">
