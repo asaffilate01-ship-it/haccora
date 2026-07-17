@@ -80,7 +80,7 @@ function Dashboard() {
             <Link to="/app/checks" className="text-xs text-primary hover:underline">Alle · All →</Link>
           </div>
           <div className="mt-4 divide-y divide-border">
-            {tasks.map((task) => (
+            {visibleTasks.map((task) => (
               <div key={task.id} className="py-3 flex items-center gap-3">
                 <StatusPill status={task.status} />
                 <div className="flex-1 min-w-0">
