@@ -331,6 +331,7 @@ const de: Dict = {
   "nav.group.compliance": "Compliance",
   "nav.group.kitchen": "Küche & Einkauf",
   "nav.group.people": "Team",
+  "nav.group.records": "Aufzeichnungen",
   "nav.group.audit": "Audit",
 
   // Notifications
