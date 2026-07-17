@@ -30,6 +30,7 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
+import { Route as AppExpiryRouteImport } from './routes/app.expiry'
 import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
 import { Route as AppChecksRouteImport } from './routes/app.checks'
 import { Route as AppAlertsRouteImport } from './routes/app.alerts'
@@ -139,6 +140,11 @@ const AppHaccpRoute = AppHaccpRouteImport.update({
   path: '/haccp',
   getParentRoute: () => AppRoute,
 } as any)
+const AppExpiryRoute = AppExpiryRouteImport.update({
+  id: '/expiry',
+  path: '/expiry',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCleaningRoute = AppCleaningRouteImport.update({
   id: '/cleaning',
   path: '/cleaning',
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
@@ -244,6 +253,7 @@ export interface FileRouteTypes {
     | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
+    | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
     | '/app/recipes'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
+    | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
     | '/app/recipes'
@@ -294,6 +305,7 @@ export interface FileRouteTypes {
     | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
+    | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
     | '/app/recipes'
@@ -469,6 +481,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHaccpRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/expiry': {
+      id: '/app/expiry'
+      path: '/expiry'
+      fullPath: '/app/expiry'
+      preLoaderRoute: typeof AppExpiryRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/cleaning': {
       id: '/app/cleaning'
       path: '/cleaning'
@@ -497,6 +516,7 @@ interface AppRouteChildren {
   AppAlertsRoute: typeof AppAlertsRoute
   AppChecksRoute: typeof AppChecksRoute
   AppCleaningRoute: typeof AppCleaningRoute
+  AppExpiryRoute: typeof AppExpiryRoute
   AppHaccpRoute: typeof AppHaccpRoute
   AppInspectionRoute: typeof AppInspectionRoute
   AppRecipesRoute: typeof AppRecipesRoute
@@ -511,6 +531,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAlertsRoute: AppAlertsRoute,
   AppChecksRoute: AppChecksRoute,
   AppCleaningRoute: AppCleaningRoute,
+  AppExpiryRoute: AppExpiryRoute,
   AppHaccpRoute: AppHaccpRoute,
   AppInspectionRoute: AppInspectionRoute,
   AppRecipesRoute: AppRecipesRoute,
