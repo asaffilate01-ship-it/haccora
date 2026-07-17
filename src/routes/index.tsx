@@ -374,14 +374,16 @@ function Regulation() {
               "Behördenfinder für Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug — versioniert und mit Handlungscheckliste bei Rechtsänderungen."}
           </p>
         </div>
-        <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
+        <div className="md:col-span-2 grid sm:grid-cols-2 gap-5">
           {cards.map((c) => (
-            <div key={c.title} className="rounded-2xl bg-white border border-black/10 p-6">
-              <div className="flex items-center gap-2">
-                <Building2 size={16} className="text-[color:var(--color-alert-red)]" />
+            <div key={c.title} className="card-polished p-6">
+              <div className="flex items-center gap-3">
+                <span className="icon-3d" style={{ height: "2.75rem", width: "2.75rem", borderRadius: "0.85rem" }}>
+                  <Building2 size={18} strokeWidth={2.4} />
+                </span>
                 <h4 className="font-black text-base">{c.title}</h4>
               </div>
-              <p className="mt-2 text-sm text-black/60">{c.body}</p>
+              <p className="mt-3 text-sm text-black/60">{c.body}</p>
             </div>
           ))}
         </div>
