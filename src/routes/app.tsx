@@ -47,6 +47,15 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
+    labelKey: "nav.group.records",
+    items: [
+      { to: "/app/alerts",      icon: BellRing,        key: "menu.alerts",      nav: "alerts" },
+      { to: "/app/expiry",      icon: CalendarClock,   key: "menu.expiry",      nav: "expiry" },
+      { to: "/app/documents",   icon: FileArchive,     key: "menu.documents",   nav: "documents" },
+      { to: "/app/logs",        icon: History,         key: "menu.logs",        nav: "logs" },
+    ],
+  },
+  {
     labelKey: "nav.group.audit",
     items: [
       { to: "/app/inspection",  icon: Gavel,           key: "menu.audit",       nav: "audit" },
