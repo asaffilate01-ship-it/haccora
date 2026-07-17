@@ -327,6 +327,32 @@ const de: Dict = {
   "dash.role.staff": "Ihre offenen Aufgaben für heute.",
   "dash.role.inspector": "Nachweisansicht – schreibgeschützt für die Aufsicht.",
 
+  // Demo mode banner
+  "demo.tag": "Demo-Modus",
+  "demo.body": "Sie erkunden GastroSafe als {role}. Keine echten Daten.",
+  "demo.exit": "Demo verlassen",
+  "demo.switch": "Rolle wechseln",
+
+  // Role-specific dashboard hero
+  "dash.owner.hero.eye": "Geschäftsführung · Portfolio",
+  "dash.owner.hero.t": "Alle Standorte im Überblick",
+  "dash.owner.hero.b": "Umsatz, Compliance und Alarme über Ihr gesamtes Netzwerk.",
+  "dash.manager.hero.eye": "Betriebstafel · live",
+  "dash.manager.hero.t": "Heute im Betrieb",
+  "dash.manager.hero.b": "Schicht, Aufgaben und offene Punkte in Echtzeit.",
+  "dash.chef.hero.eye": "Küche · servicebereit",
+  "dash.chef.hero.t": "Linien-Status",
+  "dash.chef.hero.b": "Temperaturen, HACCP-Freigaben und Brigade.",
+  "dash.staff.hero.eye": "Meine Schicht",
+  "dash.staff.hero.t": "Heute, Schritt für Schritt",
+  "dash.staff.hero.b": "Nur Ihre Aufgaben – groß, klar, schnell.",
+  "dash.staff.progress": "Fortschritt",
+  "dash.staff.allDone": "Alles erledigt für heute. Super gemacht.",
+  "dash.manager.shift": "Aktuelle Schicht",
+  "dash.manager.shiftBody": "Frühdienst · 06:00 – 15:00 · 5 im Dienst",
+  "dash.chef.line": "Küchenlinie",
+  "dash.chef.lineBody": "Alle Kühlgeräte im grünen Bereich.",
+
   // Nav groups
   "nav.group.overview": "Übersicht",
   "nav.group.compliance": "Compliance",
@@ -1054,6 +1080,32 @@ const en: Dict = {
   "dash.role.chef": "Kitchen today — HACCP, temperatures, sign-offs.",
   "dash.role.staff": "Your open tasks for today.",
   "dash.role.inspector": "Evidence view — read-only for the authority.",
+
+  // Demo mode banner
+  "demo.tag": "Demo mode",
+  "demo.body": "You're exploring GastroSafe as {role}. No real data.",
+  "demo.exit": "Exit demo",
+  "demo.switch": "Switch role",
+
+  // Role-specific dashboard hero
+  "dash.owner.hero.eye": "Executive · portfolio",
+  "dash.owner.hero.t": "Every location at a glance",
+  "dash.owner.hero.b": "Revenue, compliance and alerts across your network.",
+  "dash.manager.hero.eye": "Operations board · live",
+  "dash.manager.hero.t": "Today on the floor",
+  "dash.manager.hero.b": "Shift, tasks and open items in real time.",
+  "dash.chef.hero.eye": "Kitchen · service ready",
+  "dash.chef.hero.t": "Line status",
+  "dash.chef.hero.b": "Temperatures, HACCP sign-offs and brigade.",
+  "dash.staff.hero.eye": "My shift",
+  "dash.staff.hero.t": "Today, task by task",
+  "dash.staff.hero.b": "Just your tasks — big, clear, fast.",
+  "dash.staff.progress": "Progress",
+  "dash.staff.allDone": "All done for today. Great work.",
+  "dash.manager.shift": "Current shift",
+  "dash.manager.shiftBody": "Early · 06:00 – 15:00 · 5 on duty",
+  "dash.chef.line": "Kitchen line",
+  "dash.chef.lineBody": "All cold-holding equipment in range.",
 
   // Nav groups
   "nav.group.overview": "Overview",
