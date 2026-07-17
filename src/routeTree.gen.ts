@@ -16,6 +16,7 @@ import { Route as AppTrainingRouteImport } from './routes/app.training'
 import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
+import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
 import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
 import { Route as AppChecksRouteImport } from './routes/app.checks'
@@ -55,6 +56,11 @@ const AppRecipesRoute = AppRecipesRouteImport.update({
   path: '/recipes',
   getParentRoute: () => AppRoute,
 } as any)
+const AppInspectionRoute = AppInspectionRouteImport.update({
+  id: '/inspection',
+  path: '/inspection',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHaccpRoute = AppHaccpRouteImport.update({
   id: '/haccp',
   path: '/haccp',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/app/checks'
     | '/app/cleaning'
     | '/app/haccp'
+    | '/app/inspection'
     | '/app/recipes'
     | '/app/suppliers'
     | '/app/temperature'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/app/checks'
     | '/app/cleaning'
     | '/app/haccp'
+    | '/app/inspection'
     | '/app/recipes'
     | '/app/suppliers'
     | '/app/temperature'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/app/checks'
     | '/app/cleaning'
     | '/app/haccp'
+    | '/app/inspection'
     | '/app/recipes'
     | '/app/suppliers'
     | '/app/temperature'
@@ -201,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRecipesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/inspection': {
+      id: '/app/inspection'
+      path: '/inspection'
+      fullPath: '/app/inspection'
+      preLoaderRoute: typeof AppInspectionRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/haccp': {
       id: '/app/haccp'
       path: '/haccp'
@@ -229,6 +248,7 @@ interface AppRouteChildren {
   AppChecksRoute: typeof AppChecksRoute
   AppCleaningRoute: typeof AppCleaningRoute
   AppHaccpRoute: typeof AppHaccpRoute
+  AppInspectionRoute: typeof AppInspectionRoute
   AppRecipesRoute: typeof AppRecipesRoute
   AppSuppliersRoute: typeof AppSuppliersRoute
   AppTemperatureRoute: typeof AppTemperatureRoute
@@ -240,6 +260,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppChecksRoute: AppChecksRoute,
   AppCleaningRoute: AppCleaningRoute,
   AppHaccpRoute: AppHaccpRoute,
+  AppInspectionRoute: AppInspectionRoute,
   AppRecipesRoute: AppRecipesRoute,
   AppSuppliersRoute: AppSuppliersRoute,
   AppTemperatureRoute: AppTemperatureRoute,
