@@ -5,6 +5,8 @@ import {
   Search, Phone, ArrowRight, ChevronRight,
   FileText, Clock, AlertTriangle, ShieldCheck, ClipboardCheck,
   Thermometer, Wheat, Users, Scale, CheckCircle2, Building2,
+  TrendingUp, Zap, Recycle, CalendarCheck, Utensils, Hotel, Coffee, Beer, Truck as TruckIcon, ChefHat,
+  Plus, Minus,
 } from "lucide-react";
 import heroChef from "@/assets/hero-chef.jpg";
 import { FollowBar } from "@/components/SocialIcons";
@@ -33,11 +35,14 @@ function Landing() {
       <TopBar />
       <SubNav />
       <Hero />
+      <OutcomesBand />
       <Support360 />
       <ModulePillars />
+      <IndustriesStrip />
       <InspectorBand />
       <Regulation />
       <Pricing />
+      <FaqSection />
       <CtaFooter />
       <SiteFooter />
     </div>
@@ -466,6 +471,104 @@ function CtaFooter() {
           <a href="#contact" className="btn-red-outline">
             {t("cta.secondary")}
           </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────────── outcomes band (black) */
+function OutcomesBand() {
+  const { t } = useI18n();
+  const stats = [
+    { icon: Clock,         v: t("outcomes.hours.value"),   l: t("outcomes.hours.label") },
+    { icon: Zap,           v: t("outcomes.faster.value"),  l: t("outcomes.faster.label") },
+    { icon: Recycle,       v: t("outcomes.waste.value"),   l: t("outcomes.waste.label") },
+    { icon: CalendarCheck, v: t("outcomes.audit.value"),   l: t("outcomes.audit.label") },
+  ];
+  return (
+    <section className="bg-black text-white">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-20 md:py-28">
+        <div className="max-w-3xl">
+          <div className="inline-flex items-center gap-2 text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
+            <TrendingUp size={14} /> {t("outcomes.title").split(".")[0]}.
+          </div>
+          <h2 className="mt-4 display-black text-4xl md:text-6xl">{t("outcomes.title")}</h2>
+          <p className="mt-4 text-white/70 max-w-2xl">{t("outcomes.subtitle")}</p>
+        </div>
+        <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-5">
+          {stats.map(({ icon: Icon, v, l }) => (
+            <div key={l} className="rounded-2xl bg-white/[0.04] border border-white/10 p-6 md:p-8">
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[color:var(--color-alert-red)]/20 text-[color:var(--color-alert-red)]">
+                <Icon size={20} strokeWidth={2.4} />
+              </span>
+              <div className="mt-5 display-black text-3xl md:text-4xl leading-none">{v}</div>
+              <div className="mt-2 text-sm text-white/70 leading-snug">{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────────── industries strip */
+function IndustriesStrip() {
+  const { t } = useI18n();
+  const items = [
+    { icon: Utensils,  k: "restaurant" },
+    { icon: Hotel,     k: "hotel" },
+    { icon: Coffee,    k: "cafe" },
+    { icon: Beer,      k: "pub" },
+    { icon: TruckIcon, k: "takeaway" },
+    { icon: ChefHat,   k: "canteen" },
+  ];
+  return (
+    <section className="bg-[color:var(--color-cream)]">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-20 md:py-24">
+        <div className="max-w-3xl">
+          <div className="eyebrow">{t("industries.title").split(".")[0]}.</div>
+          <h2 className="mt-4 display-black text-3xl md:text-5xl">{t("industries.title")}</h2>
+          <p className="mt-4 text-black/60 max-w-2xl">{t("industries.subtitle")}</p>
+        </div>
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {items.map(({ icon: Icon, k }) => (
+            <div key={k} className="rounded-2xl bg-white border border-black/5 p-5 flex flex-col items-center text-center hover:shadow-lg transition">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-alert-red)]/10 text-[color:var(--color-alert-red)]">
+                <Icon size={22} strokeWidth={2.2} />
+              </span>
+              <div className="mt-3 font-black text-sm">{t(`industries.${k}`)}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────────── FAQ */
+function FaqSection() {
+  const { t } = useI18n();
+  const items = [1, 2, 3, 4, 5] as const;
+  return (
+    <section className="bg-white border-t border-black/10">
+      <div className="mx-auto max-w-[900px] px-4 md:px-8 py-24 md:py-32">
+        <h2 className="display-black text-4xl md:text-5xl text-center">{t("faq.title")}</h2>
+        <div className="mt-12 divide-y divide-black/10 border-y border-black/10">
+          {items.map((i) => (
+            <details key={i} className="group py-5">
+              <summary className="flex items-center justify-between gap-4 cursor-pointer list-none">
+                <span className="font-black text-lg md:text-xl">{t(`faq.q${i}`)}</span>
+                <span className="shrink-0 inline-flex items-center justify-center h-9 w-9 rounded-full bg-black text-white group-open:hidden">
+                  <Plus size={16} />
+                </span>
+                <span className="shrink-0 hidden group-open:inline-flex items-center justify-center h-9 w-9 rounded-full bg-[color:var(--color-alert-red)] text-white">
+                  <Minus size={16} />
+                </span>
+              </summary>
+              <p className="mt-4 text-black/70 text-base leading-relaxed pr-12">{t(`faq.a${i}`)}</p>
+            </details>
+          ))}
         </div>
       </div>
     </section>

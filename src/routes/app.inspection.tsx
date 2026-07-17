@@ -7,17 +7,7 @@ export const Route = createFileRoute("/app/inspection")({
   component: InspectionPage,
 });
 
-const contents = [
-  { title: "HACCP-Plan v3",                sub: "Freigegeben 12.06.2026" },
-  { title: "Temperaturhistorie 90 Tage",    sub: "218 Messungen · 1 Abweichung behoben" },
-  { title: "Reinigungsnachweise",           sub: "94 Einträge · mit Fotobeleg" },
-  { title: "Schädlingskontrolle",           sub: "6 Inspektionen · 0 Sichtungen" },
-  { title: "Allergenmatrix",                sub: "42 Rezepte · 14 Allergene" },
-  { title: "IfSG §§42–43 Nachweise",         sub: "12/12 Mitarbeitende gültig" },
-  { title: "LMHV-Schulungsmatrix",          sub: "vollständig" },
-  { title: "Rückverfolgbarkeit",             sub: "vorwärts + rückwärts, letzte 90 Tage" },
-  { title: "Auditverlauf",                  sub: "3 interne Audits + Prüferbewertung" },
-];
+const contents = ["plan","temp","clean","pest","allerg","ifsg","lmhv","trace","audit"] as const;
 
 function InspectionPage() {
   const { t } = useI18n();
@@ -34,20 +24,20 @@ function InspectionPage() {
           <p className="text-muted-foreground mt-1">{t("inspection.sub")}</p>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-3 py-1 text-xs font-semibold">
-          <Lock size={12} /> Read-only · Behörde
+          <Lock size={12} /> {t("inspection.readonly")}
         </span>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 surface p-6">
-          <h2 className="font-display text-xl">Inhalt · Contents</h2>
+          <h2 className="font-display text-xl">{t("inspection.contents")}</h2>
           <div className="mt-4 divide-y divide-border">
-            {contents.map((c) => (
-              <div key={c.title} className="py-3 flex items-center gap-3">
+            {contents.map((k) => (
+              <div key={k} className="py-3 flex items-center gap-3">
                 <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary grid place-items-center"><FileCheck2 size={14} /></div>
                 <div className="flex-1">
-                  <div className="text-sm font-medium">{c.title}</div>
-                  <div className="text-xs text-muted-foreground">{c.sub}</div>
+                  <div className="text-sm font-medium">{t(`inspection.item.${k}`)}</div>
+                  <div className="text-xs text-muted-foreground">{t(`inspection.item.${k}.sub`)}</div>
                 </div>
                 <span className="text-xs text-success">✓</span>
               </div>
@@ -57,9 +47,7 @@ function InspectionPage() {
 
         <div className="surface p-6 h-fit">
           <h2 className="font-display text-xl">{t("inspection.generate")}</h2>
-          <p className="text-xs text-muted-foreground mt-1">
-            Erstellt einen schreibgeschützten Nachweis für die Lebensmittelaufsicht.
-          </p>
+          <p className="text-xs text-muted-foreground mt-1">{t("inspection.desc")}</p>
           <div className="mt-4 space-y-3">
             <label className="block">
               <span className="text-xs text-muted-foreground">{t("inspection.from")}</span>
@@ -74,15 +62,15 @@ function InspectionPage() {
             onClick={() => setReady(true)}
             className="btn-primary w-full mt-5"
           >
-            <Gavel size={16} /> Generieren
+            <Gavel size={16} /> {t("common.generate")}
           </button>
 
           {ready && (
             <div className="mt-4 rounded-lg bg-forest-deep text-primary-foreground p-4">
-              <div className="text-xs opacity-70 uppercase tracking-widest">Bereit</div>
-              <div className="font-display text-lg mt-1">Nachweispaket · {from} → {to}</div>
+              <div className="text-xs opacity-70 uppercase tracking-widest">{t("common.ready")}</div>
+              <div className="font-display text-lg mt-1">{t("inspection.pack")} · {from} → {to}</div>
               <button className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-accent text-accent-foreground px-3 py-1.5 text-xs font-semibold">
-                <Download size={12} /> PDF herunterladen
+                <Download size={12} /> {t("common.downloadPdf")}
               </button>
             </div>
           )}
