@@ -28,10 +28,14 @@ import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
+import { Route as AppLogsRouteImport } from './routes/app.logs'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
+import { Route as AppExpiryRouteImport } from './routes/app.expiry'
+import { Route as AppDocumentsRouteImport } from './routes/app.documents'
 import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
 import { Route as AppChecksRouteImport } from './routes/app.checks'
+import { Route as AppAlertsRouteImport } from './routes/app.alerts'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -128,6 +132,11 @@ const AppRecipesRoute = AppRecipesRouteImport.update({
   path: '/recipes',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLogsRoute = AppLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInspectionRoute = AppInspectionRouteImport.update({
   id: '/inspection',
   path: '/inspection',
@@ -136,6 +145,16 @@ const AppInspectionRoute = AppInspectionRouteImport.update({
 const AppHaccpRoute = AppHaccpRouteImport.update({
   id: '/haccp',
   path: '/haccp',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppExpiryRoute = AppExpiryRouteImport.update({
+  id: '/expiry',
+  path: '/expiry',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDocumentsRoute = AppDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCleaningRoute = AppCleaningRouteImport.update({
@@ -148,6 +167,11 @@ const AppChecksRoute = AppChecksRouteImport.update({
   path: '/checks',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAlertsRoute = AppAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -156,10 +180,14 @@ export interface FileRoutesByFullPath {
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/documents': typeof AppDocumentsRoute
+  '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/logs': typeof AppLogsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -179,10 +207,14 @@ export interface FileRoutesByTo {
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/documents': typeof AppDocumentsRoute
+  '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/logs': typeof AppLogsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -205,10 +237,14 @@ export interface FileRoutesById {
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/alerts': typeof AppAlertsRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/documents': typeof AppDocumentsRoute
+  '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/logs': typeof AppLogsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -232,10 +268,14 @@ export interface FileRouteTypes {
     | '/legal'
     | '/login'
     | '/sitemap.xml'
+    | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
+    | '/app/documents'
+    | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
+    | '/app/logs'
     | '/app/recipes'
     | '/app/settings'
     | '/app/suppliers'
@@ -255,10 +295,14 @@ export interface FileRouteTypes {
     | '/legal'
     | '/login'
     | '/sitemap.xml'
+    | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
+    | '/app/documents'
+    | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
+    | '/app/logs'
     | '/app/recipes'
     | '/app/settings'
     | '/app/suppliers'
@@ -280,10 +324,14 @@ export interface FileRouteTypes {
     | '/legal'
     | '/login'
     | '/sitemap.xml'
+    | '/app/alerts'
     | '/app/checks'
     | '/app/cleaning'
+    | '/app/documents'
+    | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
+    | '/app/logs'
     | '/app/recipes'
     | '/app/settings'
     | '/app/suppliers'
@@ -443,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRecipesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/logs': {
+      id: '/app/logs'
+      path: '/logs'
+      fullPath: '/app/logs'
+      preLoaderRoute: typeof AppLogsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/inspection': {
       id: '/app/inspection'
       path: '/inspection'
@@ -455,6 +510,20 @@ declare module '@tanstack/react-router' {
       path: '/haccp'
       fullPath: '/app/haccp'
       preLoaderRoute: typeof AppHaccpRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/expiry': {
+      id: '/app/expiry'
+      path: '/expiry'
+      fullPath: '/app/expiry'
+      preLoaderRoute: typeof AppExpiryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/documents': {
+      id: '/app/documents'
+      path: '/documents'
+      fullPath: '/app/documents'
+      preLoaderRoute: typeof AppDocumentsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/cleaning': {
@@ -471,14 +540,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChecksRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/alerts': {
+      id: '/app/alerts'
+      path: '/alerts'
+      fullPath: '/app/alerts'
+      preLoaderRoute: typeof AppAlertsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAlertsRoute: typeof AppAlertsRoute
   AppChecksRoute: typeof AppChecksRoute
   AppCleaningRoute: typeof AppCleaningRoute
+  AppDocumentsRoute: typeof AppDocumentsRoute
+  AppExpiryRoute: typeof AppExpiryRoute
   AppHaccpRoute: typeof AppHaccpRoute
   AppInspectionRoute: typeof AppInspectionRoute
+  AppLogsRoute: typeof AppLogsRoute
   AppRecipesRoute: typeof AppRecipesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppSuppliersRoute: typeof AppSuppliersRoute
@@ -488,10 +568,14 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAlertsRoute: AppAlertsRoute,
   AppChecksRoute: AppChecksRoute,
   AppCleaningRoute: AppCleaningRoute,
+  AppDocumentsRoute: AppDocumentsRoute,
+  AppExpiryRoute: AppExpiryRoute,
   AppHaccpRoute: AppHaccpRoute,
   AppInspectionRoute: AppInspectionRoute,
+  AppLogsRoute: AppLogsRoute,
   AppRecipesRoute: AppRecipesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppSuppliersRoute: AppSuppliersRoute,

@@ -7,6 +7,7 @@ import {
   LayoutDashboard, ShieldCheck, ClipboardCheck, Thermometer, Sparkles,
   Wheat, Truck, Users, Gavel, Settings, ArrowLeft, Bell, Search, LogOut,
   ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, Clock, Command,
+  BellRing, CalendarClock, FileArchive, History,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app")({
@@ -43,6 +44,15 @@ const GROUPS: NavGroup[] = [
     labelKey: "nav.group.people",
     items: [
       { to: "/app/training",    icon: Users,           key: "menu.training",    nav: "training" },
+    ],
+  },
+  {
+    labelKey: "nav.group.records",
+    items: [
+      { to: "/app/alerts",      icon: BellRing,        key: "menu.alerts",      nav: "alerts" },
+      { to: "/app/expiry",      icon: CalendarClock,   key: "menu.expiry",      nav: "expiry" },
+      { to: "/app/documents",   icon: FileArchive,     key: "menu.documents",   nav: "documents" },
+      { to: "/app/logs",        icon: History,         key: "menu.logs",        nav: "logs" },
     ],
   },
   {
