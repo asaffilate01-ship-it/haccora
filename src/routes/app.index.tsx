@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowRight, ShieldCheck, TrendingUp,
 } from "lucide-react";
@@ -8,6 +9,7 @@ import { useState } from "react";
 export const Route = createFileRoute("/app/")({
   component: Dashboard,
 });
+
 
 interface Task { id: string; title: string; category: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 
