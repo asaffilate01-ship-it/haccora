@@ -18,19 +18,25 @@ const DEMO_USERS: Record<Role, AuthUser> = {
   inspector: { name: "Dr. K. Braun", email: "kbraun@ba-fk.berlin.de",    initials: "KB", role: "inspector", location: "Bezirksamt Friedrichshain-Kreuzberg" },
 };
 
-const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit"] as const;
+const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit","settings"] as const;
 export type NavKey = typeof NAV_KEYS[number];
 
 export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
-  owner:     ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit"],
-  manager:   ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit"],
-  chef:      ["dashboard","haccp","checks","temperature","cleaning","recipes","training"],
+  owner:     ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit","settings"],
+  manager:   ["dashboard","haccp","checks","temperature","cleaning","recipes","suppliers","training","audit","settings"],
+  chef:      ["dashboard","haccp","checks","temperature","cleaning","recipes","training","settings"],
   staff:     ["dashboard","checks","temperature","cleaning","training"],
   inspector: ["dashboard","audit"],
 };
 
 export function canAccess(role: Role, key: NavKey) {
   return ROLE_PERMISSIONS[role].includes(key);
+}
+
+/** Where each role should land after signing in. */
+export function homeFor(role: Role): string {
+  if (role === "inspector") return "/app/inspection";
+  return "/app";
 }
 
 type Ctx = {
