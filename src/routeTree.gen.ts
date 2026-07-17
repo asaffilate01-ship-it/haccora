@@ -26,6 +26,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AppTrainingRouteImport } from './routes/app.training'
 import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
@@ -117,6 +118,11 @@ const AppSuppliersRoute = AppSuppliersRouteImport.update({
   path: '/suppliers',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRecipesRoute = AppRecipesRouteImport.update({
   id: '/recipes',
   path: '/recipes',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/recipes': typeof AppRecipesRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
     | '/app/haccp'
     | '/app/inspection'
     | '/app/recipes'
+    | '/app/settings'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
@@ -250,6 +260,7 @@ export interface FileRouteTypes {
     | '/app/haccp'
     | '/app/inspection'
     | '/app/recipes'
+    | '/app/settings'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
@@ -274,6 +285,7 @@ export interface FileRouteTypes {
     | '/app/haccp'
     | '/app/inspection'
     | '/app/recipes'
+    | '/app/settings'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
@@ -417,6 +429,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSuppliersRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/recipes': {
       id: '/app/recipes'
       path: '/recipes'
@@ -461,6 +480,7 @@ interface AppRouteChildren {
   AppHaccpRoute: typeof AppHaccpRoute
   AppInspectionRoute: typeof AppInspectionRoute
   AppRecipesRoute: typeof AppRecipesRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppSuppliersRoute: typeof AppSuppliersRoute
   AppTemperatureRoute: typeof AppTemperatureRoute
   AppTrainingRoute: typeof AppTrainingRoute
@@ -473,6 +493,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppHaccpRoute: AppHaccpRoute,
   AppInspectionRoute: AppInspectionRoute,
   AppRecipesRoute: AppRecipesRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppSuppliersRoute: AppSuppliersRoute,
   AppTemperatureRoute: AppTemperatureRoute,
   AppTrainingRoute: AppTrainingRoute,

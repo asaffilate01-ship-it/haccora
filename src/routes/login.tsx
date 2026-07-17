@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/re
 import { useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { useAuth, ROLES, type Role } from "@/lib/auth";
+import { useAuth, ROLES, homeFor, type Role } from "@/lib/auth";
 import {
   Crown, ClipboardList, ChefHat, User, Gavel, ArrowRight, ShieldCheck, ArrowLeft,
 } from "lucide-react";
@@ -34,13 +34,13 @@ function LoginPage() {
 
   useEffect(() => {
     if (hydrated && user) {
-      navigate({ to: (search?.redirect as string) || "/app" });
+      navigate({ to: (search?.redirect as string) || homeFor(user.role) });
     }
   }, [hydrated, user, navigate, search]);
 
   const pick = (role: Role) => {
     signIn(role);
-    navigate({ to: role === "inspector" ? "/app/inspection" : "/app" });
+    navigate({ to: homeFor(role) });
   };
 
   return (
