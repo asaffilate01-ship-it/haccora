@@ -200,6 +200,10 @@ const de: Dict = {
   "menu.training": "Team & Schulung",
   "menu.audit": "Audit & Inspektion",
   "menu.settings": "Einstellungen",
+  "menu.alerts": "Warnungen",
+  "menu.expiry": "Ablauf & MHD",
+  "menu.documents": "Dokumente",
+  "menu.logs": "Protokolle",
 
   // Dashboard
   "dash.hello": "Guten Morgen, Aylin",
