@@ -152,9 +152,9 @@ function Hero() {
                   ▶
                 </span>
                 <span className="leading-tight">
-                  <span className="block font-bold">{t("hero.video.title") ?? "Watch how we can support your business"}</span>
+                  <span className="block font-bold">{t("hero.video.title")}</span>
                   <span className="block text-[color:var(--color-alert-green)] text-xs font-bold tracking-widest mt-0.5">
-                    PLAY NOW
+                    {t("hero.play")}
                   </span>
                 </span>
               </div>
@@ -162,8 +162,9 @@ function Hero() {
                 <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-black text-white text-[10px]">★</span>
                 REVIEWS<span className="text-[color:var(--color-alert-red)]">.io</span>
                 <span className="mx-2 h-4 w-px bg-black/15" />
-                Read our <span className="text-[color:var(--color-alert-red)]">5 star</span> reviews
+                {t("hero.review.readOur")} <span className="text-[color:var(--color-alert-red)]">{t("hero.review.stars")}</span>
               </div>
+
             </div>
           </div>
 
@@ -314,36 +315,30 @@ function InspectorBand() {
           <div className="rounded-3xl bg-white text-black p-6 md:p-8 border-4 border-[color:var(--color-alert-red)]/80">
             <div className="flex items-center justify-between">
               <div className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-alert-red)]">
-                Read-only · Behördenansicht
+                {t("inspector.demo.header")}
               </div>
               <span className="text-xs font-bold text-black/60">DE</span>
             </div>
             <h3 className="mt-3 display-black text-2xl md:text-3xl">
-              Nachweispaket — Juli 2026
+              {t("inspector.demo.title")}
             </h3>
             <p className="mt-1 text-sm text-black/60">
-              Kreuzberg Kitchen · Bezirksamt Friedrichshain-Kreuzberg
+              {t("inspector.demo.sub")}
             </p>
 
             <div className="mt-6 divide-y divide-black/10">
-              {[
-                ["HACCP-Plan v3", "Freigegeben 12.06.2026 · A. Yılmaz"],
-                ["Temperaturhistorie", "218 Messungen · 1 Abweichung behoben"],
-                ["Reinigungsnachweise", "94 Einträge · Fotobelege"],
-                ["Allergenmatrix", "42 Rezepte · 14 Allergene"],
-                ["IfSG §§42–43", "12/12 Mitarbeitende · gültig"],
-                ["Rückverfolgbarkeit", "Lieferant → Charge → Portion"],
-              ].map(([a, b]) => (
-                <div key={a} className="flex items-center justify-between py-3">
+              {(["plan","temp","clean","allerg","ifsg","trace"] as const).map((k) => (
+                <div key={k} className="flex items-center justify-between py-3">
                   <div className="min-w-0">
-                    <div className="text-sm font-bold truncate">{a}</div>
-                    <div className="text-xs text-black/55 truncate">{b}</div>
+                    <div className="text-sm font-bold truncate">{t(`inspector.demo.${k}.t`)}</div>
+                    <div className="text-xs text-black/55 truncate">{t(`inspector.demo.${k}.b`)}</div>
                   </div>
                   <CheckCircle2 size={18} className="text-[color:var(--color-alert-green)] shrink-0" />
                 </div>
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -353,14 +348,12 @@ function InspectorBand() {
 /* ────────────────────────────────────────────── regulation */
 function Regulation() {
   const { t } = useI18n();
-  const cards = [
-    { title: "Berlin Bezirksämter", body: "12 Bezirke · Kontakte, Formulare, Zuständigkeit." },
-    { title: "NRW Kreise/Städte", body: "396 Kommunen · Registrierung und Änderungsmeldung." },
-    { title: "EU 852/2004", body: "HACCP-Rahmen mit Übersetzung in Ihre Prozesse." },
-    { title: "EU 1169/2011", body: "14 Allergene automatisch aus Rezeptdaten." },
-    { title: "IfSG §§42–43", body: "Fristen, Belehrungen, Wiederholungen." },
-    { title: "LMHV", body: "Schulungsmatrix je Rolle und Standort." },
-  ];
+  const cards = (["berlin","nrw","eu852","eu1169","ifsg","lmhv"] as const).map((k) => ({
+    k,
+    title: t(`reg.card.${k}.t`),
+    body: t(`reg.card.${k}.b`),
+  }));
+
   return (
     <section id="regulation" className="bg-[color:var(--color-cream)]">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
