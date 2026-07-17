@@ -984,8 +984,13 @@ const en: Dict = {
   "menu.rota": "Rota & clock-in",
   "menu.waste": "Waste",
   "menu.stock": "Stock & receiving",
+  "menu.purchasing": "Purchasing & POs",
+  "menu.assets": "Assets & maintenance",
+  "menu.recalls": "Recalls & quarantine",
+  "menu.audits": "Internal audits",
   "nav.group.routines": "Operations",
   "nav.group.inventory": "Stock & waste",
+  "nav.group.assets": "Assets",
 
   "dash.hello": "Good morning, Aylin",
   "dash.sub": "Your compliance today — as of now.",
