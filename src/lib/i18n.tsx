@@ -1561,7 +1561,18 @@ const en: Dict = {
   "faq.a4": "Yes. You can export your records to PDF at any time — even after cancellation your records remain accessible to you.",
   "faq.q5": "Which staff languages are supported?",
   "faq.a5": "The interface is German and English. Microlearning for staff is additionally available in Turkish, Arabic, Polish, Romanian and Ukrainian.",
+  // New modules & permissions matrix (EN)
+  "menu.labels": "Labels",
+  "menu.incidents": "Incidents",
+  "nav.group.kitchenOps": "Kitchen ops",
+  "settings.perms.title": "Permissions matrix",
+  "settings.perms.sub": "Role-based actions — mapped to IfSG, ArbSchG and EU-1169/2011.",
+  "settings.perms.action": "Action",
+  "settings.perms.yourRole": "Your role",
+  "settings.perms.legend.yes": "Allowed",
+  "settings.perms.legend.no": "Blocked",
 };
+
 
 
 
