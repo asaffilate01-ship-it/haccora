@@ -337,6 +337,3 @@ function SeverityBadge({ sev }: { sev: "high" | "medium" | "low" }) {
   const { c, l } = map[sev];
   return <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${c}`}>{l}</span>;
 }
-
-// unused suppressions
-void ({} as Role);
