@@ -28,6 +28,7 @@ import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
+import { Route as AppLogsRouteImport } from './routes/app.logs'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
 import { Route as AppExpiryRouteImport } from './routes/app.expiry'
@@ -131,6 +132,11 @@ const AppRecipesRoute = AppRecipesRouteImport.update({
   path: '/recipes',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLogsRoute = AppLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInspectionRoute = AppInspectionRouteImport.update({
   id: '/inspection',
   path: '/inspection',
@@ -181,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/logs': typeof AppLogsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByTo {
   '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/logs': typeof AppLogsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -236,6 +244,7 @@ export interface FileRoutesById {
   '/app/expiry': typeof AppExpiryRoute
   '/app/haccp': typeof AppHaccpRoute
   '/app/inspection': typeof AppInspectionRoute
+  '/app/logs': typeof AppLogsRoute
   '/app/recipes': typeof AppRecipesRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
     | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
+    | '/app/logs'
     | '/app/recipes'
     | '/app/settings'
     | '/app/suppliers'
@@ -292,6 +302,7 @@ export interface FileRouteTypes {
     | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
+    | '/app/logs'
     | '/app/recipes'
     | '/app/settings'
     | '/app/suppliers'
@@ -320,6 +331,7 @@ export interface FileRouteTypes {
     | '/app/expiry'
     | '/app/haccp'
     | '/app/inspection'
+    | '/app/logs'
     | '/app/recipes'
     | '/app/settings'
     | '/app/suppliers'
@@ -479,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRecipesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/logs': {
+      id: '/app/logs'
+      path: '/logs'
+      fullPath: '/app/logs'
+      preLoaderRoute: typeof AppLogsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/inspection': {
       id: '/app/inspection'
       path: '/inspection'
@@ -539,6 +558,7 @@ interface AppRouteChildren {
   AppExpiryRoute: typeof AppExpiryRoute
   AppHaccpRoute: typeof AppHaccpRoute
   AppInspectionRoute: typeof AppInspectionRoute
+  AppLogsRoute: typeof AppLogsRoute
   AppRecipesRoute: typeof AppRecipesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppSuppliersRoute: typeof AppSuppliersRoute
@@ -555,6 +575,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppExpiryRoute: AppExpiryRoute,
   AppHaccpRoute: AppHaccpRoute,
   AppInspectionRoute: AppInspectionRoute,
+  AppLogsRoute: AppLogsRoute,
   AppRecipesRoute: AppRecipesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppSuppliersRoute: AppSuppliersRoute,
