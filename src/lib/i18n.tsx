@@ -218,7 +218,7 @@ const de: Dict = {
   "role.staff.desc": "Nur eigene Aufgaben, Checklisten und Schulungen.",
   "role.inspector": "Lebensmittelaufsicht",
   "role.inspector.desc": "Schreibgeschützter Inspector Mode – Nachweise, kein Zugriff auf operative Daten.",
-  "dash.hello": "Guten Tag",
+  "dash.hello.role": "Guten Tag",
   "dash.role.owner": "Ihr Compliance-Überblick über alle Standorte.",
   "dash.role.manager": "Heute im Betrieb – Aufgaben, Personal und offene Punkte.",
   "dash.role.chef": "Küche heute – HACCP, Temperaturen, Freigaben.",
