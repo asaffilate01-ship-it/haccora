@@ -26,6 +26,13 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
+    labelKey: "nav.group.routines",
+    items: [
+      { to: "/app/routines",    icon: ListChecks,      key: "menu.routines",    nav: "routines" },
+      { to: "/app/rota",        icon: CalendarDays,    key: "menu.rota",        nav: "rota" },
+    ],
+  },
+  {
     labelKey: "nav.group.compliance",
     items: [
       { to: "/app/haccp",       icon: ShieldCheck,     key: "menu.haccp",       nav: "haccp" },
@@ -37,8 +44,16 @@ const GROUPS: NavGroup[] = [
   {
     labelKey: "nav.group.kitchen",
     items: [
+      { to: "/app/menu",        icon: UtensilsCrossed, key: "menu.menu",        nav: "menu" },
       { to: "/app/recipes",     icon: Wheat,           key: "menu.recipes",     nav: "recipes" },
       { to: "/app/suppliers",   icon: Truck,           key: "menu.suppliers",   nav: "suppliers" },
+    ],
+  },
+  {
+    labelKey: "nav.group.inventory",
+    items: [
+      { to: "/app/stock",       icon: Boxes,           key: "menu.stock",       nav: "stock" },
+      { to: "/app/waste",       icon: Trash2,          key: "menu.waste",       nav: "waste" },
     ],
   },
   {
