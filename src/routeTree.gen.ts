@@ -23,6 +23,7 @@ import { Route as LegalImprintRouteImport } from './routes/legal.imprint'
 import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
 import { Route as LegalComplaintsRouteImport } from './routes/legal.complaints'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AppWasteRouteImport } from './routes/app.waste'
 import { Route as AppTrainingRouteImport } from './routes/app.training'
 import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
@@ -109,6 +110,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BlogRoute,
+} as any)
+const AppWasteRoute = AppWasteRouteImport.update({
+  id: '/waste',
+  path: '/waste',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppTrainingRoute = AppTrainingRouteImport.update({
   id: '/training',
@@ -214,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
+  '/app/waste': typeof AppWasteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/legal/complaints': typeof LegalComplaintsRoute
   '/legal/cookies': typeof LegalCookiesRoute
@@ -244,6 +251,7 @@ export interface FileRoutesByTo {
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
+  '/app/waste': typeof AppWasteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/legal/complaints': typeof LegalComplaintsRoute
   '/legal/cookies': typeof LegalCookiesRoute
@@ -277,6 +285,7 @@ export interface FileRoutesById {
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
+  '/app/waste': typeof AppWasteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/legal/complaints': typeof LegalComplaintsRoute
   '/legal/cookies': typeof LegalCookiesRoute
@@ -311,6 +320,7 @@ export interface FileRouteTypes {
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
+    | '/app/waste'
     | '/blog/$slug'
     | '/legal/complaints'
     | '/legal/cookies'
@@ -341,6 +351,7 @@ export interface FileRouteTypes {
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
+    | '/app/waste'
     | '/blog/$slug'
     | '/legal/complaints'
     | '/legal/cookies'
@@ -373,6 +384,7 @@ export interface FileRouteTypes {
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
+    | '/app/waste'
     | '/blog/$slug'
     | '/legal/complaints'
     | '/legal/cookies'
@@ -491,6 +503,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
+    }
+    '/app/waste': {
+      id: '/app/waste'
+      path: '/waste'
+      fullPath: '/app/waste'
+      preLoaderRoute: typeof AppWasteRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/training': {
       id: '/app/training'
@@ -624,6 +643,7 @@ interface AppRouteChildren {
   AppSuppliersRoute: typeof AppSuppliersRoute
   AppTemperatureRoute: typeof AppTemperatureRoute
   AppTrainingRoute: typeof AppTrainingRoute
+  AppWasteRoute: typeof AppWasteRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -644,6 +664,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSuppliersRoute: AppSuppliersRoute,
   AppTemperatureRoute: AppTemperatureRoute,
   AppTrainingRoute: AppTrainingRoute,
+  AppWasteRoute: AppWasteRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
