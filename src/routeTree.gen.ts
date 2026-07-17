@@ -9,38 +9,188 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppTrainingRouteImport } from './routes/app.training'
+import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
+import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
+import { Route as AppRecipesRouteImport } from './routes/app.recipes'
+import { Route as AppInspectionRouteImport } from './routes/app.inspection'
+import { Route as AppHaccpRouteImport } from './routes/app.haccp'
+import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
+import { Route as AppChecksRouteImport } from './routes/app.checks'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTrainingRoute = AppTrainingRouteImport.update({
+  id: '/training',
+  path: '/training',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTemperatureRoute = AppTemperatureRouteImport.update({
+  id: '/temperature',
+  path: '/temperature',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSuppliersRoute = AppSuppliersRouteImport.update({
+  id: '/suppliers',
+  path: '/suppliers',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRecipesRoute = AppRecipesRouteImport.update({
+  id: '/recipes',
+  path: '/recipes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInspectionRoute = AppInspectionRouteImport.update({
+  id: '/inspection',
+  path: '/inspection',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHaccpRoute = AppHaccpRouteImport.update({
+  id: '/haccp',
+  path: '/haccp',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCleaningRoute = AppCleaningRouteImport.update({
+  id: '/cleaning',
+  path: '/cleaning',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChecksRoute = AppChecksRouteImport.update({
+  id: '/checks',
+  path: '/checks',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/checks': typeof AppChecksRoute
+  '/app/cleaning': typeof AppCleaningRoute
+  '/app/haccp': typeof AppHaccpRoute
+  '/app/inspection': typeof AppInspectionRoute
+  '/app/recipes': typeof AppRecipesRoute
+  '/app/suppliers': typeof AppSuppliersRoute
+  '/app/temperature': typeof AppTemperatureRoute
+  '/app/training': typeof AppTrainingRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/checks': typeof AppChecksRoute
+  '/app/cleaning': typeof AppCleaningRoute
+  '/app/haccp': typeof AppHaccpRoute
+  '/app/inspection': typeof AppInspectionRoute
+  '/app/recipes': typeof AppRecipesRoute
+  '/app/suppliers': typeof AppSuppliersRoute
+  '/app/temperature': typeof AppTemperatureRoute
+  '/app/training': typeof AppTrainingRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app/checks': typeof AppChecksRoute
+  '/app/cleaning': typeof AppCleaningRoute
+  '/app/haccp': typeof AppHaccpRoute
+  '/app/inspection': typeof AppInspectionRoute
+  '/app/recipes': typeof AppRecipesRoute
+  '/app/suppliers': typeof AppSuppliersRoute
+  '/app/temperature': typeof AppTemperatureRoute
+  '/app/training': typeof AppTrainingRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/sitemap.xml'
+    | '/app/checks'
+    | '/app/cleaning'
+    | '/app/haccp'
+    | '/app/inspection'
+    | '/app/recipes'
+    | '/app/suppliers'
+    | '/app/temperature'
+    | '/app/training'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/sitemap.xml'
+    | '/app/checks'
+    | '/app/cleaning'
+    | '/app/haccp'
+    | '/app/inspection'
+    | '/app/recipes'
+    | '/app/suppliers'
+    | '/app/temperature'
+    | '/app/training'
+    | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/sitemap.xml'
+    | '/app/checks'
+    | '/app/cleaning'
+    | '/app/haccp'
+    | '/app/inspection'
+    | '/app/recipes'
+    | '/app/suppliers'
+    | '/app/temperature'
+    | '/app/training'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +198,103 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/training': {
+      id: '/app/training'
+      path: '/training'
+      fullPath: '/app/training'
+      preLoaderRoute: typeof AppTrainingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/temperature': {
+      id: '/app/temperature'
+      path: '/temperature'
+      fullPath: '/app/temperature'
+      preLoaderRoute: typeof AppTemperatureRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/suppliers': {
+      id: '/app/suppliers'
+      path: '/suppliers'
+      fullPath: '/app/suppliers'
+      preLoaderRoute: typeof AppSuppliersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/recipes': {
+      id: '/app/recipes'
+      path: '/recipes'
+      fullPath: '/app/recipes'
+      preLoaderRoute: typeof AppRecipesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/inspection': {
+      id: '/app/inspection'
+      path: '/inspection'
+      fullPath: '/app/inspection'
+      preLoaderRoute: typeof AppInspectionRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/haccp': {
+      id: '/app/haccp'
+      path: '/haccp'
+      fullPath: '/app/haccp'
+      preLoaderRoute: typeof AppHaccpRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/cleaning': {
+      id: '/app/cleaning'
+      path: '/cleaning'
+      fullPath: '/app/cleaning'
+      preLoaderRoute: typeof AppCleaningRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/checks': {
+      id: '/app/checks'
+      path: '/checks'
+      fullPath: '/app/checks'
+      preLoaderRoute: typeof AppChecksRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppChecksRoute: typeof AppChecksRoute
+  AppCleaningRoute: typeof AppCleaningRoute
+  AppHaccpRoute: typeof AppHaccpRoute
+  AppInspectionRoute: typeof AppInspectionRoute
+  AppRecipesRoute: typeof AppRecipesRoute
+  AppSuppliersRoute: typeof AppSuppliersRoute
+  AppTemperatureRoute: typeof AppTemperatureRoute
+  AppTrainingRoute: typeof AppTrainingRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppChecksRoute: AppChecksRoute,
+  AppCleaningRoute: AppCleaningRoute,
+  AppHaccpRoute: AppHaccpRoute,
+  AppInspectionRoute: AppInspectionRoute,
+  AppRecipesRoute: AppRecipesRoute,
+  AppSuppliersRoute: AppSuppliersRoute,
+  AppTemperatureRoute: AppTemperatureRoute,
+  AppTrainingRoute: AppTrainingRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
