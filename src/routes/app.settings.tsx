@@ -119,6 +119,9 @@ function SettingsPage() {
           />
         </div>
       </section>
+      {/* Permissions matrix */}
+      <PermissionsMatrix currentRole={user.role} />
+
 
       {/* Danger */}
       <section className="surface p-6 border border-destructive/30">
