@@ -974,6 +974,13 @@ const en: Dict = {
   "menu.expiry": "Expiry & shelf life",
   "menu.documents": "Documents",
   "menu.logs": "Audit log",
+  "menu.routines": "Routines (open/close)",
+  "menu.menu": "Menu & allergens",
+  "menu.rota": "Rota & clock-in",
+  "menu.waste": "Waste",
+  "menu.stock": "Stock & receiving",
+  "nav.group.routines": "Operations",
+  "nav.group.inventory": "Stock & waste",
 
   "dash.hello": "Good morning, Aylin",
   "dash.sub": "Your compliance today — as of now.",
