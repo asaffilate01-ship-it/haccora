@@ -46,12 +46,8 @@ function Dashboard() {
   const overdue = visibleTasks.filter((x) => x.status === "overdue").length;
 
   return (
-    <div className="p-6 md:p-10 space-y-8">
-      <div>
-        <div className="eyebrow">{user.location} · {dateStr}</div>
-        <h1 className="mt-1 text-3xl md:text-4xl">{t("dash.hello.role")}, {firstName}</h1>
-        <p className="text-muted-foreground mt-1">{t(`dash.role.${user.role}`)}</p>
-      </div>
+    <div className="p-4 md:p-8 lg:p-10 space-y-6 md:space-y-8">
+      <RoleHero role={user.role} firstName={firstName} dateStr={dateStr} location={user.location} />
 
       {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
       {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
@@ -61,6 +57,39 @@ function Dashboard() {
     </div>
   );
 }
+
+/* ---------------- Role hero band ---------------- */
+function RoleHero({ role, firstName, dateStr, location }: { role: string; firstName: string; dateStr: string; location: string }) {
+  const { t } = useI18n();
+  const theme = {
+    owner:     { bg: "bg-[#0b0f1a] text-white", accent: "text-[#f4b544]",                       icon: DollarSign,   eye: "dash.owner.hero.eye",   ti: "dash.owner.hero.t",   bo: "dash.owner.hero.b" },
+    manager:   { bg: "bg-[color:var(--color-alert-red)] text-white", accent: "text-white",       icon: ClipboardList,eye: "dash.manager.hero.eye", ti: "dash.manager.hero.t", bo: "dash.manager.hero.b" },
+    chef:      { bg: "bg-gradient-to-br from-emerald-700 to-emerald-900 text-white", accent: "text-emerald-200", icon: ChefHat, eye: "dash.chef.hero.eye", ti: "dash.chef.hero.t", bo: "dash.chef.hero.b" },
+    staff:     { bg: "bg-gradient-to-br from-sky-600 to-indigo-700 text-white", accent: "text-sky-100", icon: BookOpen, eye: "dash.staff.hero.eye", ti: "dash.staff.hero.t", bo: "dash.staff.hero.b" },
+    inspector: { bg: "bg-white border border-border text-foreground", accent: "text-[color:var(--color-alert-red)]", icon: Gavel, eye: "inspector.eyebrow", ti: "inspector.title", bo: "inspector.body" },
+  }[role as "owner"|"manager"|"chef"|"staff"|"inspector"];
+  const Icon = theme.icon;
+  return (
+    <div className={`rounded-2xl overflow-hidden ${theme.bg} shadow-lg`}>
+      <div className="p-5 md:p-8 flex items-start gap-4 md:gap-6">
+        <div className="hidden sm:grid h-12 w-12 md:h-14 md:w-14 place-items-center rounded-2xl bg-white/10 backdrop-blur">
+          <Icon size={26} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className={`text-[10px] md:text-xs font-black uppercase tracking-[0.18em] ${theme.accent}`}>{t(theme.eye)}</div>
+          <h1 className="mt-1.5 font-display text-2xl md:text-4xl leading-tight">
+            {t("dash.hello.role")}, {firstName}
+          </h1>
+          <p className="mt-1.5 text-sm md:text-base opacity-85 max-w-2xl">{t(theme.bo)}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] md:text-xs uppercase tracking-wider opacity-70">
+            <span>{location}</span><span>·</span><span>{dateStr}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 /* ---------------- Owner ---------------- */
 function OwnerView({ pending, overdue, tasks, done }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void }) {
