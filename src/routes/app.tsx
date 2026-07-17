@@ -44,7 +44,7 @@ function AppShell() {
             return (
               <Link
                 key={to}
-                to={to}
+                to={to as any}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm mb-0.5 transition ${
                   active
                     ? "bg-primary text-primary-foreground"
@@ -91,7 +91,7 @@ function AppShell() {
           {NAV.slice(0, 5).map(({ to, icon: Icon, key, exact }) => {
             const active = exact ? pathname === to : pathname.startsWith(to);
             return (
-              <Link key={to} to={to} className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] ${active ? "text-primary" : "text-muted-foreground"}`}>
+              <Link key={to} to={to as any} className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] ${active ? "text-primary" : "text-muted-foreground"}`}>
                 <Icon size={18} /> {t(key)}
               </Link>
             );
