@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/re
 import { useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { useAuth, ROLES, type Role } from "@/lib/auth";
+import { useAuth, ROLES, homeFor, type Role } from "@/lib/auth";
 import {
   Crown, ClipboardList, ChefHat, User, Gavel, ArrowRight, ShieldCheck, ArrowLeft,
 } from "lucide-react";
