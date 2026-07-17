@@ -93,6 +93,9 @@ function SubNav() {
               {l.label}
             </a>
           ))}
+          <Link to="/blog" className="hover:text-[color:var(--color-alert-red)] transition">
+            {t("nav.blog") ?? "Blog"}
+          </Link>
         </nav>
         <a
           href="tel:+49301234567"
