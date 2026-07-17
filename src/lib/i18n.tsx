@@ -690,6 +690,71 @@ const en: Dict = {
   "dash.role.chef": "Kitchen today — HACCP, temperatures, sign-offs.",
   "dash.role.staff": "Your open tasks for today.",
   "dash.role.inspector": "Evidence view — read-only for the authority.",
+
+  // Nav groups
+  "nav.group.overview": "Overview",
+  "nav.group.compliance": "Compliance",
+  "nav.group.kitchen": "Kitchen & Sourcing",
+  "nav.group.people": "Team",
+  "nav.group.audit": "Audit",
+
+  // Notifications
+  "notif.title": "Notifications",
+  "notif.new": "new",
+  "notif.empty": "No open alerts.",
+  "notif.viewAll": "See all evidence",
+  "notif.temp.t": "Walk-in 2 above 5 °C",
+  "notif.temp.m": "Temperature · 12 min ago",
+  "notif.ifsg.t": "IfSG training due",
+  "notif.ifsg.m": "Team · 2 members",
+  "notif.clean.t": "Cleaning photo pending",
+  "notif.clean.m": "Cleaning · kitchen floor",
+  "notif.audit.t": "Auditor report ready",
+  "notif.audit.m": "Audit · last 30 days",
+
+  // Command palette
+  "palette.placeholder": "Search modules…",
+  "palette.empty": "No matches.",
+
+  // Settings
+  "settings.title": "Settings",
+  "settings.sub": "Account, language and notifications.",
+  "settings.profile": "Profile",
+  "settings.name": "Name",
+  "settings.email": "Email",
+  "settings.role": "Role",
+  "settings.location": "Location",
+  "settings.language": "Language",
+  "settings.language.hint": "Switch between German and English at any time.",
+  "settings.notifications": "Notifications",
+  "settings.n.email": "Email alerts",
+  "settings.n.email.hint": "Critical warnings and inspection reports by email.",
+  "settings.n.push": "Push notifications",
+  "settings.n.push.hint": "Instant alerts in browser and on mobile.",
+  "settings.n.digest": "Daily digest",
+  "settings.n.digest.hint": "07:00 every morning — open tasks and metrics.",
+  "settings.danger": "Account",
+  "settings.danger.body": "Reset demo data or switch role.",
+  "settings.reset": "Reset demo data",
+
+  // Owner dashboard
+  "owner.locations": "Locations",
+  "owner.revenue": "Revenue (30d)",
+  "owner.revenue.hint": "+6% vs. last month",
+  "owner.byLocation": "Locations at a glance",
+  "owner.last30": "Last 30 days",
+  "owner.alerts": "alerts",
+
+  // Chef dashboard
+  "chef.temps": "Temperatures OK",
+  "chef.haccp": "HACCP plan",
+  "chef.approved": "Approved",
+  "chef.recipes": "Recipes",
+  "chef.brigade": "Brigade",
+
+  // Staff dashboard
+  "staff.training.t": "My training",
+  "staff.training.b": "See open modules and certificates.",
 };
 
 
