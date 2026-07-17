@@ -3,7 +3,7 @@ import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowRight, ShieldCheck, TrendingUp,
-  MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen,
+  MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen, ClipboardList,
 } from "lucide-react";
 import { useState } from "react";
 
