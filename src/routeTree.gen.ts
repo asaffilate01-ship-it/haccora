@@ -27,6 +27,7 @@ import { Route as AppWasteRouteImport } from './routes/app.waste'
 import { Route as AppTrainingRouteImport } from './routes/app.training'
 import { Route as AppTemperatureRouteImport } from './routes/app.temperature'
 import { Route as AppSuppliersRouteImport } from './routes/app.suppliers'
+import { Route as AppStockRouteImport } from './routes/app.stock'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRoutinesRouteImport } from './routes/app.routines'
 import { Route as AppRotaRouteImport } from './routes/app.rota'
@@ -131,6 +132,11 @@ const AppSuppliersRoute = AppSuppliersRouteImport.update({
   path: '/suppliers',
   getParentRoute: () => AppRoute,
 } as any)
+const AppStockRoute = AppStockRouteImport.update({
+  id: '/stock',
+  path: '/stock',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -217,6 +223,7 @@ export interface FileRoutesByFullPath {
   '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/stock': typeof AppStockRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
@@ -248,6 +255,7 @@ export interface FileRoutesByTo {
   '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/stock': typeof AppStockRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
@@ -282,6 +290,7 @@ export interface FileRoutesById {
   '/app/rota': typeof AppRotaRoute
   '/app/routines': typeof AppRoutinesRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/stock': typeof AppStockRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/temperature': typeof AppTemperatureRoute
   '/app/training': typeof AppTrainingRoute
@@ -317,6 +326,7 @@ export interface FileRouteTypes {
     | '/app/rota'
     | '/app/routines'
     | '/app/settings'
+    | '/app/stock'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
@@ -348,6 +358,7 @@ export interface FileRouteTypes {
     | '/app/rota'
     | '/app/routines'
     | '/app/settings'
+    | '/app/stock'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
@@ -381,6 +392,7 @@ export interface FileRouteTypes {
     | '/app/rota'
     | '/app/routines'
     | '/app/settings'
+    | '/app/stock'
     | '/app/suppliers'
     | '/app/temperature'
     | '/app/training'
@@ -532,6 +544,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSuppliersRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/stock': {
+      id: '/app/stock'
+      path: '/stock'
+      fullPath: '/app/stock'
+      preLoaderRoute: typeof AppStockRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/settings': {
       id: '/app/settings'
       path: '/settings'
@@ -640,6 +659,7 @@ interface AppRouteChildren {
   AppRotaRoute: typeof AppRotaRoute
   AppRoutinesRoute: typeof AppRoutinesRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  AppStockRoute: typeof AppStockRoute
   AppSuppliersRoute: typeof AppSuppliersRoute
   AppTemperatureRoute: typeof AppTemperatureRoute
   AppTrainingRoute: typeof AppTrainingRoute
@@ -661,6 +681,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppRotaRoute: AppRotaRoute,
   AppRoutinesRoute: AppRoutinesRoute,
   AppSettingsRoute: AppSettingsRoute,
+  AppStockRoute: AppStockRoute,
   AppSuppliersRoute: AppSuppliersRoute,
   AppTemperatureRoute: AppTemperatureRoute,
   AppTrainingRoute: AppTrainingRoute,
