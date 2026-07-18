@@ -28,6 +28,26 @@ function LabelsPage() {
   const [sel, setSel] = useState(CATALOG[0]);
   const canPrint = user ? can(user.role, "labels.print") : false;
 
+  const [history, setHistory] = useState<Array<{ id: string; kind: string; product_name: string; use_by: string | null; created_at: string; printed_by: string | null }>>([]);
+  const loadHistory = useCallback(async () => {
+    const { data } = await supabase.from("label_prints").select("*").order("created_at", { ascending: false }).limit(15);
+    setHistory((data ?? []) as any);
+  }, []);
+  useEffect(() => { loadHistory(); }, [loadHistory]);
+
+  const doPrint = async () => {
+    if (!canPrint || !user) return;
+    await supabase.from("label_prints").insert({
+      kind, product_name: lang === "de" ? sel.de : sel.en,
+      use_by: useBy.toISOString().slice(0,10),
+      allergens: kind === "allergen" ? sel.allergens : [],
+      printed_by: user.id,
+    });
+    loadHistory();
+    window.print();
+  };
+
+
   const today = new Date();
   const useBy = new Date(today.getTime() + sel.shelfDays * 86400000);
   const fmt = (d: Date) => d.toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
