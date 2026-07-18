@@ -11,7 +11,7 @@ interface Recall { id: string; product: string; batch: string | null; reason: st
 
 function RecallsPage() {
   const { lang } = useI18n();
-  const { user, role } = useAuth();
+  const { user } = useAuth(); const role = user?.role;
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const canEdit = role === "owner" || role === "manager" || role === "chef";
 

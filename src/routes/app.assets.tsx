@@ -11,7 +11,7 @@ interface Asset { id: string; name: string; category: string | null; location: s
 
 function AssetsPage() {
   const { lang } = useI18n();
-  const { role } = useAuth();
+  const { user } = useAuth(); const role = user?.role;
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const canEdit = role === "owner" || role === "manager";
 

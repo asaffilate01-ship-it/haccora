@@ -15,7 +15,7 @@ interface Hazard {
 
 function HaccpPage() {
   const { lang } = useI18n();
-  const { role } = useAuth();
+  const { user } = useAuth(); const role = user?.role;
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const canEdit = role === "owner" || role === "manager" || role === "chef";
 
