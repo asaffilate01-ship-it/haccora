@@ -356,6 +356,36 @@ export type Database = {
         }
         Relationships: []
       }
+      label_prints: {
+        Row: {
+          allergens: string[]
+          created_at: string
+          id: string
+          kind: string
+          printed_by: string | null
+          product_name: string
+          use_by: string | null
+        }
+        Insert: {
+          allergens?: string[]
+          created_at?: string
+          id?: string
+          kind: string
+          printed_by?: string | null
+          product_name: string
+          use_by?: string | null
+        }
+        Update: {
+          allergens?: string[]
+          created_at?: string
+          id?: string
+          kind?: string
+          printed_by?: string | null
+          product_name?: string
+          use_by?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -709,6 +739,80 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      training_courses: {
+        Row: {
+          created_at: string
+          id: string
+          minutes: number
+          modules: number
+          required: boolean
+          title_de: string
+          title_en: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          minutes?: number
+          modules?: number
+          required?: boolean
+          title_de: string
+          title_en: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          minutes?: number
+          modules?: number
+          required?: boolean
+          title_de?: string
+          title_en?: string
+        }
+        Relationships: []
+      }
+      training_records: {
+        Row: {
+          certificate_valid_to: string | null
+          completed_at: string | null
+          course_id: string | null
+          created_at: string
+          id: string
+          progress: number
+          score: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          certificate_valid_to?: string | null
+          completed_at?: string | null
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          progress?: number
+          score?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          certificate_valid_to?: string | null
+          completed_at?: string | null
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          progress?: number
+          score?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_records_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "training_courses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
