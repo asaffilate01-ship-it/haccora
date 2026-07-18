@@ -389,6 +389,48 @@ export type Database = {
         }
         Relationships: []
       }
+      purchase_orders: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          expected_date: string | null
+          id: string
+          line_count: number
+          notes: string | null
+          po_number: string
+          status: string
+          supplier: string
+          total_eur: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          expected_date?: string | null
+          id?: string
+          line_count?: number
+          notes?: string | null
+          po_number: string
+          status?: string
+          supplier: string
+          total_eur?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          expected_date?: string | null
+          id?: string
+          line_count?: number
+          notes?: string | null
+          po_number?: string
+          status?: string
+          supplier?: string
+          total_eur?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       recalls: {
         Row: {
           batch: string | null
@@ -424,6 +466,129 @@ export type Database = {
           reason?: string
           severity?: string
           status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      recipes: {
+        Row: {
+          allergens: string[]
+          category: string | null
+          cost_eur: number
+          created_at: string
+          created_by: string | null
+          flagged: boolean
+          id: string
+          name: string
+          notes: string | null
+          price_eur: number
+          updated_at: string
+        }
+        Insert: {
+          allergens?: string[]
+          category?: string | null
+          cost_eur?: number
+          created_at?: string
+          created_by?: string | null
+          flagged?: boolean
+          id?: string
+          name: string
+          notes?: string | null
+          price_eur?: number
+          updated_at?: string
+        }
+        Update: {
+          allergens?: string[]
+          category?: string | null
+          cost_eur?: number
+          created_at?: string
+          created_by?: string | null
+          flagged?: boolean
+          id?: string
+          name?: string
+          notes?: string | null
+          price_eur?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      shifts: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          end_time: string
+          id: string
+          notes: string | null
+          role_label: string | null
+          shift_date: string
+          staff_id: string | null
+          staff_name: string
+          start_time: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          end_time: string
+          id?: string
+          notes?: string | null
+          role_label?: string | null
+          shift_date: string
+          staff_id?: string | null
+          staff_name: string
+          start_time: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          end_time?: string
+          id?: string
+          notes?: string | null
+          role_label?: string | null
+          shift_date?: string
+          staff_id?: string | null
+          staff_name?: string
+          start_time?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      stock_items: {
+        Row: {
+          category: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          par: number
+          qty: number
+          supplier: string | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          par?: number
+          qty?: number
+          supplier?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          par?: number
+          qty?: number
+          supplier?: string | null
+          unit?: string
           updated_at?: string
         }
         Relationships: []
@@ -508,6 +673,39 @@ export type Database = {
           status?: string
           target_max?: number | null
           target_min?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      time_clock: {
+        Row: {
+          clock_in: string
+          clock_out: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          role_label: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          clock_in?: string
+          clock_out?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          role_label?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          clock_in?: string
+          clock_out?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          role_label?: string | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
