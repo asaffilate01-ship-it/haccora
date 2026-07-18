@@ -50,6 +50,9 @@ function Dashboard() {
   return (
     <div className="p-4 md:p-8 lg:p-10 space-y-6 md:space-y-8">
       {user.role !== "inspector" && <RoleHero role={user.role} firstName={firstName} dateStr={dateStr} location={user.location} />}
+      <LiveMetrics />
+
+
 
       {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
       {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
