@@ -1,38 +1,57 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { PackageX, AlertTriangle, ShieldAlert, PlusCircle, CheckCircle2 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
+import { PackageX, AlertTriangle, ShieldAlert, PlusCircle, CheckCircle2, Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/app/recalls")({
-  component: RecallsPage,
-});
+export const Route = createFileRoute("/app/recalls")({ component: RecallsPage });
 
-type Recall = {
-  id: string;
-  productDe: string; productEn: string;
-  lot: string;
-  supplierDe: string; supplierEn: string;
-  reasonDe: string; reasonEn: string;
-  severity: "high" | "medium" | "low";
-  status: "active" | "quarantined" | "closed";
-  affectedKg: number;
-  dateDe: string; dateEn: string;
-};
-
-const RECALLS: Recall[] = [
-  { id: "RC-2026-004", productDe: "Hühnerschenkel", productEn: "Chicken thighs",  lot: "L-CHK-2026-118", supplierDe: "Metro Cash & Carry", supplierEn: "Metro Cash & Carry", reasonDe: "Salmonellenverdacht (BVL-Warnung)", reasonEn: "Salmonella suspicion (BVL alert)", severity: "high",   status: "active",      affectedKg: 12.4, dateDe: "Heute 08:12", dateEn: "Today 08:12" },
-  { id: "RC-2026-003", productDe: "Feta-Käse 200g", productEn: "Feta cheese 200g", lot: "L-FTA-2026-091", supplierDe: "Bio-Hof Brandenburg", supplierEn: "Bio-Hof Brandenburg", reasonDe: "Listerienbefund Charge",           reasonEn: "Listeria in batch",                severity: "high",   status: "quarantined", affectedKg: 4.8,  dateDe: "Gestern",     dateEn: "Yesterday" },
-  { id: "RC-2026-002", productDe: "Sesampaste",      productEn: "Sesame paste",     lot: "L-SES-2026-042", supplierDe: "Orient Import",       supplierEn: "Orient Import",       reasonDe: "Fehlende Allergenkennzeichnung", reasonEn: "Missing allergen label",           severity: "medium", status: "closed",      affectedKg: 2.0,  dateDe: "12.07.2026",  dateEn: "Jul 12, 2026" },
-  { id: "RC-2026-001", productDe: "Basmati Reis 5kg",productEn: "Basmati rice 5kg", lot: "L-RIS-2026-011", supplierDe: "Handelshaus Süd",    supplierEn: "Handelshaus Süd",    reasonDe: "Pestizidrückstände",              reasonEn: "Pesticide residues",               severity: "low",    status: "closed",      affectedKg: 15.0, dateDe: "02.07.2026",  dateEn: "Jul 2, 2026" },
-];
+interface Recall { id: string; product: string; batch: string | null; reason: string; severity: string; status: string; initiated_at: string; }
 
 function RecallsPage() {
   const { lang } = useI18n();
+  const { user } = useAuth(); const role = user?.role;
   const t = (de: string, en: string) => (lang === "de" ? de : en);
-  const [open, setOpen] = useState(false);
+  const canEdit = role === "owner" || role === "manager" || role === "chef";
 
-  const active = RECALLS.filter((r) => r.status === "active").length;
-  const quarantined = RECALLS.filter((r) => r.status === "quarantined").length;
+  const [rows, setRows] = useState<Recall[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({ product: "", batch: "", reason: "", severity: "high" });
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from("recalls").select("*").order("initiated_at", { ascending: false }).limit(50);
+    if (error) setErr(error.message); else setRows((data ?? []) as Recall[]);
+    setLoading(false);
+  }, []);
+  useEffect(() => { load(); }, [load]);
+
+  const submit = async () => {
+    if (!form.product.trim() || !form.reason.trim()) {
+      setErr(t("Produkt und Grund sind Pflicht.", "Product and reason are required.")); return;
+    }
+    setBusy(true); setErr(null);
+    const { error } = await supabase.from("recalls").insert({
+      product: form.product, batch: form.batch || null, reason: form.reason,
+      severity: form.severity, status: "open", initiated_by: user?.id ?? null,
+    });
+    setBusy(false);
+    if (error) { setErr(error.message); return; }
+    setForm({ product: "", batch: "", reason: "", severity: "high" });
+    setOpen(false); load();
+  };
+
+  const updateStatus = async (id: string, status: string) => {
+    const { error } = await supabase.from("recalls").update({ status }).eq("id", id);
+    if (error) setErr(error.message); else load();
+  };
+
+  const active = rows.filter(r => r.status === "open").length;
+  const quarantined = rows.filter(r => r.status === "quarantined").length;
 
   return (
     <div className="p-6 md:p-10 space-y-8">
@@ -45,65 +64,88 @@ function RecallsPage() {
                "Track BVL/RASFF alerts, block batches, notify affected customers.")}
           </p>
         </div>
-        <button onClick={() => setOpen((o) => !o)} className="btn-alert-solid text-sm">
-          <PlusCircle size={16} className="inline mr-1.5" />{t("Rückruf melden", "Report recall")}
-        </button>
+        {canEdit && (
+          <button onClick={() => setOpen(o => !o)} className="btn-alert-solid text-sm">
+            <PlusCircle size={16} className="inline mr-1.5" />{t("Rückruf melden", "Report recall")}
+          </button>
+        )}
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        <Kpi label={t("Aktive Rückrufe", "Active recalls")} value={String(active)} tone="destructive" icon={AlertTriangle} />
-        <Kpi label={t("Quarantäne (Chargen)", "Quarantined (batches)")} value={String(quarantined)} tone="warning" icon={ShieldAlert} />
-        <Kpi label={t("RASFF-Abo aktiv", "RASFF feed active")} value={t("Ja", "Yes")} tone="success" icon={CheckCircle2} />
+        <Kpi label={t("Offene Rückrufe", "Open recalls")} value={String(active)} tone={active > 0 ? "destructive" : undefined} icon={AlertTriangle} />
+        <Kpi label={t("Quarantäne", "Quarantined")} value={String(quarantined)} tone={quarantined > 0 ? "warning" : undefined} icon={ShieldAlert} />
+        <Kpi label={t("Geschlossen", "Closed")} value={String(rows.filter(r => r.status === "closed").length)} tone="success" icon={CheckCircle2} />
       </div>
 
-      {open && (
+      {open && canEdit && (
         <div className="surface p-5 grid md:grid-cols-4 gap-3">
-          <input placeholder={t("Produkt", "Product")} className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
-          <input placeholder={t("Chargen-Nr.", "Lot #")} className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
-          <input placeholder={t("Grund", "Reason")} className="rounded-lg border border-border bg-card px-3 py-2 text-sm md:col-span-2" />
-          <button className="btn-alert-solid text-sm md:col-span-1">{t("Charge sperren", "Quarantine batch")}</button>
+          <input value={form.product} onChange={e => setForm({ ...form, product: e.target.value })} placeholder={t("Produkt", "Product")} className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+          <input value={form.batch} onChange={e => setForm({ ...form, batch: e.target.value })} placeholder={t("Chargen-Nr.", "Lot #")} className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+          <select value={form.severity} onChange={e => setForm({ ...form, severity: e.target.value })} className="rounded-lg border border-border bg-card px-3 py-2 text-sm">
+            <option value="high">{t("Hoch", "High")}</option>
+            <option value="medium">{t("Mittel", "Medium")}</option>
+            <option value="low">{t("Niedrig", "Low")}</option>
+          </select>
+          <button onClick={submit} disabled={busy} className="btn-alert-solid text-sm">
+            {busy ? <Loader2 size={14} className="inline animate-spin mr-1" /> : <PlusCircle size={14} className="inline mr-1" />}
+            {t("Sperren", "Report")}
+          </button>
+          <input value={form.reason} onChange={e => setForm({ ...form, reason: e.target.value })} placeholder={t("Grund", "Reason")} className="md:col-span-4 rounded-lg border border-border bg-card px-3 py-2 text-sm" />
         </div>
       )}
 
+      {err && <div className="rounded-lg bg-destructive/10 text-destructive text-sm px-3 py-2">{err}</div>}
+
       <div className="surface overflow-hidden">
         <div className="hidden md:grid grid-cols-12 text-xs uppercase tracking-widest text-muted-foreground bg-secondary/60 px-5 py-3">
-          <div className="col-span-2">{t("Rückruf", "Recall")}</div>
           <div className="col-span-3">{t("Produkt", "Product")}</div>
           <div className="col-span-2">{t("Charge", "Lot")}</div>
-          <div className="col-span-3">{t("Grund", "Reason")}</div>
-          <div className="col-span-1 text-right">{t("Menge", "Qty")}</div>
-          <div className="col-span-1 text-right">{t("Status", "Status")}</div>
+          <div className="col-span-4">{t("Grund", "Reason")}</div>
+          <div className="col-span-1 text-right">{t("Prio", "Sev")}</div>
+          <div className="col-span-2 text-right">{t("Status", "Status")}</div>
         </div>
-        <ul className="divide-y divide-border">
-          {RECALLS.map((r) => (
-            <li key={r.id} className="grid grid-cols-1 md:grid-cols-12 items-start px-5 py-3 text-sm gap-2">
-              <div className="md:col-span-2 flex items-center gap-2 font-mono text-xs">
-                <PackageX size={14} className={r.severity === "high" ? "text-destructive" : r.severity === "medium" ? "text-warning-foreground" : "text-muted-foreground"} />
-                {r.id}
-              </div>
-              <div className="md:col-span-3">
-                <div className="font-medium">{lang === "de" ? r.productDe : r.productEn}</div>
-                <div className="text-[11px] text-muted-foreground">{lang === "de" ? r.supplierDe : r.supplierEn} · {lang === "de" ? r.dateDe : r.dateEn}</div>
-              </div>
-              <div className="md:col-span-2 font-mono text-xs">{r.lot}</div>
-              <div className="md:col-span-3 text-xs">{lang === "de" ? r.reasonDe : r.reasonEn}</div>
-              <div className="md:col-span-1 text-right font-mono text-xs">{r.affectedKg} kg</div>
-              <div className="md:col-span-1 text-right">
-                <StatusBadge status={r.status} t={t} />
-              </div>
-            </li>
-          ))}
-        </ul>
+        {loading ? (
+          <div className="p-10 text-center text-sm text-muted-foreground"><Loader2 size={16} className="inline animate-spin mr-2" />{t("Lade…", "Loading…")}</div>
+        ) : rows.length === 0 ? (
+          <div className="p-10 text-center text-sm text-muted-foreground">{t("Keine Rückrufe erfasst.", "No recalls recorded.")}</div>
+        ) : (
+          <ul className="divide-y divide-border">
+            {rows.map(r => (
+              <li key={r.id} className="grid grid-cols-1 md:grid-cols-12 items-start px-5 py-3 text-sm gap-2">
+                <div className="md:col-span-3 flex items-start gap-2">
+                  <PackageX size={14} className={`mt-0.5 ${r.severity === "high" ? "text-destructive" : r.severity === "medium" ? "text-warning-foreground" : "text-muted-foreground"}`} />
+                  <div>
+                    <div className="font-medium">{r.product}</div>
+                    <div className="text-[11px] text-muted-foreground">{new Date(r.initiated_at).toLocaleDateString(lang === "de" ? "de-DE" : "en-GB")}</div>
+                  </div>
+                </div>
+                <div className="md:col-span-2 font-mono text-xs">{r.batch || "–"}</div>
+                <div className="md:col-span-4 text-xs">{r.reason}</div>
+                <div className="md:col-span-1 text-right">
+                  <span className={`text-[10px] font-bold uppercase ${r.severity === "high" ? "text-destructive" : r.severity === "medium" ? "text-warning-foreground" : "text-muted-foreground"}`}>{r.severity}</span>
+                </div>
+                <div className="md:col-span-2 text-right">
+                  {canEdit && r.status !== "closed" ? (
+                    <select value={r.status} onChange={e => updateStatus(r.id, e.target.value)} className="text-[10px] font-bold uppercase rounded border border-border bg-card px-2 py-0.5">
+                      <option value="open">{t("Offen", "Open")}</option>
+                      <option value="quarantined">{t("Quarantäne", "Quarantine")}</option>
+                      <option value="closed">{t("Geschlossen", "Closed")}</option>
+                    </select>
+                  ) : (
+                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-success/15 text-success">{t("Geschlossen", "Closed")}</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
 }
 
 function Kpi({ label, value, tone, icon: Icon }: { label: string; value: string; tone?: "success" | "warning" | "destructive"; icon: typeof PackageX }) {
-  const toneClass =
-    tone === "success" ? "text-success" :
-    tone === "warning" ? "text-warning-foreground" :
-    tone === "destructive" ? "text-destructive" : "";
+  const toneClass = tone === "success" ? "text-success" : tone === "warning" ? "text-warning-foreground" : tone === "destructive" ? "text-destructive" : "";
   return (
     <div className="surface p-5">
       <div className="flex items-center justify-between">
@@ -113,14 +155,4 @@ function Kpi({ label, value, tone, icon: Icon }: { label: string; value: string;
       <div className={`font-display text-3xl mt-2 ${toneClass}`}>{value}</div>
     </div>
   );
-}
-
-function StatusBadge({ status, t }: { status: Recall["status"]; t: (a: string, b: string) => string }) {
-  const map: Record<Recall["status"], { cls: string; deL: string; enL: string }> = {
-    active:      { cls: "bg-destructive/15 text-destructive", deL: "Aktiv",      enL: "Active" },
-    quarantined: { cls: "bg-warning/20 text-warning-foreground", deL: "Quarantäne", enL: "Quarantine" },
-    closed:      { cls: "bg-success/15 text-success",         deL: "Geschlossen", enL: "Closed" },
-  };
-  const m = map[status];
-  return <span className={`inline-flex text-[10px] font-bold uppercase px-2 py-0.5 rounded ${m.cls}`}>{t(m.deL, m.enL)}</span>;
 }
