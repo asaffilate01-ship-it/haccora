@@ -43,38 +43,42 @@ function RoutinesPage() {
 
   const load = useCallback(async () => {
     setLoading(true);
+    const startOfDay = new Date(); startOfDay.setHours(0,0,0,0);
     const { data } = await supabase.from("checks")
-      .select("id,name,status")
-      .eq("category", "routine")
-      .gte("due_date", today)
-      .lte("due_date", today);
+      .select("id,title,status,completed_at")
+      .eq("kind", "routine")
+      .gte("completed_at", startOfDay.toISOString());
     const map: Record<string, boolean> = {};
     (data ?? []).forEach((c: any) => {
-      // check name convention: "routine:{phase}:{stepId}"
-      if (c.status === "done" && c.name?.startsWith("routine:")) {
-        const parts = c.name.split(":");
+      if (c.status === "done" && c.title?.startsWith("routine:")) {
+        const parts = c.title.split(":");
         if (parts[2]) map[parts[2]] = true;
       }
     });
     setDone(map);
     setLoading(false);
-  }, [today]);
+  }, []);
   useEffect(() => { load(); }, [load]);
 
   const toggle = async (phaseId: string, s: Step) => {
     const isDone = !!done[s.id];
     setDone((d) => ({ ...d, [s.id]: !isDone }));
     const { data: { user } } = await supabase.auth.getUser();
-    const name = `routine:${phaseId}:${s.id}`;
+    if (!user) return;
+    const title = `routine:${phaseId}:${s.id}`;
+    const startOfDay = new Date(); startOfDay.setHours(0,0,0,0);
     if (isDone) {
-      await supabase.from("checks").delete().eq("name", name).eq("due_date", today);
+      await supabase.from("checks").delete()
+        .eq("title", title).eq("user_id", user.id)
+        .gte("completed_at", startOfDay.toISOString());
     } else {
       await supabase.from("checks").insert({
-        name, category: "routine", status: "done", due_date: today,
-        completed_at: new Date().toISOString(), completed_by: user?.id,
+        title, kind: "routine", status: "done",
+        completed_at: new Date().toISOString(), user_id: user.id,
       });
     }
   };
+
 
   const phase = PHASES.find((p) => p.id === activePhase)!;
   const totalDone = Object.values(done).filter(Boolean).length;
