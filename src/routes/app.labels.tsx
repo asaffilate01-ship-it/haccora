@@ -144,12 +144,32 @@ function LabelsPage() {
 
           <button
             disabled={!canPrint}
-            onClick={() => window.print()}
+            onClick={doPrint}
             className="btn-alert-solid w-full disabled:opacity-40 disabled:cursor-not-allowed">
             <Printer size={16} className="inline mr-2" />
             {canPrint ? t("Etikett drucken","Print label") : t("Keine Berechtigung","No permission")}
           </button>
         </div>
+      </div>
+
+      <div className="surface overflow-hidden">
+        <div className="px-5 py-3 border-b border-border bg-secondary/50 flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+          <History size={14} /> {t("Druckverlauf","Print history")}
+        </div>
+        {history.length === 0 ? (
+          <div className="p-6 text-center text-sm text-muted-foreground">{t("Noch keine Drucke.","No prints yet.")}</div>
+        ) : (
+          <ul className="divide-y divide-border">
+            {history.map((h) => (
+              <li key={h.id} className="grid grid-cols-12 items-center px-5 py-2.5 text-sm">
+                <div className="col-span-5 font-medium">{h.product_name}</div>
+                <div className="col-span-2 text-xs uppercase tracking-widest text-muted-foreground">{h.kind}</div>
+                <div className="col-span-3 text-xs font-mono">{h.use_by ?? "—"}</div>
+                <div className="col-span-2 text-xs text-muted-foreground text-right">{new Date(h.created_at).toLocaleString(lang==="de"?"de-DE":"en-GB")}</div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
