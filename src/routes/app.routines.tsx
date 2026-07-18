@@ -39,7 +39,7 @@ function RoutinesPage() {
   const [done, setDone] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
 
-  const today = new Date().toISOString().slice(0, 10);
+  
 
   const load = useCallback(async () => {
     setLoading(true);
