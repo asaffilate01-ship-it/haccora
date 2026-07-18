@@ -1,151 +1,85 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import {
-  History, Search, Download, Eye, Pencil, Trash2, LogIn, LogOut, ShieldCheck,
-  Thermometer, FileText, CheckCircle2, XCircle,
-} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { History, Search, Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/app/logs")({
-  component: LogsPage,
-});
+export const Route = createFileRoute("/app/logs")({ component: LogsPage });
 
-type Action = "view" | "create" | "update" | "delete" | "login" | "logout" | "approve" | "reject";
-type Entry = {
-  id: string;
-  ts: string;
-  actor: string;
-  role: string;
-  action: Action;
-  targetDe: string; targetEn: string;
-  ip: string;
-  channel: "web" | "mobile" | "api";
-};
-
-const LOG: Entry[] = [
-  { id: "L-8891", ts: "2026-07-17 09:14:22", actor: "Anna Weber",   role: "Owner",   action: "approve", targetDe: "HACCP-Plan v4.2 freigegeben", targetEn: "Approved HACCP plan v4.2", ip: "82.14.9.14",  channel: "web" },
-  { id: "L-8890", ts: "2026-07-17 08:52:03", actor: "Omar El-Sayed",role: "Chef",    action: "update",  targetDe: "Temperaturkontrolle Kühlhaus 2", targetEn: "Temperature check cold room 2", ip: "10.0.1.14", channel: "mobile" },
-  { id: "L-8889", ts: "2026-07-17 08:41:11", actor: "Aylin Yılmaz", role: "Staff",   action: "create",  targetDe: "Reinigungsnachweis Arbeitsflächen", targetEn: "Cleaning proof — surfaces", ip: "10.0.1.19", channel: "mobile" },
-  { id: "L-8888", ts: "2026-07-17 08:02:44", actor: "Marta Kowal",  role: "Manager", action: "login",   targetDe: "Anmeldung", targetEn: "Sign-in", ip: "82.14.9.14", channel: "web" },
-  { id: "L-8887", ts: "2026-07-16 22:31:07", actor: "System",       role: "System",  action: "create",  targetDe: "Alarm: Kühlhaus 2 > Grenzwert", targetEn: "Alert: Cold room 2 above threshold", ip: "—", channel: "api" },
-  { id: "L-8886", ts: "2026-07-16 18:14:59", actor: "Anna Weber",   role: "Owner",   action: "update",  targetDe: "Lieferant hinzugefügt: Bio-Metzgerei Weber", targetEn: "Supplier added: Weber butchery", ip: "82.14.9.14", channel: "web" },
-  { id: "L-8885", ts: "2026-07-16 14:22:18", actor: "Dr. K. Braun", role: "Inspector", action: "view",  targetDe: "Inspektor-Modus geöffnet", targetEn: "Opened inspector mode", ip: "195.4.12.8", channel: "web" },
-  { id: "L-8884", ts: "2026-07-16 11:05:41", actor: "Omar El-Sayed",role: "Chef",    action: "reject",  targetDe: "Wareneingang abgelehnt (Temperatur 7 °C)", targetEn: "Goods intake rejected (temp 7 °C)", ip: "10.0.1.14", channel: "mobile" },
-  { id: "L-8883", ts: "2026-07-16 09:11:02", actor: "Marta Kowal",  role: "Manager", action: "delete",  targetDe: "Testdatensatz entfernt", targetEn: "Removed test record", ip: "82.14.9.14", channel: "web" },
-  { id: "L-8882", ts: "2026-07-15 21:44:33", actor: "Aylin Yılmaz", role: "Staff",   action: "logout",  targetDe: "Abmeldung", targetEn: "Sign-out", ip: "10.0.1.19", channel: "mobile" },
-];
-
-const ACTION_ICON: Record<Action, typeof History> = {
-  view: Eye, create: FileText, update: Pencil, delete: Trash2,
-  login: LogIn, logout: LogOut, approve: CheckCircle2, reject: XCircle,
-};
+interface Row { id: string; user_id: string; action: string; entity: string | null; entity_id: string | null; meta: Record<string, unknown> | null; created_at: string; }
 
 function LogsPage() {
   const { t, lang } = useI18n();
+  const [rows, setRows] = useState<Row[]>([]);
+  const [names, setNames] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
-  const [action, setAction] = useState<"all" | Action>("all");
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const { data } = await supabase.from("activity_logs").select("*").order("created_at", { ascending: false }).limit(500);
+    const list = (data ?? []) as Row[];
+    setRows(list);
+    const ids = Array.from(new Set(list.map(r => r.user_id).filter(Boolean)));
+    if (ids.length) {
+      const { data: profs } = await supabase.from("profiles").select("id, full_name").in("id", ids);
+      const map: Record<string, string> = {};
+      (profs ?? []).forEach((p: { id: string; full_name: string | null }) => { map[p.id] = p.full_name ?? "—"; });
+      setNames(map);
+    }
+    setLoading(false);
+  }, []);
+  useEffect(() => { load(); }, [load]);
 
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
-    return LOG.filter((e) => {
-      if (action !== "all" && e.action !== action) return false;
-      if (!s) return true;
-      const hay = `${e.actor} ${e.role} ${lang === "de" ? e.targetDe : e.targetEn} ${e.ip}`.toLowerCase();
-      return hay.includes(s);
-    });
-  }, [q, action, lang]);
+    if (!s) return rows;
+    return rows.filter(r => (r.action + " " + (r.entity ?? "") + " " + (names[r.user_id] ?? "")).toLowerCase().includes(s));
+  }, [rows, q, names]);
 
   return (
-    <div className="p-6 md:p-10 space-y-8">
-      <div className="flex items-start justify-between gap-6 flex-wrap">
-        <div>
-          <div className="eyebrow">{t("logs.eyebrow")}</div>
-          <h1 className="mt-1 text-3xl md:text-4xl">{t("logs.title")}</h1>
-          <p className="text-muted-foreground mt-1 max-w-2xl">{t("logs.sub")}</p>
-        </div>
-        <button className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold hover:bg-secondary transition">
-          <Download size={14} /> {t("logs.export")}
-        </button>
+    <div className="p-6 md:p-10 space-y-6">
+      <div>
+        <div className="eyebrow">{t("logs.eyebrow")}</div>
+        <h1 className="mt-1 text-3xl md:text-4xl">{t("logs.title")}</h1>
+        <p className="text-muted-foreground mt-1">{t("logs.sub")}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Tile icon={ShieldCheck} value={LOG.length} label={t("logs.tile.events")} />
-        <Tile icon={Pencil}       value={LOG.filter((e) => e.action === "update" || e.action === "create").length} label={t("logs.tile.changes")} />
-        <Tile icon={LogIn}         value={LOG.filter((e) => e.action === "login").length} label={t("logs.tile.signins")} />
-        <Tile icon={Thermometer}   value={LOG.filter((e) => e.actor === "System").length} label={t("logs.tile.system")} />
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex-1 min-w-[240px] flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
-          <Search size={14} className="text-muted-foreground" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("logs.searchPh")}
-            className="flex-1 bg-transparent outline-none text-sm" />
-        </div>
-        <div className="flex flex-wrap items-center gap-1 rounded-full border border-border bg-card p-1">
-          {(["all","create","update","delete","approve","reject","login","logout","view"] as const).map((k) => (
-            <button key={k} onClick={() => setAction(k)}
-              className={`text-[11px] px-2.5 py-1.5 rounded-full font-semibold uppercase tracking-wide transition ${
-                action === k ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
-              }`}>
-              {t(`logs.action.${k}`)}
-            </button>
-          ))}
-        </div>
+      <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 max-w-md">
+        <Search size={14} className="text-muted-foreground" />
+        <input value={q} onChange={e => setQ(e.target.value)} placeholder={t("logs.searchPh")} className="flex-1 bg-transparent outline-none text-sm" />
       </div>
 
       <div className="surface overflow-hidden">
         <div className="hidden md:grid grid-cols-12 text-xs uppercase tracking-widest text-muted-foreground bg-secondary/60 px-5 py-3">
           <div className="col-span-3">{t("logs.col.when")}</div>
           <div className="col-span-3">{t("logs.col.actor")}</div>
-          <div className="col-span-1">{t("logs.col.action")}</div>
-          <div className="col-span-3">{t("logs.col.target")}</div>
-          <div className="col-span-1">{t("logs.col.channel")}</div>
-          <div className="col-span-1">{t("logs.col.ip")}</div>
+          <div className="col-span-2">{t("logs.col.action")}</div>
+          <div className="col-span-4">{t("logs.col.target")}</div>
         </div>
-        <div className="divide-y divide-border">
-          {filtered.map((e) => {
-            const Icon = ACTION_ICON[e.action];
-            const actionTone =
-              e.action === "delete" || e.action === "reject" ? "bg-destructive/10 text-destructive"
-              : e.action === "approve" || e.action === "create" ? "bg-success/10 text-success"
-              : "bg-secondary text-muted-foreground";
-            return (
+        {loading ? (
+          <div className="p-10 text-center text-sm text-muted-foreground"><Loader2 size={16} className="inline animate-spin mr-2" />…</div>
+        ) : filtered.length === 0 ? (
+          <div className="p-10 text-center text-sm text-muted-foreground">
+            <History size={20} className="inline mr-2 opacity-40" />{t("logs.empty")}
+          </div>
+        ) : (
+          <div className="divide-y divide-border">
+            {filtered.map(e => (
               <div key={e.id} className="grid grid-cols-1 md:grid-cols-12 px-5 py-3 items-center gap-3 text-sm">
-                <div className="md:col-span-3 font-mono text-xs text-muted-foreground">{e.ts}</div>
-                <div className="md:col-span-3">
-                  <div className="font-medium truncate">{e.actor}</div>
-                  <div className="text-[11px] uppercase tracking-widest text-muted-foreground">{e.role}</div>
+                <div className="md:col-span-3 font-mono text-xs text-muted-foreground">{new Date(e.created_at).toLocaleString(lang==="de"?"de-DE":"en-GB")}</div>
+                <div className="md:col-span-3 truncate">{names[e.user_id] ?? "—"}</div>
+                <div className="md:col-span-2">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-secondary text-muted-foreground px-2 py-0.5 text-[10px] font-bold uppercase">{e.action}</span>
                 </div>
-                <div className="md:col-span-1">
-                  <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${actionTone}`}>
-                    <Icon size={10} /> {t(`logs.action.${e.action}`)}
-                  </span>
-                </div>
-                <div className="md:col-span-3 text-xs">{lang === "de" ? e.targetDe : e.targetEn}</div>
-                <div className="md:col-span-1 text-[11px] uppercase tracking-widest text-muted-foreground">{e.channel}</div>
-                <div className="md:col-span-1 text-xs font-mono text-muted-foreground">{e.ip}</div>
+                <div className="md:col-span-4 text-xs">{e.entity ?? "—"}{e.entity_id ? ` · ${e.entity_id.slice(0,8)}` : ""}</div>
               </div>
-            );
-          })}
-          {filtered.length === 0 && (
-            <div className="px-5 py-10 text-center text-sm text-muted-foreground">{t("logs.empty")}</div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <p className="text-xs text-muted-foreground max-w-3xl">{t("logs.footer")}</p>
-    </div>
-  );
-}
-
-function Tile({ icon: Icon, value, label }: { icon: typeof History; value: number; label: string }) {
-  return (
-    <div className="surface p-5 flex items-center gap-4">
-      <span className="h-11 w-11 rounded-xl grid place-items-center bg-primary/10 text-primary"><Icon size={20} /></span>
-      <div>
-        <div className="text-2xl font-display leading-none">{value}</div>
-        <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">{label}</div>
-      </div>
     </div>
   );
 }
