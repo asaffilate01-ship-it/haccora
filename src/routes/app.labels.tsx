@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { can } from "@/lib/permissions";
-import { Printer, Tag, Snowflake, AlertTriangle, ChefHat } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Printer, Tag, Snowflake, AlertTriangle, ChefHat, History } from "lucide-react";
 
 export const Route = createFileRoute("/app/labels")({
   component: LabelsPage,
