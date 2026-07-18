@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
+import { LiveMetrics } from "@/components/LiveMetrics";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowRight, ShieldCheck, TrendingUp,
   MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen, ClipboardList,
@@ -10,6 +11,7 @@ import { useState } from "react";
 export const Route = createFileRoute("/app/")({
   component: Dashboard,
 });
+
 
 interface Task { id: string; tKey: string; catKey: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 
@@ -48,6 +50,9 @@ function Dashboard() {
   return (
     <div className="p-4 md:p-8 lg:p-10 space-y-6 md:space-y-8">
       {user.role !== "inspector" && <RoleHero role={user.role} firstName={firstName} dateStr={dateStr} location={user.location} />}
+      <LiveMetrics />
+
+
 
       {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
       {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}

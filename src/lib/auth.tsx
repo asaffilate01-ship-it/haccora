@@ -1,22 +1,16 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export type Role = "owner" | "manager" | "chef" | "staff" | "inspector";
 
 export interface AuthUser {
+  id: string;
   name: string;
   email: string;
   initials: string;
   role: Role;
   location: string;
 }
-
-const DEMO_USERS: Record<Role, AuthUser> = {
-  owner:     { name: "Anna Weber",   email: "anna@kreuzberg-kitchen.de", initials: "AW", role: "owner",     location: "Kreuzberg Kitchen · HQ" },
-  manager:   { name: "Marta Kowal",  email: "marta@kreuzberg-kitchen.de",initials: "MK", role: "manager",   location: "Kreuzberg Kitchen" },
-  chef:      { name: "Omar El-Sayed",email: "omar@kreuzberg-kitchen.de", initials: "OE", role: "chef",      location: "Kreuzberg Kitchen · Küche" },
-  staff:     { name: "Aylin Yılmaz", email: "aylin@kreuzberg-kitchen.de",initials: "AY", role: "staff",     location: "Kreuzberg Kitchen · Service" },
-  inspector: { name: "Dr. K. Braun", email: "kbraun@ba-fk.berlin.de",    initials: "KB", role: "inspector", location: "Bezirksamt Friedrichshain-Kreuzberg" },
-};
 
 const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","labels","incidents","alerts","expiry","documents","logs","audit","settings"] as const;
 export type NavKey = typeof NAV_KEYS[number];
@@ -29,22 +23,31 @@ export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
   inspector: ["dashboard","documents","logs","audit","audits","recalls","incidents"],
 };
 
+export function canAccess(role: Role, key: NavKey) { return ROLE_PERMISSIONS[role].includes(key); }
+export function homeFor(role: Role): string { return role === "inspector" ? "/app/inspection" : "/app"; }
 
-export function canAccess(role: Role, key: NavKey) {
-  return ROLE_PERMISSIONS[role].includes(key);
+function initialsOf(name: string) {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((s) => s[0]?.toUpperCase() ?? "").join("") || "GS";
 }
 
-/** Where each role should land after signing in. */
-export function homeFor(role: Role): string {
-  if (role === "inspector") return "/app/inspection";
-  return "/app";
+async function fetchAuthUser(userId: string, email: string): Promise<AuthUser | null> {
+  const [{ data: profile }, { data: roleRow }] = await Promise.all([
+    supabase.from("profiles").select("full_name, location, restaurant_name").eq("id", userId).maybeSingle(),
+    supabase.from("user_roles").select("role").eq("user_id", userId).order("created_at", { ascending: true }).limit(1).maybeSingle(),
+  ]);
+  const name = profile?.full_name || email.split("@")[0];
+  const role = (roleRow?.role ?? "staff") as Role;
+  const location = profile?.location || profile?.restaurant_name || "GastroSafe";
+  return { id: userId, name, email, initials: initialsOf(name), role, location };
 }
 
 type Ctx = {
   user: AuthUser | null;
-  signIn: (role: Role) => void;
-  signOut: () => void;
   hydrated: boolean;
+  signInWithEmail: (email: string, password: string) => Promise<{ error?: string }>;
+  signUpWithEmail: (input: { email: string; password: string; name: string; role: Role; restaurant?: string }) => Promise<{ error?: string }>;
+  signOut: () => Promise<void>;
+  refresh: () => Promise<void>;
 };
 const AuthContext = createContext<Ctx | null>(null);
 
@@ -52,27 +55,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
+  const loadFromSession = async () => {
+    const { data } = await supabase.auth.getSession();
+    const s = data.session;
+    if (!s?.user) { setUser(null); return; }
+    const u = await fetchAuthUser(s.user.id, s.user.email ?? "");
+    setUser(u);
+  };
+
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("gs-auth");
-      if (raw) {
-        const role = raw as Role;
-        if (DEMO_USERS[role]) setUser(DEMO_USERS[role]);
+    // Listener first, then hydrate
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) { setUser(null); return; }
+      if (session.user) {
+        // defer to avoid blocking the callback
+        setTimeout(() => { fetchAuthUser(session.user.id, session.user.email ?? "").then(setUser); }, 0);
       }
-    } catch { /* noop */ }
-    setHydrated(true);
+    });
+    loadFromSession().finally(() => setHydrated(true));
+    return () => { sub.subscription.unsubscribe(); };
   }, []);
 
-  const signIn = (role: Role) => {
-    setUser(DEMO_USERS[role]);
-    try { localStorage.setItem("gs-auth", role); } catch { /* noop */ }
-  };
-  const signOut = () => {
-    setUser(null);
-    try { localStorage.removeItem("gs-auth"); } catch { /* noop */ }
+  const signInWithEmail = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { error: error.message };
+    return {};
   };
 
-  return <AuthContext.Provider value={{ user, signIn, signOut, hydrated }}>{children}</AuthContext.Provider>;
+  const signUpWithEmail: Ctx["signUpWithEmail"] = async ({ email, password, name, role, restaurant }) => {
+    const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/app` : undefined;
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectTo,
+        data: { full_name: name, role, restaurant_name: restaurant ?? null },
+      },
+    });
+    if (error) return { error: error.message };
+    return {};
+  };
+
+  const signOut = async () => { await supabase.auth.signOut(); setUser(null); };
+  const refresh = async () => { await loadFromSession(); };
+
+  return (
+    <AuthContext.Provider value={{ user, hydrated, signInWithEmail, signUpWithEmail, signOut, refresh }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
