@@ -77,6 +77,87 @@ export type Database = {
         }
         Relationships: []
       }
+      assets: {
+        Row: {
+          category: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          last_service_at: string | null
+          location: string | null
+          name: string
+          next_service_at: string | null
+          serial: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_service_at?: string | null
+          location?: string | null
+          name: string
+          next_service_at?: string | null
+          serial?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_service_at?: string | null
+          location?: string | null
+          name?: string
+          next_service_at?: string | null
+          serial?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      audits: {
+        Row: {
+          audit_type: string
+          created_at: string
+          id: string
+          notes: string | null
+          performed_at: string
+          performed_by: string | null
+          score: number | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          audit_type?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          score?: number | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          audit_type?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          score?: number | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       checks: {
         Row: {
           completed_at: string | null
@@ -188,6 +269,51 @@ export type Database = {
         }
         Relationships: []
       }
+      haccp_hazards: {
+        Row: {
+          control: string
+          corrective_action: string | null
+          created_at: string
+          created_by: string | null
+          critical_limit: string | null
+          hazard: string
+          id: string
+          is_ccp: boolean
+          monitoring: string | null
+          status: string
+          step: string
+          updated_at: string
+        }
+        Insert: {
+          control: string
+          corrective_action?: string | null
+          created_at?: string
+          created_by?: string | null
+          critical_limit?: string | null
+          hazard: string
+          id?: string
+          is_ccp?: boolean
+          monitoring?: string | null
+          status?: string
+          step: string
+          updated_at?: string
+        }
+        Update: {
+          control?: string
+          corrective_action?: string | null
+          created_at?: string
+          created_by?: string | null
+          critical_limit?: string | null
+          hazard?: string
+          id?: string
+          is_ccp?: boolean
+          monitoring?: string | null
+          status?: string
+          step?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       incidents: {
         Row: {
           closed_at: string | null
@@ -259,6 +385,45 @@ export type Database = {
           language?: string
           location?: string | null
           restaurant_name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      recalls: {
+        Row: {
+          batch: string | null
+          created_at: string
+          id: string
+          initiated_at: string
+          initiated_by: string | null
+          product: string
+          reason: string
+          severity: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          batch?: string | null
+          created_at?: string
+          id?: string
+          initiated_at?: string
+          initiated_by?: string | null
+          product: string
+          reason: string
+          severity?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          batch?: string | null
+          created_at?: string
+          id?: string
+          initiated_at?: string
+          initiated_by?: string | null
+          product?: string
+          reason?: string
+          severity?: string
+          status?: string
           updated_at?: string
         }
         Relationships: []
