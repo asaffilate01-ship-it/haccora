@@ -20,7 +20,7 @@ interface Row {
 
 function RecipesPage() {
   const { t, lang } = useI18n();
-  const { role } = useAuth();
+  const { user } = useAuth(); const role = user?.role ?? "staff";
   const canCost = can(role, "recipes.cost");
   const canEdit = can(role, "menu.editAllergens") || role === "owner" || role === "manager" || role === "chef";
 

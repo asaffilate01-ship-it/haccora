@@ -16,7 +16,7 @@ interface Row {
 
 function PurchasingPage() {
   const { lang } = useI18n();
-  const { role } = useAuth();
+  const { user } = useAuth(); const role = user?.role ?? "staff";
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const canManage = can(role, "purchasing.approvePO") || can(role, "purchasing.receive");
 

@@ -14,7 +14,7 @@ interface Item {
 
 function StockPage() {
   const { lang } = useI18n();
-  const { role } = useAuth();
+  const { user } = useAuth(); const role = user?.role ?? "staff";
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const canEdit = role === "owner" || role === "manager" || role === "chef";
 

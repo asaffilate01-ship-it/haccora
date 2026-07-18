@@ -21,7 +21,7 @@ function fmtDate(d: Date) { return d.toISOString().slice(0,10); }
 
 function RotaPage() {
   const { lang } = useI18n();
-  const { user, role } = useAuth();
+  const { user } = useAuth(); const role = user?.role ?? "staff";
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const days = lang === "de" ? DAYS_DE : DAYS_EN;
   const canManage = role === "owner" || role === "manager";
