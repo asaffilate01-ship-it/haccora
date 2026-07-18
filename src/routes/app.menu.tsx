@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { UtensilsCrossed, AlertTriangle, Leaf, Wheat, Fish, Egg, Milk, Nut, Search } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { UtensilsCrossed, AlertTriangle, Leaf, Wheat, Fish, Egg, Milk, Nut, Search, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/app/menu")({
   component: MenuPage,
@@ -25,32 +26,67 @@ const ALLERGENS = [
   { code: "mollusc",  de: "Weichtiere",   en: "Molluscs",     icon: Fish },
 ] as const;
 
-type Dish = {
-  id: string; de: string; en: string; price: number;
-  categoryDe: string; categoryEn: string;
-  allergens: string[]; vegan?: boolean; vegetarian?: boolean;
+// Map free-text allergen tags stored on recipes back to the LMIV codes above.
+const ALLERGEN_ALIASES: Record<string, string> = {
+  gluten: "gluten", weizen: "gluten", wheat: "gluten",
+  ei: "egg", egg: "egg", eier: "egg",
+  milch: "milk", milk: "milk", laktose: "milk", lactose: "milk",
+  fisch: "fish", fish: "fish",
+  krebstiere: "crust", crustaceans: "crust",
+  erdnuss: "peanut", peanut: "peanut", erdnüsse: "peanut",
+  soja: "soy", soy: "soy",
+  sellerie: "celery", celery: "celery",
+  senf: "mustard", mustard: "mustard",
+  sesam: "sesame", sesame: "sesame",
+  sulfite: "sulph", sulphites: "sulph", sulfit: "sulph",
+  lupine: "lupin", lupin: "lupin",
+  weichtiere: "mollusc", molluscs: "mollusc",
+  nüsse: "nut", schalenfrüchte: "nut", nuts: "nut", "tree nuts": "nut",
 };
 
-const DISHES: Dish[] = [
-  { id: "d1", de: "Königsberger Klopse", en: "Königsberg meatballs", price: 16.5, categoryDe: "Hauptgericht", categoryEn: "Mains",  allergens: ["gluten","egg","milk","mustard"] },
-  { id: "d2", de: "Rote-Bete-Risotto",   en: "Beetroot risotto",     price: 14.0, categoryDe: "Hauptgericht", categoryEn: "Mains",  allergens: ["milk","celery","sulph"], vegetarian: true },
-  { id: "d3", de: "Buddha-Bowl",         en: "Buddha bowl",          price: 12.5, categoryDe: "Hauptgericht", categoryEn: "Mains",  allergens: ["soy","sesame"], vegan: true, vegetarian: true },
-  { id: "d4", de: "Kabeljau in Senfsauce",en:"Cod in mustard sauce", price: 19.0, categoryDe: "Hauptgericht", categoryEn: "Mains",  allergens: ["fish","milk","mustard","gluten"] },
-  { id: "d5", de: "Käsekuchen",          en: "Cheesecake",           price: 6.5,  categoryDe: "Dessert",      categoryEn: "Dessert",allergens: ["gluten","egg","milk"], vegetarian: true },
-  { id: "d6", de: "Bruschetta",          en: "Bruschetta",           price: 8.0,  categoryDe: "Vorspeise",    categoryEn: "Starters",allergens: ["gluten"], vegan: true, vegetarian: true },
-];
+const toCode = (raw: string) => ALLERGEN_ALIASES[raw.trim().toLowerCase()] ?? raw.trim().toLowerCase();
+
+type Dish = {
+  id: string;
+  name: string;
+  category: string | null;
+  price: number;
+  allergens: string[];
+};
 
 function MenuPage() {
   const { lang } = useI18n();
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const [filter, setFilter] = useState<string[]>([]);
   const [q, setQ] = useState("");
+  const [dishes, setDishes] = useState<Dish[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filtered = useMemo(() => DISHES.filter((d) => {
-    const nameHit = (lang === "de" ? d.de : d.en).toLowerCase().includes(q.toLowerCase());
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const { data } = await supabase
+        .from("recipes")
+        .select("id,name,category,price_eur,allergens")
+        .order("category", { ascending: true });
+      setDishes(
+        (data ?? []).map((r: any) => ({
+          id: r.id,
+          name: r.name,
+          category: r.category,
+          price: Number(r.price_eur ?? 0),
+          allergens: Array.isArray(r.allergens) ? r.allergens.map(toCode) : [],
+        })),
+      );
+      setLoading(false);
+    })();
+  }, []);
+
+  const filtered = useMemo(() => dishes.filter((d) => {
+    const nameHit = d.name.toLowerCase().includes(q.toLowerCase());
     const allergenHit = filter.length === 0 || !filter.some((f) => d.allergens.includes(f));
     return nameHit && allergenHit;
-  }), [q, filter, lang]);
+  }), [q, filter, dishes]);
 
   const toggle = (c: string) => setFilter((f) => f.includes(c) ? f.filter((x) => x !== c) : [...f, c]);
 
@@ -96,29 +132,42 @@ function MenuPage() {
       </div>
 
       {/* Dishes */}
+      {loading ? (
+        <div className="surface p-10 text-center text-sm text-muted-foreground">
+          <Loader2 size={20} className="mx-auto mb-2 animate-spin" />
+          {t("Speisekarte wird geladen…", "Loading menu…")}
+        </div>
+      ) : (
       <div className="grid md:grid-cols-2 gap-4">
         {filtered.map((d) => (
           <div key={d.id} className="surface p-5 space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  {lang === "de" ? d.categoryDe : d.categoryEn}
-                </div>
-                <div className="font-display text-lg leading-tight mt-0.5">{lang === "de" ? d.de : d.en}</div>
+                {d.category && (
+                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {d.category}
+                  </div>
+                )}
+                <div className="font-display text-lg leading-tight mt-0.5">{d.name}</div>
               </div>
               <div className="text-right shrink-0">
                 <div className="font-display text-lg">€ {d.price.toFixed(2)}</div>
-                <div className="flex gap-1 justify-end mt-1">
-                  {d.vegan && <span className="text-[9px] font-bold bg-success/15 text-success px-1.5 py-0.5 rounded">VEGAN</span>}
-                  {d.vegetarian && !d.vegan && <span className="text-[9px] font-bold bg-success/15 text-success px-1.5 py-0.5 rounded">VEG</span>}
-                </div>
               </div>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {d.allergens.map((c) => {
-                const a = ALLERGENS.find((x) => x.code === c)!;
+              {d.allergens.length === 0 ? (
+                <span className="text-[10px] text-success font-semibold uppercase tracking-widest">
+                  {t("keine deklarierten Allergene", "no declared allergens")}
+                </span>
+              ) : d.allergens.map((c, i) => {
+                const a = ALLERGENS.find((x) => x.code === c);
+                if (!a) return (
+                  <span key={c+i} className="inline-flex items-center gap-1 rounded-full bg-warning/15 text-warning-foreground px-2 py-0.5 text-[10px] font-semibold">
+                    {c}
+                  </span>
+                );
                 return (
-                  <span key={c} className="inline-flex items-center gap-1 rounded-full bg-warning/15 text-warning-foreground px-2 py-0.5 text-[10px] font-semibold">
+                  <span key={c+i} className="inline-flex items-center gap-1 rounded-full bg-warning/15 text-warning-foreground px-2 py-0.5 text-[10px] font-semibold">
                     <a.icon size={10} /> {lang === "de" ? a.de : a.en}
                   </span>
                 );
@@ -129,10 +178,14 @@ function MenuPage() {
         {filtered.length === 0 && (
           <div className="col-span-full surface p-10 text-center text-sm text-muted-foreground">
             <UtensilsCrossed size={24} className="mx-auto mb-2 opacity-50" />
-            {t("Keine Gerichte entsprechen den Filtern.", "No dishes match the current filters.")}
+            {dishes.length === 0
+              ? t("Noch keine Rezepte. Erfassen Sie Gerichte unter Küche › Rezepte.",
+                   "No recipes yet. Add dishes under Kitchen › Recipes.")
+              : t("Keine Gerichte entsprechen den Filtern.", "No dishes match the current filters.")}
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }
