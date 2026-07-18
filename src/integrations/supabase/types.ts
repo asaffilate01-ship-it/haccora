@@ -14,16 +14,291 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_logs: {
+        Row: {
+          action: string
+          created_at: string
+          entity: string | null
+          entity_id: string | null
+          id: string
+          meta: Json | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          meta?: Json | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          meta?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      alerts: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          message: string | null
+          read_at: string | null
+          severity: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          message?: string | null
+          read_at?: string | null
+          severity?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          message?: string | null
+          read_at?: string | null
+          severity?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      checks: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          kind: string
+          note: string | null
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          kind: string
+          note?: string | null
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          note?: string | null
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          category: string
+          created_at: string
+          expires_at: string | null
+          file_url: string | null
+          id: string
+          title: string
+          user_id: string
+          version: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          expires_at?: string | null
+          file_url?: string | null
+          id?: string
+          title: string
+          user_id: string
+          version?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          expires_at?: string | null
+          file_url?: string | null
+          id?: string
+          title?: string
+          user_id?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
+      incidents: {
+        Row: {
+          closed_at: string | null
+          created_at: string
+          description: string | null
+          id: string
+          kind: string
+          occurred_at: string
+          root_cause: string | null
+          severity: string
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          kind: string
+          occurred_at?: string
+          root_cause?: string | null
+          severity?: string
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          kind?: string
+          occurred_at?: string
+          root_cause?: string | null
+          severity?: string
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          language: string
+          location: string | null
+          restaurant_name: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          language?: string
+          location?: string | null
+          restaurant_name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          language?: string
+          location?: string | null
+          restaurant_name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      temperature_logs: {
+        Row: {
+          created_at: string
+          id: string
+          location: string
+          logged_at: string
+          note: string | null
+          reading: number
+          status: string
+          target_max: number | null
+          target_min: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location: string
+          logged_at?: string
+          note?: string | null
+          reading: number
+          status?: string
+          target_max?: number | null
+          target_min?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string
+          logged_at?: string
+          note?: string | null
+          reading?: number
+          status?: string
+          target_max?: number | null
+          target_min?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      current_user_role: {
+        Args: never
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_inspector: { Args: { _user_id: string }; Returns: boolean }
+      is_manager_or_owner: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "owner" | "manager" | "chef" | "staff" | "inspector"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +425,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["owner", "manager", "chef", "staff", "inspector"],
+    },
   },
 } as const
