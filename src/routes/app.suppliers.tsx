@@ -15,7 +15,7 @@ interface Row {
 
 function SuppliersPage() {
   const { lang } = useI18n();
-  const { user, hasPermission } = useAuth();
+  const { user } = useAuth();
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const canManage = hasPermission("suppliers.manage") || user?.role === "owner" || user?.role === "manager";
   const [rows, setRows] = useState<Row[]>([]);
