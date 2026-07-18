@@ -1,101 +1,116 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { CheckCircle2, AlertTriangle, Clock } from "lucide-react";
-import { useState } from "react";
+import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
+import { CheckCircle2, Clock, PlusCircle, Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/app/checks")({
-  component: ChecksPage,
-});
+export const Route = createFileRoute("/app/checks")({ component: ChecksPage });
 
-type Status = "done" | "pending" | "overdue" | "failed";
-interface Row { id: string; tKey: string; catKey: string; time: string; assignee: string; status: Status }
+interface Row { id: string; kind: string; title: string; status: string; note: string | null; completed_at: string | null; created_at: string; user_id: string; }
 
-const rows: Row[] = [
-  { id: "01", tKey: "checks.row.opening",     catKey: "checks.cat.opening",     time: "07:30", assignee: "Aylin",   status: "done" },
-  { id: "02", tKey: "checks.row.chill",       catKey: "checks.cat.temperature", time: "08:00", assignee: "Aylin",   status: "failed" },
-  { id: "03", tKey: "checks.row.wash",        catKey: "checks.cat.hygiene",     time: "08:30", assignee: "Omar",    status: "done" },
-  { id: "04", tKey: "checks.row.delivery",    catKey: "checks.cat.goods",       time: "11:30", assignee: "Omar",    status: "pending" },
-  { id: "05", tKey: "checks.row.core",        catKey: "checks.cat.production",  time: "12:00", assignee: "Chef",    status: "done" },
-  { id: "06", tKey: "checks.row.hot",         catKey: "checks.cat.buffet",      time: "13:00", assignee: "Chef",    status: "done" },
-  { id: "07", tKey: "checks.row.cleanKitchen",catKey: "checks.cat.cleaning",    time: "15:00", assignee: "Marta",   status: "pending" },
-  { id: "08", tKey: "checks.row.oil",         catKey: "checks.cat.production",  time: "17:00", assignee: "Omar",    status: "pending" },
-  { id: "09", tKey: "checks.row.wc",          catKey: "checks.cat.guests",      time: "18:00", assignee: "Marta",   status: "pending" },
-  { id: "10", tKey: "checks.row.pest",        catKey: "checks.cat.pest",        time: "19:00", assignee: "Manager", status: "pending" },
-  { id: "11", tKey: "checks.row.closing",     catKey: "checks.cat.closing",     time: "23:30", assignee: "Manager", status: "pending" },
-];
+const KINDS = ["opening","hygiene","temperature","cleaning","closing","goods","production"] as const;
 
 function ChecksPage() {
-  const { t } = useI18n();
-  const [items, setItems] = useState(rows);
-  const [filter, setFilter] = useState<"all" | "pending" | "failed">("all");
+  const { lang } = useI18n();
+  const { user } = useAuth();
+  const t = (de: string, en: string) => (lang === "de" ? de : en);
 
-  const done = (id: string) => setItems((prev) => prev.map((x) => x.id === id ? { ...x, status: "done" as Status } : x));
-  const filtered = items.filter((r) => filter === "all" || (filter === "pending" ? r.status === "pending" || r.status === "overdue" : r.status === "failed"));
+  const [rows, setRows] = useState<Row[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [kind, setKind] = useState<string>("opening");
+  const [filter, setFilter] = useState<"all" | "pending" | "done">("all");
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from("checks").select("*").order("created_at", { ascending: false }).limit(100);
+    if (error) setErr(error.message); else setRows((data ?? []) as Row[]);
+    setLoading(false);
+  }, []);
+  useEffect(() => { load(); }, [load]);
+
+  const add = async () => {
+    if (!user || !title.trim()) return;
+    setBusy(true); setErr(null);
+    const { error } = await supabase.from("checks").insert({ user_id: user.id, kind, title: title.trim(), status: "pending" });
+    setBusy(false);
+    if (error) { setErr(error.message); return; }
+    setTitle(""); load();
+  };
+
+  const complete = async (id: string) => {
+    await supabase.from("checks").update({ status: "completed", completed_at: new Date().toISOString() }).eq("id", id);
+    load();
+  };
+
+  const filtered = rows.filter(r => filter === "all" ? true : filter === "pending" ? r.status === "pending" : r.status === "completed");
+  const todayDone = rows.filter(r => r.status === "completed" && r.completed_at && new Date(r.completed_at).toDateString() === new Date().toDateString()).length;
 
   return (
     <div className="p-6 md:p-10 space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="eyebrow">{t("checks.eyebrow")}</div>
-          <h1 className="mt-1 text-3xl md:text-4xl">{t("checks.title")}</h1>
-          <p className="text-muted-foreground mt-1">{t("checks.sub")}</p>
+          <div className="eyebrow">{t("Tägliche Kontrollen","Daily checks")}</div>
+          <h1 className="mt-1 text-3xl md:text-4xl">{t("Checks","Checks")}</h1>
+          <p className="text-muted-foreground mt-1">{t(`${todayDone} heute erledigt · live gespeichert.`, `${todayDone} completed today · live storage.`)}</p>
         </div>
-        <div className="flex gap-1 rounded-full border border-border bg-card p-1">
-          {(["all","pending","failed"] as const).map((k) => (
-            <button
-              key={k}
-              onClick={() => setFilter(k)}
-              className={`px-3 py-1 text-xs rounded-full transition ${filter === k ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              {k === "all" ? t("common.all") : k === "pending" ? t("checks.filter.pending") : t("checks.filter.failed")}
+        <div className="flex gap-2">
+          {(["all","pending","done"] as const).map(f => (
+            <button key={f} onClick={() => setFilter(f)}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${filter===f ? "bg-foreground text-background border-foreground" : "border-border hover:bg-secondary"}`}>
+              {f === "all" ? t("Alle","All") : f === "pending" ? t("Offen","Pending") : t("Erledigt","Done")}
             </button>
           ))}
         </div>
       </div>
 
+      <div className="surface p-5 grid md:grid-cols-6 gap-3">
+        <select value={kind} onChange={(e) => setKind(e.target.value)} className="md:col-span-2 rounded-lg border border-border bg-card px-3 py-2 text-sm">
+          {KINDS.map(k => <option key={k} value={k}>{k}</option>)}
+        </select>
+        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("Neue Aufgabe…","New check…")} className="md:col-span-3 rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+        <button onClick={add} disabled={busy || !title.trim()} className="btn-alert-solid text-sm inline-flex items-center justify-center gap-2">
+          {busy ? <Loader2 size={14} className="animate-spin" /> : <PlusCircle size={14} />}{t("Hinzufügen","Add")}
+        </button>
+      </div>
+
+      {err && <div className="rounded-lg bg-destructive/10 text-destructive text-sm px-3 py-2">{err}</div>}
+
       <div className="surface overflow-hidden">
-        <div className="hidden md:grid grid-cols-12 text-xs uppercase tracking-widest text-muted-foreground bg-secondary/60 px-5 py-3">
-          <div className="col-span-5">{t("checks.col.check")}</div>
-          <div className="col-span-2">{t("checks.col.category")}</div>
-          <div className="col-span-2">{t("checks.col.time")}</div>
-          <div className="col-span-2">{t("checks.col.assignee")}</div>
-          <div className="col-span-1 text-right">{t("checks.col.action")}</div>
-        </div>
-        <div className="divide-y divide-border">
-          {filtered.map((r) => (
-            <div key={r.id} className="grid grid-cols-1 md:grid-cols-12 px-5 py-4 items-center gap-3">
-              <div className="md:col-span-5 flex items-center gap-3">
-                <StatusIcon s={r.status} />
-                <div className={`text-sm font-medium ${r.status === "done" ? "line-through text-muted-foreground" : ""}`}>{t(r.tKey)}</div>
-              </div>
-              <div className="md:col-span-2 text-xs text-muted-foreground">{t(r.catKey)}</div>
-              <div className="md:col-span-2 text-xs text-muted-foreground">{r.time}</div>
-              <div className="md:col-span-2 text-xs text-muted-foreground">{r.assignee}</div>
-              <div className="md:col-span-1 text-right">
-                {r.status === "done" ? (
-                  <span className="text-xs text-success">✓</span>
-                ) : r.status === "failed" ? (
-                  <span className="text-xs text-destructive font-semibold">{t("common.action")}</span>
-                ) : (
-                  <button
-                    onClick={() => done(r.id)}
-                    className="text-xs font-semibold rounded-full bg-primary text-primary-foreground px-3 py-1"
-                  >
-                    {t("common.complete")}
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="p-10 text-center text-sm text-muted-foreground"><Loader2 size={16} className="inline animate-spin mr-2" />{t("Lade…","Loading…")}</div>
+        ) : filtered.length === 0 ? (
+          <div className="p-10 text-center text-sm text-muted-foreground">{t("Keine Einträge.","Nothing here.")}</div>
+        ) : (
+          <ul className="divide-y divide-border">
+            {filtered.map(r => {
+              const done = r.status === "completed";
+              return (
+                <li key={r.id} className="p-4 flex items-center gap-4">
+                  <span className={`h-10 w-10 rounded-xl grid place-items-center shrink-0 ${done ? "bg-success/15 text-success" : "bg-secondary text-muted-foreground"}`}>
+                    {done ? <CheckCircle2 size={18} /> : <Clock size={18} />}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">{r.kind}</div>
+                    <div className="font-medium text-sm mt-0.5">{r.title}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      {done && r.completed_at ? new Date(r.completed_at).toLocaleString(lang === "de" ? "de-DE" : "en-GB") : new Date(r.created_at).toLocaleString(lang === "de" ? "de-DE" : "en-GB")}
+                    </div>
+                  </div>
+                  {!done && (
+                    <button onClick={() => complete(r.id)} className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full bg-success text-success-foreground">
+                      <CheckCircle2 size={12} className="inline mr-1" />{t("Erledigen","Complete")}
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
     </div>
   );
-}
-
-function StatusIcon({ s }: { s: Status }) {
-  if (s === "done")    return <span className="h-8 w-8 rounded-lg bg-success/15 text-success grid place-items-center"><CheckCircle2 size={16} /></span>;
-  if (s === "failed")  return <span className="h-8 w-8 rounded-lg bg-destructive/15 text-destructive grid place-items-center"><AlertTriangle size={16} /></span>;
-  if (s === "overdue") return <span className="h-8 w-8 rounded-lg bg-warning/25 text-warning-foreground grid place-items-center"><Clock size={16} /></span>;
-  return <span className="h-8 w-8 rounded-lg bg-secondary text-muted-foreground grid place-items-center"><Clock size={16} /></span>;
 }
