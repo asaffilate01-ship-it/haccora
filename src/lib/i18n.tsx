@@ -1597,25 +1597,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const doSwap = () => {
       setLangState(l);
       try { localStorage.setItem("gs-lang", l); } catch { /* noop */ }
-      if (typeof document !== "undefined") document.documentElement.lang = l;
-    };
-    // Smooth crossfade using the View Transitions API when available.
-    const anyDoc = typeof document !== "undefined" ? (document as Document & { startViewTransition?: (cb: () => void) => unknown }) : null;
-    if (anyDoc?.startViewTransition) {
-      anyDoc.startViewTransition(doSwap);
-    } else {
-      // Fallback: brief opacity fade on <body>.
       if (typeof document !== "undefined") {
-        document.body.classList.add("lang-swap");
-        setTimeout(() => {
-          doSwap();
-          setTimeout(() => document.body.classList.remove("lang-swap"), 160);
-        }, 120);
-      } else {
-        doSwap();
+        document.documentElement.lang = l;
+        document.documentElement.setAttribute("data-lang-changing", "true");
+        setTimeout(() => document.documentElement.removeAttribute("data-lang-changing"), 400);
       }
-    }
+      // Persist to profile if signed in — non-blocking.
+      import("@/integrations/supabase/client").then(({ supabase }) => {
+        supabase.auth.getSession().then(({ data }) => {
+          const uid = data.session?.user?.id;
+          if (uid) supabase.from("profiles").update({ language: l }).eq("id", uid).then(() => {});
+        });
+      }).catch(() => {});
+    };
+    const anyDoc = typeof document !== "undefined" ? (document as Document & { startViewTransition?: (cb: () => void) => unknown }) : null;
+    if (anyDoc?.startViewTransition) anyDoc.startViewTransition(doSwap);
+    else doSwap();
   };
+
 
 
   const t = (key: string) => dicts[lang][key] ?? dicts.en[key] ?? key;
