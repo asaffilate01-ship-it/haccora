@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
+import { LiveMetrics } from "@/components/LiveMetrics";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowRight, ShieldCheck, TrendingUp,
   MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen, ClipboardList,
@@ -10,6 +11,7 @@ import { useState } from "react";
 export const Route = createFileRoute("/app/")({
   component: Dashboard,
 });
+
 
 interface Task { id: string; tKey: string; catKey: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 
