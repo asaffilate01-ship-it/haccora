@@ -143,6 +143,51 @@ export type Database = {
         }
         Relationships: []
       }
+      expiry_items: {
+        Row: {
+          batch: string | null
+          created_at: string
+          expires_on: string
+          id: string
+          location: string | null
+          name: string
+          note: string | null
+          qty: number | null
+          status: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          batch?: string | null
+          created_at?: string
+          expires_on: string
+          id?: string
+          location?: string | null
+          name: string
+          note?: string | null
+          qty?: number | null
+          status?: string
+          unit?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          batch?: string | null
+          created_at?: string
+          expires_on?: string
+          id?: string
+          location?: string | null
+          name?: string
+          note?: string | null
+          qty?: number | null
+          status?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       incidents: {
         Row: {
           closed_at: string | null
@@ -218,6 +263,51 @@ export type Database = {
         }
         Relationships: []
       }
+      suppliers: {
+        Row: {
+          category: string | null
+          cert_expires_on: string | null
+          contact: string | null
+          created_at: string
+          created_by: string
+          email: string | null
+          id: string
+          name: string
+          note: string | null
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          cert_expires_on?: string | null
+          contact?: string | null
+          created_at?: string
+          created_by: string
+          email?: string | null
+          id?: string
+          name: string
+          note?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          cert_expires_on?: string | null
+          contact?: string | null
+          created_at?: string
+          created_by?: string
+          email?: string | null
+          id?: string
+          name?: string
+          note?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       temperature_logs: {
         Row: {
           created_at: string
@@ -274,6 +364,45 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      waste_entries: {
+        Row: {
+          cost_eur: number | null
+          created_at: string
+          id: string
+          item: string
+          logged_at: string
+          note: string | null
+          qty: number
+          reason: string
+          unit: string
+          user_id: string
+        }
+        Insert: {
+          cost_eur?: number | null
+          created_at?: string
+          id?: string
+          item: string
+          logged_at?: string
+          note?: string | null
+          qty: number
+          reason: string
+          unit?: string
+          user_id: string
+        }
+        Update: {
+          cost_eur?: number | null
+          created_at?: string
+          id?: string
+          item?: string
+          logged_at?: string
+          note?: string | null
+          qty?: number
+          reason?: string
+          unit?: string
           user_id?: string
         }
         Relationships: []
