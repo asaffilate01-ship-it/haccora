@@ -361,8 +361,8 @@ function TasksCard({ tasks, done, big }: { tasks: Task[]; done: (id: string) => 
           <div key={task.id} className={`${big ? "py-4" : "py-3"} flex items-center gap-3`}>
             <StatusPill status={task.status} />
             <div className="flex-1 min-w-0">
-              <div className={`${big ? "text-base" : "text-sm"} font-medium ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>{t(task.tKey)}</div>
-              <div className="text-xs text-muted-foreground">{t(task.catKey)} · {task.who} · {task.time}</div>
+              <div className={`${big ? "text-base" : "text-sm"} font-medium ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>{task.title}</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wider">{task.kind} · {task.who} · {task.time}</div>
             </div>
             {task.status !== "done" ? (
               <button
