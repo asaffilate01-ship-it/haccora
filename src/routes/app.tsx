@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useAuth, canAccess, homeFor, type NavKey } from "@/lib/auth";
 import {
@@ -102,7 +103,7 @@ const GROUPS: NavGroup[] = [
 const ALL_ITEMS: NavItem[] = GROUPS.flatMap((g) => g.items);
 
 function AppShell() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { user, signOut, hydrated } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -195,15 +196,33 @@ function AppShell() {
   const current = ALL_ITEMS.find((i) => (i.exact ? pathname === i.to : pathname.startsWith(i.to) && (i.to !== "/app" || pathname === "/app")))
     ?? ALL_ITEMS.find((i) => !i.exact && pathname.startsWith(i.to));
 
-  // Notifications — role-scoped demo signals.
-  type Notif = { id: string; sev: "high" | "medium" | "low"; titleKey: string; metaKey: string; to: string };
-  const ALL_NOTIFS: (Notif & { roles: Array<typeof user.role> })[] = [
-    { id: "n1", sev: "high",   titleKey: "notif.temp.t",  metaKey: "notif.temp.m",  to: "/app/temperature", roles: ["owner","manager","chef","staff"] },
-    { id: "n2", sev: "medium", titleKey: "notif.ifsg.t",  metaKey: "notif.ifsg.m",  to: "/app/training",    roles: ["owner","manager","staff"] },
-    { id: "n3", sev: "low",    titleKey: "notif.clean.t", metaKey: "notif.clean.m", to: "/app/cleaning",    roles: ["owner","manager","chef","staff"] },
-    { id: "n4", sev: "medium", titleKey: "notif.audit.t", metaKey: "notif.audit.m", to: "/app/inspection",  roles: ["owner","manager","inspector"] },
-  ];
-  const notifs = ALL_NOTIFS.filter((n) => n.roles.includes(user.role));
+  // Notifications — live unread alerts from Supabase, role-scoped by RLS.
+  type Notif = { id: string; sev: "high" | "medium" | "low"; title: string; meta: string; to: string };
+  const [liveNotifs, setLiveNotifs] = useState<Notif[]>([]);
+  useEffect(() => {
+    if (!user) return;
+    const KIND_TO_ROUTE: Record<string, string> = {
+      temperature: "/app/temperature", cleaning: "/app/cleaning", haccp: "/app/haccp",
+      training: "/app/training", incident: "/app/incidents", expiry: "/app/expiry",
+      audit: "/app/audits", recall: "/app/recalls", asset: "/app/assets",
+    };
+    const sevMap = (s: string): Notif["sev"] => s === "critical" ? "high" : s === "warning" ? "medium" : "low";
+    const load = async () => {
+      const { data } = await supabase.from("alerts").select("id,kind,severity,title,message,created_at")
+        .is("read_at", null).order("created_at", { ascending: false }).limit(8);
+      setLiveNotifs((data ?? []).map((a: any) => ({
+        id: a.id, sev: sevMap(a.severity), title: a.title,
+        meta: a.message ?? new Date(a.created_at).toLocaleString(lang === "de" ? "de-DE" : "en-GB"),
+        to: KIND_TO_ROUTE[a.kind] ?? "/app/alerts",
+      })));
+    };
+    load();
+    const ch = supabase.channel("shell-alerts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load).subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [user, lang]);
+  const notifs = liveNotifs;
+
 
   // Command palette matches over role-allowed items.
   const q = paletteQ.trim().toLowerCase();
@@ -380,8 +399,8 @@ function AppShell() {
                           {n.sev === "medium" && <Clock          size={16} className="text-warning-foreground mt-0.5 shrink-0" />}
                           {n.sev === "low"    && <CheckCircle2   size={16} className="text-muted-foreground mt-0.5 shrink-0" />}
                           <div className="min-w-0">
-                            <div className="text-sm font-medium truncate">{t(n.titleKey)}</div>
-                            <div className="text-xs text-muted-foreground truncate">{t(n.metaKey)}</div>
+                            <div className="text-sm font-medium truncate">{n.title}</div>
+                            <div className="text-xs text-muted-foreground truncate">{n.meta}</div>
                           </div>
                         </Link>
                       ))}
