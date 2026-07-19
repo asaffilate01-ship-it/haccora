@@ -30,8 +30,11 @@ function OnboardingPage() {
   const [step, setStep] = useState(0);
   const [vertical, setVertical] = useState<string | null>(null);
   const [name, setName] = useState("");
+  const [vatId, setVatId] = useState("");
+  const [businessState, setBusinessState] = useState("Berlin");
   const [size, setSize] = useState("11-30");
   const [locations, setLocations] = useState(1);
+  const [saving, setSaving] = useState(false);
 
   const steps = [
     t("Betriebstyp", "Business type"),
@@ -41,6 +44,23 @@ function OnboardingPage() {
     t("Fertig", "Done"),
   ];
   const last = step === steps.length - 1;
+
+  const persistAndFinish = async () => {
+    setSaving(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase.from("profiles").update({
+        restaurant_name: name || null,
+        vertical, vat_id: vatId || null,
+        business_state: businessState,
+        team_size: size,
+        location_count: locations,
+        onboarded_at: new Date().toISOString(),
+      }).eq("id", user.id);
+    }
+    setSaving(false);
+    navigate({ to: user ? "/app" : "/login" });
+  };
 
   return (
     <div className="min-h-screen bg-secondary/40 flex flex-col">
