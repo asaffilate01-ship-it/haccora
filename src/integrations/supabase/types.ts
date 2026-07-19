@@ -389,33 +389,60 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          business_state: string | null
           created_at: string
+          email_alerts: boolean
           full_name: string | null
           id: string
           language: string
           location: string | null
+          location_count: number | null
+          onboarded_at: string | null
+          push_alerts: boolean
           restaurant_name: string | null
+          team_size: string | null
           updated_at: string
+          vat_id: string | null
+          vertical: string | null
+          weekly_digest: boolean
         }
         Insert: {
           avatar_url?: string | null
+          business_state?: string | null
           created_at?: string
+          email_alerts?: boolean
           full_name?: string | null
           id: string
           language?: string
           location?: string | null
+          location_count?: number | null
+          onboarded_at?: string | null
+          push_alerts?: boolean
           restaurant_name?: string | null
+          team_size?: string | null
           updated_at?: string
+          vat_id?: string | null
+          vertical?: string | null
+          weekly_digest?: boolean
         }
         Update: {
           avatar_url?: string | null
+          business_state?: string | null
           created_at?: string
+          email_alerts?: boolean
           full_name?: string | null
           id?: string
           language?: string
           location?: string | null
+          location_count?: number | null
+          onboarded_at?: string | null
+          push_alerts?: boolean
           restaurant_name?: string | null
+          team_size?: string | null
           updated_at?: string
+          vat_id?: string | null
+          vertical?: string | null
+          weekly_digest?: boolean
         }
         Relationships: []
       }
