@@ -399,8 +399,8 @@ function AppShell() {
                           {n.sev === "medium" && <Clock          size={16} className="text-warning-foreground mt-0.5 shrink-0" />}
                           {n.sev === "low"    && <CheckCircle2   size={16} className="text-muted-foreground mt-0.5 shrink-0" />}
                           <div className="min-w-0">
-                            <div className="text-sm font-medium truncate">{t(n.titleKey)}</div>
-                            <div className="text-xs text-muted-foreground truncate">{t(n.metaKey)}</div>
+                            <div className="text-sm font-medium truncate">{n.title}</div>
+                            <div className="text-xs text-muted-foreground truncate">{n.meta}</div>
                           </div>
                         </Link>
                       ))}
