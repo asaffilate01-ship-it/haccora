@@ -15,12 +15,8 @@ export const Route = createFileRoute("/app/")({
 
 
 interface Task { id: string; title: string; kind: string; time: string; status: "pending" | "overdue" | "done"; who: string }
+interface LiveAction { id: string; title: string; source: string; severity: "high" | "medium" | "low"; created_at: string }
 
-const actions = [
-  { id: "a1", tKey: "action.cool.t",  severity: "high" as const,   dueKey: "time.todayAt", sourceKey: "action.source.temp" },
-  { id: "a2", tKey: "action.ifsg.t",  severity: "medium" as const, due: "20.07.",          sourceKey: "action.source.staff" },
-  { id: "a3", tKey: "action.clean.t", severity: "low" as const,    dueKey: "time.today",   sourceKey: "action.source.clean" },
-];
 
 function Dashboard() {
   const { t, lang } = useI18n();
