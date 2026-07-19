@@ -91,10 +91,15 @@ function DocumentsPage() {
           {(["haccp","training","supplier","cleaning","inspection"] as Category[]).map(k => <option key={k} value={k}>{t(`docs.cat.${k}`)}</option>)}
         </select>
         <input value={form.version} onChange={e => setForm({...form, version: e.target.value})} placeholder={lang==="de"?"Version":"Version"} className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
-        <input value={form.file_url} onChange={e => setForm({...form, file_url: e.target.value})} placeholder="https://…" className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+        <label className="rounded-lg border border-dashed border-border bg-card px-3 py-2 text-sm inline-flex items-center gap-2 cursor-pointer hover:bg-secondary/40 truncate">
+          <Upload size={14} />
+          <span className="truncate">{file ? file.name : (lang==="de"?"Datei wählen":"Choose file")}</span>
+          <input type="file" className="hidden" onChange={e => setFile(e.target.files?.[0] ?? null)} />
+        </label>
         <button onClick={submit} disabled={busy || !form.title.trim()} className="btn-alert-solid text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50">
           {busy ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}{t("docs.upload")}
         </button>
+        <input value={form.file_url} onChange={e => setForm({...form, file_url: e.target.value})} placeholder={lang==="de"?"…oder externe URL":"…or external URL"} className="md:col-span-6 rounded-lg border border-border bg-card px-3 py-2 text-xs" />
       </div>
       {err && <div className="rounded-lg bg-destructive/10 text-destructive text-sm px-3 py-2">{err}</div>}
 
