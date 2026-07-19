@@ -16,6 +16,7 @@ export const Route = createFileRoute("/app/")({
 
 interface Task { id: string; title: string; kind: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 interface LiveAction { id: string; title: string; source: string; severity: "high" | "medium" | "low"; created_at: string }
+interface DashCounts { alerts: number; incidentsHigh: number; tempOut: number; trainingDue: number; recipes: number; brigade: number; tempOk: number; tempTotal: number; expiring: number; suppliers: number; poOpen: number; poSpend: number }
 
 
 function Dashboard() {
@@ -23,11 +24,15 @@ function Dashboard() {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [counts, setCounts] = useState<DashCounts>({
+    alerts: 0, incidentsHigh: 0, tempOut: 0, trainingDue: 0, recipes: 0, brigade: 0, tempOk: 0, tempTotal: 0, expiring: 0, suppliers: 0, poOpen: 0, poSpend: 0,
+  });
 
   const load = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     const since = new Date(); since.setHours(0, 0, 0, 0);
+    const in7 = new Date(Date.now() + 7 * 86400000).toISOString();
     let q = supabase.from("checks")
       .select("id, title, kind, status, completed_at, created_at, user_id")
       .gte("created_at", since.toISOString())
@@ -53,6 +58,38 @@ function Dashboard() {
       };
     });
     setTasks(rows);
+
+    // Live aggregate counts for role dashboards
+    const [alertsQ, incHighQ, tempOutQ, tempOkQ, recipesQ, brigadeQ, expiringQ, supQ, poOpenQ, trainingDueQ, poRecent] = await Promise.all([
+      supabase.from("alerts").select("id", { count: "exact", head: true }).is("read_at", null),
+      supabase.from("incidents").select("id", { count: "exact", head: true }).eq("severity", "high").neq("status", "closed"),
+      supabase.from("temperature_logs").select("id", { count: "exact", head: true }).eq("status", "out_of_range").gte("logged_at", since.toISOString()),
+      supabase.from("temperature_logs").select("id", { count: "exact", head: true }).eq("status", "in_range").gte("logged_at", since.toISOString()),
+      supabase.from("recipes").select("id", { count: "exact", head: true }),
+      supabase.from("user_roles").select("user_id", { count: "exact", head: true }).in("role", ["chef", "staff"]),
+      supabase.from("expiry_items").select("id", { count: "exact", head: true }).lte("expiry_date", in7),
+      supabase.from("suppliers").select("id", { count: "exact", head: true }),
+      supabase.from("purchase_orders").select("id", { count: "exact", head: true }).in("status", ["draft", "sent"]),
+      supabase.from("training_records").select("id", { count: "exact", head: true }).is("completed_at", null),
+      supabase.from("purchase_orders").select("total_eur").gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
+    ]);
+    const spend = ((poRecent.data ?? []) as Array<{ total_eur: number | null }>).reduce((s, r) => s + Number(r.total_eur ?? 0), 0);
+    const tempOk = tempOkQ.count ?? 0;
+    const tempOut = tempOutQ.count ?? 0;
+    setCounts({
+      alerts: alertsQ.count ?? 0,
+      incidentsHigh: incHighQ.count ?? 0,
+      tempOut,
+      tempOk,
+      tempTotal: tempOk + tempOut,
+      trainingDue: trainingDueQ.count ?? 0,
+      recipes: recipesQ.count ?? 0,
+      brigade: brigadeQ.count ?? 0,
+      expiring: expiringQ.count ?? 0,
+      suppliers: supQ.count ?? 0,
+      poOpen: poOpenQ.count ?? 0,
+      poSpend: Math.round(spend),
+    });
     setLoading(false);
   }, [user, lang]);
 
@@ -60,6 +97,9 @@ function Dashboard() {
     load();
     const ch = supabase.channel("dash-checks")
       .on("postgres_changes", { event: "*", schema: "public", table: "checks" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "incidents" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "temperature_logs" }, load)
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, [load]);
@@ -85,14 +125,15 @@ function Dashboard() {
 
       {loading && <div className="text-xs text-muted-foreground inline-flex items-center gap-2"><Loader2 size={12} className="animate-spin" /> {t("common.loading") || "…"}</div>}
 
-      {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
-      {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
-      {user.role === "chef" && <ChefView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
+      {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} counts={counts} />}
+      {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} counts={counts} />}
+      {user.role === "chef" && <ChefView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} counts={counts} />}
       {user.role === "staff" && <StaffView tasks={visibleTasks} done={done} />}
       {user.role === "inspector" && <InspectorView />}
     </div>
   );
 }
+
 
 /* ---------------- Role hero band ---------------- */
 function RoleHero({ role, firstName, dateStr, location }: { role: string; firstName: string; dateStr: string; location: string }) {
@@ -128,22 +169,21 @@ function RoleHero({ role, firstName, dateStr, location }: { role: string; firstN
 
 
 /* ---------------- Owner ---------------- */
-function OwnerView({ pending, overdue, tasks, done }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void }) {
-  const { t } = useI18n();
-  const locations = [
-    { name: "Kreuzberg Kitchen", city: "Berlin",   score: 94, alerts: 1 },
-    { name: "Neukölln Bistro",   city: "Berlin",   score: 88, alerts: 3 },
-    { name: "Altstadt Grill",    city: "München",  score: 97, alerts: 0 },
-  ];
+function OwnerView({ pending, overdue, tasks, done, counts }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void; counts: DashCounts }) {
+  const { t, lang } = useI18n();
+  const tempScore = counts.tempTotal > 0 ? Math.round((counts.tempOk / counts.tempTotal) * 100) : 100;
+  const checksScore = tasks.length > 0 ? Math.round((tasks.filter(x=>x.status==="done").length / tasks.length) * 100) : 100;
+  const complianceScore = Math.round((tempScore * 0.5) + (checksScore * 0.5));
+  const spendFmt = new Intl.NumberFormat(lang === "de" ? "de-DE" : "en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(counts.poSpend || 0);
 
   return (
     <>
       <MetricRow items={[
-        { l: t("dash.metric.score"),    v: "93%",  hint: t("time.trend"), icon: ShieldCheck },
-        { l: t("owner.locations"),      v: locations.length, icon: MapPin },
-        { l: t("dash.metric.actions"),  v: 3,      icon: AlertTriangle },
-        { l: t("owner.revenue"),        v: "€184k", hint: t("owner.revenue.hint"), icon: DollarSign },
-        { l: t("dash.metric.training"), v: 3,      icon: Users },
+        { l: t("dash.metric.score"),    v: `${complianceScore}%`,  hint: t("time.trend"), icon: ShieldCheck },
+        { l: t("owner.locations"),      v: 1, icon: MapPin },
+        { l: t("dash.metric.actions"),  v: counts.alerts, icon: AlertTriangle },
+        { l: t("owner.revenue"),        v: spendFmt, hint: t("owner.revenue.hint"), icon: DollarSign },
+        { l: t("dash.metric.training"), v: counts.trainingDue, icon: Users },
       ]} />
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -153,23 +193,17 @@ function OwnerView({ pending, overdue, tasks, done }: { pending: number; overdue
             <span className="text-xs text-muted-foreground">{t("owner.last30")}</span>
           </div>
           <div className="divide-y divide-border">
-            {locations.map((l) => (
-              <div key={l.name} className="py-3 flex items-center gap-4">
-                <div className="h-9 w-9 rounded-lg bg-secondary grid place-items-center text-primary shrink-0">
-                  <MapPin size={16} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold truncate">{l.name}</div>
-                  <div className="text-xs text-muted-foreground">{l.city}</div>
-                </div>
-                <div className="text-right">
-                  <div className={`font-display text-2xl ${l.score >= 95 ? "text-success" : l.score >= 90 ? "text-foreground" : "text-warning-foreground"}`}>{l.score}%</div>
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-widest">
-                    {l.alerts} {t("owner.alerts")}
-                  </div>
-                </div>
+            <div className="py-3 flex items-center gap-4">
+              <div className="h-9 w-9 rounded-lg bg-secondary grid place-items-center text-primary shrink-0"><MapPin size={16} /></div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold truncate">{t("dash.thisLocation") || "This location"}</div>
+                <div className="text-xs text-muted-foreground">{counts.suppliers} {t("suppliers.title") || "Suppliers"} · {counts.recipes} {t("recipes.title") || "Recipes"}</div>
               </div>
-            ))}
+              <div className="text-right">
+                <div className={`font-display text-2xl ${complianceScore >= 95 ? "text-success" : complianceScore >= 90 ? "text-foreground" : "text-warning-foreground"}`}>{complianceScore}%</div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-widest">{counts.alerts} {t("owner.alerts")}</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -182,8 +216,11 @@ function OwnerView({ pending, overdue, tasks, done }: { pending: number; overdue
 }
 
 /* ---------------- Manager ---------------- */
-function ManagerView({ pending, overdue, tasks, done }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void }) {
+function ManagerView({ pending, overdue, tasks, done, counts }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void; counts: DashCounts }) {
   const { t } = useI18n();
+  const tempScore = counts.tempTotal > 0 ? Math.round((counts.tempOk / counts.tempTotal) * 100) : 100;
+  const checksScore = tasks.length > 0 ? Math.round((tasks.filter(x=>x.status==="done").length / tasks.length) * 100) : 100;
+  const score = Math.round((tempScore * 0.5) + (checksScore * 0.5));
   return (
     <>
       {/* Live shift strip — unique to manager */}
@@ -198,12 +235,12 @@ function ManagerView({ pending, overdue, tasks, done }: { pending: number; overd
         </div>
       </div>
       <MetricRow items={[
-        { l: t("dash.metric.score"),    v: "94%", hint: t("time.trend"), icon: ShieldCheck },
+        { l: t("dash.metric.score"),    v: `${score}%`, hint: t("time.trend"), icon: ShieldCheck },
         { l: t("dash.metric.pending"),  v: pending, icon: Clock },
         { l: t("dash.metric.overdue"),  v: overdue, icon: AlertTriangle },
-        { l: t("dash.metric.actions"),  v: 3, icon: AlertTriangle },
-        { l: t("dash.metric.failed"),   v: 1, icon: Thermometer },
-        { l: t("dash.metric.training"), v: 3, icon: Users },
+        { l: t("dash.metric.actions"),  v: counts.alerts, icon: AlertTriangle },
+        { l: t("dash.metric.failed"),   v: counts.tempOut, icon: Thermometer },
+        { l: t("dash.metric.training"), v: counts.trainingDue, icon: Users },
       ]} />
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
@@ -219,13 +256,13 @@ function ManagerView({ pending, overdue, tasks, done }: { pending: number; overd
 }
 
 /* ---------------- Chef ---------------- */
-function ChefView({ tasks, done }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void }) {
+function ChefView({ tasks, done, counts }: { pending: number; overdue: number; tasks: Task[]; done: (id: string) => void; counts: DashCounts }) {
   const { t } = useI18n();
   const kitchen = [
-    { l: t("chef.temps"),    v: "12/12", to: "/app/temperature", icon: Thermometer },
-    { l: t("chef.haccp"),    v: t("chef.approved"), to: "/app/haccp", icon: ShieldCheck },
-    { l: t("chef.recipes"),  v: "42", to: "/app/recipes", icon: Wheat },
-    { l: t("chef.brigade"),  v: "6", to: "/app/training", icon: ChefHat },
+    { l: t("chef.temps"),    v: `${counts.tempOk}/${counts.tempTotal || 0}`, to: "/app/temperature", icon: Thermometer },
+    { l: t("chef.haccp"),    v: counts.tempOut === 0 ? t("chef.approved") : `${counts.tempOut} ⚠`, to: "/app/haccp", icon: ShieldCheck },
+    { l: t("chef.recipes"),  v: String(counts.recipes), to: "/app/recipes", icon: Wheat },
+    { l: t("chef.brigade"),  v: String(counts.brigade), to: "/app/training", icon: ChefHat },
   ];
   return (
     <>
@@ -256,6 +293,8 @@ function ChefView({ tasks, done }: { pending: number; overdue: number; tasks: Ta
     </>
   );
 }
+
+
 
 /* ---------------- Staff (focus view) ---------------- */
 function StaffView({ tasks, done }: { tasks: Task[]; done: (id: string) => void }) {
