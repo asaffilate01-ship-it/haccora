@@ -23,6 +23,7 @@ function DocumentsPage() {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<"all" | Category>("all");
   const [form, setForm] = useState({ title: "", category: "haccp" as Category, version: "", file_url: "" });
+  const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -37,13 +38,33 @@ function DocumentsPage() {
   const submit = async () => {
     if (!user || !form.title.trim()) return;
     setBusy(true); setErr(null);
+    let file_url = form.file_url.trim() || null;
+    let storage_path: string | null = null;
+    if (file) {
+      const ext = file.name.split(".").pop() || "bin";
+      const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
+      const up = await supabase.storage.from("documents").upload(path, file, { upsert: false, contentType: file.type });
+      if (up.error) { setBusy(false); setErr(up.error.message); return; }
+      storage_path = path;
+      const signed = await supabase.storage.from("documents").createSignedUrl(path, 60 * 60 * 24 * 365);
+      file_url = signed.data?.signedUrl ?? null;
+    }
     const { error } = await supabase.from("documents").insert({
       user_id: user.id, title: form.title.trim(), category: form.category,
-      version: form.version.trim() || null, file_url: form.file_url.trim() || null,
-    });
+      version: form.version.trim() || null, file_url,
+      ...(storage_path ? { storage_path } : {}),
+    } as any);
     setBusy(false);
     if (error) { setErr(error.message); return; }
-    setForm({ title: "", category: "haccp", version: "", file_url: "" }); load();
+    setForm({ title: "", category: "haccp", version: "", file_url: "" }); setFile(null); load();
+  };
+
+  const remove = async (r: Row) => {
+    if (!confirm(lang === "de" ? "Dokument löschen?" : "Delete document?")) return;
+    const path = (r as any).storage_path as string | undefined;
+    if (path) await supabase.storage.from("documents").remove([path]);
+    await supabase.from("documents").delete().eq("id", r.id);
+    load();
   };
 
   const filtered = useMemo(() => {
