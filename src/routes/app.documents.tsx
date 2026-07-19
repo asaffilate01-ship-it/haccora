@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
-import { FileArchive, FileText, ExternalLink, Plus, Search, Folder, ShieldCheck, Truck, Users, Sparkles, Loader2 } from "lucide-react";
+import { FileArchive, FileText, ExternalLink, Plus, Search, Folder, ShieldCheck, Truck, Users, Sparkles, Loader2, Upload, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/app/documents")({ component: DocumentsPage });
 
