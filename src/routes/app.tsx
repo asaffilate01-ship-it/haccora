@@ -103,7 +103,7 @@ const GROUPS: NavGroup[] = [
 const ALL_ITEMS: NavItem[] = GROUPS.flatMap((g) => g.items);
 
 function AppShell() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { user, signOut, hydrated } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
