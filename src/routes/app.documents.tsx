@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
-import { FileArchive, FileText, ExternalLink, Plus, Search, Folder, ShieldCheck, Truck, Users, Sparkles, Loader2 } from "lucide-react";
+import { FileArchive, FileText, ExternalLink, Plus, Search, Folder, ShieldCheck, Truck, Users, Sparkles, Loader2, Upload, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/app/documents")({ component: DocumentsPage });
 
@@ -23,6 +23,7 @@ function DocumentsPage() {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<"all" | Category>("all");
   const [form, setForm] = useState({ title: "", category: "haccp" as Category, version: "", file_url: "" });
+  const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -37,13 +38,33 @@ function DocumentsPage() {
   const submit = async () => {
     if (!user || !form.title.trim()) return;
     setBusy(true); setErr(null);
+    let file_url = form.file_url.trim() || null;
+    let storage_path: string | null = null;
+    if (file) {
+      const ext = file.name.split(".").pop() || "bin";
+      const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
+      const up = await supabase.storage.from("documents").upload(path, file, { upsert: false, contentType: file.type });
+      if (up.error) { setBusy(false); setErr(up.error.message); return; }
+      storage_path = path;
+      const signed = await supabase.storage.from("documents").createSignedUrl(path, 60 * 60 * 24 * 365);
+      file_url = signed.data?.signedUrl ?? null;
+    }
     const { error } = await supabase.from("documents").insert({
       user_id: user.id, title: form.title.trim(), category: form.category,
-      version: form.version.trim() || null, file_url: form.file_url.trim() || null,
-    });
+      version: form.version.trim() || null, file_url,
+      ...(storage_path ? { storage_path } : {}),
+    } as any);
     setBusy(false);
     if (error) { setErr(error.message); return; }
-    setForm({ title: "", category: "haccp", version: "", file_url: "" }); load();
+    setForm({ title: "", category: "haccp", version: "", file_url: "" }); setFile(null); load();
+  };
+
+  const remove = async (r: Row) => {
+    if (!confirm(lang === "de" ? "Dokument löschen?" : "Delete document?")) return;
+    const path = (r as any).storage_path as string | undefined;
+    if (path) await supabase.storage.from("documents").remove([path]);
+    await supabase.from("documents").delete().eq("id", r.id);
+    load();
   };
 
   const filtered = useMemo(() => {
@@ -70,10 +91,15 @@ function DocumentsPage() {
           {(["haccp","training","supplier","cleaning","inspection"] as Category[]).map(k => <option key={k} value={k}>{t(`docs.cat.${k}`)}</option>)}
         </select>
         <input value={form.version} onChange={e => setForm({...form, version: e.target.value})} placeholder={lang==="de"?"Version":"Version"} className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
-        <input value={form.file_url} onChange={e => setForm({...form, file_url: e.target.value})} placeholder="https://…" className="rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+        <label className="rounded-lg border border-dashed border-border bg-card px-3 py-2 text-sm inline-flex items-center gap-2 cursor-pointer hover:bg-secondary/40 truncate">
+          <Upload size={14} />
+          <span className="truncate">{file ? file.name : (lang==="de"?"Datei wählen":"Choose file")}</span>
+          <input type="file" className="hidden" onChange={e => setFile(e.target.files?.[0] ?? null)} />
+        </label>
         <button onClick={submit} disabled={busy || !form.title.trim()} className="btn-alert-solid text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50">
           {busy ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}{t("docs.upload")}
         </button>
+        <input value={form.file_url} onChange={e => setForm({...form, file_url: e.target.value})} placeholder={lang==="de"?"…oder externe URL":"…or external URL"} className="md:col-span-6 rounded-lg border border-border bg-card px-3 py-2 text-xs" />
       </div>
       {err && <div className="rounded-lg bg-destructive/10 text-destructive text-sm px-3 py-2">{err}</div>}
 
@@ -117,12 +143,17 @@ function DocumentsPage() {
                       </div>
                       <div className="md:col-span-2 text-xs font-mono">{d.version ?? "—"}</div>
                       <div className="md:col-span-2 text-xs text-muted-foreground">{new Date(d.created_at).toLocaleDateString(lang==="de"?"de-DE":"en-GB")}</div>
-                      <div className="md:col-span-2 md:text-right">
+                      <div className="md:col-span-2 md:text-right flex items-center gap-3 md:justify-end">
                         {d.file_url ? (
                           <a href={d.file_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
                             <ExternalLink size={12} /> {t("docs.download")}
                           </a>
                         ) : <span className="text-[11px] text-muted-foreground">—</span>}
+                        {user?.id === d.user_id && (
+                          <button onClick={() => remove(d)} className="text-muted-foreground hover:text-destructive" title={lang==="de"?"Löschen":"Delete"}>
+                            <Trash2 size={13} />
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
