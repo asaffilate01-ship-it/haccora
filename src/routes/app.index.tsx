@@ -2,26 +2,19 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { LiveMetrics } from "@/components/LiveMetrics";
+import { supabase } from "@/integrations/supabase/client";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowRight, ShieldCheck, TrendingUp,
-  MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen, ClipboardList,
+  MapPin, DollarSign, Users, ChefHat, Thermometer, Wheat, Gavel, BookOpen, ClipboardList, Loader2,
 } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const Route = createFileRoute("/app/")({
   component: Dashboard,
 });
 
 
-interface Task { id: string; tKey: string; catKey: string; time: string; status: "pending" | "overdue" | "done"; who: string }
-
-const initialTasks: Task[] = [
-  { id: "1", tKey: "task.cool.t",     catKey: "task.cool.cat",     time: "08:00", status: "overdue", who: "Aylin" },
-  { id: "2", tKey: "task.delivery.t", catKey: "task.delivery.cat", time: "11:30", status: "pending", who: "Omar" },
-  { id: "3", tKey: "task.clean.t",    catKey: "task.clean.cat",    time: "15:00", status: "pending", who: "Marta" },
-  { id: "4", tKey: "task.oil.t",      catKey: "task.oil.cat",      time: "09:00", status: "done",    who: "Omar" },
-  { id: "5", tKey: "task.allerg.t",   catKey: "task.allerg.cat",   time: "17:00", status: "pending", who: "Aylin" },
-];
+interface Task { id: string; title: string; kind: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 
 const actions = [
   { id: "a1", tKey: "action.cool.t",  severity: "high" as const,   dueKey: "time.todayAt", sourceKey: "action.source.temp" },
@@ -32,18 +25,54 @@ const actions = [
 function Dashboard() {
   const { t, lang } = useI18n();
   const { user } = useAuth();
-  const [tasks, setTasks] = useState(initialTasks);
-  const done = (id: string) => setTasks((prev) => prev.map((x) => x.id === id ? { ...x, status: "done" as const } : x));
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const load = useCallback(async () => {
+    if (!user) return;
+    setLoading(true);
+    const since = new Date(); since.setHours(0, 0, 0, 0);
+    let q = supabase.from("checks")
+      .select("id, title, kind, status, completed_at, created_at, user_id")
+      .gte("created_at", since.toISOString())
+      .order("created_at", { ascending: true })
+      .limit(20);
+    if (user.role === "staff") q = q.eq("user_id", user.id);
+    const { data } = await q;
+    const now = Date.now();
+    const userIds = Array.from(new Set((data ?? []).map((r: any) => r.user_id).filter(Boolean)));
+    const { data: profs } = userIds.length
+      ? await supabase.from("profiles").select("id, full_name").in("id", userIds)
+      : { data: [] as { id: string; full_name: string | null }[] };
+    const nameById = new Map((profs ?? []).map((p: any) => [p.id, p.full_name]));
+    const rows: Task[] = (data ?? []).map((r: any) => {
+      const created = new Date(r.created_at);
+      const status: Task["status"] = r.status === "completed" ? "done"
+        : (now - created.getTime() > 6 * 3600_000 ? "overdue" : "pending");
+      return {
+        id: r.id, title: r.title, kind: r.kind,
+        time: created.toLocaleTimeString(lang === "de" ? "de-DE" : "en-GB", { hour: "2-digit", minute: "2-digit" }),
+        status,
+        who: (nameById.get(r.user_id) ?? "").split(" ")[0] || "—",
+      };
+    });
+    setTasks(rows);
+    setLoading(false);
+  }, [user, lang]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const done = async (id: string) => {
+    await supabase.from("checks").update({ status: "completed", completed_at: new Date().toISOString() }).eq("id", id);
+    load();
+  };
 
   if (!user) return null;
 
   const firstName = user.name.split(" ")[0];
   const dateStr = new Date().toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", { weekday: "long", day: "numeric", month: "long" });
 
-  const visibleTasks = user.role === "staff"
-    ? tasks.filter((x) => x.who === firstName || x.who === "Aylin")
-    : tasks;
-
+  const visibleTasks = tasks;
   const pending = visibleTasks.filter((x) => x.status === "pending").length;
   const overdue = visibleTasks.filter((x) => x.status === "overdue").length;
 
@@ -52,7 +81,7 @@ function Dashboard() {
       {user.role !== "inspector" && <RoleHero role={user.role} firstName={firstName} dateStr={dateStr} location={user.location} />}
       <LiveMetrics />
 
-
+      {loading && <div className="text-xs text-muted-foreground inline-flex items-center gap-2"><Loader2 size={12} className="animate-spin" /> {t("common.loading") || "…"}</div>}
 
       {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
       {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
@@ -332,8 +361,8 @@ function TasksCard({ tasks, done, big }: { tasks: Task[]; done: (id: string) => 
           <div key={task.id} className={`${big ? "py-4" : "py-3"} flex items-center gap-3`}>
             <StatusPill status={task.status} />
             <div className="flex-1 min-w-0">
-              <div className={`${big ? "text-base" : "text-sm"} font-medium ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>{t(task.tKey)}</div>
-              <div className="text-xs text-muted-foreground">{t(task.catKey)} · {task.who} · {task.time}</div>
+              <div className={`${big ? "text-base" : "text-sm"} font-medium ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>{task.title}</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wider">{task.kind} · {task.who} · {task.time}</div>
             </div>
             {task.status !== "done" ? (
               <button
