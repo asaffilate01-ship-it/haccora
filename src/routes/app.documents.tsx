@@ -143,12 +143,17 @@ function DocumentsPage() {
                       </div>
                       <div className="md:col-span-2 text-xs font-mono">{d.version ?? "—"}</div>
                       <div className="md:col-span-2 text-xs text-muted-foreground">{new Date(d.created_at).toLocaleDateString(lang==="de"?"de-DE":"en-GB")}</div>
-                      <div className="md:col-span-2 md:text-right">
+                      <div className="md:col-span-2 md:text-right flex items-center gap-3 md:justify-end">
                         {d.file_url ? (
                           <a href={d.file_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
                             <ExternalLink size={12} /> {t("docs.download")}
                           </a>
                         ) : <span className="text-[11px] text-muted-foreground">—</span>}
+                        {user?.id === d.user_id && (
+                          <button onClick={() => remove(d)} className="text-muted-foreground hover:text-destructive" title={lang==="de"?"Löschen":"Delete"}>
+                            <Trash2 size={13} />
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
