@@ -16,6 +16,7 @@ export const Route = createFileRoute("/app/")({
 
 interface Task { id: string; title: string; kind: string; time: string; status: "pending" | "overdue" | "done"; who: string }
 interface LiveAction { id: string; title: string; source: string; severity: "high" | "medium" | "low"; created_at: string }
+interface DashCounts { alerts: number; incidentsHigh: number; tempOut: number; trainingDue: number; recipes: number; brigade: number; tempOk: number; tempTotal: number; expiring: number; suppliers: number; poOpen: number; poSpend: number }
 
 
 function Dashboard() {
