@@ -24,11 +24,15 @@ function Dashboard() {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [counts, setCounts] = useState<DashCounts>({
+    alerts: 0, incidentsHigh: 0, tempOut: 0, trainingDue: 0, recipes: 0, brigade: 0, tempOk: 0, tempTotal: 0, expiring: 0, suppliers: 0, poOpen: 0, poSpend: 0,
+  });
 
   const load = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     const since = new Date(); since.setHours(0, 0, 0, 0);
+    const in7 = new Date(Date.now() + 7 * 86400000).toISOString();
     let q = supabase.from("checks")
       .select("id, title, kind, status, completed_at, created_at, user_id")
       .gte("created_at", since.toISOString())
@@ -54,6 +58,38 @@ function Dashboard() {
       };
     });
     setTasks(rows);
+
+    // Live aggregate counts for role dashboards
+    const [alertsQ, incHighQ, tempOutQ, tempOkQ, recipesQ, brigadeQ, expiringQ, supQ, poOpenQ, trainingDueQ, poRecent] = await Promise.all([
+      supabase.from("alerts").select("id", { count: "exact", head: true }).is("read_at", null),
+      supabase.from("incidents").select("id", { count: "exact", head: true }).eq("severity", "high").neq("status", "closed"),
+      supabase.from("temperature_logs").select("id", { count: "exact", head: true }).eq("status", "out_of_range").gte("logged_at", since.toISOString()),
+      supabase.from("temperature_logs").select("id", { count: "exact", head: true }).eq("status", "in_range").gte("logged_at", since.toISOString()),
+      supabase.from("recipes").select("id", { count: "exact", head: true }),
+      supabase.from("user_roles").select("user_id", { count: "exact", head: true }).in("role", ["chef", "staff"]),
+      supabase.from("expiry_items").select("id", { count: "exact", head: true }).lte("expiry_date", in7),
+      supabase.from("suppliers").select("id", { count: "exact", head: true }),
+      supabase.from("purchase_orders").select("id", { count: "exact", head: true }).in("status", ["draft", "sent"]),
+      supabase.from("training_records").select("id", { count: "exact", head: true }).is("completed_at", null),
+      supabase.from("purchase_orders").select("total_cents").gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
+    ]);
+    const spend = ((poRecent.data ?? []) as Array<{ total_cents: number | null }>).reduce((s, r) => s + (r.total_cents ?? 0), 0);
+    const tempOk = tempOkQ.count ?? 0;
+    const tempOut = tempOutQ.count ?? 0;
+    setCounts({
+      alerts: alertsQ.count ?? 0,
+      incidentsHigh: incHighQ.count ?? 0,
+      tempOut,
+      tempOk,
+      tempTotal: tempOk + tempOut,
+      trainingDue: trainingDueQ.count ?? 0,
+      recipes: recipesQ.count ?? 0,
+      brigade: brigadeQ.count ?? 0,
+      expiring: expiringQ.count ?? 0,
+      suppliers: supQ.count ?? 0,
+      poOpen: poOpenQ.count ?? 0,
+      poSpend: Math.round(spend / 100),
+    });
     setLoading(false);
   }, [user, lang]);
 
@@ -61,6 +97,9 @@ function Dashboard() {
     load();
     const ch = supabase.channel("dash-checks")
       .on("postgres_changes", { event: "*", schema: "public", table: "checks" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "incidents" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "temperature_logs" }, load)
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, [load]);
@@ -86,14 +125,15 @@ function Dashboard() {
 
       {loading && <div className="text-xs text-muted-foreground inline-flex items-center gap-2"><Loader2 size={12} className="animate-spin" /> {t("common.loading") || "…"}</div>}
 
-      {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
-      {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
-      {user.role === "chef" && <ChefView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} />}
+      {user.role === "owner" && <OwnerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} counts={counts} />}
+      {user.role === "manager" && <ManagerView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} counts={counts} />}
+      {user.role === "chef" && <ChefView pending={pending} overdue={overdue} tasks={visibleTasks} done={done} counts={counts} />}
       {user.role === "staff" && <StaffView tasks={visibleTasks} done={done} />}
       {user.role === "inspector" && <InspectorView />}
     </div>
   );
 }
+
 
 /* ---------------- Role hero band ---------------- */
 function RoleHero({ role, firstName, dateStr, location }: { role: string; firstName: string; dateStr: string; location: string }) {
