@@ -88,7 +88,7 @@ function Dashboard() {
       expiring: expiringQ.count ?? 0,
       suppliers: supQ.count ?? 0,
       poOpen: poOpenQ.count ?? 0,
-      poSpend: Math.round(spend / 100),
+      poSpend: Math.round(spend),
     });
     setLoading(false);
   }, [user, lang]);
