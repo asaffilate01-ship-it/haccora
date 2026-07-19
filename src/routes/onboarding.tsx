@@ -163,8 +163,8 @@ function OnboardingPage() {
                 {t(`${name || "Ihr Betrieb"} ist eingerichtet. Wählen Sie eine Rolle, um die Demo zu erkunden.`,
                    `${name || "Your business"} is configured. Pick a role to explore the demo.`)}
               </p>
-              <button onClick={() => navigate({ to: "/login" })} className="btn-alert-solid mt-6">
-                {t("Weiter zur Anmeldung", "Continue to sign-in")}
+              <button onClick={persistAndFinish} disabled={saving} className="btn-alert-solid mt-6 disabled:opacity-60">
+                {saving ? <><Loader2 size={14} className="inline animate-spin mr-1"/>{t("Speichere…","Saving…")}</> : t("Weiter zur App", "Continue to app")}
               </button>
             </div>
           )}
