@@ -47,7 +47,7 @@ function SettingsPage() {
     })();
   }, []);
 
-  const savePref = async (patch: Record<string, boolean>) => {
+  const savePref = async (patch: { email_alerts?: boolean; push_alerts?: boolean; weekly_digest?: boolean }) => {
     setSaveState("saving");
     const { data: { user: authUser } } = await supabase.auth.getUser();
     if (!authUser) { setSaveState("idle"); return; }
