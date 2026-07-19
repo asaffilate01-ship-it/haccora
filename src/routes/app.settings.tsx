@@ -120,6 +120,10 @@ function SettingsPage() {
         <div className="flex items-center gap-2 mb-4">
           <Bell size={18} className="text-primary" />
           <h2 className="font-display text-lg">{t("settings.notifications")}</h2>
+          <span className="ml-auto text-xs text-muted-foreground inline-flex items-center gap-1">
+            {saveState === "saving" && <><Loader2 size={12} className="animate-spin" />{t("app.saving") ?? (lang==="de"?"Speichere…":"Saving…")}</>}
+            {saveState === "saved" && <><Check size={12} className="text-success" />{lang==="de"?"Gespeichert":"Saved"}</>}
+          </span>
         </div>
         <div className="divide-y divide-border">
           <Toggle
@@ -127,21 +131,21 @@ function SettingsPage() {
             label={t("settings.n.email")}
             hint={t("settings.n.email.hint")}
             checked={emailAlerts}
-            onChange={setEmailAlerts}
+            onChange={(v) => { setEmailAlerts(v); savePref({ email_alerts: v }); }}
           />
           <Toggle
             icon={<Bell size={16} />}
             label={t("settings.n.push")}
             hint={t("settings.n.push.hint")}
             checked={pushAlerts}
-            onChange={setPushAlerts}
+            onChange={(v) => { setPushAlerts(v); savePref({ push_alerts: v }); }}
           />
           <Toggle
             icon={<RefreshCw size={16} />}
             label={t("settings.n.digest")}
             hint={t("settings.n.digest.hint")}
             checked={digest}
-            onChange={setDigest}
+            onChange={(v) => { setDigest(v); savePref({ weekly_digest: v }); }}
           />
         </div>
       </section>
