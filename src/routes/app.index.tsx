@@ -71,9 +71,9 @@ function Dashboard() {
       supabase.from("suppliers").select("id", { count: "exact", head: true }),
       supabase.from("purchase_orders").select("id", { count: "exact", head: true }).in("status", ["draft", "sent"]),
       supabase.from("training_records").select("id", { count: "exact", head: true }).is("completed_at", null),
-      supabase.from("purchase_orders").select("total_cents").gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
+      supabase.from("purchase_orders").select("total_eur").gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
     ]);
-    const spend = ((poRecent.data ?? []) as Array<{ total_cents: number | null }>).reduce((s, r) => s + (r.total_cents ?? 0), 0);
+    const spend = ((poRecent.data ?? []) as Array<{ total_eur: number | null }>).reduce((s, r) => s + Number(r.total_eur ?? 0), 0);
     const tempOk = tempOkQ.count ?? 0;
     const tempOut = tempOutQ.count ?? 0;
     setCounts({
