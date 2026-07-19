@@ -56,7 +56,13 @@ function Dashboard() {
     setLoading(false);
   }, [user, lang]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+    const ch = supabase.channel("dash-checks")
+      .on("postgres_changes", { event: "*", schema: "public", table: "checks" }, load)
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [load]);
 
   const done = async (id: string) => {
     await supabase.from("checks").update({ status: "completed", completed_at: new Date().toISOString() }).eq("id", id);
