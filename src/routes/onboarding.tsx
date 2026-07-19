@@ -1,8 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { ShieldCheck, ChevronRight, ChevronLeft, Utensils, Coffee, Building2, Store, Hotel, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, ChevronRight, ChevronLeft, Utensils, Coffee, Building2, Store, Hotel, CheckCircle2, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
