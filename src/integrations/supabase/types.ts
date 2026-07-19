@@ -198,6 +198,7 @@ export type Database = {
           expires_at: string | null
           file_url: string | null
           id: string
+          storage_path: string | null
           title: string
           user_id: string
           version: string | null
@@ -208,6 +209,7 @@ export type Database = {
           expires_at?: string | null
           file_url?: string | null
           id?: string
+          storage_path?: string | null
           title: string
           user_id: string
           version?: string | null
@@ -218,6 +220,7 @@ export type Database = {
           expires_at?: string | null
           file_url?: string | null
           id?: string
+          storage_path?: string | null
           title?: string
           user_id?: string
           version?: string | null
