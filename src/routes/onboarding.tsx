@@ -1,8 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { ShieldCheck, ChevronRight, ChevronLeft, Utensils, Coffee, Building2, Store, Hotel, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, ChevronRight, ChevronLeft, Utensils, Coffee, Building2, Store, Hotel, CheckCircle2, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
@@ -29,8 +30,11 @@ function OnboardingPage() {
   const [step, setStep] = useState(0);
   const [vertical, setVertical] = useState<string | null>(null);
   const [name, setName] = useState("");
+  const [vatId, setVatId] = useState("");
+  const [businessState, setBusinessState] = useState("Berlin");
   const [size, setSize] = useState("11-30");
   const [locations, setLocations] = useState(1);
+  const [saving, setSaving] = useState(false);
 
   const steps = [
     t("Betriebstyp", "Business type"),
@@ -40,6 +44,23 @@ function OnboardingPage() {
     t("Fertig", "Done"),
   ];
   const last = step === steps.length - 1;
+
+  const persistAndFinish = async () => {
+    setSaving(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase.from("profiles").update({
+        restaurant_name: name || null,
+        vertical, vat_id: vatId || null,
+        business_state: businessState,
+        team_size: size,
+        location_count: locations,
+        onboarded_at: new Date().toISOString(),
+      }).eq("id", user.id);
+    }
+    setSaving(false);
+    navigate({ to: user ? "/app" : "/login" });
+  };
 
   return (
     <div className="min-h-screen bg-secondary/40 flex flex-col">
@@ -92,11 +113,11 @@ function OnboardingPage() {
               </label>
               <label className="block">
                 <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{t("Umsatzsteuer-ID (optional)", "VAT ID (optional)")}</div>
-                <input placeholder="DE 123 456 789" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+                <input value={vatId} onChange={(e)=>setVatId(e.target.value)} placeholder="DE 123 456 789" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm" />
               </label>
               <label className="block">
                 <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{t("Bundesland", "State")}</div>
-                <select className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm">
+                <select value={businessState} onChange={(e)=>setBusinessState(e.target.value)} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm">
                   <option>Berlin</option><option>Bayern</option><option>Nordrhein-Westfalen</option><option>Hamburg</option><option>Baden-Württemberg</option>
                 </select>
               </label>
@@ -142,8 +163,8 @@ function OnboardingPage() {
                 {t(`${name || "Ihr Betrieb"} ist eingerichtet. Wählen Sie eine Rolle, um die Demo zu erkunden.`,
                    `${name || "Your business"} is configured. Pick a role to explore the demo.`)}
               </p>
-              <button onClick={() => navigate({ to: "/login" })} className="btn-alert-solid mt-6">
-                {t("Weiter zur Anmeldung", "Continue to sign-in")}
+              <button onClick={persistAndFinish} disabled={saving} className="btn-alert-solid mt-6 disabled:opacity-60">
+                {saving ? <><Loader2 size={14} className="inline animate-spin mr-1"/>{t("Speichere…","Saving…")}</> : t("Weiter zur App", "Continue to app")}
               </button>
             </div>
           )}
