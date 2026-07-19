@@ -34,7 +34,14 @@ export function LiveMetrics() {
     };
     load();
     const iv = setInterval(load, 30000);
-    return () => { mounted = false; clearInterval(iv); };
+    const ch = supabase
+      .channel("live-metrics")
+      .on("postgres_changes", { event: "*", schema: "public", table: "incidents" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "temperature_logs" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "checks" }, load)
+      .subscribe();
+    return () => { mounted = false; clearInterval(iv); supabase.removeChannel(ch); };
   }, []);
 
   if (!c) return (
