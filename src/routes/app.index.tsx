@@ -378,24 +378,73 @@ function TasksCard({ tasks, done, big }: { tasks: Task[]; done: (id: string) => 
 }
 
 function ActionsCard() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const [items, setItems] = useState<LiveAction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const load = useCallback(async () => {
+    const { data } = await supabase
+      .from("alerts")
+      .select("id, title, kind, severity, created_at")
+      .is("read_at", null)
+      .order("created_at", { ascending: false })
+      .limit(5);
+    setItems((data ?? []).map((r: any) => ({
+      id: r.id,
+      title: r.title,
+      source: r.kind || "system",
+      severity: (["high", "medium", "low"].includes(r.severity) ? r.severity : "medium") as LiveAction["severity"],
+      created_at: r.created_at,
+    })));
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    load();
+    const ch = supabase.channel("dash-alerts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [load]);
+
+  const rel = (iso: string) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1) return lang === "de" ? "jetzt" : "now";
+    if (m < 60) return `${m}m`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h`;
+    return `${Math.floor(h / 24)}d`;
+  };
+
   return (
     <div className="surface p-6">
-      <h2 className="font-display text-xl">{t("dash.actions")}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-xl">{t("dash.actions")}</h2>
+        <Link to="/app/alerts" className="text-xs text-primary hover:underline">{t("dash.allTasks")} →</Link>
+      </div>
       <div className="mt-3 space-y-2">
-        {actions.map((a) => (
-          <div key={a.id} className="flex items-start gap-3 p-3 rounded-lg bg-secondary/60">
+        {loading && <div className="text-xs text-muted-foreground">…</div>}
+        {!loading && items.length === 0 && (
+          <div className="text-xs text-muted-foreground py-6 text-center inline-flex items-center gap-2 w-full justify-center">
+            <CheckCircle2 size={14} className="text-success" />
+            {lang === "de" ? "Keine offenen Alerts" : "No open alerts"}
+          </div>
+        )}
+        {items.map((a) => (
+          <Link key={a.id} to="/app/alerts" className="flex items-start gap-3 p-3 rounded-lg bg-secondary/60 hover:bg-secondary transition">
             <SeverityBadge sev={a.severity} />
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium truncate">{t(a.tKey)}</div>
-              <div className="text-xs text-muted-foreground">{t(a.sourceKey)} · {a.dueKey ? t(a.dueKey) : a.due}</div>
+              <div className="text-sm font-medium truncate">{a.title}</div>
+              <div className="text-xs text-muted-foreground truncate">{a.source} · {rel(a.created_at)}</div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
   );
 }
+
 
 function ReadinessCard() {
   const { t } = useI18n();
