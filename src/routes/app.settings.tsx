@@ -3,7 +3,8 @@ import { Fragment, useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth, canAccess, ROLES, type Role } from "@/lib/auth";
 import { ACTION_GROUPS, ACTION_LABEL_DE, ACTION_LABEL_EN, ROLE_ACTIONS, type Action } from "@/lib/permissions";
-import { Settings as SettingsIcon, Bell, Globe2, Shield, LogOut, RefreshCw, Mail, KeyRound, Check, X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Settings as SettingsIcon, Bell, Globe2, Shield, LogOut, RefreshCw, Mail, KeyRound, Check, X, Loader2 } from "lucide-react";
 
 
 export const Route = createFileRoute("/app/settings")({
@@ -23,12 +24,37 @@ function SettingsPage() {
   const [emailAlerts, setEmailAlerts] = useState(true);
   const [pushAlerts, setPushAlerts] = useState(true);
   const [digest, setDigest] = useState(false);
+  const [saveState, setSaveState] = useState<"idle"|"saving"|"saved">("idle");
 
   useEffect(() => {
     if (user && !canAccess(user.role, "settings")) {
       navigate({ to: "/app", replace: true });
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    (async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (!authUser) return;
+      const { data } = await supabase.from("profiles")
+        .select("email_alerts,push_alerts,weekly_digest")
+        .eq("id", authUser.id).maybeSingle();
+      if (data) {
+        setEmailAlerts(!!data.email_alerts);
+        setPushAlerts(!!data.push_alerts);
+        setDigest(!!data.weekly_digest);
+      }
+    })();
+  }, []);
+
+  const savePref = async (patch: Record<string, boolean>) => {
+    setSaveState("saving");
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    if (!authUser) { setSaveState("idle"); return; }
+    await supabase.from("profiles").update(patch).eq("id", authUser.id);
+    setSaveState("saved");
+    setTimeout(() => setSaveState("idle"), 1200);
+  };
 
   if (!user) return null;
 
