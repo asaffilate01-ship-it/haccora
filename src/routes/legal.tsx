@@ -2,6 +2,7 @@ import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-rout
 import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ArrowLeft } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/legal")({
   component: LegalLayout,
