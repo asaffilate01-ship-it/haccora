@@ -282,6 +282,14 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
+  // Photo + geo evidence
+  const [photoBlob, setPhotoBlob] = useState<Blob | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [geo, setGeo] = useState<{ lat: number; lng: number; accuracy: number } | null>(null);
+  const [geoErr, setGeoErr] = useState<string | null>(null);
+  const [capturedAt, setCapturedAt] = useState<Date | null>(null);
+  const [capturing, setCapturing] = useState(false);
+
   const step = flow.steps[idx];
   const total = flow.steps.length;
 
