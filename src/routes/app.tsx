@@ -277,16 +277,13 @@ function AppShell() {
       <div className="flex-1 flex min-h-0">
       <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-card">
 
-        <div className="px-5 h-[4.5rem] flex items-center gap-2 border-b border-border">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <ShieldCheck size={18} />
-          </span>
+        <div className="px-5 h-[4.5rem] flex items-center gap-3 border-b border-border">
+          <BrandLogoImage className="h-9 w-auto" />
           <div className="leading-tight min-w-0">
-            <div className="font-display text-base">Haccora</div>
-            <div className="text-[9px] font-bold uppercase tracking-[0.1em] text-muted-foreground truncate">{t("brand.slogan")}</div>
             <div className="text-[9px] uppercase tracking-widest text-muted-foreground truncate">{t(`role.${user.role}`)}</div>
           </div>
         </div>
+
 
         <nav className="p-3 flex-1 overflow-y-auto space-y-4">
           {visibleGroups.map((group) => (
