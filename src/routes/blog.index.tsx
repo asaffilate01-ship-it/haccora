@@ -4,6 +4,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { FollowBar } from "@/components/SocialIcons";
 import { posts, formatDate } from "@/lib/blog";
 import { ArrowRight, Clock } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
