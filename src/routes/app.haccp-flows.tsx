@@ -242,6 +242,16 @@ function HaccpFlowsPage() {
                     {r.ccp_value}{r.ccp_unit ?? ""}
                   </div>
                 )}
+                {r.photo_path && (
+                  <span title={t("Foto-Nachweis", "Photo evidence")} className="text-muted-foreground">
+                    <Camera size={12} />
+                  </span>
+                )}
+                {r.geo_lat != null && r.geo_lng != null && (
+                  <span title={`${r.geo_lat?.toFixed(4)}, ${r.geo_lng?.toFixed(4)}`} className="text-muted-foreground">
+                    <MapPin size={12} />
+                  </span>
+                )}
                 {r.in_range === false ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 text-destructive px-2 py-0.5 text-[10px] font-bold uppercase">
                     <AlertTriangle size={10} /> CCP
