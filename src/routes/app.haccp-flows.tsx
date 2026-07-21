@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   Workflow, PackageCheck, Flame, ThermometerSun, Snowflake, Microwave, ShieldCheck,
   CheckCircle2, AlertTriangle, Loader2, ArrowRight, ArrowLeft, X, FileText,
+  Camera, MapPin, Clock, Trash2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app/haccp-flows")({ component: HaccpFlowsPage });
