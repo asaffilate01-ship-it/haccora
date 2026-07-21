@@ -490,17 +490,22 @@ export type Database = {
       }
       haccp_flow_runs: {
         Row: {
+          captured_at: string | null
           ccp_unit: string | null
           ccp_value: number | null
           corrective_action: string | null
           created_at: string
           flow_key: string
+          geo_accuracy: number | null
+          geo_lat: number | null
+          geo_lng: number | null
           id: string
           in_range: boolean | null
           location: string | null
           notes: string | null
           performed_at: string
           performed_by: string | null
+          photo_path: string | null
           product: string | null
           status: string
           steps: Json
@@ -509,17 +514,22 @@ export type Database = {
           title: string
         }
         Insert: {
+          captured_at?: string | null
           ccp_unit?: string | null
           ccp_value?: number | null
           corrective_action?: string | null
           created_at?: string
           flow_key: string
+          geo_accuracy?: number | null
+          geo_lat?: number | null
+          geo_lng?: number | null
           id?: string
           in_range?: boolean | null
           location?: string | null
           notes?: string | null
           performed_at?: string
           performed_by?: string | null
+          photo_path?: string | null
           product?: string | null
           status?: string
           steps?: Json
@@ -528,17 +538,22 @@ export type Database = {
           title: string
         }
         Update: {
+          captured_at?: string | null
           ccp_unit?: string | null
           ccp_value?: number | null
           corrective_action?: string | null
           created_at?: string
           flow_key?: string
+          geo_accuracy?: number | null
+          geo_lat?: number | null
+          geo_lng?: number | null
           id?: string
           in_range?: boolean | null
           location?: string | null
           notes?: string | null
           performed_at?: string
           performed_by?: string | null
+          photo_path?: string | null
           product?: string | null
           status?: string
           steps?: Json

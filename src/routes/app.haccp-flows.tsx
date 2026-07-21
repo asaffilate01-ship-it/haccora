@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   Workflow, PackageCheck, Flame, ThermometerSun, Snowflake, Microwave, ShieldCheck,
   CheckCircle2, AlertTriangle, Loader2, ArrowRight, ArrowLeft, X, FileText,
+  Camera, MapPin, Clock, Trash2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app/haccp-flows")({ component: HaccpFlowsPage });
@@ -116,6 +117,9 @@ interface Run {
   corrective_action: string | null;
   performed_at: string;
   status: string;
+  photo_path: string | null;
+  geo_lat: number | null;
+  geo_lng: number | null;
 }
 
 function HaccpFlowsPage() {
@@ -133,7 +137,7 @@ function HaccpFlowsPage() {
     setLoading(true);
     const { data } = await supabase
       .from("haccp_flow_runs")
-      .select("id,flow_key,title,product,ccp_value,ccp_unit,in_range,corrective_action,performed_at,status")
+      .select("id,flow_key,title,product,ccp_value,ccp_unit,in_range,corrective_action,performed_at,status,photo_path,geo_lat,geo_lng")
       .order("performed_at", { ascending: false })
       .limit(50);
     setRuns((data ?? []) as Run[]);
@@ -238,6 +242,16 @@ function HaccpFlowsPage() {
                     {r.ccp_value}{r.ccp_unit ?? ""}
                   </div>
                 )}
+                {r.photo_path && (
+                  <span title={t("Foto-Nachweis", "Photo evidence")} className="text-muted-foreground">
+                    <Camera size={12} />
+                  </span>
+                )}
+                {r.geo_lat != null && r.geo_lng != null && (
+                  <span title={`${r.geo_lat?.toFixed(4)}, ${r.geo_lng?.toFixed(4)}`} className="text-muted-foreground">
+                    <MapPin size={12} />
+                  </span>
+                )}
                 {r.in_range === false ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 text-destructive px-2 py-0.5 text-[10px] font-bold uppercase">
                     <AlertTriangle size={10} /> CCP
@@ -268,6 +282,14 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
+  // Photo + geo evidence
+  const [photoBlob, setPhotoBlob] = useState<Blob | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [geo, setGeo] = useState<{ lat: number; lng: number; accuracy: number } | null>(null);
+  const [geoErr, setGeoErr] = useState<string | null>(null);
+  const [capturedAt, setCapturedAt] = useState<Date | null>(null);
+  const [capturing, setCapturing] = useState(false);
+
   const step = flow.steps[idx];
   const total = flow.steps.length;
 
@@ -290,6 +312,77 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
   const next = () => setIdx(i => Math.min(total - 1, i + 1));
   const prev = () => setIdx(i => Math.max(0, i - 1));
 
+  const getGeo = (): Promise<{ lat: number; lng: number; accuracy: number } | null> =>
+    new Promise(resolve => {
+      if (!("geolocation" in navigator)) { setGeoErr(t("Standort nicht verfügbar", "Location unavailable")); resolve(null); return; }
+      navigator.geolocation.getCurrentPosition(
+        p => resolve({ lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy }),
+        e => { setGeoErr(e.message); resolve(null); },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 }
+      );
+    });
+
+  const watermark = (file: File, when: Date, coords: { lat: number; lng: number; accuracy: number } | null): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = () => { img.src = reader.result as string; };
+      reader.onerror = () => reject(new Error("read failed"));
+      img.onload = () => {
+        const maxW = 1600;
+        const scale = Math.min(1, maxW / img.width);
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0, w, h);
+        // Watermark bar
+        const barH = Math.max(56, Math.round(h * 0.09));
+        ctx.fillStyle = "rgba(0,0,0,0.65)";
+        ctx.fillRect(0, h - barH, w, barH);
+        ctx.fillStyle = "#fff";
+        const fs = Math.max(14, Math.round(barH * 0.28));
+        ctx.font = `600 ${fs}px system-ui, sans-serif`;
+        const ts = when.toLocaleString(lang === "de" ? "de-DE" : "en-GB");
+        const geoText = coords
+          ? `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)} · ±${Math.round(coords.accuracy)}m`
+          : t("Ohne Geo-Tag", "No geo tag");
+        ctx.fillText(`Haccora · ${ts}`, 16, h - barH + fs + 4);
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.font = `400 ${Math.round(fs * 0.85)}px system-ui, sans-serif`;
+        ctx.fillText(geoText, 16, h - 12);
+        canvas.toBlob(b => b ? resolve(b) : reject(new Error("encode failed")), "image/jpeg", 0.85);
+      };
+      img.onerror = () => reject(new Error("image load failed"));
+      reader.readAsDataURL(file);
+    });
+
+  const onCapture = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setCapturing(true); setErr(null); setGeoErr(null);
+    try {
+      const [coords, when] = await Promise.all([getGeo(), Promise.resolve(new Date())]);
+      const blob = await watermark(file, when, coords);
+      if (photoUrl) URL.revokeObjectURL(photoUrl);
+      setPhotoBlob(blob);
+      setPhotoUrl(URL.createObjectURL(blob));
+      setGeo(coords);
+      setCapturedAt(when);
+    } catch (ex: any) {
+      setErr(ex?.message ?? "capture failed");
+    } finally {
+      setCapturing(false);
+    }
+  };
+
+  const clearPhoto = () => {
+    if (photoUrl) URL.revokeObjectURL(photoUrl);
+    setPhotoBlob(null); setPhotoUrl(null); setGeo(null); setCapturedAt(null); setGeoErr(null);
+  };
+
   const finish = async () => {
     setBusy(true); setErr(null);
     const stepsPayload = flow.steps.map(s => ({
@@ -305,6 +398,18 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
     const status = inRange ? "complete" : "corrective";
 
     const { data: u } = await supabase.auth.getUser();
+    const uid = u.user?.id;
+
+    let photoPath: string | null = null;
+    if (photoBlob && uid) {
+      const path = `haccp-flows/${uid}/${Date.now()}-${flow.key}.jpg`;
+      const { error: upErr } = await supabase.storage
+        .from("documents")
+        .upload(path, photoBlob, { contentType: "image/jpeg", upsert: false });
+      if (upErr) { setBusy(false); setErr(upErr.message); return; }
+      photoPath = path;
+    }
+
     const { error } = await supabase.from("haccp_flow_runs").insert({
       flow_key: flow.key,
       title: lang === "de" ? flow.titleDe : flow.titleEn,
@@ -318,7 +423,12 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
       steps: stepsPayload,
       notes: notes || null,
       status,
-      performed_by: u.user?.id ?? null,
+      performed_by: uid ?? null,
+      photo_path: photoPath,
+      geo_lat: geo?.lat ?? null,
+      geo_lng: geo?.lng ?? null,
+      geo_accuracy: geo?.accuracy ?? null,
+      captured_at: capturedAt?.toISOString() ?? null,
     });
     setBusy(false);
     if (error) { setErr(error.message); return; }
@@ -427,6 +537,51 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
                   rows={2}
                   className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
                 />
+              </div>
+
+              {/* Time + geo tagged photo evidence */}
+              <div className="rounded-lg border border-border bg-secondary/30 p-3">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="text-xs font-semibold flex items-center gap-1.5">
+                    <Camera size={12} /> {t("Foto-Nachweis (Zeit + Geo)", "Photo evidence (time + geo)")}
+                  </div>
+                  {photoUrl && (
+                    <button onClick={clearPhoto} className="text-[11px] text-muted-foreground hover:text-destructive inline-flex items-center gap-1">
+                      <Trash2 size={11} /> {t("Entfernen", "Remove")}
+                    </button>
+                  )}
+                </div>
+                {!photoUrl ? (
+                  <label className={`flex items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-background px-3 py-4 text-sm font-medium cursor-pointer hover:bg-secondary/40 ${capturing ? "opacity-60 pointer-events-none" : ""}`}>
+                    {capturing ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
+                    {capturing ? t("Erfasse Standort…", "Capturing location…") : t("Foto aufnehmen", "Take photo")}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={onCapture}
+                      className="hidden"
+                    />
+                  </label>
+                ) : (
+                  <div className="space-y-2">
+                    <img src={photoUrl} alt="evidence" className="w-full rounded-md border border-border" />
+                    <div className="grid grid-cols-2 gap-2 text-[11px]">
+                      <div className="inline-flex items-center gap-1 text-muted-foreground">
+                        <Clock size={11} /> {capturedAt?.toLocaleString(lang === "de" ? "de-DE" : "en-GB")}
+                      </div>
+                      <div className="inline-flex items-center gap-1 text-muted-foreground">
+                        <MapPin size={11} />
+                        {geo
+                          ? `${geo.lat.toFixed(5)}, ${geo.lng.toFixed(5)} · ±${Math.round(geo.accuracy)}m`
+                          : (geoErr ?? t("Ohne Geo-Tag", "No geo tag"))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {geoErr && !photoUrl && (
+                  <div className="mt-2 text-[11px] text-muted-foreground">{geoErr}</div>
+                )}
               </div>
               {primary && primaryRaw !== undefined && primaryRaw !== "" && (
                 <div className={`rounded-lg px-3 py-2 text-xs font-medium ${primaryOk === false ? "bg-destructive/10 text-destructive" : "bg-success/15 text-success"}`}>
