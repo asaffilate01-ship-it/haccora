@@ -323,3 +323,24 @@ body.lang-swap {
 @keyframes gs-fade-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-4px); } }
 @keyframes gs-fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 html[data-lang-changing="true"] * { transition: color 200ms ease, background-color 200ms ease; }
+
+/* --- marquee (built for chefs, by chefs) --- */
+@keyframes gs-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@utility marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  animation: gs-marquee 38s linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* safe-area helper for mobile bottom nav on iOS PWAs */
+@utility pb-safe { padding-bottom: max(0.25rem, env(safe-area-inset-bottom)); }
+

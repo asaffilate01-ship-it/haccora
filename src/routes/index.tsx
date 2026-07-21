@@ -31,10 +31,11 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <div className="min-h-screen bg-white text-foreground">
+    <div className="min-h-screen bg-white text-foreground pb-20 md:pb-0">
       <TopBar />
       <SubNav />
       <Hero />
+      <ChefsMarquee />
       <OutcomesBand />
       <Support360 />
       <ModulePillars />
@@ -45,9 +46,48 @@ function Landing() {
       <FaqSection />
       <CtaFooter />
       <SiteFooter />
+      <StickyMobileCTA />
     </div>
   );
 }
+
+/* ────────────────────────────────────────────── marquee: built for German kitchens */
+function ChefsMarquee() {
+  const { t } = useI18n();
+  const phrase = t("marquee.phrase") ?? "Built for German kitchens · Sicher. Sauber. Nachweisbar.";
+  const line = Array.from({ length: 8 }, (_, i) => (
+    <span key={i} className="inline-flex items-center gap-6">
+      <span className="display-black text-4xl md:text-6xl uppercase tracking-tight">{phrase}</span>
+      <span className="h-3 w-3 rounded-full bg-[color:var(--color-alert-red)] shrink-0" />
+    </span>
+  ));
+  return (
+    <section aria-hidden="true" className="bg-black text-white overflow-hidden border-y border-white/10">
+      <div className="marquee-track py-6 md:py-8">
+        {line}
+        {line}
+      </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────────── sticky mobile CTA */
+function StickyMobileCTA() {
+  const { t } = useI18n();
+  return (
+    <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-black/95 backdrop-blur border-t border-white/10 pb-safe">
+      <div className="px-4 py-3 flex items-center gap-2">
+        <a href="tel:+49301234567" className="btn-red-outline flex-1 !py-2.5 !text-xs">
+          <Phone size={14} /> 030 1234 567
+        </a>
+        <a href="#contact" className="btn-red flex-[1.4] !py-2.5 !text-xs">
+          {t("nav.contact") ?? "Contact us"} <ArrowRight size={14} />
+        </a>
+      </div>
+    </div>
+  );
+}
+
 
 /* ────────────────────────────────────────────── top bar (black) */
 function TopBar() {

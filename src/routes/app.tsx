@@ -493,16 +493,13 @@ function AppShell() {
           <Outlet />
         </main>
 
-        <nav className="md:hidden sticky bottom-0 z-30 grid grid-cols-5 border-t border-border bg-card">
-          {visibleFlat.slice(0, 5).map(({ to, icon: Icon, key, exact }) => {
-            const active = exact ? pathname === to : pathname.startsWith(to);
-            return (
-              <Link key={to} to={to as never} className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] transition ${active ? "text-primary" : "text-muted-foreground"}`}>
-                <Icon size={18} /> {t(key)}
-              </Link>
-            );
-          })}
-        </nav>
+        <MobileBottomNav
+          visibleFlat={visibleFlat}
+          visibleGroups={visibleGroups}
+          pathname={pathname}
+          t={t}
+        />
+
       </div>
       </div>
 
@@ -550,3 +547,111 @@ function AppShell() {
     </div>
   );
 }
+
+function MobileBottomNav({
+  visibleFlat,
+  visibleGroups,
+  pathname,
+  t,
+}: {
+  visibleFlat: NavItem[];
+  visibleGroups: NavGroup[];
+  pathname: string;
+  t: (k: string) => string;
+}) {
+  const [moreOpen, setMoreOpen] = useState(false);
+
+  // Preferred order for the 4 pinned tabs; fall back to whatever the role has.
+  const PREFERRED = ["/app", "/app/routines", "/app/checks", "/app/alerts", "/app/inspection"];
+  const pinned: NavItem[] = [];
+  for (const p of PREFERRED) {
+    const item = visibleFlat.find((i) => i.to === p);
+    if (item && pinned.length < 4) pinned.push(item);
+  }
+  // Backfill from visibleFlat if role has fewer preferred routes.
+  for (const item of visibleFlat) {
+    if (pinned.length >= 4) break;
+    if (!pinned.find((p) => p.to === item.to)) pinned.push(item);
+  }
+
+  return (
+    <>
+      <nav className="md:hidden sticky bottom-0 z-30 grid grid-cols-5 border-t border-border bg-card pb-safe">
+        {pinned.map(({ to, icon: Icon, key, exact }) => {
+          const active = exact ? pathname === to : pathname.startsWith(to);
+          return (
+            <Link
+              key={to}
+              to={to as never}
+              className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
+                active ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              <Icon size={18} />
+              <span className="truncate max-w-[68px]">{t(key)}</span>
+            </Link>
+          );
+        })}
+        <button
+          onClick={() => setMoreOpen(true)}
+          className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
+            moreOpen ? "text-primary" : "text-muted-foreground"
+          }`}
+          aria-label={t("nav.more")}
+        >
+          <ChevronDown size={18} className="rotate-180" />
+          <span>{t("nav.more")}</span>
+        </button>
+      </nav>
+
+      {moreOpen && (
+        <div className="md:hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm" onClick={() => setMoreOpen(false)}>
+          <div
+            className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-card border-t border-border pb-safe"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-card">
+              <div className="font-display text-lg">{t("nav.more")}</div>
+              <button
+                onClick={() => setMoreOpen(false)}
+                className="text-xs font-bold uppercase tracking-widest text-muted-foreground"
+              >
+                ESC
+              </button>
+            </div>
+            <div className="p-4 space-y-5">
+              {visibleGroups.map((g) => (
+                <div key={g.labelKey}>
+                  <div className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                    {t(g.labelKey)}
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {g.items.map(({ to, icon: Icon, key, exact }) => {
+                      const active = exact ? pathname === to : pathname.startsWith(to);
+                      return (
+                        <Link
+                          key={to}
+                          to={to as never}
+                          onClick={() => setMoreOpen(false)}
+                          className={`flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-sm transition ${
+                            active
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "border-border bg-secondary/40 text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          <Icon size={16} className="shrink-0" />
+                          <span className="truncate">{t(key)}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
