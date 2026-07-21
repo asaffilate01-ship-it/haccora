@@ -97,7 +97,7 @@ function TopBar() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
         <Link to="/" className="flex flex-col justify-center min-w-0">
           <span className="font-display text-2xl md:text-3xl tracking-tight text-white leading-none">
-            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
+            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
           </span>
           <span className="mt-1 text-[9px] md:text-[10px] font-bold tracking-[0.14em] text-white/70 uppercase">{t("brand.slogan")}</span>
         </Link>
@@ -623,7 +623,7 @@ function SiteFooter() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-12 grid md:grid-cols-4 gap-8 text-sm">
         <div>
           <div className="font-display text-2xl text-white leading-none">
-            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
+            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
           </div>
           <p className="mt-2 text-[11px] font-bold tracking-[0.12em] text-white/70 uppercase">{t("brand.slogan")}</p>
           <p className="mt-2 text-white/50 text-xs leading-relaxed max-w-xs">{t("brand.tag")}</p>
