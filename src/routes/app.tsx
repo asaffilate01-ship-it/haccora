@@ -42,7 +42,9 @@ const GROUPS: NavGroup[] = [
       { to: "/app/haccp",       icon: ShieldCheck,     key: "menu.haccp",       nav: "haccp" },
       { to: "/app/checks",      icon: ClipboardCheck,  key: "menu.checks",      nav: "checks" },
       { to: "/app/temperature", icon: Thermometer,     key: "menu.temperature", nav: "temperature" },
+      { to: "/app/calibration", icon: Thermometer,     key: "menu.calibration", nav: "calibration" },
       { to: "/app/cleaning",    icon: Sparkles,        key: "menu.cleaning",    nav: "cleaning" },
+      { to: "/app/pest",        icon: Bug,             key: "menu.pest",        nav: "pest" },
     ],
   },
   {
@@ -50,8 +52,10 @@ const GROUPS: NavGroup[] = [
     items: [
       { to: "/app/menu",        icon: UtensilsCrossed, key: "menu.menu",        nav: "menu" },
       { to: "/app/recipes",     icon: Wheat,           key: "menu.recipes",     nav: "recipes" },
+      { to: "/app/oil",         icon: Flame,           key: "menu.oil",         nav: "oil" },
       { to: "/app/suppliers",   icon: Truck,           key: "menu.suppliers",   nav: "suppliers" },
       { to: "/app/purchasing",  icon: ShoppingCart,    key: "menu.purchasing",  nav: "purchasing" },
+      { to: "/app/goodsin",     icon: PackageCheck,    key: "menu.goodsin",     nav: "goodsin" },
     ],
   },
   {
@@ -60,12 +64,14 @@ const GROUPS: NavGroup[] = [
       { to: "/app/stock",       icon: Boxes,           key: "menu.stock",       nav: "stock" },
       { to: "/app/waste",       icon: Trash2,          key: "menu.waste",       nav: "waste" },
       { to: "/app/recalls",     icon: PackageX,        key: "menu.recalls",     nav: "recalls" },
+      { to: "/app/chemicals",   icon: FlaskConical,    key: "menu.chemicals",   nav: "chemicals" },
     ],
   },
   {
     labelKey: "nav.group.people",
     items: [
       { to: "/app/training",    icon: Users,           key: "menu.training",    nav: "training" },
+      { to: "/app/health",      icon: HeartPulse,      key: "menu.health",      nav: "health" },
     ],
   },
   {
@@ -85,6 +91,7 @@ const GROUPS: NavGroup[] = [
     labelKey: "nav.group.records",
     items: [
       { to: "/app/incidents",   icon: AlertOctagon,    key: "menu.incidents",   nav: "incidents" },
+      { to: "/app/complaints",  icon: MessageSquareWarning, key: "menu.complaints", nav: "complaints" },
       { to: "/app/alerts",      icon: BellRing,        key: "menu.alerts",      nav: "alerts" },
       { to: "/app/expiry",      icon: CalendarClock,   key: "menu.expiry",      nav: "expiry" },
       { to: "/app/documents",   icon: FileArchive,     key: "menu.documents",   nav: "documents" },
