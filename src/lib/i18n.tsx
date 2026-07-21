@@ -776,6 +776,21 @@ const de: Dict = {
   "industries.takeaway": "Lieferdienste",
   "industries.canteen": "Kantinen & Catering",
 
+  // Platform pillars
+  "platform.eyebrow": "Plattform",
+  "platform.title": "Modern gebaut. In Deutschland gehostet. Mit Ihrer Kasse verbunden.",
+  "platform.subtitle": "Mobile-first für die Küche, Alarme direkt auf WhatsApp, BSI-nahe Sicherheit und POS-Konnektoren für Vectron, Gastronovi und Lightspeed.",
+  "platform.mobile.title": "Mobile-first UX",
+  "platform.mobile.desc": "In Sekunden dokumentieren – am Handy, Tablet oder Küchenterminal. Offline-fähig, PWA-installierbar, mit einer Hand bedienbar.",
+  "platform.whatsapp.title": "WhatsApp-Alarme",
+  "platform.whatsapp.desc": "Temperatur außer Toleranz, überfällige Reinigung oder ablaufende Ware – Ihr Team wird sofort auf WhatsApp benachrichtigt.",
+  "platform.hosting.title": "DE-Hosting · BSI-Niveau",
+  "platform.hosting.desc": "Server in Frankfurt (ISO 27001), Verschlüsselung nach BSI-Grundschutz, DSGVO-konforme Auftragsverarbeitung, tägliche Backups.",
+  "platform.pos.title": "POS-Konnektoren inklusive",
+  "platform.pos.desc": "Vectron, Gastronovi und Lightspeed direkt angebunden – Umsätze, Artikel und Menümix fließen automatisch in Rezepte, Waste und Reports.",
+
+
+
   // FAQ
   "faq.title": "Häufig gestellte Fragen",
   "faq.q1": "Wie schnell ist Haccora einsatzbereit?",
@@ -1563,6 +1578,20 @@ const en: Dict = {
   "industries.pub": "Bars & pubs",
   "industries.takeaway": "Delivery & takeaway",
   "industries.canteen": "Canteens & catering",
+
+  // Platform pillars
+  "platform.eyebrow": "Platform",
+  "platform.title": "Built modern. Hosted in Germany. Wired to your POS.",
+  "platform.subtitle": "Mobile-first for the kitchen, alerts straight to WhatsApp, BSI-grade security and POS connectors for Vectron, Gastronovi and Lightspeed.",
+  "platform.mobile.title": "Mobile-first UX",
+  "platform.mobile.desc": "Log anything in seconds — on phone, tablet or kitchen terminal. Offline-ready, installable as a PWA, one-hand operable.",
+  "platform.whatsapp.title": "WhatsApp alerts",
+  "platform.whatsapp.desc": "Temperature out of range, overdue cleaning or expiring stock — your team is notified instantly on WhatsApp.",
+  "platform.hosting.title": "DE hosting · BSI-grade",
+  "platform.hosting.desc": "Servers in Frankfurt (ISO 27001), encryption to BSI Grundschutz, GDPR-compliant DPA, daily backups.",
+  "platform.pos.title": "POS connectors included",
+  "platform.pos.desc": "Vectron, Gastronovi and Lightspeed connected out of the box — sales, items and menu-mix flow into recipes, waste and reports.",
+
 
   // FAQ
   "faq.title": "Frequently asked questions",

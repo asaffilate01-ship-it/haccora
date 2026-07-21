@@ -6,8 +6,9 @@ import {
   FileText, Clock, AlertTriangle, ShieldCheck, ClipboardCheck,
   Thermometer, Wheat, Users, Scale, CheckCircle2, Building2,
   TrendingUp, Zap, Recycle, CalendarCheck, Utensils, Hotel, Coffee, Beer, Truck as TruckIcon, ChefHat,
-  Plus, Minus,
+  Plus, Minus, Smartphone, MessageCircle, Server, Plug,
 } from "lucide-react";
+
 import heroChef from "@/assets/hero-chef.jpg";
 import { FollowBar } from "@/components/SocialIcons";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -41,6 +42,8 @@ function Landing() {
       <Support360 />
       <ModulePillars />
       <IndustriesStrip />
+      <PlatformPillars />
+
       <InspectorBand />
       <Regulation />
       <Pricing />
@@ -590,6 +593,65 @@ function IndustriesStrip() {
     </section>
   );
 }
+
+/* ────────────────────────────────────────────── platform pillars: mobile / whatsapp / hosting / pos */
+function PlatformPillars() {
+  const { t } = useI18n();
+  const pillars = [
+    { icon: Smartphone,    k: "mobile",   tone: "from-[color:var(--color-alert-red)] to-orange-500" },
+    { icon: MessageCircle, k: "whatsapp", tone: "from-emerald-500 to-emerald-600" },
+    { icon: Server,        k: "hosting",  tone: "from-slate-800 to-black" },
+    { icon: Plug,          k: "pos",      tone: "from-blue-600 to-indigo-600" },
+  ];
+  const posBrands = ["Vectron", "Gastronovi", "Lightspeed"];
+  return (
+    <section className="bg-white border-t border-black/5">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-28">
+        <div className="max-w-3xl">
+          <div className="eyebrow">{t("platform.eyebrow")}</div>
+          <h2 className="mt-4 display-black text-3xl md:text-5xl" style={{ hyphens: "auto" }}>
+            {t("platform.title")}
+          </h2>
+          <p className="mt-4 text-black/60 max-w-2xl">{t("platform.subtitle")}</p>
+        </div>
+        <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+          {pillars.map(({ icon: Icon, k, tone }) => (
+            <div
+              key={k}
+              className="group relative rounded-2xl border border-black/5 bg-white p-6 md:p-7 hover:shadow-xl transition-shadow overflow-hidden"
+            >
+              <span
+                className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${tone} text-white shadow-md`}
+              >
+                <Icon size={22} strokeWidth={2.2} />
+              </span>
+              <div className="mt-5 font-black text-lg md:text-xl leading-tight">
+                {t(`platform.${k}.title`)}
+              </div>
+              <p className="mt-2 text-sm text-black/60 leading-relaxed">
+                {t(`platform.${k}.desc`)}
+              </p>
+              {k === "pos" && (
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {posBrands.map((b) => (
+                    <span
+                      key={b}
+                      className="inline-flex items-center rounded-full border border-black/10 bg-black/5 px-2.5 py-1 text-[11px] font-bold tracking-wide"
+                    >
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 
 /* ────────────────────────────────────────────── FAQ */
 function FaqSection() {
