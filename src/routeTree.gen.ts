@@ -46,6 +46,7 @@ import { Route as AppExpiryRouteImport } from './routes/app.expiry'
 import { Route as AppDocumentsRouteImport } from './routes/app.documents'
 import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
 import { Route as AppChecksRouteImport } from './routes/app.checks'
+import { Route as AppCalibrationRouteImport } from './routes/app.calibration'
 import { Route as AppAuditsRouteImport } from './routes/app.audits'
 import { Route as AppAssetsRouteImport } from './routes/app.assets'
 import { Route as AppAlertsRouteImport } from './routes/app.alerts'
@@ -235,6 +236,11 @@ const AppChecksRoute = AppChecksRouteImport.update({
   path: '/checks',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCalibrationRoute = AppCalibrationRouteImport.update({
+  id: '/calibration',
+  path: '/calibration',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAuditsRoute = AppAuditsRouteImport.update({
   id: '/audits',
   path: '/audits',
@@ -262,6 +268,7 @@ export interface FileRoutesByFullPath {
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
+  '/app/calibration': typeof AppCalibrationRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/documents': typeof AppDocumentsRoute
@@ -302,6 +309,7 @@ export interface FileRoutesByTo {
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
+  '/app/calibration': typeof AppCalibrationRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/documents': typeof AppDocumentsRoute
@@ -345,6 +353,7 @@ export interface FileRoutesById {
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
+  '/app/calibration': typeof AppCalibrationRoute
   '/app/checks': typeof AppChecksRoute
   '/app/cleaning': typeof AppCleaningRoute
   '/app/documents': typeof AppDocumentsRoute
@@ -389,6 +398,7 @@ export interface FileRouteTypes {
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
+    | '/app/calibration'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/documents'
@@ -429,6 +439,7 @@ export interface FileRouteTypes {
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
+    | '/app/calibration'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/documents'
@@ -471,6 +482,7 @@ export interface FileRouteTypes {
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
+    | '/app/calibration'
     | '/app/checks'
     | '/app/cleaning'
     | '/app/documents'
@@ -774,6 +786,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChecksRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/calibration': {
+      id: '/app/calibration'
+      path: '/calibration'
+      fullPath: '/app/calibration'
+      preLoaderRoute: typeof AppCalibrationRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/audits': {
       id: '/app/audits'
       path: '/audits'
@@ -802,6 +821,7 @@ interface AppRouteChildren {
   AppAlertsRoute: typeof AppAlertsRoute
   AppAssetsRoute: typeof AppAssetsRoute
   AppAuditsRoute: typeof AppAuditsRoute
+  AppCalibrationRoute: typeof AppCalibrationRoute
   AppChecksRoute: typeof AppChecksRoute
   AppCleaningRoute: typeof AppCleaningRoute
   AppDocumentsRoute: typeof AppDocumentsRoute
@@ -831,6 +851,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAlertsRoute: AppAlertsRoute,
   AppAssetsRoute: AppAssetsRoute,
   AppAuditsRoute: AppAuditsRoute,
+  AppCalibrationRoute: AppCalibrationRoute,
   AppChecksRoute: AppChecksRoute,
   AppCleaningRoute: AppCleaningRoute,
   AppDocumentsRoute: AppDocumentsRoute,
