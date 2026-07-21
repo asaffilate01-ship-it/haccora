@@ -158,6 +158,60 @@ export type Database = {
         }
         Relationships: []
       }
+      calibration_logs: {
+        Row: {
+          created_at: string
+          deviation_c: number | null
+          device: string
+          id: string
+          measured_c: number | null
+          method: string
+          next_due: string | null
+          notes: string | null
+          passed: boolean
+          performed_at: string
+          performed_by: string | null
+          reference_c: number | null
+          serial_no: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deviation_c?: number | null
+          device: string
+          id?: string
+          measured_c?: number | null
+          method?: string
+          next_due?: string | null
+          notes?: string | null
+          passed?: boolean
+          performed_at?: string
+          performed_by?: string | null
+          reference_c?: number | null
+          serial_no?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deviation_c?: number | null
+          device?: string
+          id?: string
+          measured_c?: number | null
+          method?: string
+          next_due?: string | null
+          notes?: string | null
+          passed?: boolean
+          performed_at?: string
+          performed_by?: string | null
+          reference_c?: number | null
+          serial_no?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       checks: {
         Row: {
           completed_at: string | null
@@ -187,6 +241,108 @@ export type Database = {
           note?: string | null
           status?: string
           title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chemicals: {
+        Row: {
+          created_at: string
+          ghs_pictograms: string[] | null
+          hazard_class: string | null
+          id: string
+          name: string
+          next_review: string | null
+          notes: string | null
+          ppe_required: string | null
+          reviewed_on: string | null
+          sds_url: string | null
+          storage_location: string | null
+          supplier: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ghs_pictograms?: string[] | null
+          hazard_class?: string | null
+          id?: string
+          name: string
+          next_review?: string | null
+          notes?: string | null
+          ppe_required?: string | null
+          reviewed_on?: string | null
+          sds_url?: string | null
+          storage_location?: string | null
+          supplier?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ghs_pictograms?: string[] | null
+          hazard_class?: string | null
+          id?: string
+          name?: string
+          next_review?: string | null
+          notes?: string | null
+          ppe_required?: string | null
+          reviewed_on?: string | null
+          sds_url?: string | null
+          storage_location?: string | null
+          supplier?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      complaints: {
+        Row: {
+          channel: string | null
+          closed_at: string | null
+          contact: string | null
+          created_at: string
+          description: string
+          guest_name: string | null
+          id: string
+          kind: string
+          occurred_at: string
+          resolution: string | null
+          severity: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string | null
+          closed_at?: string | null
+          contact?: string | null
+          created_at?: string
+          description: string
+          guest_name?: string | null
+          id?: string
+          kind?: string
+          occurred_at?: string
+          resolution?: string | null
+          severity?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          channel?: string | null
+          closed_at?: string | null
+          contact?: string | null
+          created_at?: string
+          description?: string
+          guest_name?: string | null
+          id?: string
+          kind?: string
+          occurred_at?: string
+          resolution?: string | null
+          severity?: string
+          status?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -272,6 +428,66 @@ export type Database = {
         }
         Relationships: []
       }
+      goods_in_logs: {
+        Row: {
+          batch_lot: string | null
+          best_before: string | null
+          created_at: string
+          delivery_temp_c: number | null
+          id: string
+          notes: string | null
+          packaging_ok: boolean | null
+          photo_url: string | null
+          product: string
+          quantity: number | null
+          received_at: string
+          status: string
+          supplier: string
+          temp_ok: boolean | null
+          unit: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          batch_lot?: string | null
+          best_before?: string | null
+          created_at?: string
+          delivery_temp_c?: number | null
+          id?: string
+          notes?: string | null
+          packaging_ok?: boolean | null
+          photo_url?: string | null
+          product: string
+          quantity?: number | null
+          received_at?: string
+          status?: string
+          supplier: string
+          temp_ok?: boolean | null
+          unit?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          batch_lot?: string | null
+          best_before?: string | null
+          created_at?: string
+          delivery_temp_c?: number | null
+          id?: string
+          notes?: string | null
+          packaging_ok?: boolean | null
+          photo_url?: string | null
+          product?: string
+          quantity?: number | null
+          received_at?: string
+          status?: string
+          supplier?: string
+          temp_ok?: boolean | null
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       haccp_hazards: {
         Row: {
           control: string
@@ -314,6 +530,51 @@ export type Database = {
           status?: string
           step?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      health_register: {
+        Row: {
+          created_at: string
+          expires_on: string | null
+          fitness_cleared_on: string | null
+          id: string
+          issued_on: string | null
+          kind: string
+          notes: string | null
+          staff_name: string
+          status: string
+          symptoms: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_on?: string | null
+          fitness_cleared_on?: string | null
+          id?: string
+          issued_on?: string | null
+          kind?: string
+          notes?: string | null
+          staff_name: string
+          status?: string
+          symptoms?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_on?: string | null
+          fitness_cleared_on?: string | null
+          id?: string
+          issued_on?: string | null
+          kind?: string
+          notes?: string | null
+          staff_name?: string
+          status?: string
+          symptoms?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -386,6 +647,96 @@ export type Database = {
           printed_by?: string | null
           product_name?: string
           use_by?: string | null
+        }
+        Relationships: []
+      }
+      oil_tests: {
+        Row: {
+          changed: boolean | null
+          created_at: string
+          fryer: string
+          id: string
+          notes: string | null
+          status: string
+          temperature_c: number | null
+          tested_at: string
+          tpm_percent: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          changed?: boolean | null
+          created_at?: string
+          fryer: string
+          id?: string
+          notes?: string | null
+          status?: string
+          temperature_c?: number | null
+          tested_at?: string
+          tpm_percent?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          changed?: boolean | null
+          created_at?: string
+          fryer?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          temperature_c?: number | null
+          tested_at?: string
+          tpm_percent?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pest_sightings: {
+        Row: {
+          action_taken: string | null
+          contractor: string | null
+          created_at: string
+          id: string
+          kind: string
+          location: string | null
+          observed_at: string
+          photo_url: string | null
+          resolved_at: string | null
+          severity: string
+          species: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_taken?: string | null
+          contractor?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          location?: string | null
+          observed_at?: string
+          photo_url?: string | null
+          resolved_at?: string | null
+          severity?: string
+          species?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_taken?: string | null
+          contractor?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          location?: string | null
+          observed_at?: string
+          photo_url?: string | null
+          resolved_at?: string | null
+          severity?: string
+          species?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
