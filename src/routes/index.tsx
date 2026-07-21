@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import heroChef from "@/assets/hero-chef.jpg";
 import { FollowBar } from "@/components/SocialIcons";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
