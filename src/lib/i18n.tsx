@@ -788,6 +788,13 @@ const de: Dict = {
   // New modules & permissions matrix (DE)
   "menu.labels": "Etiketten",
   "menu.incidents": "Vorfälle",
+  "menu.goodsin": "Wareneingang",
+  "menu.calibration": "Kalibrierung",
+  "menu.health": "IfSG §43 Register",
+  "menu.pest": "Schädlinge",
+  "menu.oil": "Öl-Qualität",
+  "menu.complaints": "Beschwerden",
+  "menu.chemicals": "Gefahrstoffe",
   "nav.group.kitchenOps": "Küchenbetrieb",
   "settings.perms.title": "Berechtigungsmatrix",
   "settings.perms.sub": "Rollenbasierte Aktionen – abgestimmt auf IfSG, ArbSchG und LMIV.",
