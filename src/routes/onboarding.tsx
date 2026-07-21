@@ -67,7 +67,10 @@ function OnboardingPage() {
       <header className="h-14 px-6 flex items-center justify-between border-b border-border bg-card">
         <Link to="/" className="flex items-center gap-2">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"><ShieldCheck size={16} /></span>
-          <span className="font-display">GastroSafe</span>
+          <div className="leading-tight">
+            <span className="font-display block">GastroSafe</span>
+            <span className="text-[9px] font-bold tracking-[0.1em] text-muted-foreground uppercase">{t("brand.slogan")}</span>
+          </div>
         </Link>
         <LanguageToggle />
       </header>

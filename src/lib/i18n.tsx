@@ -30,6 +30,7 @@ const de: Dict = {
   "nav.demo": "Live-Demo",
   "nav.tryFree": "Kostenlos starten",
   "brand.tag": "Digitale Lebensmittelsicherheit für Deutschland",
+  "brand.slogan": "Sicher. Sauber. Nachweisbar.",
 
   // Hero
   "hero.eyebrow": "HACCP · IfSG · LMHV · Prüfungsbereit",
@@ -824,6 +825,7 @@ const en: Dict = {
   "nav.demo": "Live demo",
   "nav.tryFree": "Get started",
   "brand.tag": "Digital food safety, built for Germany",
+  "brand.slogan": "Safe. Clean. Traceable.",
 
   "hero.eyebrow": "HACCP · IfSG · LMHV · Inspector-ready",
   "hero.title": "One system for every part of food safety.",

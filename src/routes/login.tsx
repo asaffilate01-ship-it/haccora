@@ -74,6 +74,7 @@ function LoginPage() {
       <div className="mx-auto max-w-[1100px] px-4 md:px-8 py-12 md:py-16 grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16">
         <div>
           <div className="text-xs font-black uppercase tracking-[0.18em] text-[color:var(--color-alert-red)]">GastroSafe</div>
+          <div className="mt-1 text-[10px] font-bold tracking-[0.12em] text-muted-foreground uppercase">{t("brand.slogan")}</div>
           <h1 className="mt-3 font-display text-4xl md:text-5xl leading-[1.05] tracking-tight">
             {mode === "signin"
               ? (lang === "de" ? "Willkommen zurück." : "Welcome back.")
