@@ -4,9 +4,9 @@ import { LegalPage } from "@/components/LegalPage";
 export const Route = createFileRoute("/legal/terms")({
   head: () => ({
     meta: [
-      { title: "AGB · Terms — GastroSafe" },
-      { name: "description", content: "Allgemeine Geschäftsbedingungen der GastroSafe GmbH." },
-      { property: "og:title", content: "AGB — GastroSafe" },
+      { title: "AGB · Terms — Haccora" },
+      { name: "description", content: "Allgemeine Geschäftsbedingungen der Haccora GmbH." },
+      { property: "og:title", content: "AGB — Haccora" },
       { property: "og:url", content: "/legal/terms" },
     ],
     links: [{ rel: "canonical", href: "/legal/terms" }],

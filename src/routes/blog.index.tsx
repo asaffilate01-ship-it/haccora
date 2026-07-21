@@ -8,9 +8,9 @@ import { ArrowRight, Clock } from "lucide-react";
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog — GastroSafe" },
+      { title: "Blog — Haccora" },
       { name: "description", content: "HACCP, IfSG, LMHV and daily operations — practical guides for German food businesses." },
-      { property: "og:title", content: "GastroSafe Blog — Food safety insights for Germany" },
+      { property: "og:title", content: "Haccora Blog — Food safety insights for Germany" },
       { property: "og:description", content: "HACCP, IfSG, LMHV and daily operations — practical guides for German food businesses." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/blog" },
@@ -45,7 +45,7 @@ function BlogIndex() {
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-24 grid md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-10 items-end">
           <div>
             <div className="eyebrow">{t("blog.eyebrow") ?? "Insights"}</div>
-            <h1 className="mt-4 display-black text-5xl md:text-7xl">{t("blog.title") ?? "GastroSafe Blog"}</h1>
+            <h1 className="mt-4 display-black text-5xl md:text-7xl">{t("blog.title") ?? "Haccora Blog"}</h1>
             <p className="mt-5 max-w-2xl text-black/60 text-lg">{t("blog.subtitle") ?? "Practical guides on HACCP, inspections and daily operations — written for German kitchens."}</p>
           </div>
           <nav className="text-sm">
@@ -137,7 +137,7 @@ function BlogIndex() {
 
       <footer className="bg-black text-white/70">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-10 flex flex-wrap items-center justify-between gap-6 text-sm">
-          <div>© {new Date().getFullYear()} GastroSafe</div>
+          <div>© {new Date().getFullYear()} Haccora</div>
           <FollowBar dark />
         </div>
       </footer>

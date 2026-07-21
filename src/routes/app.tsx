@@ -282,7 +282,7 @@ function AppShell() {
             <ShieldCheck size={18} />
           </span>
           <div className="leading-tight min-w-0">
-            <div className="font-display text-base">GastroSafe</div>
+            <div className="font-display text-base">Haccora</div>
             <div className="text-[9px] font-bold uppercase tracking-[0.1em] text-muted-foreground truncate">{t("brand.slogan")}</div>
             <div className="text-[9px] uppercase tracking-widest text-muted-foreground truncate">{t(`role.${user.role}`)}</div>
           </div>

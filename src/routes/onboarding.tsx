@@ -8,8 +8,8 @@ import { ShieldCheck, ChevronRight, ChevronLeft, Utensils, Coffee, Building2, St
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
     meta: [
-      { title: "GastroSafe — Onboarding" },
-      { name: "description", content: "Set up your restaurant on GastroSafe in 5 steps." },
+      { title: "Haccora — Onboarding" },
+      { name: "description", content: "Set up your restaurant on Haccora in 5 steps." },
     ],
   }),
   component: OnboardingPage,
@@ -68,7 +68,7 @@ function OnboardingPage() {
         <Link to="/" className="flex items-center gap-2">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"><ShieldCheck size={16} /></span>
           <div className="leading-tight">
-            <span className="font-display block">GastroSafe</span>
+            <span className="font-display block">Haccora</span>
             <span className="text-[9px] font-bold tracking-[0.1em] text-muted-foreground uppercase">{t("Sicher. Sauber. Nachweisbar.", "Safe. Clean. Traceable.")}</span>
           </div>
         </Link>

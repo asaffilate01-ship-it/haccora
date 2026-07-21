@@ -14,13 +14,13 @@ import { FollowBar } from "@/components/SocialIcons";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "GastroSafe — Food safety software for German gastronomy" },
+      { title: "Haccora — Food safety software for German gastronomy" },
       {
         name: "description",
         content:
           "Simplify HACCP, temperature, cleaning, allergens, staff compliance and inspection prep — one bilingual platform built for German food businesses.",
       },
-      { property: "og:title", content: "GastroSafe — Food safety software for Germany" },
+      { property: "og:title", content: "Haccora — Food safety software for Germany" },
       { property: "og:description", content: "HACCP, IfSG, LMHV and inspector-ready evidence in one platform." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

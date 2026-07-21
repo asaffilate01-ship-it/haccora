@@ -37,7 +37,7 @@ async function fetchAuthUser(userId: string, email: string): Promise<AuthUser | 
   ]);
   const name = profile?.full_name || email.split("@")[0];
   const role = (roleRow?.role ?? "staff") as Role;
-  const location = profile?.location || profile?.restaurant_name || "GastroSafe";
+  const location = profile?.location || profile?.restaurant_name || "Haccora";
   return { id: userId, name, email, initials: initialsOf(name), role, location };
 }
 

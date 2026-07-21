@@ -82,11 +82,11 @@ export function FollowBar({ dark = false }: { dark?: boolean }) {
     ? "inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-[color:var(--color-alert-red)] transition"
     : "inline-flex h-10 w-10 items-center justify-center rounded-full bg-black text-white hover:bg-[color:var(--color-alert-red)] transition";
   const items: { label: string; href: string; Icon: React.ComponentType<{ size?: number }> }[] = [
-    { label: "LinkedIn", href: "https://www.linkedin.com/company/gastrosafe", Icon: Linkedin },
-    { label: "X", href: "https://twitter.com/gastrosafe", Icon: XIcon },
-    { label: "Instagram", href: "https://instagram.com/gastrosafe", Icon: Instagram },
-    { label: "Facebook", href: "https://facebook.com/gastrosafe", Icon: Facebook },
-    { label: "YouTube", href: "https://youtube.com/@gastrosafe", Icon: Youtube },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/haccora", Icon: Linkedin },
+    { label: "X", href: "https://twitter.com/haccora", Icon: XIcon },
+    { label: "Instagram", href: "https://instagram.com/haccora", Icon: Instagram },
+    { label: "Facebook", href: "https://facebook.com/haccora", Icon: Facebook },
+    { label: "YouTube", href: "https://youtube.com/@haccora", Icon: Youtube },
   ];
   return (
     <div className="flex flex-wrap items-center gap-2">

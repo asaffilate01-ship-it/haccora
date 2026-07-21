@@ -73,7 +73,7 @@ function InspectionPage() {
     <div className="p-6 md:p-10 space-y-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="eyebrow">GastroSafe Inspector Mode</div>
+          <div className="eyebrow">Haccora Inspector Mode</div>
           <h1 className="mt-1 text-3xl md:text-4xl">{t("inspection.title")}</h1>
           <p className="text-muted-foreground mt-1">{t("inspection.sub")}</p>
         </div>
