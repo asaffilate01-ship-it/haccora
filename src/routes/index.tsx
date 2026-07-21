@@ -95,10 +95,10 @@ function TopBar() {
   const { t } = useI18n();
   return (
     <div className="bg-black text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
-        <BrandLogo imgClassName="h-10 md:h-14 w-auto" />
+      <div className="mx-auto max-w-[1400px] px-3 md:px-8 h-14 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-4">
+        <BrandLogo imgClassName="h-8 md:h-14 w-auto" />
 
-        <div className="flex items-center gap-2 md:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
           <div className="hidden md:flex items-center h-10 rounded-full bg-white/8 border border-white/12 px-4 min-w-[220px]">
             <Search size={14} className="text-white/60" />
             <input
@@ -110,7 +110,7 @@ function TopBar() {
           <Link to="/app" className="btn-red-outline hidden sm:inline-flex">
             {t("nav.login") ?? "Login"}
           </Link>
-          <a href="#contact" className="btn-red">
+          <a href="#contact" className="btn-red !px-3 !py-2 !text-xs md:!px-5 md:!py-3 md:!text-sm">
             {t("nav.contact") ?? "Contact Us"}
           </a>
         </div>
@@ -130,20 +130,23 @@ function SubNav() {
   ];
   return (
     <div className="border-b border-black/10 bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-14 flex items-center justify-between gap-4 overflow-x-auto">
-        <nav className="flex items-center gap-6 md:gap-10 text-[0.95rem] font-bold text-black whitespace-nowrap">
+      <div className="mx-auto max-w-[1400px] px-3 md:px-8 h-12 md:h-14 flex items-center justify-between gap-4">
+        <nav
+          className="flex-1 flex items-center gap-4 md:gap-10 text-[0.78rem] md:text-[0.95rem] font-bold text-black whitespace-nowrap overflow-x-auto no-scrollbar -mx-1 px-1"
+          style={{ scrollbarWidth: "none" }}
+        >
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-[color:var(--color-alert-red)] transition">
+            <a key={l.href} href={l.href} className="hover:text-[color:var(--color-alert-red)] transition shrink-0">
               {l.label}
             </a>
           ))}
-          <Link to="/blog" className="hover:text-[color:var(--color-alert-red)] transition">
+          <Link to="/blog" className="hover:text-[color:var(--color-alert-red)] transition shrink-0">
             {t("nav.blog") ?? "Blog"}
           </Link>
         </nav>
         <a
           href="tel:+49301234567"
-          className="hidden md:inline-flex items-center gap-2 text-black font-black text-lg"
+          className="hidden md:inline-flex items-center gap-2 text-black font-black text-lg shrink-0"
         >
           <Phone size={16} className="text-[color:var(--color-alert-red)]" /> 030 1234 567
         </a>
