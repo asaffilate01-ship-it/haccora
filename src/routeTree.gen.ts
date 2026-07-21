@@ -35,16 +35,21 @@ import { Route as AppRotaRouteImport } from './routes/app.rota'
 import { Route as AppRecipesRouteImport } from './routes/app.recipes'
 import { Route as AppRecallsRouteImport } from './routes/app.recalls'
 import { Route as AppPurchasingRouteImport } from './routes/app.purchasing'
+import { Route as AppPestRouteImport } from './routes/app.pest'
+import { Route as AppOilRouteImport } from './routes/app.oil'
 import { Route as AppMenuRouteImport } from './routes/app.menu'
 import { Route as AppLogsRouteImport } from './routes/app.logs'
 import { Route as AppLabelsRouteImport } from './routes/app.labels'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppIncidentsRouteImport } from './routes/app.incidents'
+import { Route as AppHealthRouteImport } from './routes/app.health'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
 import { Route as AppGoodsinRouteImport } from './routes/app.goodsin'
 import { Route as AppExpiryRouteImport } from './routes/app.expiry'
 import { Route as AppDocumentsRouteImport } from './routes/app.documents'
+import { Route as AppComplaintsRouteImport } from './routes/app.complaints'
 import { Route as AppCleaningRouteImport } from './routes/app.cleaning'
+import { Route as AppChemicalsRouteImport } from './routes/app.chemicals'
 import { Route as AppChecksRouteImport } from './routes/app.checks'
 import { Route as AppCalibrationRouteImport } from './routes/app.calibration'
 import { Route as AppAuditsRouteImport } from './routes/app.audits'
@@ -181,6 +186,16 @@ const AppPurchasingRoute = AppPurchasingRouteImport.update({
   path: '/purchasing',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPestRoute = AppPestRouteImport.update({
+  id: '/pest',
+  path: '/pest',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOilRoute = AppOilRouteImport.update({
+  id: '/oil',
+  path: '/oil',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMenuRoute = AppMenuRouteImport.update({
   id: '/menu',
   path: '/menu',
@@ -206,6 +221,11 @@ const AppIncidentsRoute = AppIncidentsRouteImport.update({
   path: '/incidents',
   getParentRoute: () => AppRoute,
 } as any)
+const AppHealthRoute = AppHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHaccpRoute = AppHaccpRouteImport.update({
   id: '/haccp',
   path: '/haccp',
@@ -226,9 +246,19 @@ const AppDocumentsRoute = AppDocumentsRouteImport.update({
   path: '/documents',
   getParentRoute: () => AppRoute,
 } as any)
+const AppComplaintsRoute = AppComplaintsRouteImport.update({
+  id: '/complaints',
+  path: '/complaints',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCleaningRoute = AppCleaningRouteImport.update({
   id: '/cleaning',
   path: '/cleaning',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChemicalsRoute = AppChemicalsRouteImport.update({
+  id: '/chemicals',
+  path: '/chemicals',
   getParentRoute: () => AppRoute,
 } as any)
 const AppChecksRoute = AppChecksRouteImport.update({
@@ -270,16 +300,21 @@ export interface FileRoutesByFullPath {
   '/app/audits': typeof AppAuditsRoute
   '/app/calibration': typeof AppCalibrationRoute
   '/app/checks': typeof AppChecksRoute
+  '/app/chemicals': typeof AppChemicalsRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/complaints': typeof AppComplaintsRoute
   '/app/documents': typeof AppDocumentsRoute
   '/app/expiry': typeof AppExpiryRoute
   '/app/goodsin': typeof AppGoodsinRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/health': typeof AppHealthRoute
   '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/labels': typeof AppLabelsRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
+  '/app/oil': typeof AppOilRoute
+  '/app/pest': typeof AppPestRoute
   '/app/purchasing': typeof AppPurchasingRoute
   '/app/recalls': typeof AppRecallsRoute
   '/app/recipes': typeof AppRecipesRoute
@@ -311,16 +346,21 @@ export interface FileRoutesByTo {
   '/app/audits': typeof AppAuditsRoute
   '/app/calibration': typeof AppCalibrationRoute
   '/app/checks': typeof AppChecksRoute
+  '/app/chemicals': typeof AppChemicalsRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/complaints': typeof AppComplaintsRoute
   '/app/documents': typeof AppDocumentsRoute
   '/app/expiry': typeof AppExpiryRoute
   '/app/goodsin': typeof AppGoodsinRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/health': typeof AppHealthRoute
   '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/labels': typeof AppLabelsRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
+  '/app/oil': typeof AppOilRoute
+  '/app/pest': typeof AppPestRoute
   '/app/purchasing': typeof AppPurchasingRoute
   '/app/recalls': typeof AppRecallsRoute
   '/app/recipes': typeof AppRecipesRoute
@@ -355,16 +395,21 @@ export interface FileRoutesById {
   '/app/audits': typeof AppAuditsRoute
   '/app/calibration': typeof AppCalibrationRoute
   '/app/checks': typeof AppChecksRoute
+  '/app/chemicals': typeof AppChemicalsRoute
   '/app/cleaning': typeof AppCleaningRoute
+  '/app/complaints': typeof AppComplaintsRoute
   '/app/documents': typeof AppDocumentsRoute
   '/app/expiry': typeof AppExpiryRoute
   '/app/goodsin': typeof AppGoodsinRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/health': typeof AppHealthRoute
   '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
   '/app/labels': typeof AppLabelsRoute
   '/app/logs': typeof AppLogsRoute
   '/app/menu': typeof AppMenuRoute
+  '/app/oil': typeof AppOilRoute
+  '/app/pest': typeof AppPestRoute
   '/app/purchasing': typeof AppPurchasingRoute
   '/app/recalls': typeof AppRecallsRoute
   '/app/recipes': typeof AppRecipesRoute
@@ -400,16 +445,21 @@ export interface FileRouteTypes {
     | '/app/audits'
     | '/app/calibration'
     | '/app/checks'
+    | '/app/chemicals'
     | '/app/cleaning'
+    | '/app/complaints'
     | '/app/documents'
     | '/app/expiry'
     | '/app/goodsin'
     | '/app/haccp'
+    | '/app/health'
     | '/app/incidents'
     | '/app/inspection'
     | '/app/labels'
     | '/app/logs'
     | '/app/menu'
+    | '/app/oil'
+    | '/app/pest'
     | '/app/purchasing'
     | '/app/recalls'
     | '/app/recipes'
@@ -441,16 +491,21 @@ export interface FileRouteTypes {
     | '/app/audits'
     | '/app/calibration'
     | '/app/checks'
+    | '/app/chemicals'
     | '/app/cleaning'
+    | '/app/complaints'
     | '/app/documents'
     | '/app/expiry'
     | '/app/goodsin'
     | '/app/haccp'
+    | '/app/health'
     | '/app/incidents'
     | '/app/inspection'
     | '/app/labels'
     | '/app/logs'
     | '/app/menu'
+    | '/app/oil'
+    | '/app/pest'
     | '/app/purchasing'
     | '/app/recalls'
     | '/app/recipes'
@@ -484,16 +539,21 @@ export interface FileRouteTypes {
     | '/app/audits'
     | '/app/calibration'
     | '/app/checks'
+    | '/app/chemicals'
     | '/app/cleaning'
+    | '/app/complaints'
     | '/app/documents'
     | '/app/expiry'
     | '/app/goodsin'
     | '/app/haccp'
+    | '/app/health'
     | '/app/incidents'
     | '/app/inspection'
     | '/app/labels'
     | '/app/logs'
     | '/app/menu'
+    | '/app/oil'
+    | '/app/pest'
     | '/app/purchasing'
     | '/app/recalls'
     | '/app/recipes'
@@ -709,6 +769,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPurchasingRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/pest': {
+      id: '/app/pest'
+      path: '/pest'
+      fullPath: '/app/pest'
+      preLoaderRoute: typeof AppPestRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/oil': {
+      id: '/app/oil'
+      path: '/oil'
+      fullPath: '/app/oil'
+      preLoaderRoute: typeof AppOilRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/menu': {
       id: '/app/menu'
       path: '/menu'
@@ -744,6 +818,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIncidentsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/health': {
+      id: '/app/health'
+      path: '/health'
+      fullPath: '/app/health'
+      preLoaderRoute: typeof AppHealthRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/haccp': {
       id: '/app/haccp'
       path: '/haccp'
@@ -772,11 +853,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDocumentsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/complaints': {
+      id: '/app/complaints'
+      path: '/complaints'
+      fullPath: '/app/complaints'
+      preLoaderRoute: typeof AppComplaintsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/cleaning': {
       id: '/app/cleaning'
       path: '/cleaning'
       fullPath: '/app/cleaning'
       preLoaderRoute: typeof AppCleaningRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/chemicals': {
+      id: '/app/chemicals'
+      path: '/chemicals'
+      fullPath: '/app/chemicals'
+      preLoaderRoute: typeof AppChemicalsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/checks': {
@@ -823,16 +918,21 @@ interface AppRouteChildren {
   AppAuditsRoute: typeof AppAuditsRoute
   AppCalibrationRoute: typeof AppCalibrationRoute
   AppChecksRoute: typeof AppChecksRoute
+  AppChemicalsRoute: typeof AppChemicalsRoute
   AppCleaningRoute: typeof AppCleaningRoute
+  AppComplaintsRoute: typeof AppComplaintsRoute
   AppDocumentsRoute: typeof AppDocumentsRoute
   AppExpiryRoute: typeof AppExpiryRoute
   AppGoodsinRoute: typeof AppGoodsinRoute
   AppHaccpRoute: typeof AppHaccpRoute
+  AppHealthRoute: typeof AppHealthRoute
   AppIncidentsRoute: typeof AppIncidentsRoute
   AppInspectionRoute: typeof AppInspectionRoute
   AppLabelsRoute: typeof AppLabelsRoute
   AppLogsRoute: typeof AppLogsRoute
   AppMenuRoute: typeof AppMenuRoute
+  AppOilRoute: typeof AppOilRoute
+  AppPestRoute: typeof AppPestRoute
   AppPurchasingRoute: typeof AppPurchasingRoute
   AppRecallsRoute: typeof AppRecallsRoute
   AppRecipesRoute: typeof AppRecipesRoute
@@ -853,16 +953,21 @@ const AppRouteChildren: AppRouteChildren = {
   AppAuditsRoute: AppAuditsRoute,
   AppCalibrationRoute: AppCalibrationRoute,
   AppChecksRoute: AppChecksRoute,
+  AppChemicalsRoute: AppChemicalsRoute,
   AppCleaningRoute: AppCleaningRoute,
+  AppComplaintsRoute: AppComplaintsRoute,
   AppDocumentsRoute: AppDocumentsRoute,
   AppExpiryRoute: AppExpiryRoute,
   AppGoodsinRoute: AppGoodsinRoute,
   AppHaccpRoute: AppHaccpRoute,
+  AppHealthRoute: AppHealthRoute,
   AppIncidentsRoute: AppIncidentsRoute,
   AppInspectionRoute: AppInspectionRoute,
   AppLabelsRoute: AppLabelsRoute,
   AppLogsRoute: AppLogsRoute,
   AppMenuRoute: AppMenuRoute,
+  AppOilRoute: AppOilRoute,
+  AppPestRoute: AppPestRoute,
   AppPurchasingRoute: AppPurchasingRoute,
   AppRecallsRoute: AppRecallsRoute,
   AppRecipesRoute: AppRecipesRoute,
