@@ -30,8 +30,9 @@ const de: Dict = {
   "nav.demo": "Live-Demo",
   "nav.tryFree": "Kostenlos starten",
   "brand.tag": "Digitale Lebensmittelsicherheit für Deutschland",
- "brand.slogan": "Sicher. Sauber. Nachweisbar.",
- "marquee.phrase": "Gebaut für deutsche Küchen · Sicher. Sauber. Nachweisbar.",
+  "brand.slogan": "Sicher. Sauber. Nachweisbar.",
+  "brand.tagline": "Immer prüfbereit.",
+  "marquee.phrase": "Gebaut für deutsche Küchen · Sicher. Sauber. Nachweisbar. · Immer prüfbereit.",
  "nav.more": "Mehr",
 
   // Hero
