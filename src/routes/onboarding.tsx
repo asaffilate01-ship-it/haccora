@@ -69,7 +69,7 @@ function OnboardingPage() {
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"><ShieldCheck size={16} /></span>
           <div className="leading-tight">
             <span className="font-display block">GastroSafe</span>
-            <span className="text-[9px] font-bold tracking-[0.1em] text-muted-foreground uppercase">{t("brand.slogan")}</span>
+            <span className="text-[9px] font-bold tracking-[0.1em] text-muted-foreground uppercase">{t("Sicher. Sauber. Nachweisbar.", "Safe. Clean. Traceable.")}</span>
           </div>
         </Link>
         <LanguageToggle />
