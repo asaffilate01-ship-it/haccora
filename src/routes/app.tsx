@@ -11,6 +11,7 @@ import {
   BellRing, CalendarClock, FileArchive, History,
   ListChecks, UtensilsCrossed, CalendarDays, Trash2, Boxes,
   ShoppingCart, Wrench, PackageX, ClipboardList, Tag, AlertOctagon,
+  PackageCheck, HeartPulse, Bug, Flame, MessageSquareWarning, FlaskConical,
 } from "lucide-react";
 
 
