@@ -1579,6 +1579,20 @@ const en: Dict = {
   "industries.takeaway": "Delivery & takeaway",
   "industries.canteen": "Canteens & catering",
 
+  // Platform pillars
+  "platform.eyebrow": "Platform",
+  "platform.title": "Built modern. Hosted in Germany. Wired to your POS.",
+  "platform.subtitle": "Mobile-first for the kitchen, alerts straight to WhatsApp, BSI-grade security and POS connectors for Vectron, Gastronovi and Lightspeed.",
+  "platform.mobile.title": "Mobile-first UX",
+  "platform.mobile.desc": "Log anything in seconds — on phone, tablet or kitchen terminal. Offline-ready, installable as a PWA, one-hand operable.",
+  "platform.whatsapp.title": "WhatsApp alerts",
+  "platform.whatsapp.desc": "Temperature out of range, overdue cleaning or expiring stock — your team is notified instantly on WhatsApp.",
+  "platform.hosting.title": "DE hosting · BSI-grade",
+  "platform.hosting.desc": "Servers in Frankfurt (ISO 27001), encryption to BSI Grundschutz, GDPR-compliant DPA, daily backups.",
+  "platform.pos.title": "POS connectors included",
+  "platform.pos.desc": "Vectron, Gastronovi and Lightspeed connected out of the box — sales, items and menu-mix flow into recipes, waste and reports.",
+
+
   // FAQ
   "faq.title": "Frequently asked questions",
   "faq.q1": "How fast can Haccora go live?",
