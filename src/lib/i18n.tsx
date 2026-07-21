@@ -776,6 +776,21 @@ const de: Dict = {
   "industries.takeaway": "Lieferdienste",
   "industries.canteen": "Kantinen & Catering",
 
+  // Platform pillars
+  "platform.eyebrow": "Plattform",
+  "platform.title": "Modern gebaut. In Deutschland gehostet. Mit Ihrer Kasse verbunden.",
+  "platform.subtitle": "Mobile-first für die Küche, Alarme direkt auf WhatsApp, BSI-nahe Sicherheit und POS-Konnektoren für Vectron, Gastronovi und Lightspeed.",
+  "platform.mobile.title": "Mobile-first UX",
+  "platform.mobile.desc": "In Sekunden dokumentieren – am Handy, Tablet oder Küchenterminal. Offline-fähig, PWA-installierbar, mit einer Hand bedienbar.",
+  "platform.whatsapp.title": "WhatsApp-Alarme",
+  "platform.whatsapp.desc": "Temperatur außer Toleranz, überfällige Reinigung oder ablaufende Ware – Ihr Team wird sofort auf WhatsApp benachrichtigt.",
+  "platform.hosting.title": "DE-Hosting · BSI-Niveau",
+  "platform.hosting.desc": "Server in Frankfurt (ISO 27001), Verschlüsselung nach BSI-Grundschutz, DSGVO-konforme Auftragsverarbeitung, tägliche Backups.",
+  "platform.pos.title": "POS-Konnektoren inklusive",
+  "platform.pos.desc": "Vectron, Gastronovi und Lightspeed direkt angebunden – Umsätze, Artikel und Menümix fließen automatisch in Rezepte, Waste und Reports.",
+
+
+
   // FAQ
   "faq.title": "Häufig gestellte Fragen",
   "faq.q1": "Wie schnell ist Haccora einsatzbereit?",
