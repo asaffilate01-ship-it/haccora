@@ -622,10 +622,8 @@ function SiteFooter() {
     <footer className="bg-black text-white/70">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-12 grid md:grid-cols-4 gap-8 text-sm">
         <div>
-          <div className="font-display text-2xl text-white leading-none">
-            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
-          </div>
-          <p className="mt-2 text-[11px] font-bold tracking-[0.12em] text-white/70 uppercase">{t("brand.slogan")}</p>
+          <BrandLogo to="" imgClassName="h-12 w-auto" />
+
           <p className="mt-2 text-white/50 text-xs leading-relaxed max-w-xs">{t("brand.tag")}</p>
           <div className="mt-5">
             <FollowBar dark />
