@@ -270,7 +270,7 @@ function Support360() {
   return (
     <section className="relative alert-gradient text-white">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 pt-16 pb-24 md:pt-20 md:pb-32">
-        <h2 className="display-black text-4xl md:text-6xl text-center text-black">
+        <h2 className="display-black text-3xl md:text-6xl text-center text-black">
           360° <span className="text-white">{t("s360.title") ?? "food health & safety support"}</span>
         </h2>
         <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-6">
@@ -306,10 +306,10 @@ function ModulePillars() {
 
   return (
     <section id="pillars" className="bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="max-w-3xl">
           <div className="eyebrow">{t("pillars.eyebrow") ?? "The Platform"}</div>
-          <h2 className="mt-4 display-black text-4xl md:text-6xl">
+          <h2 className="mt-4 display-black text-3xl md:text-6xl">
             {t("pillars.title")}
           </h2>
           <p className="mt-5 text-black/60 max-w-2xl">{t("pillars.subtitle")}</p>
@@ -343,13 +343,13 @@ function InspectorBand() {
   const items = ["plan", "temp", "clean", "allergen", "training", "traceability"] as const;
   return (
     <section id="inspector" className="bg-black text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-start">
           <div>
             <div className="text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
               {t("inspector.eyebrow") ?? "Inspector Mode"}
             </div>
-            <h2 className="mt-4 display-black text-4xl md:text-6xl">
+            <h2 className="mt-4 display-black text-3xl md:text-6xl">
               {t("inspector.title")}
             </h2>
             <p className="mt-5 text-white/70 max-w-xl">{t("inspector.body")}</p>
@@ -410,7 +410,7 @@ function Regulation() {
 
   return (
     <section id="regulation" className="bg-[color:var(--color-cream)]">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
         <div className="md:col-span-1">
           <div className="eyebrow">{t("reg.eyebrow") ?? "German regulatory layer"}</div>
           <h2 lang="de" className="mt-4 display-black text-3xl md:text-4xl lg:text-[2.75rem] leading-[1.05] [overflow-wrap:anywhere] [hyphens:auto]">
@@ -453,10 +453,10 @@ function Pricing() {
   ] as const;
   return (
     <section id="pricing" className="bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="max-w-3xl">
           <div className="eyebrow">{t("pricing.eyebrow") ?? "Plans"}</div>
-          <h2 className="mt-4 display-black text-4xl md:text-6xl">{t("pricing.title")}</h2>
+          <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("pricing.title")}</h2>
           <p className="mt-5 text-black/60">{t("pricing.subtitle")}</p>
         </div>
         <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -507,8 +507,8 @@ function CtaFooter() {
   const { t } = useI18n();
   return (
     <section className="alert-gradient text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-20 md:py-28 grid md:grid-cols-[minmax(0,1fr)_auto] gap-8 items-center">
-        <h2 className="display-black text-4xl md:text-6xl">{t("cta.title")}</h2>
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-14 md:py-28 grid md:grid-cols-[minmax(0,1fr)_auto] gap-8 items-center">
+        <h2 className="display-black text-3xl md:text-6xl">{t("cta.title")}</h2>
         <div className="flex flex-wrap gap-3">
           <Link to="/app" className="btn-primary">
             {t("cta.primary")} <ArrowRight size={16} />
@@ -533,12 +533,12 @@ function OutcomesBand() {
   ];
   return (
     <section className="bg-black text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-20 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-14 md:py-28">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
             <TrendingUp size={14} /> {t("outcomes.title").split(".")[0]}.
           </div>
-          <h2 className="mt-4 display-black text-4xl md:text-6xl">{t("outcomes.title")}</h2>
+          <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("outcomes.title")}</h2>
           <p className="mt-4 text-white/70 max-w-2xl">{t("outcomes.subtitle")}</p>
         </div>
         <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-5">
@@ -597,7 +597,7 @@ function FaqSection() {
   const items = [1, 2, 3, 4, 5] as const;
   return (
     <section className="bg-white border-t border-black/10">
-      <div className="mx-auto max-w-[900px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[900px] px-4 md:px-8 py-16 md:py-32">
         <h2 className="display-black text-4xl md:text-5xl text-center">{t("faq.title")}</h2>
         <div className="mt-12 divide-y divide-black/10 border-y border-black/10">
           {items.map((i) => (
