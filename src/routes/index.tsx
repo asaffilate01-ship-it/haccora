@@ -235,12 +235,12 @@ function ContactCard() {
     <form
       id="contact"
       onSubmit={(e) => e.preventDefault()}
-      className="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-black/5"
+      className="rounded-2xl md:rounded-3xl bg-white p-5 md:p-8 shadow-2xl border border-black/5"
     >
-      <h3 className="display-black text-2xl md:text-3xl text-black text-center">
+      <h3 className="display-black text-xl md:text-3xl text-black text-center">
         {t("contact.title") ?? "Get More Information"}
       </h3>
-      <div className="mt-6 grid grid-cols-2 gap-3">
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <input placeholder={t("contact.first") ?? "First Name"} className="fld" />
         <input placeholder={t("contact.last") ?? "Last Name"} className="fld" />
       </div>
@@ -249,7 +249,7 @@ function ContactCard() {
         <input placeholder={t("contact.phone") ?? "Phone Number"} className="fld" />
         <input placeholder={t("contact.business") ?? "Business Name"} className="fld" />
       </div>
-      <button type="submit" className="btn-primary w-full mt-5 uppercase tracking-widest text-sm">
+      <button type="submit" className="btn-primary w-full mt-5 uppercase tracking-widest text-xs md:text-sm">
         {t("contact.cta") ?? "Get In Touch"}
       </button>
       <p className="mt-3 text-[11px] text-black/50 text-center">
