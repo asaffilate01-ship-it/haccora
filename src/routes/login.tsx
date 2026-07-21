@@ -61,10 +61,8 @@ function LoginPage() {
     <div className="min-h-screen bg-white text-foreground">
       <div className="bg-black text-white">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2 min-w-0">
-            <BrandLogo imgClassName="h-10 md:h-12 w-auto" />
+          <BrandLogo imgClassName="h-10 md:h-12 w-auto" />
 
-          </Link>
           <div className="flex items-center gap-3">
             <LanguageToggle variant="dark" />
             <Link to="/" className="hidden sm:inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white"><ArrowLeft size={14} /> {t("auth.back")}</Link>
