@@ -835,8 +835,9 @@ const en: Dict = {
   "nav.demo": "Live demo",
   "nav.tryFree": "Get started",
   "brand.tag": "Digital food safety, built for Germany",
- "brand.slogan": "Safe. Clean. Traceable.",
- "marquee.phrase": "Built for German kitchens · Safe. Clean. Traceable.",
+  "brand.slogan": "Safe. Clean. Traceable.",
+  "brand.tagline": "Always inspection-ready.",
+  "marquee.phrase": "Built for German kitchens · Safe. Clean. Traceable. · Always inspection-ready.",
  "nav.more": "More",
 
   "hero.eyebrow": "HACCP · IfSG · LMHV · Inspector-ready",
