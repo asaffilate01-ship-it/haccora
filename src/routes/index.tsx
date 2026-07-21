@@ -6,8 +6,9 @@ import {
   FileText, Clock, AlertTriangle, ShieldCheck, ClipboardCheck,
   Thermometer, Wheat, Users, Scale, CheckCircle2, Building2,
   TrendingUp, Zap, Recycle, CalendarCheck, Utensils, Hotel, Coffee, Beer, Truck as TruckIcon, ChefHat,
-  Plus, Minus,
+  Plus, Minus, Smartphone, MessageCircle, Server, Plug,
 } from "lucide-react";
+
 import heroChef from "@/assets/hero-chef.jpg";
 import { FollowBar } from "@/components/SocialIcons";
 import { BrandLogo } from "@/components/BrandLogo";
