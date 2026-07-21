@@ -493,16 +493,13 @@ function AppShell() {
           <Outlet />
         </main>
 
-        <nav className="md:hidden sticky bottom-0 z-30 grid grid-cols-5 border-t border-border bg-card">
-          {visibleFlat.slice(0, 5).map(({ to, icon: Icon, key, exact }) => {
-            const active = exact ? pathname === to : pathname.startsWith(to);
-            return (
-              <Link key={to} to={to as never} className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] transition ${active ? "text-primary" : "text-muted-foreground"}`}>
-                <Icon size={18} /> {t(key)}
-              </Link>
-            );
-          })}
-        </nav>
+        <MobileBottomNav
+          visibleFlat={visibleFlat}
+          visibleGroups={visibleGroups}
+          pathname={pathname}
+          t={t}
+        />
+
       </div>
       </div>
 
