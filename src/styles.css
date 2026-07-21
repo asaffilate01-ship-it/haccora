@@ -303,6 +303,11 @@
   }
 }
 
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
 /* Smooth language crossfade — uses the View Transitions API when available. */
 @keyframes gs-fade-in  { from { opacity: 0 } to { opacity: 1 } }
 @keyframes gs-fade-out { from { opacity: 1 } to { opacity: 0 } }
