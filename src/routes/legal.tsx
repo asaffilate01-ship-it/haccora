@@ -25,9 +25,8 @@ function LegalLayout() {
           <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-bold">
             <ArrowLeft size={16} /> {t("legal.back")}
           </Link>
-          <Link to="/" className="font-display text-2xl">
-            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
-          </Link>
+          <BrandLogo imgClassName="h-9 w-auto" />
+
           <LanguageToggle variant="dark" />
         </div>
       </div>
