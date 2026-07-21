@@ -538,6 +538,51 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
                   className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
                 />
               </div>
+
+              {/* Time + geo tagged photo evidence */}
+              <div className="rounded-lg border border-border bg-secondary/30 p-3">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="text-xs font-semibold flex items-center gap-1.5">
+                    <Camera size={12} /> {t("Foto-Nachweis (Zeit + Geo)", "Photo evidence (time + geo)")}
+                  </div>
+                  {photoUrl && (
+                    <button onClick={clearPhoto} className="text-[11px] text-muted-foreground hover:text-destructive inline-flex items-center gap-1">
+                      <Trash2 size={11} /> {t("Entfernen", "Remove")}
+                    </button>
+                  )}
+                </div>
+                {!photoUrl ? (
+                  <label className={`flex items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-background px-3 py-4 text-sm font-medium cursor-pointer hover:bg-secondary/40 ${capturing ? "opacity-60 pointer-events-none" : ""}`}>
+                    {capturing ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
+                    {capturing ? t("Erfasse Standort…", "Capturing location…") : t("Foto aufnehmen", "Take photo")}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={onCapture}
+                      className="hidden"
+                    />
+                  </label>
+                ) : (
+                  <div className="space-y-2">
+                    <img src={photoUrl} alt="evidence" className="w-full rounded-md border border-border" />
+                    <div className="grid grid-cols-2 gap-2 text-[11px]">
+                      <div className="inline-flex items-center gap-1 text-muted-foreground">
+                        <Clock size={11} /> {capturedAt?.toLocaleString(lang === "de" ? "de-DE" : "en-GB")}
+                      </div>
+                      <div className="inline-flex items-center gap-1 text-muted-foreground">
+                        <MapPin size={11} />
+                        {geo
+                          ? `${geo.lat.toFixed(5)}, ${geo.lng.toFixed(5)} · ±${Math.round(geo.accuracy)}m`
+                          : (geoErr ?? t("Ohne Geo-Tag", "No geo tag"))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {geoErr && !photoUrl && (
+                  <div className="mt-2 text-[11px] text-muted-foreground">{geoErr}</div>
+                )}
+              </div>
               {primary && primaryRaw !== undefined && primaryRaw !== "" && (
                 <div className={`rounded-lg px-3 py-2 text-xs font-medium ${primaryOk === false ? "bg-destructive/10 text-destructive" : "bg-success/15 text-success"}`}>
                   <div className="flex items-center gap-1.5">
