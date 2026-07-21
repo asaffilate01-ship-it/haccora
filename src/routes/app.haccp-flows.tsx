@@ -312,6 +312,77 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
   const next = () => setIdx(i => Math.min(total - 1, i + 1));
   const prev = () => setIdx(i => Math.max(0, i - 1));
 
+  const getGeo = (): Promise<{ lat: number; lng: number; accuracy: number } | null> =>
+    new Promise(resolve => {
+      if (!("geolocation" in navigator)) { setGeoErr(t("Standort nicht verfügbar", "Location unavailable")); resolve(null); return; }
+      navigator.geolocation.getCurrentPosition(
+        p => resolve({ lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy }),
+        e => { setGeoErr(e.message); resolve(null); },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 }
+      );
+    });
+
+  const watermark = (file: File, when: Date, coords: { lat: number; lng: number; accuracy: number } | null): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = () => { img.src = reader.result as string; };
+      reader.onerror = () => reject(new Error("read failed"));
+      img.onload = () => {
+        const maxW = 1600;
+        const scale = Math.min(1, maxW / img.width);
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0, w, h);
+        // Watermark bar
+        const barH = Math.max(56, Math.round(h * 0.09));
+        ctx.fillStyle = "rgba(0,0,0,0.65)";
+        ctx.fillRect(0, h - barH, w, barH);
+        ctx.fillStyle = "#fff";
+        const fs = Math.max(14, Math.round(barH * 0.28));
+        ctx.font = `600 ${fs}px system-ui, sans-serif`;
+        const ts = when.toLocaleString(lang === "de" ? "de-DE" : "en-GB");
+        const geoText = coords
+          ? `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)} · ±${Math.round(coords.accuracy)}m`
+          : t("Ohne Geo-Tag", "No geo tag");
+        ctx.fillText(`Haccora · ${ts}`, 16, h - barH + fs + 4);
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.font = `400 ${Math.round(fs * 0.85)}px system-ui, sans-serif`;
+        ctx.fillText(geoText, 16, h - 12);
+        canvas.toBlob(b => b ? resolve(b) : reject(new Error("encode failed")), "image/jpeg", 0.85);
+      };
+      img.onerror = () => reject(new Error("image load failed"));
+      reader.readAsDataURL(file);
+    });
+
+  const onCapture = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setCapturing(true); setErr(null); setGeoErr(null);
+    try {
+      const [coords, when] = await Promise.all([getGeo(), Promise.resolve(new Date())]);
+      const blob = await watermark(file, when, coords);
+      if (photoUrl) URL.revokeObjectURL(photoUrl);
+      setPhotoBlob(blob);
+      setPhotoUrl(URL.createObjectURL(blob));
+      setGeo(coords);
+      setCapturedAt(when);
+    } catch (ex: any) {
+      setErr(ex?.message ?? "capture failed");
+    } finally {
+      setCapturing(false);
+    }
+  };
+
+  const clearPhoto = () => {
+    if (photoUrl) URL.revokeObjectURL(photoUrl);
+    setPhotoBlob(null); setPhotoUrl(null); setGeo(null); setCapturedAt(null); setGeoErr(null);
+  };
+
   const finish = async () => {
     setBusy(true); setErr(null);
     const stepsPayload = flow.steps.map(s => ({
@@ -327,6 +398,18 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
     const status = inRange ? "complete" : "corrective";
 
     const { data: u } = await supabase.auth.getUser();
+    const uid = u.user?.id;
+
+    let photoPath: string | null = null;
+    if (photoBlob && uid) {
+      const path = `haccp-flows/${uid}/${Date.now()}-${flow.key}.jpg`;
+      const { error: upErr } = await supabase.storage
+        .from("documents")
+        .upload(path, photoBlob, { contentType: "image/jpeg", upsert: false });
+      if (upErr) { setBusy(false); setErr(upErr.message); return; }
+      photoPath = path;
+    }
+
     const { error } = await supabase.from("haccp_flow_runs").insert({
       flow_key: flow.key,
       title: lang === "de" ? flow.titleDe : flow.titleEn,
@@ -340,7 +423,12 @@ function FlowRunner({ flow, onClose, onSaved }: { flow: FlowDef; onClose: () => 
       steps: stepsPayload,
       notes: notes || null,
       status,
-      performed_by: u.user?.id ?? null,
+      performed_by: uid ?? null,
+      photo_path: photoPath,
+      geo_lat: geo?.lat ?? null,
+      geo_lng: geo?.lng ?? null,
+      geo_accuracy: geo?.accuracy ?? null,
+      captured_at: capturedAt?.toISOString() ?? null,
     });
     setBusy(false);
     if (error) { setErr(error.message); return; }
