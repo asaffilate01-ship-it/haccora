@@ -137,7 +137,7 @@ function HaccpFlowsPage() {
     setLoading(true);
     const { data } = await supabase
       .from("haccp_flow_runs")
-      .select("id,flow_key,title,product,ccp_value,ccp_unit,in_range,corrective_action,performed_at,status")
+      .select("id,flow_key,title,product,ccp_value,ccp_unit,in_range,corrective_action,performed_at,status,photo_path,geo_lat,geo_lng")
       .order("performed_at", { ascending: false })
       .limit(50);
     setRuns((data ?? []) as Run[]);
