@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useAuth, ROLES, homeFor, type Role } from "@/lib/auth";
-import { Crown, ClipboardList, ChefHat, User, Gavel, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
+import { Crown, ClipboardList, ChefHat, User, Gavel, ArrowLeft, Loader2 } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -60,10 +61,8 @@ function LoginPage() {
     <div className="min-h-screen bg-white text-foreground">
       <div className="bg-black text-white">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2 min-w-0">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[color:var(--color-alert-red)] text-white"><ShieldCheck size={18} /></span>
-            <span className="font-display text-2xl md:text-3xl tracking-tight text-white">Hacc<span className="text-[color:var(--color-alert-red)]">ora</span></span>
-          </Link>
+          <BrandLogo imgClassName="h-10 md:h-12 w-auto" />
+
           <div className="flex items-center gap-3">
             <LanguageToggle variant="dark" />
             <Link to="/" className="hidden sm:inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white"><ArrowLeft size={14} /> {t("auth.back")}</Link>
