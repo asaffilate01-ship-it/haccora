@@ -161,6 +161,13 @@ function AppShell() {
       { prefix: "/app/audits",      nav: "audits" },
       { prefix: "/app/labels",      nav: "labels" },
       { prefix: "/app/incidents",   nav: "incidents" },
+      { prefix: "/app/goodsin",     nav: "goodsin" },
+      { prefix: "/app/calibration", nav: "calibration" },
+      { prefix: "/app/health",      nav: "health" },
+      { prefix: "/app/pest",        nav: "pest" },
+      { prefix: "/app/oil",         nav: "oil" },
+      { prefix: "/app/complaints",  nav: "complaints" },
+      { prefix: "/app/chemicals",   nav: "chemicals" },
     ];
 
     const match = PATH_KEY.find((p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"));
