@@ -1573,6 +1573,13 @@ const en: Dict = {
   // New modules & permissions matrix (EN)
   "menu.labels": "Labels",
   "menu.incidents": "Incidents",
+  "menu.goodsin": "Goods-in",
+  "menu.calibration": "Calibration",
+  "menu.health": "IfSG §43 register",
+  "menu.pest": "Pest control",
+  "menu.oil": "Oil quality",
+  "menu.complaints": "Complaints",
+  "menu.chemicals": "Chemicals",
   "nav.group.kitchenOps": "Kitchen ops",
   "settings.perms.title": "Permissions matrix",
   "settings.perms.sub": "Role-based actions — mapped to IfSG, ArbSchG and EU-1169/2011.",
