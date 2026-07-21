@@ -42,6 +42,8 @@ function Landing() {
       <Support360 />
       <ModulePillars />
       <IndustriesStrip />
+      <PlatformPillars />
+
       <InspectorBand />
       <Regulation />
       <Pricing />
