@@ -41,6 +41,7 @@ const GROUPS: NavGroup[] = [
     labelKey: "nav.group.compliance",
     items: [
       { to: "/app/haccp",       icon: ShieldCheck,     key: "menu.haccp",       nav: "haccp" },
+      { to: "/app/haccp-flows", icon: ShieldCheck,     key: "menu.haccpFlows",  nav: "haccp" },
       { to: "/app/checks",      icon: ClipboardCheck,  key: "menu.checks",      nav: "checks" },
       { to: "/app/temperature", icon: Thermometer,     key: "menu.temperature", nav: "temperature" },
       { to: "/app/calibration", icon: Thermometer,     key: "menu.calibration", nav: "calibration" },

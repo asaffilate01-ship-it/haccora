@@ -488,6 +488,66 @@ export type Database = {
         }
         Relationships: []
       }
+      haccp_flow_runs: {
+        Row: {
+          ccp_unit: string | null
+          ccp_value: number | null
+          corrective_action: string | null
+          created_at: string
+          flow_key: string
+          id: string
+          in_range: boolean | null
+          location: string | null
+          notes: string | null
+          performed_at: string
+          performed_by: string | null
+          product: string | null
+          status: string
+          steps: Json
+          target_max: number | null
+          target_min: number | null
+          title: string
+        }
+        Insert: {
+          ccp_unit?: string | null
+          ccp_value?: number | null
+          corrective_action?: string | null
+          created_at?: string
+          flow_key: string
+          id?: string
+          in_range?: boolean | null
+          location?: string | null
+          notes?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          product?: string | null
+          status?: string
+          steps?: Json
+          target_max?: number | null
+          target_min?: number | null
+          title: string
+        }
+        Update: {
+          ccp_unit?: string | null
+          ccp_value?: number | null
+          corrective_action?: string | null
+          created_at?: string
+          flow_key?: string
+          id?: string
+          in_range?: boolean | null
+          location?: string | null
+          notes?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          product?: string | null
+          status?: string
+          steps?: Json
+          target_max?: number | null
+          target_min?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
       haccp_hazards: {
         Row: {
           control: string

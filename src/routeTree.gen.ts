@@ -43,6 +43,7 @@ import { Route as AppLabelsRouteImport } from './routes/app.labels'
 import { Route as AppInspectionRouteImport } from './routes/app.inspection'
 import { Route as AppIncidentsRouteImport } from './routes/app.incidents'
 import { Route as AppHealthRouteImport } from './routes/app.health'
+import { Route as AppHaccpFlowsRouteImport } from './routes/app.haccp-flows'
 import { Route as AppHaccpRouteImport } from './routes/app.haccp'
 import { Route as AppGoodsinRouteImport } from './routes/app.goodsin'
 import { Route as AppExpiryRouteImport } from './routes/app.expiry'
@@ -226,6 +227,11 @@ const AppHealthRoute = AppHealthRouteImport.update({
   path: '/health',
   getParentRoute: () => AppRoute,
 } as any)
+const AppHaccpFlowsRoute = AppHaccpFlowsRouteImport.update({
+  id: '/haccp-flows',
+  path: '/haccp-flows',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHaccpRoute = AppHaccpRouteImport.update({
   id: '/haccp',
   path: '/haccp',
@@ -307,6 +313,7 @@ export interface FileRoutesByFullPath {
   '/app/expiry': typeof AppExpiryRoute
   '/app/goodsin': typeof AppGoodsinRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/haccp-flows': typeof AppHaccpFlowsRoute
   '/app/health': typeof AppHealthRoute
   '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
@@ -353,6 +360,7 @@ export interface FileRoutesByTo {
   '/app/expiry': typeof AppExpiryRoute
   '/app/goodsin': typeof AppGoodsinRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/haccp-flows': typeof AppHaccpFlowsRoute
   '/app/health': typeof AppHealthRoute
   '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
@@ -402,6 +410,7 @@ export interface FileRoutesById {
   '/app/expiry': typeof AppExpiryRoute
   '/app/goodsin': typeof AppGoodsinRoute
   '/app/haccp': typeof AppHaccpRoute
+  '/app/haccp-flows': typeof AppHaccpFlowsRoute
   '/app/health': typeof AppHealthRoute
   '/app/incidents': typeof AppIncidentsRoute
   '/app/inspection': typeof AppInspectionRoute
@@ -452,6 +461,7 @@ export interface FileRouteTypes {
     | '/app/expiry'
     | '/app/goodsin'
     | '/app/haccp'
+    | '/app/haccp-flows'
     | '/app/health'
     | '/app/incidents'
     | '/app/inspection'
@@ -498,6 +508,7 @@ export interface FileRouteTypes {
     | '/app/expiry'
     | '/app/goodsin'
     | '/app/haccp'
+    | '/app/haccp-flows'
     | '/app/health'
     | '/app/incidents'
     | '/app/inspection'
@@ -546,6 +557,7 @@ export interface FileRouteTypes {
     | '/app/expiry'
     | '/app/goodsin'
     | '/app/haccp'
+    | '/app/haccp-flows'
     | '/app/health'
     | '/app/incidents'
     | '/app/inspection'
@@ -825,6 +837,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHealthRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/haccp-flows': {
+      id: '/app/haccp-flows'
+      path: '/haccp-flows'
+      fullPath: '/app/haccp-flows'
+      preLoaderRoute: typeof AppHaccpFlowsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/haccp': {
       id: '/app/haccp'
       path: '/haccp'
@@ -925,6 +944,7 @@ interface AppRouteChildren {
   AppExpiryRoute: typeof AppExpiryRoute
   AppGoodsinRoute: typeof AppGoodsinRoute
   AppHaccpRoute: typeof AppHaccpRoute
+  AppHaccpFlowsRoute: typeof AppHaccpFlowsRoute
   AppHealthRoute: typeof AppHealthRoute
   AppIncidentsRoute: typeof AppIncidentsRoute
   AppInspectionRoute: typeof AppInspectionRoute
@@ -960,6 +980,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppExpiryRoute: AppExpiryRoute,
   AppGoodsinRoute: AppGoodsinRoute,
   AppHaccpRoute: AppHaccpRoute,
+  AppHaccpFlowsRoute: AppHaccpFlowsRoute,
   AppHealthRoute: AppHealthRoute,
   AppIncidentsRoute: AppIncidentsRoute,
   AppInspectionRoute: AppInspectionRoute,
