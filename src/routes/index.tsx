@@ -189,7 +189,10 @@ function Hero() {
       <div className="relative mx-auto max-w-[1400px] px-4 md:px-8 pt-16 md:pt-24 pb-24 md:pb-40">
         <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-10 md:gap-16 items-start">
           <div className="text-white">
-            <h1 className="display-black text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-alert-red)]/40 bg-[color:var(--color-alert-red)]/15 px-3 py-1 text-[10px] md:text-[11px] font-black tracking-[0.18em] text-[color:var(--color-alert-red)] uppercase">
+              {t("brand.tagline")}
+            </div>
+            <h1 className="mt-4 display-black text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem]">
               {t("hero.title")}
             </h1>
             <p className="mt-7 max-w-xl text-base md:text-lg text-white/90 leading-relaxed">
