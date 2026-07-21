@@ -196,6 +196,7 @@ const de: Dict = {
   "app.tag": "Kreuzberg Kitchen · Berlin",
   "menu.dashboard": "Übersicht",
   "menu.haccp": "HACCP-Plan",
+  "menu.haccpFlows": "HACCP-Flows",
   "menu.checks": "Kontrollen",
   "menu.temperature": "Temperatur",
   "menu.cleaning": "Reinigung",
