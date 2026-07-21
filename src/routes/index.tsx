@@ -57,9 +57,9 @@ function ChefsMarquee() {
   const { t } = useI18n();
   const phrase = t("marquee.phrase") ?? "Built for German kitchens · Sicher. Sauber. Nachweisbar.";
   const line = Array.from({ length: 8 }, (_, i) => (
-    <span key={i} className="inline-flex items-center gap-6">
-      <span className="display-black text-4xl md:text-6xl uppercase tracking-tight">{phrase}</span>
-      <span className="h-3 w-3 rounded-full bg-[color:var(--color-alert-red)] shrink-0" />
+    <span key={i} className="inline-flex items-center gap-4 md:gap-6">
+      <span className="display-black text-2xl md:text-6xl uppercase tracking-tight">{phrase}</span>
+      <span className="h-2 w-2 md:h-3 md:w-3 rounded-full bg-[color:var(--color-alert-red)] shrink-0" />
     </span>
   ));
   return (
