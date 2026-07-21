@@ -117,6 +117,9 @@ interface Run {
   corrective_action: string | null;
   performed_at: string;
   status: string;
+  photo_path: string | null;
+  geo_lat: number | null;
+  geo_lng: number | null;
 }
 
 function HaccpFlowsPage() {
