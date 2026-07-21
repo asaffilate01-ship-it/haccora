@@ -1,6 +1,6 @@
 {
-  "name": "GastroSafe — Digital food safety for Germany",
-  "short_name": "GastroSafe",
+  "name": "Haccora — Digital food safety for Germany",
+  "short_name": "Haccora",
   "description": "HACCP, temperature, cleaning, allergens, training and inspection prep for German food businesses.",
   "start_url": "/app",
   "scope": "/",

@@ -54,7 +54,7 @@ export const posts: BlogPost[] = [
       de: [
         { type: "p", text: "Der HACCP-Plan ist das Herzstück jeder deutschen Gastronomie. Er ist gesetzlich verpflichtend nach Verordnung (EG) Nr. 852/2004 und wird bei jeder Prüfung durch das Veterinär- oder Lebensmittelüberwachungsamt kontrolliert." },
         { type: "h2", text: "Die 7 HACCP-Grundsätze in der Praxis" },
-        { type: "p", text: "Die Grundsätze sind bekannt – aber der Alltag scheitert oft an Dokumentation, Verantwortlichkeit und Freigabe. GastroSafe strukturiert jeden Schritt, hält Nachweise revisionssicher und erzwingt eine menschliche Freigabe für jeden KI-Vorschlag." },
+        { type: "p", text: "Die Grundsätze sind bekannt – aber der Alltag scheitert oft an Dokumentation, Verantwortlichkeit und Freigabe. Haccora strukturiert jeden Schritt, hält Nachweise revisionssicher und erzwingt eine menschliche Freigabe für jeden KI-Vorschlag." },
         { type: "ul", items: [
           "Gefahrenanalyse pro Prozessschritt (Wareneingang → Ausgabe)",
           "Kritische Kontrollpunkte (CCP) mit klaren Grenzwerten",
@@ -66,12 +66,12 @@ export const posts: BlogPost[] = [
         ]},
         { type: "quote", text: "Ein Prüfer bewertet nicht Ihr System – er bewertet Ihre Nachweise. Wer nichts belegt, hat nichts gemacht.", cite: "Amtstierärztin, Berlin" },
         { type: "h2", text: "Was ändert sich 2026?" },
-        { type: "p", text: "Digitale Nachweise werden von immer mehr Ämtern erwartet. Papierordner werden zwar noch akzeptiert, verlangsamen aber die Prüfung deutlich. Mit GastroSafe liefern Sie Daten im Inspektor-Modus binnen Sekunden." },
+        { type: "p", text: "Digitale Nachweise werden von immer mehr Ämtern erwartet. Papierordner werden zwar noch akzeptiert, verlangsamen aber die Prüfung deutlich. Mit Haccora liefern Sie Daten im Inspektor-Modus binnen Sekunden." },
       ],
       en: [
         { type: "p", text: "The HACCP plan is the backbone of every German food business. It is legally required under Regulation (EC) No 852/2004 and is checked during every visit by the veterinary or food safety office." },
         { type: "h2", text: "The 7 HACCP principles in practice" },
-        { type: "p", text: "The principles are well known — but daily reality often fails at documentation, accountability and sign-off. GastroSafe structures every step, keeps evidence audit-safe and requires human approval on every AI suggestion." },
+        { type: "p", text: "The principles are well known — but daily reality often fails at documentation, accountability and sign-off. Haccora structures every step, keeps evidence audit-safe and requires human approval on every AI suggestion." },
         { type: "ul", items: [
           "Hazard analysis per process step (goods-in → service)",
           "Critical Control Points (CCP) with clear limits",
@@ -83,7 +83,7 @@ export const posts: BlogPost[] = [
         ]},
         { type: "quote", text: "An inspector doesn't rate your system — they rate your evidence. If you didn't log it, you didn't do it.", cite: "Public veterinarian, Berlin" },
         { type: "h2", text: "What changes in 2026?" },
-        { type: "p", text: "More and more authorities now expect digital evidence. Paper binders are still accepted, but noticeably slow inspections. With GastroSafe's Inspector Mode you present the data in seconds." },
+        { type: "p", text: "More and more authorities now expect digital evidence. Paper binders are still accepted, but noticeably slow inspections. With Haccora's Inspector Mode you present the data in seconds." },
       ],
     },
   },
@@ -111,7 +111,7 @@ export const posts: BlogPost[] = [
       de: [
         { type: "p", text: "Reinigung ist die häufigste Beanstandung bei deutschen Kontrollen. Nicht weil zu wenig geputzt wird – sondern weil die Nachweise fehlen." },
         { type: "h2", text: "Frequenz, Verantwortung, Kontrolle" },
-        { type: "p", text: "Jede Fläche braucht drei Angaben: Häufigkeit, verantwortliche Person, Kontrollperson. GastroSafe erzeugt automatisch Schichtchecklisten aus Ihrem Reinigungsplan." },
+        { type: "p", text: "Jede Fläche braucht drei Angaben: Häufigkeit, verantwortliche Person, Kontrollperson. Haccora erzeugt automatisch Schichtchecklisten aus Ihrem Reinigungsplan." },
         { type: "ul", items: [
           "Tägliche Punkte (Arbeitsflächen, Böden, Handkontaktflächen)",
           "Wöchentliche Punkte (Abzugshauben-Filter, Kühlraumdichtungen)",
@@ -121,7 +121,7 @@ export const posts: BlogPost[] = [
       en: [
         { type: "p", text: "Cleaning is the most common finding in German inspections — not because kitchens aren't cleaned enough, but because the evidence is missing." },
         { type: "h2", text: "Frequency, responsibility, verification" },
-        { type: "p", text: "Every surface needs three data points: frequency, responsible person, verifying person. GastroSafe auto-generates shift checklists from your cleaning plan." },
+        { type: "p", text: "Every surface needs three data points: frequency, responsible person, verifying person. Haccora auto-generates shift checklists from your cleaning plan." },
         { type: "ul", items: [
           "Daily items (work surfaces, floors, hand-contact points)",
           "Weekly items (hood filters, cooler gaskets)",
@@ -198,12 +198,12 @@ export const posts: BlogPost[] = [
     body: {
       de: [
         { type: "p", text: "Die LMIV verpflichtet Sie, alle 14 EU-Hauptallergene korrekt und aktuell auszuweisen. Ein Wechsel von einer Sauce reicht, um Ihre gesamte Karte veraltet zu machen." },
-        { type: "h2", text: "So löst GastroSafe das" },
+        { type: "h2", text: "So löst Haccora das" },
         { type: "p", text: "Zutaten sind mit ihren Allergenen verknüpft. Ändern Sie eine Zutat oder wechseln Sie den Lieferanten, aktualisieren sich alle Rezepte und Menükarten automatisch – inklusive Prüfnachweis." },
       ],
       en: [
         { type: "p", text: "EU FIC obliges you to declare all 14 major allergens correctly and up to date. A single sauce swap is enough to make your entire menu outdated." },
-        { type: "h2", text: "How GastroSafe solves it" },
+        { type: "h2", text: "How Haccora solves it" },
         { type: "p", text: "Ingredients carry allergen data. Change one ingredient or swap a supplier, and every linked recipe and menu updates automatically — with an audit trail." },
       ],
     },

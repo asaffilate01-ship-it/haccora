@@ -13,9 +13,9 @@ export const Route = createFileRoute("/blog/$slug")({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Not found — GastroSafe Blog" }, { name: "robots", content: "noindex" }] };
+      return { meta: [{ title: "Not found — Haccora Blog" }, { name: "robots", content: "noindex" }] };
     }
-    const title = `${loaderData.title.en} — GastroSafe`;
+    const title = `${loaderData.title.en} — Haccora`;
     const desc = loaderData.excerpt.en;
     const url = `/blog/${params.slug}`;
     return {
@@ -67,7 +67,7 @@ function BlogPostPage() {
       <div className="bg-black text-white">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 flex items-center justify-between gap-4">
           <Link to="/" className="font-display text-2xl md:text-3xl tracking-tight text-white">
-            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
+            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
           </Link>
           <div className="flex items-center gap-3">
             <FollowBar dark />
@@ -124,7 +124,7 @@ function BlogPostPage() {
             <div className="text-xs font-black uppercase tracking-widest text-[color:var(--color-alert-green)]">
               {t("blog.cta.eyebrow") ?? "Try it live"}
             </div>
-            <h3 className="mt-2 display-black text-2xl md:text-3xl">{t("blog.cta.title") ?? "See GastroSafe in your kitchen"}</h3>
+            <h3 className="mt-2 display-black text-2xl md:text-3xl">{t("blog.cta.title") ?? "See Haccora in your kitchen"}</h3>
           </div>
           <Link to="/app" className="btn-primary">{t("blog.cta.button") ?? "Open live demo"}</Link>
         </div>
@@ -159,7 +159,7 @@ function BlogPostPage() {
 
       <footer className="bg-black text-white/70">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-10 flex flex-wrap items-center justify-between gap-6 text-sm">
-          <div>© {new Date().getFullYear()} GastroSafe</div>
+          <div>© {new Date().getFullYear()} Haccora</div>
           <FollowBar dark />
         </div>
       </footer>

@@ -25,7 +25,7 @@ function LegalLayout() {
             <ArrowLeft size={16} /> {t("legal.back")}
           </Link>
           <Link to="/" className="font-display text-2xl">
-            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
+            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
           </Link>
           <LanguageToggle variant="dark" />
         </div>

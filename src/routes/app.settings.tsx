@@ -10,7 +10,7 @@ import { Settings as SettingsIcon, Bell, Globe2, Shield, LogOut, RefreshCw, Mail
 export const Route = createFileRoute("/app/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — GastroSafe" },
+      { title: "Settings — Haccora" },
       { name: "robots", content: "noindex" },
     ],
   }),

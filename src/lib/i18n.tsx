@@ -13,7 +13,7 @@ const de: Dict = {
   "nav.about": "Über uns",
   "nav.blog": "Blog",
   "blog.eyebrow": "Einblicke",
-  "blog.title": "GastroSafe Blog",
+  "blog.title": "Haccora Blog",
   "blog.subtitle": "Praxisleitfäden zu HACCP, Kontrollen und Betrieb – geschrieben für deutsche Küchen.",
   "blog.featured": "Empfohlen",
   "blog.readMore": "Artikel lesen",
@@ -24,14 +24,15 @@ const de: Dict = {
   "blog.copyLink": "Link kopieren",
   "blog.backHome": "Zurück zur Startseite",
   "blog.cta.eyebrow": "Live testen",
-  "blog.cta.title": "GastroSafe in Ihrer Küche erleben",
+  "blog.cta.title": "Haccora in Ihrer Küche erleben",
   "blog.cta.button": "Live-Demo öffnen",
   "nav.login": "Anmelden",
   "nav.demo": "Live-Demo",
   "nav.tryFree": "Kostenlos starten",
   "brand.tag": "Digitale Lebensmittelsicherheit für Deutschland",
- "brand.slogan": "Sicher. Sauber. Nachweisbar.",
- "marquee.phrase": "Gebaut für deutsche Küchen · Sicher. Sauber. Nachweisbar.",
+  "brand.slogan": "Sicher. Sauber. Nachweisbar.",
+  "brand.tagline": "Immer prüfbereit.",
+  "marquee.phrase": "Gebaut für deutsche Küchen · Sicher. Sauber. Nachweisbar. · Immer prüfbereit.",
  "nav.more": "Mehr",
 
   // Hero
@@ -49,7 +50,7 @@ const de: Dict = {
 
   // Pillars
   "pillars.title": "Fünf Produkte. Ein System.",
-  "pillars.subtitle": "GastroSafe vereint Compliance, Betrieb, Einkauf, Schulung und Regulatorik – ohne getrennte Tools.",
+  "pillars.subtitle": "Haccora vereint Compliance, Betrieb, Einkauf, Schulung und Regulatorik – ohne getrennte Tools.",
   "pillar.haccp.title": "HACCP & Lebensmittelsicherheit",
   "pillar.haccp.body": "KI-gestützter Plan-Builder mit Gefahrenanalyse, CCPs, kritischen Grenzwerten und obligatorischer menschlicher Freigabe.",
   "pillar.ops.title": "Betrieb & Tagesabläufe",
@@ -62,7 +63,7 @@ const de: Dict = {
   "pillar.regulation.body": "Behördenfinder für Berlin und NRW, EU 852/2004, 178/2002, 1169/2011 – Änderungen automatisch signalisiert.",
 
   // Inspector Mode
-  "inspector.eyebrow": "GastroSafe Inspector Mode",
+  "inspector.eyebrow": "Haccora Inspector Mode",
   "inspector.title": "Ein Klick. Alles, was die Behörde anfragt.",
   "inspector.body": "HACCP-Plan, Temperaturhistorie, Reinigungsnachweise, Allergenmatrix, Schulungsbelege, Rückverfolgbarkeit und Auditverlauf – als schreibgeschützte deutschsprachige Ansicht oder als Nachweispaket.",
   "inspector.item.plan": "Aktueller HACCP-Plan",
@@ -93,7 +94,7 @@ const de: Dict = {
   "pricing.plan.growing.desc": "Bis zu 10 Standorte",
   "pricing.plan.enterprise": "Enterprise",
   "pricing.plan.enterprise.desc": "Ab 10+ Standorte, SLA und Integrationen",
-  "pricing.promise": "Wenn ein Prüfer einen fehlenden Nachweis identifiziert, der in Ihrem aktiven GastroSafe-Plan hätte enthalten sein müssen, unterstützen wir die Korrektur ohne zusätzliche Softwaregebühr.",
+  "pricing.promise": "Wenn ein Prüfer einen fehlenden Nachweis identifiziert, der in Ihrem aktiven Haccora-Plan hätte enthalten sein müssen, unterstützen wir die Korrektur ohne zusätzliche Softwaregebühr.",
 
   // Guarantee
   "guarantee.title": "Ein Versprechen, das wir halten können.",
@@ -104,7 +105,7 @@ const de: Dict = {
   "cta.body": "Kostenlose Ersteinrichtung. Optional konfigurieren wir Rezepte, HACCP und Schulungen für Sie.",
   "cta.primary": "Demo öffnen",
   "cta.secondary": "Vertrieb kontaktieren",
-  "footer.rights": "© 2026 GastroSafe. Alle Rechte vorbehalten.",
+  "footer.rights": "© 2026 Haccora. Alle Rechte vorbehalten.",
   "footer.imprint": "Impressum",
   "footer.privacy": "Datenschutz",
   "footer.terms": "AGB",
@@ -123,7 +124,7 @@ const de: Dict = {
   "legal.back": "Zurück zur Startseite",
 
   // Cookie banner
-  "cookie.title": "Cookies auf gastrosafe.de",
+  "cookie.title": "Cookies auf haccora.de",
   "cookie.body": "Wir verwenden nur technisch notwendige Cookies. Für Präferenz- und Statistik-Cookies benötigen wir Ihre Einwilligung nach § 25 TDDDG. Sie können Ihre Auswahl jederzeit widerrufen.",
   "cookie.accept": "Alle akzeptieren",
   "cookie.reject": "Nur notwendige",
@@ -290,7 +291,7 @@ const de: Dict = {
   "nav.search": "Suchen",
   "nav.contact": "Kontakt",
   "hero.title": "Ein System für die gesamte Lebensmittelsicherheit.",
-  "hero.subtitle": "GastroSafe ersetzt HACCP-Ordner, Temperaturlisten, Reinigungspläne, Allergenmappen, Personalzertifikate und Prüfungsvorbereitung – in einer mehrsprachigen Plattform, gebaut für Gastronomie in Deutschland.",
+  "hero.subtitle": "Haccora ersetzt HACCP-Ordner, Temperaturlisten, Reinigungspläne, Allergenmappen, Personalzertifikate und Prüfungsvorbereitung – in einer mehrsprachigen Plattform, gebaut für Gastronomie in Deutschland.",
   "hero.video.title": "So unterstützen wir Ihren Betrieb",
   "contact.title": "Mehr Informationen anfordern",
   "contact.first": "Vorname",
@@ -317,7 +318,7 @@ const de: Dict = {
   "reg.body": "Behördenfinder Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug – versioniert und mit Handlungscheckliste bei Rechtsänderungen.",
 
   // Auth / roles
-  "auth.title": "Bei GastroSafe anmelden",
+  "auth.title": "Bei Haccora anmelden",
   "auth.sub": "Wählen Sie eine Rolle für die Demo. Jede Rolle sieht ihr eigenes Dashboard und ihre Berechtigungen.",
   "auth.continue": "Als {role} fortfahren",
   "auth.signout": "Abmelden",
@@ -344,7 +345,7 @@ const de: Dict = {
 
   // Demo mode banner
   "demo.tag": "Demo-Modus",
-  "demo.body": "Sie erkunden GastroSafe als {role}. Keine echten Daten.",
+  "demo.body": "Sie erkunden Haccora als {role}. Keine echten Daten.",
   "demo.exit": "Demo verlassen",
   "demo.switch": "Rolle wechseln",
 
@@ -755,7 +756,7 @@ const de: Dict = {
 
   // Landing outcome stats
   "outcomes.title": "Konkrete Ergebnisse. Nicht nur Software.",
-  "outcomes.subtitle": "Betriebe, die GastroSafe einführen, sparen Zeit, senken Kosten und bestehen ihre Prüfungen zuverlässiger.",
+  "outcomes.subtitle": "Betriebe, die Haccora einführen, sparen Zeit, senken Kosten und bestehen ihre Prüfungen zuverlässiger.",
   "outcomes.hours.value": "40 Std/Woche",
   "outcomes.hours.label": "weniger Papierkram",
   "outcomes.faster.value": "70% schneller",
@@ -767,7 +768,7 @@ const de: Dict = {
 
   // Industries
   "industries.title": "Für jede Küche in Deutschland gebaut.",
-  "industries.subtitle": "Von der Einzelgastronomie bis zur Systemgastronomie – GastroSafe passt sich Ihrem Betrieb an.",
+  "industries.subtitle": "Von der Einzelgastronomie bis zur Systemgastronomie – Haccora passt sich Ihrem Betrieb an.",
   "industries.restaurant": "Restaurants",
   "industries.hotel": "Hotels & Ketten",
   "industries.cafe": "Cafés & Bäckereien",
@@ -777,9 +778,9 @@ const de: Dict = {
 
   // FAQ
   "faq.title": "Häufig gestellte Fragen",
-  "faq.q1": "Wie schnell ist GastroSafe einsatzbereit?",
+  "faq.q1": "Wie schnell ist Haccora einsatzbereit?",
   "faq.a1": "Die Grundeinrichtung ist in unter einem Tag abgeschlossen. Optional konfigurieren wir HACCP, Rezepte und Schulungsmatrix gemeinsam mit Ihnen.",
-  "faq.q2": "Ist GastroSafe DSGVO-konform?",
+  "faq.q2": "Ist Haccora DSGVO-konform?",
   "faq.a2": "Ja. Gesundheits- und Personaldaten werden getrennt gespeichert, Hosting erfolgt in der EU und alle Nachweise sind versioniert und manipulationssicher.",
   "faq.q3": "Was passiert bei einer Behördenprüfung?",
   "faq.a3": "Mit dem Inspector Mode geben Sie Prüfern einen schreibgeschützten Blick auf HACCP-Plan, Temperaturen, Reinigung, Allergene und Schulungsnachweise – oder erzeugen ein PDF-Nachweispaket.",
@@ -817,7 +818,7 @@ const en: Dict = {
   "nav.about": "About",
   "nav.blog": "Blog",
   "blog.eyebrow": "Insights",
-  "blog.title": "GastroSafe Blog",
+  "blog.title": "Haccora Blog",
   "blog.subtitle": "Practical guides on HACCP, inspections and daily operations — written for German kitchens.",
   "blog.featured": "Featured",
   "blog.readMore": "Read article",
@@ -828,19 +829,20 @@ const en: Dict = {
   "blog.copyLink": "Copy link",
   "blog.backHome": "Back to home",
   "blog.cta.eyebrow": "Try it live",
-  "blog.cta.title": "See GastroSafe in your kitchen",
+  "blog.cta.title": "See Haccora in your kitchen",
   "blog.cta.button": "Open live demo",
   "nav.login": "Sign in",
   "nav.demo": "Live demo",
   "nav.tryFree": "Get started",
   "brand.tag": "Digital food safety, built for Germany",
- "brand.slogan": "Safe. Clean. Traceable.",
- "marquee.phrase": "Built for German kitchens · Safe. Clean. Traceable.",
+  "brand.slogan": "Safe. Clean. Traceable.",
+  "brand.tagline": "Always inspection-ready.",
+  "marquee.phrase": "Built for German kitchens · Safe. Clean. Traceable. · Always inspection-ready.",
  "nav.more": "More",
 
   "hero.eyebrow": "HACCP · IfSG · LMHV · Inspector-ready",
   "hero.title": "One system for every part of food safety.",
-  "hero.subtitle": "GastroSafe replaces your HACCP folder, temperature sheets, cleaning records, allergen files, staff certificates and inspection paperwork — in one multilingual platform built for food businesses in Germany.",
+  "hero.subtitle": "Haccora replaces your HACCP folder, temperature sheets, cleaning records, allergen files, staff certificates and inspection paperwork — in one multilingual platform built for food businesses in Germany.",
   "hero.cta.primary": "Open live demo",
   "hero.cta.secondary": "See pricing",
   "hero.trust": "Trusted by independent restaurants, chains and franchises across Berlin, NRW, Bavaria and Hamburg.",
@@ -863,7 +865,7 @@ const en: Dict = {
   "pillar.regulation.title": "German regulation",
   "pillar.regulation.body": "Authority finder for Berlin & NRW, EU 852/2004, 178/2002, 1169/2011 — updates flagged automatically.",
 
-  "inspector.eyebrow": "GastroSafe Inspector Mode",
+  "inspector.eyebrow": "Haccora Inspector Mode",
   "inspector.title": "One click. Everything the authority asks for.",
   "inspector.body": "HACCP plan, temperature history, cleaning records, allergen matrix, training evidence, traceability and audit history — as a read-only German interface or a downloadable evidence pack.",
   "inspector.item.plan": "Current HACCP plan",
@@ -893,7 +895,7 @@ const en: Dict = {
   "pricing.plan.growing.desc": "Up to 10 locations",
   "pricing.plan.enterprise": "Enterprise",
   "pricing.plan.enterprise.desc": "10+ locations, SLA and integrations",
-  "pricing.promise": "If an inspector finds a missing record that should have been part of your active GastroSafe plan, we help configure the correction with no additional software charge.",
+  "pricing.promise": "If an inspector finds a missing record that should have been part of your active Haccora plan, we help configure the correction with no additional software charge.",
 
   "guarantee.title": "A promise we can actually keep.",
   "guarantee.body": "We don't promise \"guaranteed legal compliance\". We promise the service that makes it possible.",
@@ -902,7 +904,7 @@ const en: Dict = {
   "cta.body": "Free self-setup. Optional: we configure your recipes, HACCP and training for you.",
   "cta.primary": "Open the demo",
   "cta.secondary": "Talk to sales",
-  "footer.rights": "© 2026 GastroSafe. All rights reserved.",
+  "footer.rights": "© 2026 Haccora. All rights reserved.",
   "footer.imprint": "Imprint",
   "footer.privacy": "Privacy",
   "footer.terms": "Terms",
@@ -921,7 +923,7 @@ const en: Dict = {
   "legal.back": "Back to homepage",
 
   // Cookie banner
-  "cookie.title": "Cookies on gastrosafe.de",
+  "cookie.title": "Cookies on haccora.de",
   "cookie.body": "We only use strictly necessary cookies by default. Preferences and statistics cookies require your consent under § 25 TDDDG. You can withdraw consent at any time.",
   "cookie.accept": "Accept all",
   "cookie.reject": "Only necessary",
@@ -1104,7 +1106,7 @@ const en: Dict = {
   "reg.body": "Authority finder for Berlin & NRW, EU 852/2004, 178/2002, 1169/2011, IfSG tracker, LMHV matrix, LFGB references — versioned with an action checklist when the law changes.",
 
   // Auth / roles
-  "auth.title": "Sign in to GastroSafe",
+  "auth.title": "Sign in to Haccora",
   "auth.sub": "Pick a role for the demo. Each role gets its own dashboard and permissions.",
   "auth.continue": "Continue as {role}",
   "auth.signout": "Sign out",
@@ -1131,7 +1133,7 @@ const en: Dict = {
 
   // Demo mode banner
   "demo.tag": "Demo mode",
-  "demo.body": "You're exploring GastroSafe as {role}. No real data.",
+  "demo.body": "You're exploring Haccora as {role}. No real data.",
   "demo.exit": "Exit demo",
   "demo.switch": "Switch role",
 
@@ -1542,7 +1544,7 @@ const en: Dict = {
 
   // Landing outcome stats
   "outcomes.title": "Real outcomes. Not just software.",
-  "outcomes.subtitle": "Kitchens running GastroSafe save hours, cut costs and pass inspections more reliably.",
+  "outcomes.subtitle": "Kitchens running Haccora save hours, cut costs and pass inspections more reliably.",
   "outcomes.hours.value": "40 hrs/week",
   "outcomes.hours.label": "less paperwork",
   "outcomes.faster.value": "70% faster",
@@ -1554,7 +1556,7 @@ const en: Dict = {
 
   // Industries
   "industries.title": "Built for every kitchen in Germany.",
-  "industries.subtitle": "From single sites to chains — GastroSafe adapts to your operation.",
+  "industries.subtitle": "From single sites to chains — Haccora adapts to your operation.",
   "industries.restaurant": "Restaurants",
   "industries.hotel": "Hotels & chains",
   "industries.cafe": "Cafés & bakeries",
@@ -1564,9 +1566,9 @@ const en: Dict = {
 
   // FAQ
   "faq.title": "Frequently asked questions",
-  "faq.q1": "How fast can GastroSafe go live?",
+  "faq.q1": "How fast can Haccora go live?",
   "faq.a1": "Basic setup is complete in under a day. We can optionally configure HACCP, recipes and the training matrix with you.",
-  "faq.q2": "Is GastroSafe GDPR compliant?",
+  "faq.q2": "Is Haccora GDPR compliant?",
   "faq.a2": "Yes. Health and personnel data are stored separately, hosting is in the EU, and every record is versioned and tamper-evident.",
   "faq.q3": "What happens during an inspection?",
   "faq.a3": "Inspector Mode gives officers a read-only view of the HACCP plan, temperatures, cleaning, allergens and training records — or generates a downloadable PDF evidence pack.",

@@ -14,13 +14,13 @@ import { FollowBar } from "@/components/SocialIcons";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "GastroSafe — Food safety software for German gastronomy" },
+      { title: "Haccora — Food safety software for German gastronomy" },
       {
         name: "description",
         content:
           "Simplify HACCP, temperature, cleaning, allergens, staff compliance and inspection prep — one bilingual platform built for German food businesses.",
       },
-      { property: "og:title", content: "GastroSafe — Food safety software for Germany" },
+      { property: "og:title", content: "Haccora — Food safety software for Germany" },
       { property: "og:description", content: "HACCP, IfSG, LMHV and inspector-ready evidence in one platform." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -97,7 +97,7 @@ function TopBar() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
         <Link to="/" className="flex flex-col justify-center min-w-0">
           <span className="font-display text-2xl md:text-3xl tracking-tight text-white leading-none">
-            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
+            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
           </span>
           <span className="mt-1 text-[9px] md:text-[10px] font-bold tracking-[0.14em] text-white/70 uppercase">{t("brand.slogan")}</span>
         </Link>
@@ -189,7 +189,10 @@ function Hero() {
       <div className="relative mx-auto max-w-[1400px] px-4 md:px-8 pt-16 md:pt-24 pb-24 md:pb-40">
         <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-10 md:gap-16 items-start">
           <div className="text-white">
-            <h1 className="display-black text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-alert-red)]/40 bg-[color:var(--color-alert-red)]/15 px-3 py-1 text-[10px] md:text-[11px] font-black tracking-[0.18em] text-[color:var(--color-alert-red)] uppercase">
+              {t("brand.tagline")}
+            </div>
+            <h1 className="mt-4 display-black text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem]">
               {t("hero.title")}
             </h1>
             <p className="mt-7 max-w-xl text-base md:text-lg text-white/90 leading-relaxed">
@@ -623,7 +626,7 @@ function SiteFooter() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-12 grid md:grid-cols-4 gap-8 text-sm">
         <div>
           <div className="font-display text-2xl text-white leading-none">
-            Gastro<span className="text-[color:var(--color-alert-red)]">Safe</span>
+            Hacc<span className="text-[color:var(--color-alert-red)]">ora</span>
           </div>
           <p className="mt-2 text-[11px] font-bold tracking-[0.12em] text-white/70 uppercase">{t("brand.slogan")}</p>
           <p className="mt-2 text-white/50 text-xs leading-relaxed max-w-xs">{t("brand.tag")}</p>

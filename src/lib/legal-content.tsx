@@ -15,11 +15,11 @@ const UL = ({ children }: { children: ReactNode }) => (
 );
 const Address = () => (
   <address className="not-italic mt-3 text-[15px] text-black/75">
-    GastroSafe GmbH<br />
+    Haccora GmbH<br />
     Chausseestraße 10<br />
     10115 Berlin, Deutschland<br />
     <br />
-    E-Mail: legal@gastrosafe.de<br />
+    E-Mail: legal@haccora.de<br />
     Tel.: +49 30 1234 567<br />
     Handelsregister: Amtsgericht Berlin-Charlottenburg, HRB 000000 B<br />
     USt-IdNr.: DE000000000<br />
@@ -62,14 +62,14 @@ const de: Record<LegalKey, LegalDoc> = {
     body: (
       <>
         <P>
-          Diese Datenschutzerklärung gilt für die Nutzung der GastroSafe-Plattform und der
-          Website gastrosafe.de. Sie erfüllt die Anforderungen der DSGVO (VO (EU) 2016/679)
+          Diese Datenschutzerklärung gilt für die Nutzung der Haccora-Plattform und der
+          Website haccora.de. Sie erfüllt die Anforderungen der DSGVO (VO (EU) 2016/679)
           sowie des BDSG.
         </P>
         <H>1. Verantwortlicher</H>
         <Address />
         <H>2. Datenschutzbeauftragter</H>
-        <P>Sie erreichen unseren Datenschutzbeauftragten unter dsb@gastrosafe.de.</P>
+        <P>Sie erreichen unseren Datenschutzbeauftragten unter dsb@haccora.de.</P>
         <H>3. Verarbeitete Daten und Zwecke</H>
         <UL>
           <li>Stammdaten (Name, E-Mail, Rolle, Standort) – zur Vertragserfüllung, Art. 6 Abs. 1 lit. b DSGVO.</li>
@@ -117,12 +117,12 @@ const de: Record<LegalKey, LegalDoc> = {
         <H>§ 1 Geltungsbereich</H>
         <P>
           Diese AGB gelten für alle Verträge über die Nutzung der Software-as-a-Service
-          Lösung „GastroSafe" zwischen der GastroSafe GmbH („Anbieter") und dem Kunden.
+          Lösung „Haccora" zwischen der Haccora GmbH („Anbieter") und dem Kunden.
           Der Kunde handelt als Unternehmer i.S.d. § 14 BGB.
         </P>
         <H>§ 2 Leistungsumfang</H>
         <P>
-          Der Anbieter stellt GastroSafe als webbasierte Anwendung zur Verfügung. Der
+          Der Anbieter stellt Haccora als webbasierte Anwendung zur Verfügung. Der
           konkrete Funktionsumfang richtet sich nach dem gewählten Tarif. Eine Garantie
           der Rechtskonformität einzelner Nachweise wird nicht übernommen; die
           Verantwortung für lebensmittelrechtliche Pflichten verbleibt beim Kunden.
@@ -202,8 +202,8 @@ const de: Record<LegalKey, LegalDoc> = {
         </P>
         <H>1. Kontaktwege</H>
         <UL>
-          <li>E-Mail: beschwerde@gastrosafe.de</li>
-          <li>Post: GastroSafe GmbH, Chausseestraße 10, 10115 Berlin</li>
+          <li>E-Mail: beschwerde@haccora.de</li>
+          <li>Post: Haccora GmbH, Chausseestraße 10, 10115 Berlin</li>
           <li>Telefon: +49 30 1234 567</li>
         </UL>
         <H>2. Bearbeitungsfristen</H>
@@ -215,14 +215,14 @@ const de: Record<LegalKey, LegalDoc> = {
         <H>3. Eskalation</H>
         <P>
           Sind Sie mit dem Ergebnis nicht einverstanden, können Sie den Fall an die
-          Geschäftsführung (leitung@gastrosafe.de) eskalieren. Datenschutzbeschwerden
+          Geschäftsführung (leitung@haccora.de) eskalieren. Datenschutzbeschwerden
           können Sie zusätzlich direkt bei der Berliner Beauftragten für Datenschutz und
           Informationsfreiheit einreichen.
         </P>
         <H>4. Hinweisgeberschutz</H>
         <P>
           Meldungen nach dem Hinweisgeberschutzgesetz (HinSchG) nehmen wir vertraulich
-          unter hinweis@gastrosafe.de entgegen. Die Identität der hinweisgebenden Person
+          unter hinweis@haccora.de entgegen. Die Identität der hinweisgebenden Person
           wird geschützt; Repressalien sind untersagt.
         </P>
       </>
@@ -239,11 +239,11 @@ const en: Record<LegalKey, LegalDoc> = {
       <>
         <H>Information according to § 5 DDG (German Digital Services Act)</H>
         <address className="not-italic mt-3 text-[15px] text-black/75">
-          GastroSafe GmbH<br />
+          Haccora GmbH<br />
           Chausseestraße 10<br />
           10115 Berlin, Germany<br />
           <br />
-          Email: legal@gastrosafe.de<br />
+          Email: legal@haccora.de<br />
           Phone: +49 30 1234 567<br />
           Commercial register: Amtsgericht Berlin-Charlottenburg, HRB 000000 B<br />
           VAT ID: DE000000000<br />
@@ -273,15 +273,15 @@ const en: Record<LegalKey, LegalDoc> = {
     body: (
       <>
         <P>
-          This notice governs use of the GastroSafe platform and gastrosafe.de. It meets
+          This notice governs use of the Haccora platform and haccora.de. It meets
           the requirements of the GDPR (Regulation (EU) 2016/679) and the German BDSG.
         </P>
         <H>1. Controller</H>
         <address className="not-italic mt-3 text-[15px] text-black/75">
-          GastroSafe GmbH · Chausseestraße 10 · 10115 Berlin, Germany · legal@gastrosafe.de
+          Haccora GmbH · Chausseestraße 10 · 10115 Berlin, Germany · legal@haccora.de
         </address>
         <H>2. Data protection officer</H>
-        <P>You can reach our DPO at dsb@gastrosafe.de.</P>
+        <P>You can reach our DPO at dsb@haccora.de.</P>
         <H>3. Data we process and purposes</H>
         <UL>
           <li>Master data (name, email, role, location) — contract performance, Art. 6(1)(b) GDPR.</li>
@@ -327,13 +327,13 @@ const en: Record<LegalKey, LegalDoc> = {
       <>
         <H>§ 1 Scope</H>
         <P>
-          These T&Cs govern all contracts for the use of the SaaS solution "GastroSafe"
-          between GastroSafe GmbH ("Provider") and the customer, who acts as an
+          These T&Cs govern all contracts for the use of the SaaS solution "Haccora"
+          between Haccora GmbH ("Provider") and the customer, who acts as an
           entrepreneur within the meaning of § 14 BGB.
         </P>
         <H>§ 2 Scope of services</H>
         <P>
-          The Provider makes GastroSafe available as a web application. The specific
+          The Provider makes Haccora available as a web application. The specific
           feature set depends on the chosen plan. No guarantee of legal compliance of
           individual records is given; responsibility for food-law obligations remains
           with the customer.
@@ -409,8 +409,8 @@ const en: Record<LegalKey, LegalDoc> = {
         </P>
         <H>1. How to reach us</H>
         <UL>
-          <li>Email: beschwerde@gastrosafe.de</li>
-          <li>Post: GastroSafe GmbH, Chausseestraße 10, 10115 Berlin</li>
+          <li>Email: beschwerde@haccora.de</li>
+          <li>Post: Haccora GmbH, Chausseestraße 10, 10115 Berlin</li>
           <li>Phone: +49 30 1234 567</li>
         </UL>
         <H>2. Response times</H>
@@ -422,14 +422,14 @@ const en: Record<LegalKey, LegalDoc> = {
         <H>3. Escalation</H>
         <P>
           If you are not satisfied with the outcome, you can escalate the matter to
-          management (leitung@gastrosafe.de). Data protection complaints can also be
+          management (leitung@haccora.de). Data protection complaints can also be
           submitted directly to the Berlin Commissioner for Data Protection and Freedom
           of Information.
         </P>
         <H>4. Whistleblower protection</H>
         <P>
           Reports under the German Whistleblower Protection Act (HinSchG) can be sent
-          confidentially to hinweis@gastrosafe.de. The identity of the reporting person
+          confidentially to hinweis@haccora.de. The identity of the reporting person
           is protected; reprisals are prohibited.
         </P>
       </>
