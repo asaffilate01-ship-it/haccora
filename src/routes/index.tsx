@@ -57,9 +57,9 @@ function ChefsMarquee() {
   const { t } = useI18n();
   const phrase = t("marquee.phrase") ?? "Built for German kitchens · Sicher. Sauber. Nachweisbar.";
   const line = Array.from({ length: 8 }, (_, i) => (
-    <span key={i} className="inline-flex items-center gap-6">
-      <span className="display-black text-4xl md:text-6xl uppercase tracking-tight">{phrase}</span>
-      <span className="h-3 w-3 rounded-full bg-[color:var(--color-alert-red)] shrink-0" />
+    <span key={i} className="inline-flex items-center gap-4 md:gap-6">
+      <span className="display-black text-2xl md:text-6xl uppercase tracking-tight">{phrase}</span>
+      <span className="h-2 w-2 md:h-3 md:w-3 rounded-full bg-[color:var(--color-alert-red)] shrink-0" />
     </span>
   ));
   return (
@@ -95,10 +95,10 @@ function TopBar() {
   const { t } = useI18n();
   return (
     <div className="bg-black text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-16 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
-        <BrandLogo imgClassName="h-10 md:h-14 w-auto" />
+      <div className="mx-auto max-w-[1400px] px-3 md:px-8 h-14 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-4">
+        <BrandLogo imgClassName="h-8 md:h-14 w-auto" />
 
-        <div className="flex items-center gap-2 md:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
           <div className="hidden md:flex items-center h-10 rounded-full bg-white/8 border border-white/12 px-4 min-w-[220px]">
             <Search size={14} className="text-white/60" />
             <input
@@ -110,7 +110,7 @@ function TopBar() {
           <Link to="/app" className="btn-red-outline hidden sm:inline-flex">
             {t("nav.login") ?? "Login"}
           </Link>
-          <a href="#contact" className="btn-red">
+          <a href="#contact" className="btn-red !px-3 !py-2 !text-xs md:!px-5 md:!py-3 md:!text-sm">
             {t("nav.contact") ?? "Contact Us"}
           </a>
         </div>
@@ -130,20 +130,23 @@ function SubNav() {
   ];
   return (
     <div className="border-b border-black/10 bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 h-14 flex items-center justify-between gap-4 overflow-x-auto">
-        <nav className="flex items-center gap-6 md:gap-10 text-[0.95rem] font-bold text-black whitespace-nowrap">
+      <div className="mx-auto max-w-[1400px] px-3 md:px-8 h-12 md:h-14 flex items-center justify-between gap-4">
+        <nav
+          className="flex-1 flex items-center gap-4 md:gap-10 text-[0.78rem] md:text-[0.95rem] font-bold text-black whitespace-nowrap overflow-x-auto no-scrollbar -mx-1 px-1"
+          style={{ scrollbarWidth: "none" }}
+        >
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-[color:var(--color-alert-red)] transition">
+            <a key={l.href} href={l.href} className="hover:text-[color:var(--color-alert-red)] transition shrink-0">
               {l.label}
             </a>
           ))}
-          <Link to="/blog" className="hover:text-[color:var(--color-alert-red)] transition">
+          <Link to="/blog" className="hover:text-[color:var(--color-alert-red)] transition shrink-0">
             {t("nav.blog") ?? "Blog"}
           </Link>
         </nav>
         <a
           href="tel:+49301234567"
-          className="hidden md:inline-flex items-center gap-2 text-black font-black text-lg"
+          className="hidden md:inline-flex items-center gap-2 text-black font-black text-lg shrink-0"
         >
           <Phone size={16} className="text-[color:var(--color-alert-red)]" /> 030 1234 567
         </a>
@@ -183,36 +186,37 @@ function Hero() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-[1400px] px-4 md:px-8 pt-16 md:pt-24 pb-24 md:pb-40">
-        <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-10 md:gap-16 items-start">
+      <div className="relative mx-auto max-w-[1400px] px-4 md:px-8 pt-10 md:pt-24 pb-16 md:pb-40">
+        <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-8 md:gap-16 items-start">
           <div className="text-white">
             <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-alert-red)]/40 bg-[color:var(--color-alert-red)]/15 px-3 py-1 text-[10px] md:text-[11px] font-black tracking-[0.18em] text-[color:var(--color-alert-red)] uppercase">
               {t("brand.tagline")}
             </div>
-            <h1 className="mt-4 display-black text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem]">
+            <h1 lang="de" className="mt-4 display-black text-[2rem] leading-[1.02] xs:text-4xl sm:text-5xl md:text-7xl lg:text-[5.4rem] [overflow-wrap:anywhere] [hyphens:auto]">
               {t("hero.title")}
             </h1>
-            <p className="mt-7 max-w-xl text-base md:text-lg text-white/90 leading-relaxed">
+            <p className="mt-5 md:mt-7 max-w-xl text-sm md:text-lg text-white/90 leading-relaxed [text-wrap:pretty]">
               {t("hero.subtitle")}
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <div className="inline-flex items-center gap-3 rounded-2xl bg-black/70 backdrop-blur-sm px-4 py-3 text-sm">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
+            <div className="mt-6 md:mt-8 flex flex-wrap items-center gap-3 md:gap-4">
+              <div className="inline-flex items-center gap-3 rounded-2xl bg-black/70 backdrop-blur-sm px-3 py-2.5 md:px-4 md:py-3 text-sm">
+                <span className="inline-flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/10">
                   ▶
                 </span>
                 <span className="leading-tight">
-                  <span className="block font-bold">{t("hero.video.title")}</span>
-                  <span className="block text-[color:var(--color-alert-green)] text-xs font-bold tracking-widest mt-0.5">
+                  <span className="block font-bold text-xs md:text-sm">{t("hero.video.title")}</span>
+                  <span className="block text-[color:var(--color-alert-green)] text-[10px] md:text-xs font-bold tracking-widest mt-0.5">
                     {t("hero.play")}
                   </span>
                 </span>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-3 text-black text-xs font-bold">
+              <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-3 py-2.5 md:px-4 md:py-3 text-black text-[11px] md:text-xs font-bold">
                 <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-black text-white text-[10px]">★</span>
                 REVIEWS<span className="text-[color:var(--color-alert-red)]">.io</span>
-                <span className="mx-2 h-4 w-px bg-black/15" />
-                {t("hero.review.readOur")} <span className="text-[color:var(--color-alert-red)]">{t("hero.review.stars")}</span>
+                <span className="mx-1.5 md:mx-2 h-4 w-px bg-black/15" />
+                <span className="hidden sm:inline">{t("hero.review.readOur")}&nbsp;</span>
+                <span className="text-[color:var(--color-alert-red)]">{t("hero.review.stars")}</span>
               </div>
 
             </div>
@@ -231,12 +235,12 @@ function ContactCard() {
     <form
       id="contact"
       onSubmit={(e) => e.preventDefault()}
-      className="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-black/5"
+      className="rounded-2xl md:rounded-3xl bg-white p-5 md:p-8 shadow-2xl border border-black/5"
     >
-      <h3 className="display-black text-2xl md:text-3xl text-black text-center">
+      <h3 className="display-black text-xl md:text-3xl text-black text-center">
         {t("contact.title") ?? "Get More Information"}
       </h3>
-      <div className="mt-6 grid grid-cols-2 gap-3">
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <input placeholder={t("contact.first") ?? "First Name"} className="fld" />
         <input placeholder={t("contact.last") ?? "Last Name"} className="fld" />
       </div>
@@ -245,7 +249,7 @@ function ContactCard() {
         <input placeholder={t("contact.phone") ?? "Phone Number"} className="fld" />
         <input placeholder={t("contact.business") ?? "Business Name"} className="fld" />
       </div>
-      <button type="submit" className="btn-primary w-full mt-5 uppercase tracking-widest text-sm">
+      <button type="submit" className="btn-primary w-full mt-5 uppercase tracking-widest text-xs md:text-sm">
         {t("contact.cta") ?? "Get In Touch"}
       </button>
       <p className="mt-3 text-[11px] text-black/50 text-center">
@@ -266,7 +270,7 @@ function Support360() {
   return (
     <section className="relative alert-gradient text-white">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 pt-16 pb-24 md:pt-20 md:pb-32">
-        <h2 className="display-black text-4xl md:text-6xl text-center text-black">
+        <h2 className="display-black text-3xl md:text-6xl text-center text-black">
           360° <span className="text-white">{t("s360.title") ?? "food health & safety support"}</span>
         </h2>
         <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-6">
@@ -302,10 +306,10 @@ function ModulePillars() {
 
   return (
     <section id="pillars" className="bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="max-w-3xl">
           <div className="eyebrow">{t("pillars.eyebrow") ?? "The Platform"}</div>
-          <h2 className="mt-4 display-black text-4xl md:text-6xl">
+          <h2 className="mt-4 display-black text-3xl md:text-6xl">
             {t("pillars.title")}
           </h2>
           <p className="mt-5 text-black/60 max-w-2xl">{t("pillars.subtitle")}</p>
@@ -339,13 +343,13 @@ function InspectorBand() {
   const items = ["plan", "temp", "clean", "allergen", "training", "traceability"] as const;
   return (
     <section id="inspector" className="bg-black text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-start">
           <div>
             <div className="text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
               {t("inspector.eyebrow") ?? "Inspector Mode"}
             </div>
-            <h2 className="mt-4 display-black text-4xl md:text-6xl">
+            <h2 className="mt-4 display-black text-3xl md:text-6xl">
               {t("inspector.title")}
             </h2>
             <p className="mt-5 text-white/70 max-w-xl">{t("inspector.body")}</p>
@@ -406,7 +410,7 @@ function Regulation() {
 
   return (
     <section id="regulation" className="bg-[color:var(--color-cream)]">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
         <div className="md:col-span-1">
           <div className="eyebrow">{t("reg.eyebrow") ?? "German regulatory layer"}</div>
           <h2 lang="de" className="mt-4 display-black text-3xl md:text-4xl lg:text-[2.75rem] leading-[1.05] [overflow-wrap:anywhere] [hyphens:auto]">
@@ -449,10 +453,10 @@ function Pricing() {
   ] as const;
   return (
     <section id="pricing" className="bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="max-w-3xl">
           <div className="eyebrow">{t("pricing.eyebrow") ?? "Plans"}</div>
-          <h2 className="mt-4 display-black text-4xl md:text-6xl">{t("pricing.title")}</h2>
+          <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("pricing.title")}</h2>
           <p className="mt-5 text-black/60">{t("pricing.subtitle")}</p>
         </div>
         <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -503,8 +507,8 @@ function CtaFooter() {
   const { t } = useI18n();
   return (
     <section className="alert-gradient text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-20 md:py-28 grid md:grid-cols-[minmax(0,1fr)_auto] gap-8 items-center">
-        <h2 className="display-black text-4xl md:text-6xl">{t("cta.title")}</h2>
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-14 md:py-28 grid md:grid-cols-[minmax(0,1fr)_auto] gap-8 items-center">
+        <h2 className="display-black text-3xl md:text-6xl">{t("cta.title")}</h2>
         <div className="flex flex-wrap gap-3">
           <Link to="/app" className="btn-primary">
             {t("cta.primary")} <ArrowRight size={16} />
@@ -529,12 +533,12 @@ function OutcomesBand() {
   ];
   return (
     <section className="bg-black text-white">
-      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-20 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-14 md:py-28">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
             <TrendingUp size={14} /> {t("outcomes.title").split(".")[0]}.
           </div>
-          <h2 className="mt-4 display-black text-4xl md:text-6xl">{t("outcomes.title")}</h2>
+          <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("outcomes.title")}</h2>
           <p className="mt-4 text-white/70 max-w-2xl">{t("outcomes.subtitle")}</p>
         </div>
         <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-5">
@@ -593,7 +597,7 @@ function FaqSection() {
   const items = [1, 2, 3, 4, 5] as const;
   return (
     <section className="bg-white border-t border-black/10">
-      <div className="mx-auto max-w-[900px] px-4 md:px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-[900px] px-4 md:px-8 py-16 md:py-32">
         <h2 className="display-black text-4xl md:text-5xl text-center">{t("faq.title")}</h2>
         <div className="mt-12 divide-y divide-black/10 border-y border-black/10">
           {items.map((i) => (

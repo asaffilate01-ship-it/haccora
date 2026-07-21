@@ -119,12 +119,18 @@
 @layer base {
   * { border-color: var(--color-border); }
   html, body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); }
+  html, body { overflow-x: clip; }
   body { -webkit-font-smoothing: antialiased; }
   h1,h2,h3,h4 {
     font-family: var(--font-display);
     font-weight: 900;
     letter-spacing: -0.01em;
     line-height: 1.02;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  @media (max-width: 767px) {
+    button, a, [role="button"], input, select, textarea { touch-action: manipulation; }
   }
 }
 
@@ -295,6 +301,11 @@
     border-color: var(--color-alert-red);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-alert-red) 20%, transparent);
   }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 }
 
 /* Smooth language crossfade — uses the View Transitions API when available. */
