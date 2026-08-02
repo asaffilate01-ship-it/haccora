@@ -7,10 +7,22 @@ const run = promisify(execFile);
 const root = process.cwd();
 const findings = [];
 const allowedEnvironmentFiles = new Set([".env.example", "mobile/.env.example"]);
-// The root .env is generated and owned by the hosting platform (publishable
-// values only) and cannot be untracked from this environment; it is still
-// scanned for real secret material below.
-const platformManagedEnvironmentFiles = new Set([".env"]);
+// The hosting platform generates a root .env containing only publishable client
+// configuration and it cannot be untracked from that environment. Such a file is
+// tolerated only while every declaration is a known publishable value; anything
+// else is still reported. The file is scanned for secret material below either way.
+const publishableEnvironmentDeclaration =
+  /^(?:VITE_)?SUPABASE_(?:URL|PROJECT_ID|PUBLISHABLE_KEY|ANON_KEY)\s*=/;
+
+function isGeneratedPublishableEnvironment(relative, content) {
+  if (relative !== ".env") return false;
+  return content
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"))
+    .every((line) => publishableEnvironmentDeclaration.test(line));
+}
+
 const textExtensions = new Set([
   ".env",
   ".js",
