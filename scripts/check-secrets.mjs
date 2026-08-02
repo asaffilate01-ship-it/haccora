@@ -51,6 +51,7 @@ for (const relative of trackedFiles) {
     (name === ".env" || /^\.env\.(?!example$)/.test(name)) &&
     !allowedEnvironmentFiles.has(relative) &&
     !platformManagedEnvironmentFiles.has(relative)
+  ) {
 
     findings.push(`${relative}: environment file must not be committed`);
     continue;
