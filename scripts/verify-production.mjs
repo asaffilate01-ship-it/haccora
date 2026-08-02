@@ -54,9 +54,21 @@ const required = [
   "tests/e2e/public-accessibility.spec.ts",
   "src/routes/health[.]json.ts",
   ".github/workflows/database.yml",
+  ".github/workflows/release-readiness.yml",
+  ".github/workflows/uptime.yml",
+  ".github/CODEOWNERS",
+  ".github/pull_request_template.md",
+  "SECURITY.md",
+  "scripts/check-deployment-health.mjs",
+  "scripts/check-build-budget.mjs",
+  "scripts/clean-build-output.mjs",
   "supabase/tests/database/rls_isolation.test.sql",
   "docs/PRODUCTION_READINESS.md",
   "docs/MIGRATION_RECONCILIATION.md",
+  "docs/PRODUCTION_RUNBOOK.md",
+  "docs/INCIDENT_RESPONSE.md",
+  "docs/RESTORE_DRILL.md",
+  "docs/RELEASE_EVIDENCE.md",
   "docs/V2_FILE_3_COMPLETE.md",
 ];
 
@@ -133,6 +145,41 @@ for (const functionName of [
     failures.push(`CI does not type-check Edge Function: ${functionName}`);
   }
 }
+if (!ci.includes("npm run export:check")) {
+  failures.push("CI does not export native iOS/Android bundles");
+}
+
+const rootPackage = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+if (!rootPackage.scripts?.quality?.includes("npm run format:check")) {
+  failures.push("The local quality gate does not enforce formatting");
+}
+if (!rootPackage.scripts?.build?.includes("check-build-budget.mjs")) {
+  failures.push("The production build does not enforce a JavaScript bundle budget");
+}
+if (!rootPackage.scripts?.build?.startsWith("node scripts/clean-build-output.mjs")) {
+  failures.push("The production build does not remove stale output before bundling");
+}
+
+const releaseWorkflow = await readFile(
+  path.join(root, ".github/workflows/release-readiness.yml"),
+  "utf8",
+);
+for (const marker of [
+  "environment: production",
+  "npm run launch:preflight",
+  "npm run quality",
+  "npm run export:check",
+  "actions/upload-artifact@v4",
+]) {
+  if (!releaseWorkflow.includes(marker)) {
+    failures.push(`Production release workflow is missing: ${marker}`);
+  }
+}
+
+const uptimeWorkflow = await readFile(path.join(root, ".github/workflows/uptime.yml"), "utf8");
+if (!uptimeWorkflow.includes("node scripts/check-deployment-health.mjs")) {
+  failures.push("Production uptime workflow does not run the health verifier");
+}
 
 const operationsMigration = await readFile(
   path.join(root, "supabase/migrations/20260802100000_v2_operations_control.sql"),
@@ -196,15 +243,30 @@ const trackedEnvironmentFiles = trackedOutput
   .filter(Boolean)
   .filter(
     (file) =>
-      /(^|\/)\.env($|\.)/.test(file) &&
-      file !== ".env.example" &&
-      file !== "mobile/.env.example" &&
-      // The root .env is generated and owned by the hosting platform (publishable
-      // values only) and cannot be untracked from this environment.
-      file !== ".env",
+      /(^|\/)\.env($|\.)/.test(file) && file !== ".env.example" && file !== "mobile/.env.example",
   );
 if (trackedEnvironmentFiles.length) {
   failures.push(`Tracked environment file: ${trackedEnvironmentFiles.join(", ")}`);
+}
+
+const mobilePackage = JSON.parse(await readFile(path.join(root, "mobile/package.json"), "utf8"));
+if (mobilePackage.dependencies?.["expo-file-system"] !== "~57.0.1") {
+  failures.push("Native evidence upload must declare expo-file-system as a direct dependency");
+}
+if (!mobilePackage.scripts?.["export:check"]?.includes("--platform all")) {
+  failures.push("Native release verification must export iOS, Android and web bundles");
+}
+
+const forbiddenDuplicateMigrations = [
+  "supabase/migrations/20260802151821_e39eee69-d055-435f-886e-10b3ab3be4aa.sql",
+];
+for (const file of forbiddenDuplicateMigrations) {
+  try {
+    await stat(path.join(root, file));
+    failures.push(`Duplicate migration must be removed: ${file}`);
+  } catch {
+    // Absence is the required state.
+  }
 }
 
 if (failures.length) {

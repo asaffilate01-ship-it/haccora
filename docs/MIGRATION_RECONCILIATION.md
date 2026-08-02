@@ -11,8 +11,9 @@ The repository previously contained generated migrations that repeated canonical
 - `20260802093624_2011b293-2d93-46fb-a6c7-8c53165e7752.sql`
 - `20260802093838_c79dcb7d-1b86-4b56-bed6-e3fd2828416c.sql`
 - `20260802110000_v2_commercial_native_integrations.sql`
+- `20260802151821_e39eee69-d055-435f-886e-10b3ab3be4aa.sql`
 
-All seven are under `supabase/migrations/`. The commercial file was a near-duplicate of the earlier Lovable-generated migration and must not be replayed.
+All eight are under `supabase/migrations/`. The two commercial files repeated schema or function definitions already present in the canonical commercial sequence and must not be replayed.
 
 ## Canonical production sequence
 

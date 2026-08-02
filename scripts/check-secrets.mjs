@@ -6,11 +6,7 @@ import { promisify } from "node:util";
 const run = promisify(execFile);
 const root = process.cwd();
 const findings = [];
-// The root .env is generated and owned by the hosting platform (publishable
-// values only) and cannot be untracked from this environment; it is still
-// scanned for real secret material below.
 const allowedEnvironmentFiles = new Set([".env.example", "mobile/.env.example"]);
-const platformManagedEnvironmentFiles = new Set([".env"]);
 const textExtensions = new Set([
   ".env",
   ".js",
@@ -49,8 +45,7 @@ for (const relative of trackedFiles) {
   const name = path.basename(relative);
   if (
     (name === ".env" || /^\.env\.(?!example$)/.test(name)) &&
-    !allowedEnvironmentFiles.has(relative) &&
-    !platformManagedEnvironmentFiles.has(relative)
+    !allowedEnvironmentFiles.has(relative)
   ) {
     findings.push(`${relative}: environment file must not be committed`);
     continue;

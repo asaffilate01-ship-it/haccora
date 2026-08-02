@@ -18,14 +18,21 @@ const removedDuplicateMigrations = [
   "20260802093624_2011b293-2d93-46fb-a6c7-8c53165e7752.sql",
   "20260802093838_c79dcb7d-1b86-4b56-bed6-e3fd2828416c.sql",
   "20260802110000_v2_commercial_native_integrations.sql",
+  "20260802151821_e39eee69-d055-435f-886e-10b3ab3be4aa.sql",
 ];
 
 const files = (await readdir(migrationDirectory)).filter((file) => file.endsWith(".sql")).sort();
 const versions = new Map();
 const policyOwners = new Map();
+const functionDefinitions = new Map();
+let functionCount = 0;
 const identifier = String.raw`(?:"[^"]+"|[a-zA-Z_][\w$]*)`;
 const policyPattern = new RegExp(
   String.raw`CREATE\s+POLICY\s+(${identifier})\s+ON\s+((?:${identifier}\.)?${identifier})`,
+  "gi",
+);
+const functionPattern = new RegExp(
+  String.raw`CREATE\s+OR\s+REPLACE\s+FUNCTION\s+((?:${identifier}\.)?${identifier})\s*\(`,
   "gi",
 );
 
@@ -35,6 +42,77 @@ function normalizeIdentifier(value) {
 
 function escapeRegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function matchingParenthesis(content, openingIndex) {
+  let depth = 0;
+  let quote = null;
+  for (let index = openingIndex; index < content.length; index += 1) {
+    const character = content[index];
+    if (quote) {
+      if (character === quote && content[index + 1] === quote) {
+        index += 1;
+      } else if (character === quote) {
+        quote = null;
+      }
+      continue;
+    }
+    if (character === "'" || character === '"') {
+      quote = character;
+    } else if (character === "(") {
+      depth += 1;
+    } else if (character === ")") {
+      depth -= 1;
+      if (depth === 0) return index;
+    }
+  }
+  return -1;
+}
+
+function recordFunctionDefinitions(content, file) {
+  for (const declaration of content.matchAll(functionPattern)) {
+    const openingIndex = declaration.index + declaration[0].lastIndexOf("(");
+    const closingIndex = matchingParenthesis(content, openingIndex);
+    if (closingIndex < 0) {
+      failures.push(`Unterminated function signature in ${file}: ${declaration[1]}`);
+      continue;
+    }
+
+    const afterSignature = content.slice(closingIndex + 1);
+    const bodyStart = /\bAS\s+(\$[a-zA-Z_][\w$]*\$|\$\$)/i.exec(afterSignature);
+    if (!bodyStart) {
+      failures.push(`Dollar-quoted function body not found in ${file}: ${declaration[1]}`);
+      continue;
+    }
+    const delimiter = bodyStart[1];
+    const bodyOpeningIndex = closingIndex + 1 + bodyStart.index + bodyStart[0].length;
+    const bodyClosingIndex = content.indexOf(delimiter, bodyOpeningIndex);
+    if (bodyClosingIndex < 0) {
+      failures.push(`Unterminated function body in ${file}: ${declaration[1]}`);
+      continue;
+    }
+
+    const signature = content
+      .slice(openingIndex, closingIndex + 1)
+      .replace(/\s+/g, " ")
+      .toLowerCase();
+    const key = `${normalizeIdentifier(declaration[1])}${signature}`;
+    const normalizedDefinition = content
+      .slice(declaration.index, bodyClosingIndex + delimiter.length)
+      .replace(/\s+/g, " ")
+      .trim();
+    const definitionsForSignature = functionDefinitions.get(key) ?? new Map();
+    const previousFile = definitionsForSignature.get(normalizedDefinition);
+    if (previousFile) {
+      failures.push(
+        `Duplicate function definition ${key}: ${previousFile} and ${file} (changed replacements are allowed; identical replays are not)`,
+      );
+    } else {
+      definitionsForSignature.set(normalizedDefinition, file);
+    }
+    functionDefinitions.set(key, definitionsForSignature);
+    functionCount += 1;
+  }
 }
 
 for (const file of files) {
@@ -50,6 +128,7 @@ for (const file of files) {
 
   const content = await readFile(path.join(migrationDirectory, file), "utf8");
   if (!content.trim()) failures.push(`Empty migration: ${file}`);
+  recordFunctionDefinitions(content, file);
 
   for (const declaration of content.matchAll(policyPattern)) {
     const policy = normalizeIdentifier(declaration[1]);
@@ -94,5 +173,5 @@ if (failures.length) {
 }
 
 console.log(
-  `Migration lineage verification passed (${files.length} migrations, ${policyOwners.size} policy declarations).`,
+  `Migration lineage verification passed (${files.length} migrations, ${policyOwners.size} policy declarations, ${functionCount} function definitions).`,
 );

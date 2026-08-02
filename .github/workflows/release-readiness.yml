@@ -1,0 +1,71 @@
+name: Production release evidence
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-release-readiness
+  cancel-in-progress: false
+
+jobs:
+  release-readiness:
+    environment: production
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+      MALWARE_SCAN_URL: ${{ vars.MALWARE_SCAN_URL }}
+      MALWARE_SCAN_TOKEN: ${{ secrets.MALWARE_SCAN_TOKEN }}
+      VITE_SUPPORT_URL: ${{ vars.VITE_SUPPORT_URL }}
+      VITE_STATUS_URL: ${{ vars.VITE_STATUS_URL }}
+      ALLOWED_ORIGINS: ${{ vars.ALLOWED_ORIGINS }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      NOTIFICATION_FROM_EMAIL: ${{ vars.NOTIFICATION_FROM_EMAIL }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+      STRIPE_PRICE_PRO: ${{ vars.STRIPE_PRICE_PRO }}
+      STRIPE_LIVE_MODE: ${{ vars.STRIPE_LIVE_MODE }}
+      CONTACT_HASH_SALT: ${{ secrets.CONTACT_HASH_SALT }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+      INTEGRATION_ENCRYPTION_KEY: ${{ secrets.INTEGRATION_ENCRYPTION_KEY }}
+      VITE_LEGAL_COMPANY_NAME: ${{ vars.VITE_LEGAL_COMPANY_NAME }}
+      VITE_LEGAL_ADDRESS_LINE_1: ${{ vars.VITE_LEGAL_ADDRESS_LINE_1 }}
+      VITE_LEGAL_POSTAL_CITY: ${{ vars.VITE_LEGAL_POSTAL_CITY }}
+      VITE_LEGAL_EMAIL: ${{ vars.VITE_LEGAL_EMAIL }}
+      VITE_LEGAL_PHONE: ${{ vars.VITE_LEGAL_PHONE }}
+      VITE_LEGAL_REGISTER: ${{ vars.VITE_LEGAL_REGISTER }}
+      VITE_LEGAL_MANAGING_DIRECTOR: ${{ vars.VITE_LEGAL_MANAGING_DIRECTOR }}
+      VITE_LEGAL_CONTENT_APPROVED: ${{ vars.VITE_LEGAL_CONTENT_APPROVED }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm audit --omit=dev --audit-level=high
+      - run: npm run launch:preflight
+      - run: npm run quality
+      - name: Verify native release bundle
+        working-directory: mobile
+        env:
+          EXPO_NO_TELEMETRY: "1"
+        run: |
+          npm ci
+          npm audit --omit=dev --audit-level=high
+          npm run typecheck
+          npm run export:check
+      - name: Upload immutable web build evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: haccora-production-${{ github.sha }}
+          path: .output
+          if-no-files-found: error
+          retention-days: 30
