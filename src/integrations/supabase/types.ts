@@ -21,7 +21,10 @@ export type Database = {
           entity: string | null
           entity_id: string | null
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           meta: Json | null
+          organization_id: string | null
           user_id: string
         }
         Insert: {
@@ -30,7 +33,10 @@ export type Database = {
           entity?: string | null
           entity_id?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           meta?: Json | null
+          organization_id?: string | null
           user_id: string
         }
         Update: {
@@ -39,17 +45,45 @@ export type Database = {
           entity?: string | null
           entity_id?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           meta?: Json | null
+          organization_id?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "activity_logs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_activity_logs_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       alerts: {
         Row: {
           created_at: string
           id: string
+          idempotency_key: string | null
           kind: string
+          location_id: string | null
           message: string | null
+          organization_id: string | null
           read_at: string | null
           severity: string
           title: string
@@ -58,8 +92,11 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind: string
+          location_id?: string | null
           message?: string | null
+          organization_id?: string | null
           read_at?: string | null
           severity?: string
           title: string
@@ -68,14 +105,39 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind?: string
+          location_id?: string | null
           message?: string | null
+          organization_id?: string | null
           read_at?: string | null
           severity?: string
           title?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "alerts_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_alerts_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       assets: {
         Row: {
@@ -83,10 +145,13 @@ export type Database = {
           created_at: string
           created_by: string | null
           id: string
+          idempotency_key: string | null
           last_service_at: string | null
           location: string | null
+          location_id: string | null
           name: string
           next_service_at: string | null
+          organization_id: string | null
           serial: string | null
           status: string
           updated_at: string
@@ -96,10 +161,13 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          idempotency_key?: string | null
           last_service_at?: string | null
           location?: string | null
+          location_id?: string | null
           name: string
           next_service_at?: string | null
+          organization_id?: string | null
           serial?: string | null
           status?: string
           updated_at?: string
@@ -109,22 +177,50 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          idempotency_key?: string | null
           last_service_at?: string | null
           location?: string | null
+          location_id?: string | null
           name?: string
           next_service_at?: string | null
+          organization_id?: string | null
           serial?: string | null
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "assets_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_assets_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       audits: {
         Row: {
           audit_type: string
           created_at: string
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           performed_at: string
           performed_by: string | null
           score: number | null
@@ -136,7 +232,10 @@ export type Database = {
           audit_type?: string
           created_at?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           performed_at?: string
           performed_by?: string | null
           score?: number | null
@@ -148,7 +247,10 @@ export type Database = {
           audit_type?: string
           created_at?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           performed_at?: string
           performed_by?: string | null
           score?: number | null
@@ -156,7 +258,29 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "audits_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audits_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_audits_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       calibration_logs: {
         Row: {
@@ -164,10 +288,13 @@ export type Database = {
           deviation_c: number | null
           device: string
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           measured_c: number | null
           method: string
           next_due: string | null
           notes: string | null
+          organization_id: string | null
           passed: boolean
           performed_at: string
           performed_by: string | null
@@ -181,10 +308,13 @@ export type Database = {
           deviation_c?: number | null
           device: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           measured_c?: number | null
           method?: string
           next_due?: string | null
           notes?: string | null
+          organization_id?: string | null
           passed?: boolean
           performed_at?: string
           performed_by?: string | null
@@ -198,10 +328,13 @@ export type Database = {
           deviation_c?: number | null
           device?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           measured_c?: number | null
           method?: string
           next_due?: string | null
           notes?: string | null
+          organization_id?: string | null
           passed?: boolean
           performed_at?: string
           performed_by?: string | null
@@ -210,15 +343,40 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "calibration_logs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calibration_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_calibration_logs_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       checks: {
         Row: {
           completed_at: string | null
           created_at: string
           id: string
+          idempotency_key: string | null
           kind: string
+          location_id: string | null
           note: string | null
+          organization_id: string | null
           status: string
           title: string
           user_id: string
@@ -227,8 +385,11 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind: string
+          location_id?: string | null
           note?: string | null
+          organization_id?: string | null
           status?: string
           title: string
           user_id: string
@@ -237,13 +398,38 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind?: string
+          location_id?: string | null
           note?: string | null
+          organization_id?: string | null
           status?: string
           title?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "checks_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checks_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_checks_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       chemicals: {
         Row: {
@@ -251,9 +437,12 @@ export type Database = {
           ghs_pictograms: string[] | null
           hazard_class: string | null
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           name: string
           next_review: string | null
           notes: string | null
+          organization_id: string | null
           ppe_required: string | null
           reviewed_on: string | null
           sds_url: string | null
@@ -267,9 +456,12 @@ export type Database = {
           ghs_pictograms?: string[] | null
           hazard_class?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name: string
           next_review?: string | null
           notes?: string | null
+          organization_id?: string | null
           ppe_required?: string | null
           reviewed_on?: string | null
           sds_url?: string | null
@@ -283,9 +475,12 @@ export type Database = {
           ghs_pictograms?: string[] | null
           hazard_class?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name?: string
           next_review?: string | null
           notes?: string | null
+          organization_id?: string | null
           ppe_required?: string | null
           reviewed_on?: string | null
           sds_url?: string | null
@@ -294,7 +489,29 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "chemicals_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chemicals_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_chemicals_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       complaints: {
         Row: {
@@ -305,8 +522,11 @@ export type Database = {
           description: string
           guest_name: string | null
           id: string
+          idempotency_key: string | null
           kind: string
+          location_id: string | null
           occurred_at: string
+          organization_id: string | null
           resolution: string | null
           severity: string
           status: string
@@ -321,8 +541,11 @@ export type Database = {
           description: string
           guest_name?: string | null
           id?: string
+          idempotency_key?: string | null
           kind?: string
+          location_id?: string | null
           occurred_at?: string
+          organization_id?: string | null
           resolution?: string | null
           severity?: string
           status?: string
@@ -337,51 +560,164 @@ export type Database = {
           description?: string
           guest_name?: string | null
           id?: string
+          idempotency_key?: string | null
           kind?: string
+          location_id?: string | null
           occurred_at?: string
+          organization_id?: string | null
           resolution?: string | null
           severity?: string
           status?: string
           updated_at?: string
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "complaints_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "complaints_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_complaints_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
+      }
+      contact_requests: {
+        Row: {
+          business_name: string | null
+          consent_at: string
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          locale: string
+          phone: string | null
+          source_ip_hash: string
+          status: string
+          user_agent: string | null
+        }
+        Insert: {
+          business_name?: string | null
+          consent_at: string
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          locale?: string
+          phone?: string | null
+          source_ip_hash: string
+          status?: string
+          user_agent?: string | null
+        }
+        Update: {
+          business_name?: string | null
+          consent_at?: string
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          locale?: string
+          phone?: string | null
+          source_ip_hash?: string
+          status?: string
+          user_agent?: string | null
+        }
         Relationships: []
       }
       documents: {
         Row: {
+          archived_at: string | null
           category: string
           created_at: string
           expires_at: string | null
+          file_size: number | null
           file_url: string | null
           id: string
+          idempotency_key: string | null
+          location_id: string | null
+          mime_type: string | null
+          organization_id: string | null
+          sha256: string | null
           storage_path: string | null
           title: string
           user_id: string
           version: string | null
         }
         Insert: {
+          archived_at?: string | null
           category: string
           created_at?: string
           expires_at?: string | null
+          file_size?: number | null
           file_url?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
+          mime_type?: string | null
+          organization_id?: string | null
+          sha256?: string | null
           storage_path?: string | null
           title: string
           user_id: string
           version?: string | null
         }
         Update: {
+          archived_at?: string | null
           category?: string
           created_at?: string
           expires_at?: string | null
+          file_size?: number | null
           file_url?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
+          mime_type?: string | null
+          organization_id?: string | null
+          sha256?: string | null
           storage_path?: string | null
           title?: string
           user_id?: string
           version?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "documents_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_documents_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       expiry_items: {
         Row: {
@@ -389,9 +725,12 @@ export type Database = {
           created_at: string
           expires_on: string
           id: string
+          idempotency_key: string | null
           location: string | null
+          location_id: string | null
           name: string
           note: string | null
+          organization_id: string | null
           qty: number | null
           status: string
           unit: string | null
@@ -403,9 +742,12 @@ export type Database = {
           created_at?: string
           expires_on: string
           id?: string
+          idempotency_key?: string | null
           location?: string | null
+          location_id?: string | null
           name: string
           note?: string | null
+          organization_id?: string | null
           qty?: number | null
           status?: string
           unit?: string | null
@@ -417,16 +759,41 @@ export type Database = {
           created_at?: string
           expires_on?: string
           id?: string
+          idempotency_key?: string | null
           location?: string | null
+          location_id?: string | null
           name?: string
           note?: string | null
+          organization_id?: string | null
           qty?: number | null
           status?: string
           unit?: string | null
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "expiry_items_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expiry_items_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_expiry_items_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
       }
       goods_in_logs: {
         Row: {
@@ -435,7 +802,10 @@ export type Database = {
           created_at: string
           delivery_temp_c: number | null
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           packaging_ok: boolean | null
           photo_url: string | null
           product: string
@@ -454,7 +824,10 @@ export type Database = {
           created_at?: string
           delivery_temp_c?: number | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           packaging_ok?: boolean | null
           photo_url?: string | null
           product: string
@@ -473,7 +846,10 @@ export type Database = {
           created_at?: string
           delivery_temp_c?: number | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           packaging_ok?: boolean | null
           photo_url?: string | null
           product?: string
@@ -486,7 +862,29 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_goods_in_logs_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "goods_in_logs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_in_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       haccp_flow_runs: {
         Row: {
@@ -500,9 +898,12 @@ export type Database = {
           geo_lat: number | null
           geo_lng: number | null
           id: string
+          idempotency_key: string | null
           in_range: boolean | null
           location: string | null
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           performed_at: string
           performed_by: string | null
           photo_path: string | null
@@ -524,9 +925,12 @@ export type Database = {
           geo_lat?: number | null
           geo_lng?: number | null
           id?: string
+          idempotency_key?: string | null
           in_range?: boolean | null
           location?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           performed_at?: string
           performed_by?: string | null
           photo_path?: string | null
@@ -548,9 +952,12 @@ export type Database = {
           geo_lat?: number | null
           geo_lng?: number | null
           id?: string
+          idempotency_key?: string | null
           in_range?: boolean | null
           location?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           performed_at?: string
           performed_by?: string | null
           photo_path?: string | null
@@ -561,7 +968,29 @@ export type Database = {
           target_min?: number | null
           title?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_haccp_flow_runs_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "haccp_flow_runs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "haccp_flow_runs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       haccp_hazards: {
         Row: {
@@ -572,8 +1001,11 @@ export type Database = {
           critical_limit: string | null
           hazard: string
           id: string
+          idempotency_key: string | null
           is_ccp: boolean
+          location_id: string | null
           monitoring: string | null
+          organization_id: string | null
           status: string
           step: string
           updated_at: string
@@ -586,8 +1018,11 @@ export type Database = {
           critical_limit?: string | null
           hazard: string
           id?: string
+          idempotency_key?: string | null
           is_ccp?: boolean
+          location_id?: string | null
           monitoring?: string | null
+          organization_id?: string | null
           status?: string
           step: string
           updated_at?: string
@@ -600,13 +1035,38 @@ export type Database = {
           critical_limit?: string | null
           hazard?: string
           id?: string
+          idempotency_key?: string | null
           is_ccp?: boolean
+          location_id?: string | null
           monitoring?: string | null
+          organization_id?: string | null
           status?: string
           step?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_haccp_hazards_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "haccp_hazards_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "haccp_hazards_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       health_register: {
         Row: {
@@ -614,9 +1074,12 @@ export type Database = {
           expires_on: string | null
           fitness_cleared_on: string | null
           id: string
+          idempotency_key: string | null
           issued_on: string | null
           kind: string
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           staff_name: string
           status: string
           symptoms: string | null
@@ -628,9 +1091,12 @@ export type Database = {
           expires_on?: string | null
           fitness_cleared_on?: string | null
           id?: string
+          idempotency_key?: string | null
           issued_on?: string | null
           kind?: string
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           staff_name: string
           status?: string
           symptoms?: string | null
@@ -642,16 +1108,41 @@ export type Database = {
           expires_on?: string | null
           fitness_cleared_on?: string | null
           id?: string
+          idempotency_key?: string | null
           issued_on?: string | null
           kind?: string
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           staff_name?: string
           status?: string
           symptoms?: string | null
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_health_register_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "health_register_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "health_register_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       incidents: {
         Row: {
@@ -659,8 +1150,11 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          idempotency_key: string | null
           kind: string
+          location_id: string | null
           occurred_at: string
+          organization_id: string | null
           root_cause: string | null
           severity: string
           status: string
@@ -672,8 +1166,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          idempotency_key?: string | null
           kind: string
+          location_id?: string | null
           occurred_at?: string
+          organization_id?: string | null
           root_cause?: string | null
           severity?: string
           status?: string
@@ -685,22 +1182,156 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          idempotency_key?: string | null
           kind?: string
+          location_id?: string | null
           occurred_at?: string
+          organization_id?: string | null
           root_cause?: string | null
           severity?: string
           status?: string
           title?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_incidents_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "incidents_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incidents_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inspector_access_grants: {
+        Row: {
+          created_at: string
+          evidence_scopes: string[]
+          granted_by: string
+          id: string
+          inspector_user_id: string
+          location_ids: string[]
+          organization_id: string
+          reason: string | null
+          revoked_at: string | null
+          valid_from: string
+          valid_until: string
+        }
+        Insert: {
+          created_at?: string
+          evidence_scopes?: string[]
+          granted_by: string
+          id?: string
+          inspector_user_id: string
+          location_ids: string[]
+          organization_id: string
+          reason?: string | null
+          revoked_at?: string | null
+          valid_from?: string
+          valid_until: string
+        }
+        Update: {
+          created_at?: string
+          evidence_scopes?: string[]
+          granted_by?: string
+          id?: string
+          inspector_user_id?: string
+          location_ids?: string[]
+          organization_id?: string
+          reason?: string | null
+          revoked_at?: string | null
+          valid_from?: string
+          valid_until?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inspector_access_grants_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inspector_access_invitations: {
+        Row: {
+          accepted_at: string | null
+          access_valid_until: string
+          created_at: string
+          email: string
+          evidence_scopes: string[]
+          expires_at: string
+          id: string
+          invited_by: string
+          location_ids: string[]
+          organization_id: string
+          reason: string | null
+          revoked_at: string | null
+          token_hash: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          access_valid_until: string
+          created_at?: string
+          email: string
+          evidence_scopes: string[]
+          expires_at: string
+          id?: string
+          invited_by: string
+          location_ids?: string[]
+          organization_id: string
+          reason?: string | null
+          revoked_at?: string | null
+          token_hash: string
+        }
+        Update: {
+          accepted_at?: string | null
+          access_valid_until?: string
+          created_at?: string
+          email?: string
+          evidence_scopes?: string[]
+          expires_at?: string
+          id?: string
+          invited_by?: string
+          location_ids?: string[]
+          organization_id?: string
+          reason?: string | null
+          revoked_at?: string | null
+          token_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inspector_access_invitations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       label_prints: {
         Row: {
           allergens: string[]
           created_at: string
           id: string
+          idempotency_key: string | null
           kind: string
+          location_id: string | null
+          organization_id: string | null
           printed_by: string | null
           product_name: string
           use_by: string | null
@@ -709,7 +1340,10 @@ export type Database = {
           allergens?: string[]
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind: string
+          location_id?: string | null
+          organization_id?: string | null
           printed_by?: string | null
           product_name: string
           use_by?: string | null
@@ -718,12 +1352,81 @@ export type Database = {
           allergens?: string[]
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind?: string
+          location_id?: string | null
+          organization_id?: string | null
           printed_by?: string | null
           product_name?: string
           use_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_label_prints_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "label_prints_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "label_prints_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      locations: {
+        Row: {
+          address: Json
+          business_state: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          organization_id: string
+          timezone: string
+          updated_at: string
+        }
+        Insert: {
+          address?: Json
+          business_state?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          organization_id: string
+          timezone?: string
+          updated_at?: string
+        }
+        Update: {
+          address?: Json
+          business_state?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          organization_id?: string
+          timezone?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       oil_tests: {
         Row: {
@@ -731,7 +1434,10 @@ export type Database = {
           created_at: string
           fryer: string
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           status: string
           temperature_c: number | null
           tested_at: string
@@ -744,7 +1450,10 @@ export type Database = {
           created_at?: string
           fryer: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           status?: string
           temperature_c?: number | null
           tested_at?: string
@@ -757,13 +1466,185 @@ export type Database = {
           created_at?: string
           fryer?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           status?: string
           temperature_c?: number | null
           tested_at?: string
           tpm_percent?: number | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_oil_tests_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "oil_tests_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oil_tests_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_invitations: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string
+          organization_id: string
+          revoked_at: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          token_hash: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          invited_by: string
+          organization_id: string
+          revoked_at?: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          token_hash: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string
+          organization_id?: string
+          revoked_at?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          token_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_invitations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_memberships: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          default_location_id: string | null
+          id: string
+          invited_by: string | null
+          organization_id: string
+          role: Database["public"]["Enums"]["app_role"]
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          default_location_id?: string | null
+          id?: string
+          invited_by?: string | null
+          organization_id: string
+          role: Database["public"]["Enums"]["app_role"]
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          default_location_id?: string | null
+          id?: string
+          invited_by?: string | null
+          organization_id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_membership_location_organization"
+            columns: ["default_location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "organization_memberships_default_location_id_fkey"
+            columns: ["default_location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_memberships_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          archived_at: string | null
+          country_code: string
+          created_at: string
+          created_by: string | null
+          enabled_modules: string[]
+          id: string
+          name: string
+          slug: string
+          timezone: string
+          updated_at: string
+        }
+        Insert: {
+          archived_at?: string | null
+          country_code?: string
+          created_at?: string
+          created_by?: string | null
+          enabled_modules?: string[]
+          id?: string
+          name: string
+          slug: string
+          timezone?: string
+          updated_at?: string
+        }
+        Update: {
+          archived_at?: string | null
+          country_code?: string
+          created_at?: string
+          created_by?: string | null
+          enabled_modules?: string[]
+          id?: string
+          name?: string
+          slug?: string
+          timezone?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -773,9 +1654,12 @@ export type Database = {
           contractor: string | null
           created_at: string
           id: string
+          idempotency_key: string | null
           kind: string
           location: string | null
+          location_id: string | null
           observed_at: string
+          organization_id: string | null
           photo_url: string | null
           resolved_at: string | null
           severity: string
@@ -788,9 +1672,12 @@ export type Database = {
           contractor?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind?: string
           location?: string | null
+          location_id?: string | null
           observed_at?: string
+          organization_id?: string | null
           photo_url?: string | null
           resolved_at?: string | null
           severity?: string
@@ -803,9 +1690,12 @@ export type Database = {
           contractor?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           kind?: string
           location?: string | null
+          location_id?: string | null
           observed_at?: string
+          organization_id?: string | null
           photo_url?: string | null
           resolved_at?: string | null
           severity?: string
@@ -813,13 +1703,38 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_pest_sightings_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "pest_sightings_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pest_sightings_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
           avatar_url: string | null
           business_state: string | null
           created_at: string
+          current_location_id: string | null
+          current_organization_id: string | null
+          deactivated_at: string | null
           email_alerts: boolean
           full_name: string | null
           id: string
@@ -839,6 +1754,9 @@ export type Database = {
           avatar_url?: string | null
           business_state?: string | null
           created_at?: string
+          current_location_id?: string | null
+          current_organization_id?: string | null
+          deactivated_at?: string | null
           email_alerts?: boolean
           full_name?: string | null
           id: string
@@ -858,6 +1776,9 @@ export type Database = {
           avatar_url?: string | null
           business_state?: string | null
           created_at?: string
+          current_location_id?: string | null
+          current_organization_id?: string | null
+          deactivated_at?: string | null
           email_alerts?: boolean
           full_name?: string | null
           id?: string
@@ -873,7 +1794,29 @@ export type Database = {
           vertical?: string | null
           weekly_digest?: boolean
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_profile_location_organization"
+            columns: ["current_location_id", "current_organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "profiles_current_location_id_fkey"
+            columns: ["current_location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_current_organization_id_fkey"
+            columns: ["current_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       purchase_orders: {
         Row: {
@@ -881,8 +1824,11 @@ export type Database = {
           created_by: string | null
           expected_date: string | null
           id: string
+          idempotency_key: string | null
           line_count: number
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           po_number: string
           status: string
           supplier: string
@@ -894,8 +1840,11 @@ export type Database = {
           created_by?: string | null
           expected_date?: string | null
           id?: string
+          idempotency_key?: string | null
           line_count?: number
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           po_number: string
           status?: string
           supplier: string
@@ -907,23 +1856,51 @@ export type Database = {
           created_by?: string | null
           expected_date?: string | null
           id?: string
+          idempotency_key?: string | null
           line_count?: number
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           po_number?: string
           status?: string
           supplier?: string
           total_eur?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_purchase_orders_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       recalls: {
         Row: {
           batch: string | null
           created_at: string
           id: string
+          idempotency_key: string | null
           initiated_at: string
           initiated_by: string | null
+          location_id: string | null
+          organization_id: string | null
           product: string
           reason: string
           severity: string
@@ -934,8 +1911,11 @@ export type Database = {
           batch?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           initiated_at?: string
           initiated_by?: string | null
+          location_id?: string | null
+          organization_id?: string | null
           product: string
           reason: string
           severity?: string
@@ -946,15 +1926,40 @@ export type Database = {
           batch?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           initiated_at?: string
           initiated_by?: string | null
+          location_id?: string | null
+          organization_id?: string | null
           product?: string
           reason?: string
           severity?: string
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_recalls_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "recalls_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recalls_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       recipes: {
         Row: {
@@ -965,8 +1970,11 @@ export type Database = {
           created_by: string | null
           flagged: boolean
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           name: string
           notes: string | null
+          organization_id: string | null
           price_eur: number
           updated_at: string
         }
@@ -978,8 +1986,11 @@ export type Database = {
           created_by?: string | null
           flagged?: boolean
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name: string
           notes?: string | null
+          organization_id?: string | null
           price_eur?: number
           updated_at?: string
         }
@@ -991,12 +2002,37 @@ export type Database = {
           created_by?: string | null
           flagged?: boolean
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name?: string
           notes?: string | null
+          organization_id?: string | null
           price_eur?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_recipes_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "recipes_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recipes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       shifts: {
         Row: {
@@ -1004,7 +2040,10 @@ export type Database = {
           created_by: string | null
           end_time: string
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           role_label: string | null
           shift_date: string
           staff_id: string | null
@@ -1017,7 +2056,10 @@ export type Database = {
           created_by?: string | null
           end_time: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           role_label?: string | null
           shift_date: string
           staff_id?: string | null
@@ -1030,7 +2072,10 @@ export type Database = {
           created_by?: string | null
           end_time?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           role_label?: string | null
           shift_date?: string
           staff_id?: string | null
@@ -1038,7 +2083,29 @@ export type Database = {
           start_time?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_shifts_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "shifts_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shifts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       stock_items: {
         Row: {
@@ -1046,7 +2113,10 @@ export type Database = {
           created_at: string
           created_by: string | null
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           name: string
+          organization_id: string | null
           par: number
           qty: number
           supplier: string | null
@@ -1058,7 +2128,10 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name: string
+          organization_id?: string | null
           par?: number
           qty?: number
           supplier?: string | null
@@ -1070,14 +2143,39 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name?: string
+          organization_id?: string | null
           par?: number
           qty?: number
           supplier?: string | null
           unit?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_stock_items_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "stock_items_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_items_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       suppliers: {
         Row: {
@@ -1088,8 +2186,11 @@ export type Database = {
           created_by: string
           email: string | null
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           name: string
           note: string | null
+          organization_id: string | null
           phone: string | null
           status: string
           updated_at: string
@@ -1102,8 +2203,11 @@ export type Database = {
           created_by: string
           email?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name: string
           note?: string | null
+          organization_id?: string | null
           phone?: string | null
           status?: string
           updated_at?: string
@@ -1116,21 +2220,49 @@ export type Database = {
           created_by?: string
           email?: string | null
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           name?: string
           note?: string | null
+          organization_id?: string | null
           phone?: string | null
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_suppliers_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "suppliers_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "suppliers_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       temperature_logs: {
         Row: {
           created_at: string
           id: string
+          idempotency_key: string | null
           location: string
+          location_id: string | null
           logged_at: string
           note: string | null
+          organization_id: string | null
           reading: number
           status: string
           target_max: number | null
@@ -1140,9 +2272,12 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           location: string
+          location_id?: string | null
           logged_at?: string
           note?: string | null
+          organization_id?: string | null
           reading: number
           status?: string
           target_max?: number | null
@@ -1152,16 +2287,41 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           location?: string
+          location_id?: string | null
           logged_at?: string
           note?: string | null
+          organization_id?: string | null
           reading?: number
           status?: string
           target_max?: number | null
           target_min?: number | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_temperature_logs_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "temperature_logs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "temperature_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       time_clock: {
         Row: {
@@ -1169,7 +2329,10 @@ export type Database = {
           clock_out: string | null
           created_at: string
           id: string
+          idempotency_key: string | null
+          location_id: string | null
           notes: string | null
+          organization_id: string | null
           role_label: string | null
           updated_at: string
           user_id: string
@@ -1179,7 +2342,10 @@ export type Database = {
           clock_out?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           role_label?: string | null
           updated_at?: string
           user_id: string
@@ -1189,12 +2355,37 @@ export type Database = {
           clock_out?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
           notes?: string | null
+          organization_id?: string | null
           role_label?: string | null
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_time_clock_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "time_clock_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_clock_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       training_courses: {
         Row: {
@@ -1202,6 +2393,7 @@ export type Database = {
           id: string
           minutes: number
           modules: number
+          organization_id: string | null
           required: boolean
           title_de: string
           title_en: string
@@ -1211,6 +2403,7 @@ export type Database = {
           id?: string
           minutes?: number
           modules?: number
+          organization_id?: string | null
           required?: boolean
           title_de: string
           title_en: string
@@ -1220,11 +2413,20 @@ export type Database = {
           id?: string
           minutes?: number
           modules?: number
+          organization_id?: string | null
           required?: boolean
           title_de?: string
           title_en?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "training_courses_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       training_records: {
         Row: {
@@ -1233,10 +2435,16 @@ export type Database = {
           course_id: string | null
           created_at: string
           id: string
+          idempotency_key: string | null
+          location_id: string | null
+          organization_id: string | null
           progress: number
           score: number | null
           updated_at: string
           user_id: string
+          verification_note: string | null
+          verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
           certificate_valid_to?: string | null
@@ -1244,10 +2452,16 @@ export type Database = {
           course_id?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
+          organization_id?: string | null
           progress?: number
           score?: number | null
           updated_at?: string
           user_id: string
+          verification_note?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
           certificate_valid_to?: string | null
@@ -1255,17 +2469,44 @@ export type Database = {
           course_id?: string | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
+          organization_id?: string | null
           progress?: number
           score?: number | null
           updated_at?: string
           user_id?: string
+          verification_note?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_training_records_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
           {
             foreignKeyName: "training_records_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "training_courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_records_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_records_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -1296,9 +2537,12 @@ export type Database = {
           cost_eur: number | null
           created_at: string
           id: string
+          idempotency_key: string | null
           item: string
+          location_id: string | null
           logged_at: string
           note: string | null
+          organization_id: string | null
           qty: number
           reason: string
           unit: string
@@ -1308,9 +2552,12 @@ export type Database = {
           cost_eur?: number | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           item: string
+          location_id?: string | null
           logged_at?: string
           note?: string | null
+          organization_id?: string | null
           qty: number
           reason: string
           unit?: string
@@ -1320,24 +2567,93 @@ export type Database = {
           cost_eur?: number | null
           created_at?: string
           id?: string
+          idempotency_key?: string | null
           item?: string
+          location_id?: string | null
           logged_at?: string
           note?: string | null
+          organization_id?: string | null
           qty?: number
           reason?: string
           unit?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_waste_entries_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "waste_entries_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waste_entries_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      accept_inspector_invitation: { Args: { p_token: string }; Returns: Json }
+      accept_organization_invitation: {
+        Args: { p_token: string }
+        Returns: Json
+      }
+      bootstrap_my_organization: {
+        Args: {
+          p_business_state?: string
+          p_location_name?: string
+          p_modules?: string[]
+          p_name: string
+        }
+        Returns: Json
+      }
+      can_contribute_to_organization: {
+        Args: { p_organization_id: string }
+        Returns: boolean
+      }
+      can_manage_organization: {
+        Args: { p_organization_id: string }
+        Returns: boolean
+      }
+      can_operate_record: {
+        Args: {
+          p_actor_id: string
+          p_location_id?: string
+          p_organization_id: string
+        }
+        Returns: boolean
+      }
+      can_read_organization: {
+        Args: { p_organization_id: string }
+        Returns: boolean
+      }
+      current_location_id: { Args: never; Returns: string }
+      current_organization_id: { Args: never; Returns: string }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["app_role"]
+      }
+      get_my_context: { Args: never; Returns: Json }
+      has_org_role: {
+        Args: {
+          p_organization_id: string
+          p_roles: Database["public"]["Enums"]["app_role"][]
+        }
+        Returns: boolean
       }
       has_role: {
         Args: {
@@ -1346,8 +2662,21 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_valid_inspector_grant: {
+        Args: {
+          p_location_id?: string
+          p_organization_id: string
+          p_scope?: string
+        }
+        Returns: boolean
+      }
       is_inspector: { Args: { _user_id: string }; Returns: boolean }
       is_manager_or_owner: { Args: { _user_id: string }; Returns: boolean }
+      is_valid_profile_context: {
+        Args: { p_location_id: string; p_organization_id: string }
+        Returns: boolean
+      }
+      try_uuid: { Args: { p_value: string }; Returns: string }
     }
     Enums: {
       app_role: "owner" | "manager" | "chef" | "staff" | "inspector"
