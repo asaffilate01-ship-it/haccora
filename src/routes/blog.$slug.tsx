@@ -13,7 +13,9 @@ export const Route = createFileRoute("/blog/$slug")({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Not found — Haccora Blog" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: "Not found — Haccora Blog" }, { name: "robots", content: "noindex" }],
+      };
     }
     const title = `${loaderData.title.en} — Haccora`;
     const desc = loaderData.excerpt.en;
@@ -43,7 +45,7 @@ export const Route = createFileRoute("/blog/$slug")({
             "@type": "Article",
             headline: loaderData.title.en,
             description: desc,
-            author: { "@type": "Person", name: loaderData.author },
+            author: { "@type": "Organization", name: loaderData.author },
             datePublished: loaderData.date,
             image: loaderData.image,
           }),
@@ -79,28 +81,51 @@ function BlogPostPage() {
       {/* hero */}
       <section className="relative overflow-hidden bg-black text-white">
         <div className="absolute inset-0">
-          <img src={post.image} alt={post.imageAlt[lang]} width={1600} height={900} className="w-full h-full object-cover opacity-60" />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.85) 100%)" }} />
+          <img
+            src={post.image}
+            alt={post.imageAlt[lang]}
+            width={1600}
+            height={900}
+            className="w-full h-full object-cover opacity-60"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.85) 100%)",
+            }}
+          />
         </div>
         <div className="relative mx-auto max-w-[900px] px-4 md:px-8 pt-16 md:pt-24 pb-14 md:pb-20">
-          <Link to="/blog" className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm">
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm"
+          >
             <ArrowLeft size={14} /> {t("blog.all") ?? "All articles"}
           </Link>
           <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-[color:var(--color-alert-red)] px-3 py-1 text-[10px] font-black tracking-widest uppercase">
             {post.category[lang]}
           </div>
-          <h1 className="mt-5 display-black text-4xl md:text-6xl leading-[1.05]">{post.title[lang]}</h1>
+          <h1 className="mt-5 display-black text-4xl md:text-6xl leading-[1.05]">
+            {post.title[lang]}
+          </h1>
           <p className="mt-5 max-w-2xl text-white/80 text-lg">{post.excerpt[lang]}</p>
           <div className="mt-6 flex flex-wrap items-center gap-5 text-xs text-white/70">
             <span>{post.author}</span>
             <span>{formatDate(post.date, lang)}</span>
-            <span className="inline-flex items-center gap-1"><Clock size={12} /> {post.readMinutes} {t("blog.min") ?? "min"}</span>
+            <span className="inline-flex items-center gap-1">
+              <Clock size={12} /> {post.readMinutes} {t("blog.min") ?? "min"}
+            </span>
           </div>
         </div>
       </section>
 
       {/* body */}
       <article className="mx-auto max-w-[760px] px-4 md:px-8 py-14 md:py-20">
+        <aside className="mb-10 rounded-2xl border border-amber-300 bg-amber-50 p-5 text-sm leading-relaxed text-amber-950">
+          {lang === "de"
+            ? "Redaktionelle Produktinformation, keine Rechts- oder Lebensmittelsicherheitsberatung. Prüfen Sie Anforderungen bei offiziellen Stellen und qualifizierten Fachleuten."
+            : "Editorial product information, not legal or food-safety advice. Verify requirements with official authorities and qualified professionals."}
+        </aside>
         <div className="prose-gs">
           {post.body[lang].map((block, i) => (
             <Block key={i} block={block} />
@@ -109,7 +134,10 @@ function BlogPostPage() {
 
         <div className="mt-12 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <span key={tag} className="rounded-full bg-black/5 text-black/70 text-xs font-bold px-3 py-1">
+            <span
+              key={tag}
+              className="rounded-full bg-black/5 text-black/70 text-xs font-bold px-3 py-1"
+            >
               #{tag}
             </span>
           ))}
@@ -124,16 +152,22 @@ function BlogPostPage() {
             <div className="text-xs font-black uppercase tracking-widest text-[color:var(--color-alert-green)]">
               {t("blog.cta.eyebrow") ?? "Try it live"}
             </div>
-            <h3 className="mt-2 display-black text-2xl md:text-3xl">{t("blog.cta.title") ?? "See Haccora in your kitchen"}</h3>
+            <h3 className="mt-2 display-black text-2xl md:text-3xl">
+              {t("blog.cta.title") ?? "See Haccora in your kitchen"}
+            </h3>
           </div>
-          <Link to="/app" className="btn-primary">{t("blog.cta.button") ?? "Open live demo"}</Link>
+          <Link to="/app" className="btn-primary">
+            {t("blog.cta.button") ?? "Get started"}
+          </Link>
         </div>
       </article>
 
       {/* related */}
       <section className="bg-black/[0.02] border-t border-black/10">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16">
-          <h2 className="display-black text-3xl md:text-4xl">{t("blog.related") ?? "Related articles"}</h2>
+          <h2 className="display-black text-3xl md:text-4xl">
+            {t("blog.related") ?? "Related articles"}
+          </h2>
           <div className="mt-8 grid md:grid-cols-3 gap-6">
             {related.map((p) => (
               <Link
@@ -143,10 +177,19 @@ function BlogPostPage() {
                 className="group card-polished overflow-hidden flex flex-col"
               >
                 <div className="aspect-[16/10] overflow-hidden bg-black">
-                  <img src={p.image} alt={p.imageAlt[lang]} width={1600} height={900} loading="lazy" className="h-full w-full object-cover group-hover:scale-[1.05] transition duration-500" />
+                  <img
+                    src={p.image}
+                    alt={p.imageAlt[lang]}
+                    width={1600}
+                    height={900}
+                    loading="lazy"
+                    className="h-full w-full object-cover group-hover:scale-[1.05] transition duration-500"
+                  />
                 </div>
                 <div className="p-5">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-alert-red)]">{p.category[lang]}</div>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-alert-red)]">
+                    {p.category[lang]}
+                  </div>
                   <h3 className="mt-2 display-black text-lg leading-tight group-hover:text-[color:var(--color-alert-red)] transition">
                     {p.title[lang]}
                   </h3>
@@ -188,7 +231,11 @@ function Block({ block }: { block: BlogBlock }) {
       return (
         <blockquote className="my-8 border-l-4 border-[color:var(--color-alert-red)] pl-5 italic text-xl text-black">
           "{block.text}"
-          {block.cite && <div className="not-italic mt-2 text-xs font-black uppercase tracking-widest text-black/50">— {block.cite}</div>}
+          {block.cite && (
+            <div className="not-italic mt-2 text-xs font-black uppercase tracking-widest text-black/50">
+              — {block.cite}
+            </div>
+          )}
         </blockquote>
       );
   }
@@ -199,7 +246,9 @@ function NotFound() {
     <div className="min-h-screen grid place-items-center bg-white text-black">
       <div className="text-center">
         <div className="display-black text-4xl">Not found</div>
-        <Link to="/blog" className="btn-primary mt-6 inline-flex">Back to blog</Link>
+        <Link to="/blog" className="btn-primary mt-6 inline-flex">
+          Back to blog
+        </Link>
       </div>
     </div>
   );

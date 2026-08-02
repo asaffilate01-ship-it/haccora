@@ -14,7 +14,8 @@ const de: Dict = {
   "nav.blog": "Blog",
   "blog.eyebrow": "Einblicke",
   "blog.title": "Haccora Blog",
-  "blog.subtitle": "Praxisleitfäden zu HACCP, Kontrollen und Betrieb – geschrieben für deutsche Küchen.",
+  "blog.subtitle":
+    "Praxisleitfäden zu HACCP, Kontrollen und Betrieb – geschrieben für deutsche Küchen.",
   "blog.featured": "Empfohlen",
   "blog.readMore": "Artikel lesen",
   "blog.min": "Min.",
@@ -25,22 +26,23 @@ const de: Dict = {
   "blog.backHome": "Zurück zur Startseite",
   "blog.cta.eyebrow": "Live testen",
   "blog.cta.title": "Haccora in Ihrer Küche erleben",
-  "blog.cta.button": "Live-Demo öffnen",
+  "blog.cta.button": "Jetzt starten",
   "nav.login": "Anmelden",
-  "nav.demo": "Live-Demo",
+  "nav.demo": "Jetzt starten",
   "nav.tryFree": "Kostenlos starten",
   "brand.tag": "Digitale Lebensmittelsicherheit für Deutschland",
   "brand.slogan": "Sicher. Sauber. Nachweisbar.",
-  "brand.tagline": "Immer prüfbereit.",
-  "marquee.phrase": "Gebaut für deutsche Küchen · Sicher. Sauber. Nachweisbar. · Immer prüfbereit.",
- "nav.more": "Mehr",
+  "brand.tagline": "Strukturiert für die Prüfungsvorbereitung.",
+  "marquee.phrase":
+    "Gebaut für deutsche Küchen · Sicher. Sauber. Nachweisbar. · Strukturiert vorbereitet.",
+  "nav.more": "Mehr",
 
   // Hero
-  "hero.eyebrow": "HACCP · IfSG · LMHV · Prüfungsbereit",
-  
-  "hero.cta.primary": "Live-Demo öffnen",
+  "hero.eyebrow": "HACCP · IfSG · LMHV · Digitale Nachweise",
+
+  "hero.cta.primary": "Jetzt starten",
   "hero.cta.secondary": "Preise ansehen",
-  "hero.trust": "Vertraut von Restaurants, Filialisten und Franchise-Betrieben in Berlin, NRW, Bayern und Hamburg.",
+  "hero.trust": "Für Restaurants, Filialisten und Franchise-Betriebe in Deutschland entwickelt.",
 
   // Stats
   "stats.locations": "Standorte betreut",
@@ -49,23 +51,30 @@ const de: Dict = {
   "stats.inspection": "Ø Prüfungsvorbereitung",
 
   // Pillars
-  "pillars.title": "Fünf Produkte. Ein System.",
-  "pillars.subtitle": "Haccora vereint Compliance, Betrieb, Einkauf, Schulung und Regulatorik – ohne getrennte Tools.",
+  "pillars.title": "Eine Plattform. Verbundene Abläufe.",
+  "pillars.subtitle":
+    "Haccora vereint Compliance, Betrieb, Einkauf, Schulung und Regulatorik – ohne getrennte Tools.",
   "pillar.haccp.title": "HACCP & Lebensmittelsicherheit",
-  "pillar.haccp.body": "KI-gestützter Plan-Builder mit Gefahrenanalyse, CCPs, kritischen Grenzwerten und obligatorischer menschlicher Freigabe.",
+  "pillar.haccp.body":
+    "Geführter Plan-Builder mit Gefahrenanalyse, CCPs, kritischen Grenzwerten und versionierter menschlicher Freigabe.",
   "pillar.ops.title": "Betrieb & Tagesabläufe",
-  "pillar.ops.body": "Tägliche Kontrollen, Schichtübergabe, Aufgaben, Vorfälle, Wartung und SOP-Bibliothek – auf jedem Handy.",
+  "pillar.ops.body":
+    "Tägliche Kontrollen, Routinen, Aufgaben, Vorfälle und Wartungsnachweise – auf Web und Mobilgerät.",
   "pillar.recipes.title": "Einkauf, Rezepte & Kalkulation",
-  "pillar.recipes.body": "Zutaten, 14-Allergen-Automatik, Kalkulation und Lieferanteninfos – änderungssicher verknüpft.",
+  "pillar.recipes.body":
+    "Rezepte, deklarierte Allergene, Kalkulation und Lieferanteninformationen – strukturiert verknüpft.",
   "pillar.team.title": "Personal & Schulung",
-  "pillar.team.body": "IfSG §§42–43, LMHV, Allergene, Hygiene – mit Mikrolernen in 7 Sprachen und Zertifikatsnachweis.",
+  "pillar.team.body":
+    "IfSG §§42–43, LMHV, Allergene und Hygiene – mit geprüften Schulungsnachweisen auf Deutsch und Englisch; weitere Personalsprachen sind geplant.",
   "pillar.regulation.title": "Deutsche Regulatorik",
-  "pillar.regulation.body": "Behördenfinder für Berlin und NRW, EU 852/2004, 178/2002, 1169/2011 – Änderungen automatisch signalisiert.",
+  "pillar.regulation.body":
+    "Referenzübersicht für Berlin, NRW und zentrale EU-Regeln – offizielle Quellen bleiben maßgeblich.",
 
   // Inspector Mode
   "inspector.eyebrow": "Haccora Inspector Mode",
   "inspector.title": "Ein Klick. Alles, was die Behörde anfragt.",
-  "inspector.body": "HACCP-Plan, Temperaturhistorie, Reinigungsnachweise, Allergenmatrix, Schulungsbelege, Rückverfolgbarkeit und Auditverlauf – als schreibgeschützte deutschsprachige Ansicht oder als Nachweispaket.",
+  "inspector.body":
+    "HACCP-Plan, Temperaturhistorie, Reinigungsnachweise, Allergenmatrix, Schulungsbelege, Rückverfolgbarkeit und Auditverlauf – als schreibgeschützte deutschsprachige Ansicht oder als Nachweispaket.",
   "inspector.item.plan": "Aktueller HACCP-Plan",
   "inspector.item.temp": "Temperaturverlauf und Abweichungen",
   "inspector.item.clean": "Reinigungs- und Schädlingsnachweise",
@@ -77,33 +86,36 @@ const de: Dict = {
   // Pricing
   "pricing.eyebrow": "Preise",
   "pricing.title": "Transparent. Ohne versteckte Module.",
-  "pricing.subtitle": "Alle Kernfunktionen sind enthalten. Preis richtet sich nach Größe und Serviceumfang.",
+  "pricing.subtitle":
+    "Unverbindliche Monatspreise. Leistungsumfang, Steuern, SLA und Integrationen werden im Angebot bestätigt.",
   "pricing.perMonth": "/Monat",
   "pricing.perLocation": "je Standort",
-  "pricing.cta": "Paket wählen",
-  "pricing.featured": "Empfohlen",
+  "pricing.cta": "Angebot anfragen",
+  "pricing.featured": "Referenzpaket",
   "pricing.plan.solo": "Solo",
   "pricing.plan.solo.desc": "Ein Standort, bis 5 Mitarbeitende",
   "pricing.plan.complete": "Complete",
   "pricing.plan.complete.desc": "Ein Standort, alle Module, unbegrenzt Personal",
   "pricing.plan.completePlus": "Complete Plus",
-  "pricing.plan.completePlus.desc": "Inkl. Fachprüfung und Priorität-Support",
+  "pricing.plan.completePlus.desc": "Erweiterte Einführung und Priorität-Support nach Angebot",
   "pricing.plan.group": "Small Group",
   "pricing.plan.group.desc": "Bis zu 3 Standorte",
   "pricing.plan.growing": "Growing Group",
   "pricing.plan.growing.desc": "Bis zu 10 Standorte",
   "pricing.plan.enterprise": "Enterprise",
   "pricing.plan.enterprise.desc": "Ab 10+ Standorte, SLA und Integrationen",
-  "pricing.promise": "Wenn ein Prüfer einen fehlenden Nachweis identifiziert, der in Ihrem aktiven Haccora-Plan hätte enthalten sein müssen, unterstützen wir die Korrektur ohne zusätzliche Softwaregebühr.",
+  "pricing.promise":
+    "Leistungsumfang, Support und Preise werden im verbindlichen Angebot transparent festgehalten.",
 
   // Guarantee
-  "guarantee.title": "Ein Versprechen, das wir halten können.",
-  "guarantee.body": "Wir versprechen keine „garantierte Rechtskonformität\". Wir versprechen den Service, der sie ermöglicht.",
+  "guarantee.title": "Klare Produktgrenzen.",
+  "guarantee.body":
+    "Haccora unterstützt dokumentierte Abläufe; fachliche und rechtliche Verantwortung sowie Freigaben bleiben bei Ihrem Betrieb.",
 
   // CTA footer
-  "cta.title": "Starten Sie in unter einem Tag.",
-  "cta.body": "Kostenlose Ersteinrichtung. Optional konfigurieren wir Rezepte, HACCP und Schulungen für Sie.",
-  "cta.primary": "Demo öffnen",
+  "cta.title": "Kontrolliert von Staging in Produktion.",
+  "cta.body": "Migration, Isolationstest und fachliche Freigabe bilden gemeinsam das Go-live-Gate.",
+  "cta.primary": "Jetzt starten",
   "cta.secondary": "Vertrieb kontaktieren",
   "footer.rights": "© 2026 Haccora. Alle Rechte vorbehalten.",
   "footer.imprint": "Impressum",
@@ -124,8 +136,9 @@ const de: Dict = {
   "legal.back": "Zurück zur Startseite",
 
   // Cookie banner
-  "cookie.title": "Cookies auf haccora.de",
-  "cookie.body": "Wir verwenden nur technisch notwendige Cookies. Für Präferenz- und Statistik-Cookies benötigen wir Ihre Einwilligung nach § 25 TDDDG. Sie können Ihre Auswahl jederzeit widerrufen.",
+  "cookie.title": "Cookies bei Haccora",
+  "cookie.body":
+    "Wir verwenden derzeit nur technisch notwendige lokale Speicher- und Authentifizierungsmechanismen.",
   "cookie.accept": "Alle akzeptieren",
   "cookie.reject": "Nur notwendige",
   "cookie.customize": "Anpassen",
@@ -138,36 +151,36 @@ const de: Dict = {
   "cookie.cat.stats.desc": "Anonymisierte Nutzungsanalyse.",
 
   // Landing text extras
-  "hero.review.readOur": "Lesen Sie unsere",
-  "hero.review.stars": "5-Sterne-Bewertungen",
+  "hero.review.readOur": "Mandantengetrennt",
+  "hero.review.stars": "privat als Standard",
   "hero.play": "Jetzt ansehen",
   "inspector.demo.header": "Nur-Lese · Behördenansicht",
-  "inspector.demo.title": "Nachweispaket — Juli 2026",
-  "inspector.demo.sub": "Kreuzberg Kitchen · Bezirksamt Friedrichshain-Kreuzberg",
-  "inspector.demo.plan.t": "HACCP-Plan v3",
-  "inspector.demo.plan.b": "Freigegeben 12.06.2026 · A. Yılmaz",
+  "inspector.demo.title": "Beispiel-Nachweispaket",
+  "inspector.demo.sub": "Illustrative Vorschau · keine Kundendaten",
+  "inspector.demo.plan.t": "HACCP-Plan",
+  "inspector.demo.plan.b": "Freigabestatus und Versionsverlauf",
   "inspector.demo.temp.t": "Temperaturhistorie",
-  "inspector.demo.temp.b": "218 Messungen · 1 Abweichung behoben",
+  "inspector.demo.temp.b": "Messungen · Grenzwerte · Korrekturen",
   "inspector.demo.clean.t": "Reinigungsnachweise",
-  "inspector.demo.clean.b": "94 Einträge · Fotobelege",
+  "inspector.demo.clean.b": "Einträge · optionale Fotobelege",
   "inspector.demo.allerg.t": "Allergenmatrix",
-  "inspector.demo.allerg.b": "42 Rezepte · 14 Allergene",
+  "inspector.demo.allerg.b": "Rezepte · 14 EU-Hauptallergene",
   "inspector.demo.ifsg.t": "IfSG §§42–43",
-  "inspector.demo.ifsg.b": "12/12 Mitarbeitende · gültig",
+  "inspector.demo.ifsg.b": "Nur geprüfte Nachweise",
   "inspector.demo.trace.t": "Rückverfolgbarkeit",
   "inspector.demo.trace.b": "Lieferant → Charge → Portion",
   "reg.card.berlin.t": "Berlin Bezirksämter",
-  "reg.card.berlin.b": "12 Bezirke · Kontakte, Formulare, Zuständigkeit.",
+  "reg.card.berlin.b": "Hinweise zu Bezirksbehörden · Angaben bei der offiziellen Stelle prüfen.",
   "reg.card.nrw.t": "NRW Kreise/Städte",
-  "reg.card.nrw.b": "396 Kommunen · Registrierung und Änderungsmeldung.",
+  "reg.card.nrw.b": "Hinweise zu Kreisen und Städten · Angaben bei der offiziellen Stelle prüfen.",
   "reg.card.eu852.t": "EU 852/2004",
   "reg.card.eu852.b": "HACCP-Rahmen, übertragen in Ihre Prozesse.",
   "reg.card.eu1169.t": "EU 1169/2011",
-  "reg.card.eu1169.b": "14 Allergene automatisch aus Rezeptdaten.",
+  "reg.card.eu1169.b": "14 Hauptallergene strukturiert je Rezept dokumentieren.",
   "reg.card.ifsg.t": "IfSG §§42–43",
   "reg.card.ifsg.b": "Fristen, Belehrungen, Wiederholungen.",
   "reg.card.lmhv.t": "LMHV",
-  "reg.card.lmhv.b": "Schulungsmatrix je Rolle und Standort.",
+  "reg.card.lmhv.b": "Schulungsreferenz zur betrieblichen Prüfung.",
   "dash.allTasks": "Alle anzeigen",
 
   // Sample task/action content (bilingual)
@@ -190,7 +203,6 @@ const de: Dict = {
   "time.today": "Heute",
   "time.todayAt": "Heute 12:00",
   "time.trend": "+2 vs. letzte Woche",
-
 
   // App shell
   "app.tag": "Kreuzberg Kitchen · Berlin",
@@ -234,7 +246,8 @@ const de: Dict = {
   "dash.today": "Heute fällig",
   "dash.actions": "Korrekturmaßnahmen",
   "dash.readiness": "Prüfungsbereitschaft",
-  "dash.readiness.body": "Alle Nachweise sind aktuell. Erstellen Sie mit einem Klick die vollständige Prüfungsmappe.",
+  "dash.readiness.body":
+    "Alle Nachweise sind aktuell. Erstellen Sie mit einem Klick die vollständige Prüfungsmappe.",
   "dash.readiness.cta": "Inspector Mode öffnen",
   "dash.complete": "Erledigen",
   "dash.completed": "Erledigt",
@@ -247,8 +260,8 @@ const de: Dict = {
 
   // HACCP
   "haccp.title": "HACCP-Plan",
-  "haccp.sub": "KI-gestützter Entwurf · Menschliche Freigabe erforderlich",
-  "haccp.status.draft": "KI-Entwurf",
+  "haccp.sub": "Geführter Entwurf · Menschliche Freigabe erforderlich",
+  "haccp.status.draft": "Entwurf",
   "haccp.status.review": "In Prüfung",
   "haccp.status.approved": "Freigegeben",
   "haccp.step": "Prozess-Schritt",
@@ -260,7 +273,7 @@ const de: Dict = {
 
   // Recipes
   "recipes.title": "Rezepte & Allergene",
-  "recipes.sub": "14 Allergene automatisch berechnet · Zutatenänderungen werden markiert",
+  "recipes.sub": "Deklarierte Allergene und Kalkulation je Rezept pflegen",
   "recipes.allergen": "Allergene",
   "recipes.margin": "Marge",
   "recipes.cost": "Kosten",
@@ -292,7 +305,8 @@ const de: Dict = {
   "nav.search": "Suchen",
   "nav.contact": "Kontakt",
   "hero.title": "Ein System für die gesamte Lebensmittelsicherheit.",
-  "hero.subtitle": "Haccora ersetzt HACCP-Ordner, Temperaturlisten, Reinigungspläne, Allergenmappen, Personalzertifikate und Prüfungsvorbereitung – in einer mehrsprachigen Plattform, gebaut für Gastronomie in Deutschland.",
+  "hero.subtitle":
+    "Haccora ersetzt HACCP-Ordner, Temperaturlisten, Reinigungspläne, Allergenmappen, Personalzertifikate und Prüfungsvorbereitung – in einer mehrsprachigen Plattform, gebaut für Gastronomie in Deutschland.",
   "hero.video.title": "So unterstützen wir Ihren Betrieb",
   "contact.title": "Mehr Informationen anfordern",
   "contact.first": "Vorname",
@@ -305,38 +319,42 @@ const de: Dict = {
   "s360.title": "Lebensmittelsicherheit rundum",
   "s360.more": "Mehr erfahren",
   "s360.docs.t": "Digitale Nachweise",
-  "s360.docs.b": "HACCP, Checklisten und Belege – lückenlos an einem Ort.",
-  "s360.time.t": "24/7 Überwachung",
-  "s360.time.b": "Temperatur- und Aufgaben-Alarme rund um die Uhr.",
+  "s360.docs.b": "HACCP, Checklisten und Belege – zentral an einem Ort.",
+  "s360.time.t": "Sensor- und Temperaturhinweise",
+  "s360.time.b": "Konfigurierte Abweichungen erfassen und zuständige Personen benachrichtigen.",
   "s360.alert.t": "Vorfallsmanagement",
-  "s360.alert.b": "Korrekturmaßnahmen mit Fotobeleg und Freigabe.",
+  "s360.alert.b": "Vorfälle und Korrekturen nachvollziehbar erfassen.",
   "pillars.eyebrow": "Die Plattform",
   "pillar.temp.title": "Temperatur & Sensoren",
-  "pillar.temp.body": "Manuelle Eingabe oder Sensor-Anbindung – Grenzwerte, Alarme und Maßnahmen automatisch dokumentiert.",
+  "pillar.temp.body":
+    "Manuelle Eingabe oder Sensor-Anbindung – Messwerte speichern und Grenzwertabweichungen melden.",
   "reg.eyebrow": "Deutsche Regulatorik",
-  "reg.title": "Gebaut für die deutsche Lebensmittel\u00ADaufsicht.",
-  "reg.title.short": "Für die deutsche Aufsicht gebaut.",
-  "reg.body": "Behördenfinder Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug – versioniert und mit Handlungscheckliste bei Rechtsänderungen.",
+  "reg.title": "Für Lebensmittelbetriebe in Deutschland strukturiert.",
+  "reg.title.short": "Regulatorische Referenzen.",
+  "reg.body":
+    "Referenzübersicht für Berlin, NRW sowie ausgewählte EU- und Bundesregeln. Angaben sind anhand offizieller Quellen und fachlicher Beratung zu prüfen.",
 
   // Auth / roles
   "auth.title": "Bei Haccora anmelden",
-  "auth.sub": "Wählen Sie eine Rolle für die Demo. Jede Rolle sieht ihr eigenes Dashboard und ihre Berechtigungen.",
+  "auth.sub": "Melden Sie sich an oder erstellen Sie einen geschützten Arbeitsbereich.",
   "auth.continue": "Als {role} fortfahren",
   "auth.signout": "Abmelden",
   "auth.signedInAs": "Angemeldet als",
-  "auth.switch": "Rolle wechseln",
-  "auth.demo": "Demo-Modus · keine echte Anmeldung erforderlich",
+  "auth.switch": "Konto wechseln",
+  "auth.demo": "Geschützter Zugriff · Anmeldung erforderlich",
   "auth.back": "Zurück zur Startseite",
   "role.owner": "Inhaberin / Geschäftsführung",
   "role.owner.desc": "Voller Zugriff: Compliance, Finanzen, Standorte, Team, Regulatorik.",
   "role.manager": "Betriebsleitung",
-  "role.manager.desc": "Tagesgeschäft, Aufgaben, Personal, Inspektionen – ohne Preis- & Vertragsbereich.",
+  "role.manager.desc":
+    "Tagesgeschäft, Aufgaben, Personal, Inspektionen – ohne Preis- & Vertragsbereich.",
   "role.chef": "Küchenleitung / Head Chef",
   "role.chef.desc": "HACCP, Temperaturen, Rezepte, Allergene und Küchenteam.",
   "role.staff": "Mitarbeiter:in",
   "role.staff.desc": "Nur eigene Aufgaben, Checklisten und Schulungen.",
   "role.inspector": "Lebensmittelaufsicht",
-  "role.inspector.desc": "Schreibgeschützter Inspector Mode – Nachweise, kein Zugriff auf operative Daten.",
+  "role.inspector.desc":
+    "Schreibgeschützter Inspector Mode – Nachweise, kein Zugriff auf operative Daten.",
   "dash.hello.role": "Guten Tag",
   "dash.role.owner": "Ihr Compliance-Überblick über alle Standorte.",
   "dash.role.manager": "Heute im Betrieb – Aufgaben, Personal und offene Punkte.",
@@ -344,11 +362,11 @@ const de: Dict = {
   "dash.role.staff": "Ihre offenen Aufgaben für heute.",
   "dash.role.inspector": "Nachweisansicht – schreibgeschützt für die Aufsicht.",
 
-  // Demo mode banner
-  "demo.tag": "Demo-Modus",
-  "demo.body": "Sie erkunden Haccora als {role}. Keine echten Daten.",
-  "demo.exit": "Demo verlassen",
-  "demo.switch": "Rolle wechseln",
+  // Legacy preview keys retained for translation compatibility
+  "demo.tag": "Vorschau",
+  "demo.body": "Beispieldaten für die Rolle {role}.",
+  "demo.exit": "Vorschau verlassen",
+  "demo.switch": "Ansicht wechseln",
 
   // Role-specific dashboard hero
   "dash.owner.hero.eye": "Geschäftsführung · Portfolio",
@@ -411,11 +429,11 @@ const de: Dict = {
   "settings.n.email.hint": "Kritische Warnungen und Prüfungsberichte per E-Mail.",
   "settings.n.push": "Push-Benachrichtigungen",
   "settings.n.push.hint": "Sofortmeldungen im Browser und auf dem Mobilgerät.",
-  "settings.n.digest": "Tageszusammenfassung",
-  "settings.n.digest.hint": "Morgens um 07:00 – offene Aufgaben und Kennzahlen.",
+  "settings.n.digest": "Wöchentliche Zusammenfassung",
+  "settings.n.digest.hint": "Jeden Montag – offene Aufgaben, Korrekturmaßnahmen und Warnungen.",
   "settings.danger": "Konto",
-  "settings.danger.body": "Demo-Daten zurücksetzen oder Rolle wechseln.",
-  "settings.reset": "Demo-Daten zurücksetzen",
+  "settings.danger.body": "Die aktuelle Sitzung auf diesem Gerät sicher beenden.",
+  "settings.reset": "Sitzung auf diesem Gerät beenden",
 
   // Owner dashboard
   "owner.locations": "Standorte",
@@ -439,7 +457,8 @@ const de: Dict = {
   // Alerts center
   "alerts.eyebrow": "Warnungen & Benachrichtigungen",
   "alerts.title": "Alarmzentrale",
-  "alerts.sub": "Alle kritischen Ereignisse aus HACCP, Temperatur, Reinigung, Schulung und Lieferanten – in einer Ansicht.",
+  "alerts.sub":
+    "Alle kritischen Ereignisse aus HACCP, Temperatur, Reinigung, Schulung und Lieferanten – in einer Ansicht.",
   "alerts.filter.all": "Alle",
   "alerts.filter.open": "Offen",
   "alerts.filter.critical": "Kritisch",
@@ -488,7 +507,8 @@ const de: Dict = {
   // Documents
   "docs.eyebrow": "Dokumentenspeicher",
   "docs.title": "Dokumente & Nachweise",
-  "docs.sub": "Zentraler, versionierter Speicher für HACCP, Zertifikate, Prüfberichte und SDS – nach Kategorie.",
+  "docs.sub":
+    "Zentraler, versionierter Speicher für HACCP, Zertifikate, Prüfberichte und SDS – nach Kategorie.",
   "docs.upload": "Dokument hochladen",
   "docs.categories": "Kategorien",
   "docs.cat.all": "Alle",
@@ -509,7 +529,7 @@ const de: Dict = {
   // Audit logs
   "logs.eyebrow": "Audit-Protokoll",
   "logs.title": "Aktivitätsprotokoll",
-  "logs.sub": "Vollständiger, manipulationssicherer Verlauf aller Aktionen – rechtssicher für Behörden.",
+  "logs.sub": "Unveränderlich geschützter, hashverketteter Verlauf der erfassten Kernereignisse.",
   "logs.export": "CSV exportieren",
   "logs.tile.events": "Ereignisse (30 T)",
   "logs.tile.changes": "Änderungen",
@@ -532,7 +552,8 @@ const de: Dict = {
   "logs.action.approve": "Freigabe",
   "logs.action.reject": "Ablehnung",
   "logs.empty": "Keine passenden Einträge.",
-  "logs.footer": "Alle Einträge werden unveränderlich gespeichert und sind für Behörden über den Inspektor-Modus einsehbar.",
+  "logs.footer":
+    "Alle Einträge werden unveränderlich gespeichert und sind für Behörden über den Inspektor-Modus einsehbar.",
 
   // Common labels
   "common.all": "Alle",
@@ -554,12 +575,13 @@ const de: Dict = {
   "common.downloadPdf": "PDF herunterladen",
   "common.approve": "Freigeben",
   "common.humanApproval": "Menschliche Freigabe erforderlich",
-  "common.humanApproval.body": "Die KI kann den Plan entwerfen. Erst nach Prüfung durch eine qualifizierte Person wird er aktiviert. Letzte Änderungen: 2 neue CCPs, aktualisierte Grenzwerte für Sous-vide.",
+  "common.humanApproval.body":
+    "Der geführte Entwurf wird erst nach Prüfung durch eine qualifizierte Person freigegeben. Versionen und Freigabevermerk bleiben nachvollziehbar.",
 
   // Checks
   "checks.eyebrow": "Tägliche Compliance",
   "checks.title": "Kontrollen",
-  "checks.sub": "Alle Öffnungs-, Betriebs- und Schließungskontrollen mit automatischer Eskalation.",
+  "checks.sub": "Öffnungs-, Betriebs- und Schließungskontrollen nachvollziehbar erfassen.",
   "checks.filter.pending": "Offen",
   "checks.filter.failed": "Abweichung",
   "checks.col.check": "Kontrolle",
@@ -676,7 +698,8 @@ const de: Dict = {
   "training.role.apprentice": "Auszubildender",
   "training.role.service": "Service",
   "training.role.manager": "Manager",
-  "training.privacy": "Gesundheitsdaten werden von Leistungsdaten getrennt gespeichert. Zugriff nur für berechtigte Rollen.",
+  "training.privacy":
+    "Gesundheitsdaten werden von Leistungsdaten getrennt gespeichert. Zugriff nur für berechtigte Rollen.",
 
   // Suppliers
   "suppliers.eyebrow": "Einkauf",
@@ -737,39 +760,41 @@ const de: Dict = {
   "inspection.pack": "Nachweispaket",
   "inspection.desc": "Erstellt einen schreibgeschützten Nachweis für die Lebensmittelaufsicht.",
   "inspection.item.plan": "HACCP-Plan v3",
-  "inspection.item.plan.sub": "Freigegeben 12.06.2026",
+  "inspection.item.plan.sub": "Versionierter Plan und Freigabeverlauf",
   "inspection.item.temp": "Temperaturhistorie 90 Tage",
-  "inspection.item.temp.sub": "218 Messungen · 1 Abweichung behoben",
+  "inspection.item.temp.sub": "Messungen und Abweichungen im gewählten Zeitraum",
   "inspection.item.clean": "Reinigungsnachweise",
-  "inspection.item.clean.sub": "94 Einträge · mit Fotobeleg",
+  "inspection.item.clean.sub": "Abgeschlossene Reinigungsnachweise",
   "inspection.item.pest": "Schädlingskontrolle",
-  "inspection.item.pest.sub": "6 Inspektionen · 0 Sichtungen",
+  "inspection.item.pest.sub": "Sichtungen und Folgemaßnahmen",
   "inspection.item.allerg": "Allergenmatrix",
-  "inspection.item.allerg.sub": "42 Rezepte · 14 Allergene",
+  "inspection.item.allerg.sub": "Rezept- und Allergenunterlagen",
   "inspection.item.ifsg": "IfSG §§42–43 Nachweise",
-  "inspection.item.ifsg.sub": "12/12 Mitarbeitende gültig",
+  "inspection.item.ifsg.sub": "Nur geprüfte Schulungsnachweise",
   "inspection.item.lmhv": "LMHV-Schulungsmatrix",
-  "inspection.item.lmhv.sub": "vollständig",
+  "inspection.item.lmhv.sub": "Hochgeladene und geprüfte Unterlagen",
   "inspection.item.trace": "Rückverfolgbarkeit",
-  "inspection.item.trace.sub": "vorwärts + rückwärts, letzte 90 Tage",
+  "inspection.item.trace.sub": "Wareneingang und Chargennachweise",
   "inspection.item.audit": "Auditverlauf",
-  "inspection.item.audit.sub": "3 interne Audits + Prüferbewertung",
+  "inspection.item.audit.sub": "Interne Audits im gewählten Zeitraum",
 
   // Landing outcome stats
-  "outcomes.title": "Konkrete Ergebnisse. Nicht nur Software.",
-  "outcomes.subtitle": "Betriebe, die Haccora einführen, sparen Zeit, senken Kosten und bestehen ihre Prüfungen zuverlässiger.",
-  "outcomes.hours.value": "40 Std/Woche",
-  "outcomes.hours.label": "weniger Papierkram",
-  "outcomes.faster.value": "70% schneller",
-  "outcomes.faster.label": "durch die tägliche Kontrolle",
-  "outcomes.waste.value": "75% weniger",
-  "outcomes.waste.label": "vermeidbarer Lebensmittelabfall",
-  "outcomes.audit.value": "≤ 24 Std",
-  "outcomes.audit.label": "Vorlaufzeit für Prüfungen",
+  "outcomes.title": "Ein System für messbare Verbesserungen.",
+  "outcomes.subtitle":
+    "Zeit-, Kosten- und Abfallwirkungen hängen vom Betrieb und der Nutzung ab. Haccora macht Ausgangswerte und Fortschritte sichtbar.",
+  "outcomes.hours.value": "Digital",
+  "outcomes.hours.label": "statt verteilter Papierlisten",
+  "outcomes.faster.value": "Live",
+  "outcomes.faster.label": "Aufgaben- und Abweichungsstatus",
+  "outcomes.waste.value": "Messbar",
+  "outcomes.waste.label": "Abfallmenge, Grund und Wert",
+  "outcomes.audit.value": "Abrufbar",
+  "outcomes.audit.label": "Nachweise für den gewählten Zeitraum",
 
   // Industries
   "industries.title": "Für jede Küche in Deutschland gebaut.",
-  "industries.subtitle": "Von der Einzelgastronomie bis zur Systemgastronomie – Haccora passt sich Ihrem Betrieb an.",
+  "industries.subtitle":
+    "Von der Einzelgastronomie bis zur Systemgastronomie – Haccora passt sich Ihrem Betrieb an.",
   "industries.restaurant": "Restaurants",
   "industries.hotel": "Hotels & Ketten",
   "industries.cafe": "Cafés & Bäckereien",
@@ -779,31 +804,39 @@ const de: Dict = {
 
   // Platform pillars
   "platform.eyebrow": "Plattform",
-  "platform.title": "Modern gebaut. In Deutschland gehostet. Mit Ihrer Kasse verbunden.",
-  "platform.subtitle": "Mobile-first für die Küche, Alarme direkt auf WhatsApp, BSI-nahe Sicherheit und POS-Konnektoren für Vectron, Gastronovi und Lightspeed.",
+  "platform.title": "Modern gebaut. Mandantengetrennt. Integrationsbereit.",
+  "platform.subtitle":
+    "Mobile Erfassung, E-Mail- und Push-Alarme, private Nachweise und klar abgegrenzte Schnittstellen für künftige Integrationen.",
   "platform.mobile.title": "Mobile-first UX",
-  "platform.mobile.desc": "In Sekunden dokumentieren – am Handy, Tablet oder Küchenterminal. Offline-fähig, PWA-installierbar, mit einer Hand bedienbar.",
-  "platform.whatsapp.title": "WhatsApp-Alarme",
-  "platform.whatsapp.desc": "Temperatur außer Toleranz, überfällige Reinigung oder ablaufende Ware – Ihr Team wird sofort auf WhatsApp benachrichtigt.",
-  "platform.hosting.title": "DE-Hosting · BSI-Niveau",
-  "platform.hosting.desc": "Server in Frankfurt (ISO 27001), Verschlüsselung nach BSI-Grundschutz, DSGVO-konforme Auftragsverarbeitung, tägliche Backups.",
-  "platform.pos.title": "POS-Konnektoren inklusive",
-  "platform.pos.desc": "Vectron, Gastronovi und Lightspeed direkt angebunden – Umsätze, Artikel und Menümix fließen automatisch in Rezepte, Waste und Reports.",
-
-
+  "platform.mobile.desc":
+    "PWA-installierbar; die nativen Kernabläufe für Temperatur und Tageschecks besitzen eine persistente Offline-Warteschlange.",
+  "platform.alerts.title": "E-Mail- und Push-Alarme",
+  "platform.alerts.desc":
+    "Kritische Temperaturabweichungen werden idempotent an konfigurierte E-Mail- und Push-Anbieter übergeben.",
+  "platform.hosting.title": "Deployment mit Ihren Kontrollen",
+  "platform.hosting.desc":
+    "Private Objektspeicherung, Sicherheitsheader und Wiederherstellungs-Runbooks sind enthalten; Region, DPA und Backups werden im Produktionsprojekt festgelegt.",
+  "platform.integrations.title": "Definierte Integrationsgrenze",
+  "platform.integrations.desc":
+    "Sensor-Ingestion ist implementiert. POS- und Lieferantenkonnektoren bleiben gekennzeichnete Roadmap-Integrationen bis ein Anbieter vertraglich konfiguriert ist.",
 
   // FAQ
   "faq.title": "Häufig gestellte Fragen",
-  "faq.q1": "Wie schnell ist Haccora einsatzbereit?",
-  "faq.a1": "Die Grundeinrichtung ist in unter einem Tag abgeschlossen. Optional konfigurieren wir HACCP, Rezepte und Schulungsmatrix gemeinsam mit Ihnen.",
-  "faq.q2": "Ist Haccora DSGVO-konform?",
-  "faq.a2": "Ja. Gesundheits- und Personaldaten werden getrennt gespeichert, Hosting erfolgt in der EU und alle Nachweise sind versioniert und manipulationssicher.",
+  "faq.q1": "Was ist für die Inbetriebnahme nötig?",
+  "faq.a1":
+    "Nach Staging-Migration und Isolationstest werden Betrieb, Standorte, HACCP, Rezepte und Schulungsmatrix mit den realen Verantwortlichen konfiguriert.",
+  "faq.q2": "Wie unterstützt Haccora die DSGVO-Bereitschaft?",
+  "faq.a2":
+    "Gesundheitsdaten sind besonders eingeschränkt, Nachweise mandantengetrennt und Kernevidenz hashverkettet. Hostingregion, DPA, Löschfristen und Rechtsprüfung bleiben Pflicht des realen Deployments.",
   "faq.q3": "Was passiert bei einer Behördenprüfung?",
-  "faq.a3": "Mit dem Inspector Mode geben Sie Prüfern einen schreibgeschützten Blick auf HACCP-Plan, Temperaturen, Reinigung, Allergene und Schulungsnachweise – oder erzeugen ein PDF-Nachweispaket.",
+  "faq.a3":
+    "Mit dem Inspector Mode geben Sie Prüfern einen schreibgeschützten Blick auf HACCP-Plan, Temperaturen, Reinigung, Allergene und Schulungsnachweise – oder erzeugen ein PDF-Nachweispaket.",
   "faq.q4": "Kann ich jederzeit kündigen?",
-  "faq.a4": "Ja. Ihre Nachweise können Sie jederzeit als PDF exportieren – auch nach Kündigung bleiben Ihre Aufzeichnungen für Sie zugänglich.",
+  "faq.a4":
+    "Ja. Nachweise können vor der Kontoschließung exportiert werden. Aufbewahrung und Zugang nach Vertragsende richten sich nach dem vereinbarten Lösch- und Exportprozess.",
   "faq.q5": "Welche Sprachen unterstützt das Team?",
-  "faq.a5": "Die Oberfläche ist deutsch und englisch. Mikrolernen für Mitarbeitende ist zusätzlich in Türkisch, Arabisch, Polnisch, Rumänisch und Ukrainisch verfügbar.",
+  "faq.a5":
+    "Die Oberfläche und die derzeit integrierten Schulungsinhalte sind deutsch und englisch. Weitere Personalsprachen sind geplant und werden erst nach fachlicher Prüfung veröffentlicht.",
   // New modules & permissions matrix (DE)
   "menu.labels": "Etiketten",
   "menu.incidents": "Vorfälle",
@@ -821,10 +854,15 @@ const de: Dict = {
   "settings.perms.yourRole": "Ihre Rolle",
   "settings.perms.legend.yes": "Erlaubt",
   "settings.perms.legend.no": "Gesperrt",
+  "app.saving": "Speichern…",
+  "cleaning.done": "Erledigt",
+  "common.loading": "Laden…",
+  "dash.thisLocation": "Dieser Standort",
+  "docs.loading": "Dokumente werden geladen…",
+  "inspection.stat.evidence": "Nachweise",
+  "inspection.stat.incidents": "Vorfälle",
+  "inspection.stat.open": "Noch offen",
 };
-
-
-
 
 const en: Dict = {
   "nav.product": "Product",
@@ -835,7 +873,8 @@ const en: Dict = {
   "nav.blog": "Blog",
   "blog.eyebrow": "Insights",
   "blog.title": "Haccora Blog",
-  "blog.subtitle": "Practical guides on HACCP, inspections and daily operations — written for German kitchens.",
+  "blog.subtitle":
+    "Practical guides on HACCP, inspections and daily operations — written for German kitchens.",
   "blog.featured": "Featured",
   "blog.readMore": "Read article",
   "blog.min": "min",
@@ -846,44 +885,52 @@ const en: Dict = {
   "blog.backHome": "Back to home",
   "blog.cta.eyebrow": "Try it live",
   "blog.cta.title": "See Haccora in your kitchen",
-  "blog.cta.button": "Open live demo",
+  "blog.cta.button": "Get started",
   "nav.login": "Sign in",
-  "nav.demo": "Live demo",
+  "nav.demo": "Get started",
   "nav.tryFree": "Get started",
   "brand.tag": "Digital food safety, built for Germany",
   "brand.slogan": "Safe. Clean. Traceable.",
-  "brand.tagline": "Always inspection-ready.",
-  "marquee.phrase": "Built for German kitchens · Safe. Clean. Traceable. · Always inspection-ready.",
- "nav.more": "More",
+  "brand.tagline": "Structured for inspection preparation.",
+  "marquee.phrase": "Built for German kitchens · Safe. Clean. Traceable. · Structured preparation.",
+  "nav.more": "More",
 
-  "hero.eyebrow": "HACCP · IfSG · LMHV · Inspector-ready",
+  "hero.eyebrow": "HACCP · IfSG · LMHV · Digital evidence",
   "hero.title": "One system for every part of food safety.",
-  "hero.subtitle": "Haccora replaces your HACCP folder, temperature sheets, cleaning records, allergen files, staff certificates and inspection paperwork — in one multilingual platform built for food businesses in Germany.",
-  "hero.cta.primary": "Open live demo",
+  "hero.subtitle":
+    "Haccora replaces your HACCP folder, temperature sheets, cleaning records, allergen files, staff certificates and inspection paperwork — in one multilingual platform built for food businesses in Germany.",
+  "hero.cta.primary": "Get started",
   "hero.cta.secondary": "See pricing",
-  "hero.trust": "Trusted by independent restaurants, chains and franchises across Berlin, NRW, Bavaria and Hamburg.",
+  "hero.trust": "Designed for independent restaurants, chains and franchises operating in Germany.",
 
   "stats.locations": "Locations onboarded",
   "stats.checks": "Checks per month",
   "stats.languages": "Staff languages",
   "stats.inspection": "Avg. inspection prep",
 
-  "pillars.title": "Five products. One system.",
-  "pillars.subtitle": "Compliance, operations, purchasing, training and regulation — no more disconnected tools.",
+  "pillars.title": "One platform. Connected workflows.",
+  "pillars.subtitle":
+    "Compliance, operations, purchasing, training and regulation — no more disconnected tools.",
   "pillar.haccp.title": "HACCP & food safety",
-  "pillar.haccp.body": "AI-assisted plan builder with hazard analysis, CCPs, critical limits and mandatory human approval.",
+  "pillar.haccp.body":
+    "Guided plan builder with hazard analysis, CCPs, critical limits and versioned human approval.",
   "pillar.ops.title": "Restaurant operations",
-  "pillar.ops.body": "Daily checks, shift handover, tasks, incidents, maintenance and an SOP library — on any phone.",
+  "pillar.ops.body":
+    "Daily checks, routines, tasks, incidents and maintenance evidence — on web and mobile.",
   "pillar.recipes.title": "Purchasing, recipes & costing",
-  "pillar.recipes.body": "Ingredients, automatic 14-allergen calculation, margin analysis and supplier specs — linked end-to-end.",
+  "pillar.recipes.body":
+    "Recipes, declared allergens, margin analysis and supplier information — linked in a structured model.",
   "pillar.team.title": "Staff & training",
-  "pillar.team.body": "IfSG §§42–43, LMHV, allergens, hygiene — with microlearning in 7 staff languages and digital certificates.",
+  "pillar.team.body":
+    "IfSG §§42–43, LMHV, allergens and hygiene — with verified training records in German and English; more staff languages are planned.",
   "pillar.regulation.title": "German regulation",
-  "pillar.regulation.body": "Authority finder for Berlin & NRW, EU 852/2004, 178/2002, 1169/2011 — updates flagged automatically.",
+  "pillar.regulation.body":
+    "Reference overview for Berlin, NRW and key EU rules — official sources remain authoritative.",
 
   "inspector.eyebrow": "Haccora Inspector Mode",
   "inspector.title": "One click. Everything the authority asks for.",
-  "inspector.body": "HACCP plan, temperature history, cleaning records, allergen matrix, training evidence, traceability and audit history — as a read-only German interface or a downloadable evidence pack.",
+  "inspector.body":
+    "HACCP plan, temperature history, cleaning records, allergen matrix, training evidence, traceability and audit history — as a read-only German interface or a downloadable evidence pack.",
   "inspector.item.plan": "Current HACCP plan",
   "inspector.item.temp": "Temperature history and deviations",
   "inspector.item.clean": "Cleaning and pest-control records",
@@ -894,11 +941,12 @@ const en: Dict = {
 
   "pricing.eyebrow": "Pricing",
   "pricing.title": "Transparent. No hidden modules.",
-  "pricing.subtitle": "Every core feature is included. Price scales with size and service level.",
+  "pricing.subtitle":
+    "Indicative monthly prices. Scope, tax, SLA and integrations are confirmed in the offer.",
   "pricing.perMonth": "/month",
   "pricing.perLocation": "per location",
-  "pricing.cta": "Choose plan",
-  "pricing.featured": "Recommended",
+  "pricing.cta": "Request a quote",
+  "pricing.featured": "Reference package",
   "pricing.plan.solo": "Solo",
   "pricing.plan.solo.desc": "One site, up to 5 staff",
   "pricing.plan.complete": "Complete",
@@ -911,14 +959,16 @@ const en: Dict = {
   "pricing.plan.growing.desc": "Up to 10 locations",
   "pricing.plan.enterprise": "Enterprise",
   "pricing.plan.enterprise.desc": "10+ locations, SLA and integrations",
-  "pricing.promise": "If an inspector finds a missing record that should have been part of your active Haccora plan, we help configure the correction with no additional software charge.",
+  "pricing.promise":
+    "The binding quote states the feature scope, support and pricing transparently.",
 
-  "guarantee.title": "A promise we can actually keep.",
-  "guarantee.body": "We don't promise \"guaranteed legal compliance\". We promise the service that makes it possible.",
+  "guarantee.title": "Clear product boundaries.",
+  "guarantee.body":
+    "Haccora supports documented workflows; operational, specialist and legal responsibility remains with your business.",
 
-  "cta.title": "Live in under a day.",
-  "cta.body": "Free self-setup. Optional: we configure your recipes, HACCP and training for you.",
-  "cta.primary": "Open the demo",
+  "cta.title": "Move from staging to production deliberately.",
+  "cta.body": "Migration, isolation testing and specialist sign-off form the go-live gate.",
+  "cta.primary": "Get started",
   "cta.secondary": "Talk to sales",
   "footer.rights": "© 2026 Haccora. All rights reserved.",
   "footer.imprint": "Imprint",
@@ -939,8 +989,9 @@ const en: Dict = {
   "legal.back": "Back to homepage",
 
   // Cookie banner
-  "cookie.title": "Cookies on haccora.de",
-  "cookie.body": "We only use strictly necessary cookies by default. Preferences and statistics cookies require your consent under § 25 TDDDG. You can withdraw consent at any time.",
+  "cookie.title": "Cookies at Haccora",
+  "cookie.body":
+    "We currently use only technically necessary local-storage and authentication mechanisms.",
   "cookie.accept": "Accept all",
   "cookie.reject": "Only necessary",
   "cookie.customize": "Customise",
@@ -953,36 +1004,36 @@ const en: Dict = {
   "cookie.cat.stats.desc": "Anonymised usage analytics.",
 
   // Landing text extras
-  "hero.review.readOur": "Read our",
-  "hero.review.stars": "5-star reviews",
+  "hero.review.readOur": "Tenant-scoped",
+  "hero.review.stars": "private by default",
   "hero.play": "Play now",
   "inspector.demo.header": "Read-only · authority view",
-  "inspector.demo.title": "Evidence pack — July 2026",
-  "inspector.demo.sub": "Kreuzberg Kitchen · Bezirksamt Friedrichshain-Kreuzberg",
-  "inspector.demo.plan.t": "HACCP plan v3",
-  "inspector.demo.plan.b": "Approved 12 Jun 2026 · A. Yılmaz",
+  "inspector.demo.title": "Sample evidence pack",
+  "inspector.demo.sub": "Illustrative preview · no customer data",
+  "inspector.demo.plan.t": "HACCP plan",
+  "inspector.demo.plan.b": "Approval status and version history",
   "inspector.demo.temp.t": "Temperature history",
-  "inspector.demo.temp.b": "218 readings · 1 deviation resolved",
+  "inspector.demo.temp.b": "Readings · limits · corrective actions",
   "inspector.demo.clean.t": "Cleaning records",
-  "inspector.demo.clean.b": "94 entries · with photos",
+  "inspector.demo.clean.b": "Records · optional photo evidence",
   "inspector.demo.allerg.t": "Allergen matrix",
-  "inspector.demo.allerg.b": "42 recipes · 14 allergens",
+  "inspector.demo.allerg.b": "Recipes · 14 EU main allergens",
   "inspector.demo.ifsg.t": "IfSG §§42–43",
-  "inspector.demo.ifsg.b": "12/12 staff · valid",
+  "inspector.demo.ifsg.b": "Verified evidence only",
   "inspector.demo.trace.t": "Traceability",
   "inspector.demo.trace.b": "Supplier → batch → portion",
   "reg.card.berlin.t": "Berlin districts",
-  "reg.card.berlin.b": "12 districts · contacts, forms, jurisdiction.",
+  "reg.card.berlin.b": "District-authority pointers · verify details with the official authority.",
   "reg.card.nrw.t": "NRW counties & cities",
-  "reg.card.nrw.b": "396 municipalities · registration and change notices.",
+  "reg.card.nrw.b": "County and city pointers · verify details with the official authority.",
   "reg.card.eu852.t": "EU 852/2004",
   "reg.card.eu852.b": "HACCP framework mapped to your processes.",
   "reg.card.eu1169.t": "EU 1169/2011",
-  "reg.card.eu1169.b": "14 allergens computed automatically from recipes.",
+  "reg.card.eu1169.b": "Document the 14 major allergens for each recipe.",
   "reg.card.ifsg.t": "IfSG §§42–43",
   "reg.card.ifsg.b": "Deadlines, briefings, refreshers.",
   "reg.card.lmhv.t": "LMHV",
-  "reg.card.lmhv.b": "Training matrix by role and location.",
+  "reg.card.lmhv.b": "Training reference for operational review.",
   "dash.allTasks": "View all",
 
   "task.cool.t": "Check chiller temperatures",
@@ -1004,7 +1055,6 @@ const en: Dict = {
   "time.today": "Today",
   "time.todayAt": "Today 12:00",
   "time.trend": "+2 vs. last week",
-
 
   "app.tag": "Kreuzberg Kitchen · Berlin",
   "menu.dashboard": "Overview",
@@ -1045,7 +1095,8 @@ const en: Dict = {
   "dash.today": "Due today",
   "dash.actions": "Corrective actions",
   "dash.readiness": "Inspection readiness",
-  "dash.readiness.body": "All evidence is current. Generate the complete inspection pack in one click.",
+  "dash.readiness.body":
+    "All evidence is current. Generate the complete inspection pack in one click.",
   "dash.readiness.cta": "Open Inspector Mode",
   "dash.complete": "Complete",
   "dash.completed": "Done",
@@ -1057,8 +1108,8 @@ const en: Dict = {
   "dash.severity.critical": "Critical",
 
   "haccp.title": "HACCP plan",
-  "haccp.sub": "AI-drafted · Human approval required",
-  "haccp.status.draft": "AI draft",
+  "haccp.sub": "Guided draft · Human approval required",
+  "haccp.status.draft": "Draft",
   "haccp.status.review": "In review",
   "haccp.status.approved": "Approved",
   "haccp.step": "Process step",
@@ -1069,7 +1120,7 @@ const en: Dict = {
   "haccp.action": "Corrective action",
 
   "recipes.title": "Recipes & allergens",
-  "recipes.sub": "14 allergens computed automatically · Ingredient changes flagged",
+  "recipes.sub": "Maintain declared allergens and costing for each recipe",
   "recipes.allergen": "Allergens",
   "recipes.margin": "Margin",
   "recipes.cost": "Cost",
@@ -1106,34 +1157,37 @@ const en: Dict = {
   "contact.business": "Business name",
   "contact.cta": "Get in touch",
   "contact.legal": "By submitting this form you agree to our privacy policy.",
-  "s360.title": "food health & safety support",
+  "s360.title": "food-safety workflow support",
   "s360.more": "Learn more",
   "s360.docs.t": "Digital records",
   "s360.docs.b": "HACCP, checklists and evidence — all in one place.",
-  "s360.time.t": "24/7 monitoring",
-  "s360.time.b": "Temperature and task alerts around the clock.",
+  "s360.time.t": "Sensor and temperature notices",
+  "s360.time.b": "Capture configured deviations and notify responsible users.",
   "s360.alert.t": "Incident response",
-  "s360.alert.b": "Corrective actions with photo evidence and sign-off.",
+  "s360.alert.b": "Record incidents and corrections with a clear history.",
   "pillars.eyebrow": "The platform",
   "pillar.temp.title": "Temperature & sensors",
-  "pillar.temp.body": "Manual entry or sensor integration — thresholds, alerts and corrective actions documented automatically.",
+  "pillar.temp.body":
+    "Manual entry or sensor integration — store readings and notify users about threshold deviations.",
   "reg.eyebrow": "German regulatory layer",
-  "reg.title": "Built for the German inspector.",
-  "reg.body": "Authority finder for Berlin & NRW, EU 852/2004, 178/2002, 1169/2011, IfSG tracker, LMHV matrix, LFGB references — versioned with an action checklist when the law changes.",
+  "reg.title": "Structured for food businesses in Germany.",
+  "reg.body":
+    "A reference overview for Berlin, NRW and selected EU and federal rules. Verify details against official sources and professional advice.",
 
   // Auth / roles
   "auth.title": "Sign in to Haccora",
-  "auth.sub": "Pick a role for the demo. Each role gets its own dashboard and permissions.",
+  "auth.sub": "Sign in or create a protected workspace.",
   "auth.continue": "Continue as {role}",
   "auth.signout": "Sign out",
   "auth.signedInAs": "Signed in as",
-  "auth.switch": "Switch role",
-  "auth.demo": "Demo mode · no real credentials required",
+  "auth.switch": "Switch account",
+  "auth.demo": "Protected access · sign-in required",
   "auth.back": "Back to homepage",
   "role.owner": "Owner / Executive",
   "role.owner.desc": "Full access: compliance, finance, locations, team, regulation.",
   "role.manager": "Location Manager",
-  "role.manager.desc": "Day-to-day operations, tasks, staff, inspections — no pricing or contracts.",
+  "role.manager.desc":
+    "Day-to-day operations, tasks, staff, inspections — no pricing or contracts.",
   "role.chef": "Head Chef",
   "role.chef.desc": "HACCP, temperatures, recipes, allergens and kitchen team.",
   "role.staff": "Team Member",
@@ -1147,11 +1201,11 @@ const en: Dict = {
   "dash.role.staff": "Your open tasks for today.",
   "dash.role.inspector": "Evidence view — read-only for the authority.",
 
-  // Demo mode banner
-  "demo.tag": "Demo mode",
-  "demo.body": "You're exploring Haccora as {role}. No real data.",
-  "demo.exit": "Exit demo",
-  "demo.switch": "Switch role",
+  // Legacy preview keys retained for translation compatibility
+  "demo.tag": "Preview",
+  "demo.body": "Sample data for the {role} view.",
+  "demo.exit": "Exit preview",
+  "demo.switch": "Switch view",
 
   // Role-specific dashboard hero
   "dash.owner.hero.eye": "Executive · portfolio",
@@ -1214,11 +1268,11 @@ const en: Dict = {
   "settings.n.email.hint": "Critical warnings and inspection reports by email.",
   "settings.n.push": "Push notifications",
   "settings.n.push.hint": "Instant alerts in browser and on mobile.",
-  "settings.n.digest": "Daily digest",
-  "settings.n.digest.hint": "07:00 every morning — open tasks and metrics.",
+  "settings.n.digest": "Weekly digest",
+  "settings.n.digest.hint": "Every Monday — open tasks, corrective actions and alerts.",
   "settings.danger": "Account",
-  "settings.danger.body": "Reset demo data or switch role.",
-  "settings.reset": "Reset demo data",
+  "settings.danger.body": "Securely end the current session on this device.",
+  "settings.reset": "End the session on this device",
 
   // Owner dashboard
   "owner.locations": "Locations",
@@ -1242,7 +1296,8 @@ const en: Dict = {
   // Alerts center
   "alerts.eyebrow": "Alerts & notifications",
   "alerts.title": "Alert center",
-  "alerts.sub": "Every critical signal from HACCP, temperature, cleaning, training and suppliers — in one view.",
+  "alerts.sub":
+    "Every critical signal from HACCP, temperature, cleaning, training and suppliers — in one view.",
   "alerts.filter.all": "All",
   "alerts.filter.open": "Open",
   "alerts.filter.critical": "Critical",
@@ -1291,7 +1346,8 @@ const en: Dict = {
   // Documents
   "docs.eyebrow": "Document store",
   "docs.title": "Documents & evidence",
-  "docs.sub": "Central, versioned storage for HACCP, certificates, inspection reports and SDS — filed by category.",
+  "docs.sub":
+    "Central, versioned storage for HACCP, certificates, inspection reports and SDS — filed by category.",
   "docs.upload": "Upload document",
   "docs.categories": "Categories",
   "docs.cat.all": "All",
@@ -1312,7 +1368,7 @@ const en: Dict = {
   // Audit logs
   "logs.eyebrow": "Audit log",
   "logs.title": "Activity log",
-  "logs.sub": "Complete, tamper-evident history of every action — court-ready for authorities.",
+  "logs.sub": "Hash-chained history for the recorded core evidence events.",
   "logs.export": "Export CSV",
   "logs.tile.events": "Events (30d)",
   "logs.tile.changes": "Changes",
@@ -1335,7 +1391,8 @@ const en: Dict = {
   "logs.action.approve": "Approve",
   "logs.action.reject": "Reject",
   "logs.empty": "No matching entries.",
-  "logs.footer": "All entries are stored immutably and accessible to authorities via Inspector Mode.",
+  "logs.footer":
+    "All entries are stored immutably and accessible to authorities via Inspector Mode.",
 
   // Common labels
   "common.all": "All",
@@ -1357,12 +1414,13 @@ const en: Dict = {
   "common.downloadPdf": "Download PDF",
   "common.approve": "Approve",
   "common.humanApproval": "Human approval required",
-  "common.humanApproval.body": "AI can draft the plan. It is only activated once reviewed by a qualified person. Recent changes: 2 new CCPs, updated sous-vide limits.",
+  "common.humanApproval.body":
+    "The guided draft is approved only after review by a qualified person. Versions and the approval statement remain traceable.",
 
   // Checks
   "checks.eyebrow": "Daily compliance",
   "checks.title": "Daily checks",
-  "checks.sub": "Opening, service and closing checks with automatic escalation.",
+  "checks.sub": "Record opening, service and closing checks with a traceable history.",
   "checks.filter.pending": "Open",
   "checks.filter.failed": "Deviation",
   "checks.col.check": "Check",
@@ -1479,7 +1537,8 @@ const en: Dict = {
   "training.role.apprentice": "Apprentice",
   "training.role.service": "Service",
   "training.role.manager": "Manager",
-  "training.privacy": "Health data is stored separately from performance data. Access restricted to authorised roles.",
+  "training.privacy":
+    "Health data is stored separately from performance data. Access restricted to authorised roles.",
 
   // Suppliers
   "suppliers.eyebrow": "Procurement",
@@ -1540,35 +1599,36 @@ const en: Dict = {
   "inspection.pack": "Evidence pack",
   "inspection.desc": "Generates a read-only record for the food-control authority.",
   "inspection.item.plan": "HACCP plan v3",
-  "inspection.item.plan.sub": "Approved 12 Jun 2026",
+  "inspection.item.plan.sub": "Versioned plan and approval history",
   "inspection.item.temp": "Temperature history — 90 days",
-  "inspection.item.temp.sub": "218 readings · 1 deviation resolved",
+  "inspection.item.temp.sub": "Readings and deviations in the selected period",
   "inspection.item.clean": "Cleaning records",
-  "inspection.item.clean.sub": "94 entries · with photo evidence",
+  "inspection.item.clean.sub": "Completed cleaning records",
   "inspection.item.pest": "Pest control",
-  "inspection.item.pest.sub": "6 inspections · 0 sightings",
+  "inspection.item.pest.sub": "Sightings and follow-up actions",
   "inspection.item.allerg": "Allergen matrix",
-  "inspection.item.allerg.sub": "42 recipes · 14 allergens",
+  "inspection.item.allerg.sub": "Recipe and allergen records",
   "inspection.item.ifsg": "IfSG §§42–43 evidence",
-  "inspection.item.ifsg.sub": "12/12 staff valid",
+  "inspection.item.ifsg.sub": "Verified training records only",
   "inspection.item.lmhv": "LMHV training matrix",
-  "inspection.item.lmhv.sub": "complete",
+  "inspection.item.lmhv.sub": "Uploaded and verified evidence",
   "inspection.item.trace": "Traceability",
-  "inspection.item.trace.sub": "forward + backward, last 90 days",
+  "inspection.item.trace.sub": "Goods receiving and batch evidence",
   "inspection.item.audit": "Audit history",
-  "inspection.item.audit.sub": "3 internal audits + inspector rating",
+  "inspection.item.audit.sub": "Internal audits in the selected period",
 
   // Landing outcome stats
-  "outcomes.title": "Real outcomes. Not just software.",
-  "outcomes.subtitle": "Kitchens running Haccora save hours, cut costs and pass inspections more reliably.",
-  "outcomes.hours.value": "40 hrs/week",
-  "outcomes.hours.label": "less paperwork",
-  "outcomes.faster.value": "70% faster",
-  "outcomes.faster.label": "through daily checks",
-  "outcomes.waste.value": "75% less",
-  "outcomes.waste.label": "avoidable food waste",
-  "outcomes.audit.value": "≤ 24 hrs",
-  "outcomes.audit.label": "inspection prep time",
+  "outcomes.title": "One system for measurable improvement.",
+  "outcomes.subtitle":
+    "Time, cost and waste outcomes depend on the operation and usage. Haccora makes baselines and progress visible.",
+  "outcomes.hours.value": "Digital",
+  "outcomes.hours.label": "instead of scattered paper lists",
+  "outcomes.faster.value": "Live",
+  "outcomes.faster.label": "task and deviation status",
+  "outcomes.waste.value": "Measured",
+  "outcomes.waste.label": "waste quantity, reason and value",
+  "outcomes.audit.value": "On demand",
+  "outcomes.audit.label": "evidence for the selected period",
 
   // Industries
   "industries.title": "Built for every kitchen in Germany.",
@@ -1582,30 +1642,39 @@ const en: Dict = {
 
   // Platform pillars
   "platform.eyebrow": "Platform",
-  "platform.title": "Built modern. Hosted in Germany. Wired to your POS.",
-  "platform.subtitle": "Mobile-first for the kitchen, alerts straight to WhatsApp, BSI-grade security and POS connectors for Vectron, Gastronovi and Lightspeed.",
+  "platform.title": "Built modern. Tenant-scoped. Integration-ready.",
+  "platform.subtitle":
+    "Mobile capture, email and push alerts, private evidence, and explicit boundaries for future integrations.",
   "platform.mobile.title": "Mobile-first UX",
-  "platform.mobile.desc": "Log anything in seconds — on phone, tablet or kitchen terminal. Offline-ready, installable as a PWA, one-hand operable.",
-  "platform.whatsapp.title": "WhatsApp alerts",
-  "platform.whatsapp.desc": "Temperature out of range, overdue cleaning or expiring stock — your team is notified instantly on WhatsApp.",
-  "platform.hosting.title": "DE hosting · BSI-grade",
-  "platform.hosting.desc": "Servers in Frankfurt (ISO 27001), encryption to BSI Grundschutz, GDPR-compliant DPA, daily backups.",
-  "platform.pos.title": "POS connectors included",
-  "platform.pos.desc": "Vectron, Gastronovi and Lightspeed connected out of the box — sales, items and menu-mix flow into recipes, waste and reports.",
-
+  "platform.mobile.desc":
+    "Installable as a PWA; native core flows for temperature and daily checks use a persistent offline queue.",
+  "platform.alerts.title": "Email and push alerts",
+  "platform.alerts.desc":
+    "Critical temperature deviations are handed off idempotently to configured email and push providers.",
+  "platform.hosting.title": "Deploy with your controls",
+  "platform.hosting.desc":
+    "Private object storage, security headers and recovery runbooks are included; region, DPA and backups are set in the production project.",
+  "platform.integrations.title": "Explicit integration boundary",
+  "platform.integrations.desc":
+    "Sensor ingestion is implemented. POS and supplier connectors remain labelled roadmap integrations until a provider is contractually configured.",
 
   // FAQ
   "faq.title": "Frequently asked questions",
-  "faq.q1": "How fast can Haccora go live?",
-  "faq.a1": "Basic setup is complete in under a day. We can optionally configure HACCP, recipes and the training matrix with you.",
-  "faq.q2": "Is Haccora GDPR compliant?",
-  "faq.a2": "Yes. Health and personnel data are stored separately, hosting is in the EU, and every record is versioned and tamper-evident.",
+  "faq.q1": "What is required before launch?",
+  "faq.a1":
+    "After a staging migration and isolation test, the business, locations, HACCP, recipes and training matrix are configured with the real accountable owners.",
+  "faq.q2": "How does Haccora support GDPR readiness?",
+  "faq.a2":
+    "Health data is tightly restricted, evidence is tenant-scoped, and core records are hash-chained. Hosting region, DPA, retention and legal review remain deployment requirements.",
   "faq.q3": "What happens during an inspection?",
-  "faq.a3": "Inspector Mode gives officers a read-only view of the HACCP plan, temperatures, cleaning, allergens and training records — or generates a downloadable PDF evidence pack.",
+  "faq.a3":
+    "Inspector Mode gives officers a read-only view of the HACCP plan, temperatures, cleaning, allergens and training records — or generates a downloadable PDF evidence pack.",
   "faq.q4": "Can I cancel any time?",
-  "faq.a4": "Yes. You can export your records to PDF at any time — even after cancellation your records remain accessible to you.",
+  "faq.a4":
+    "Yes. Evidence can be exported before account closure. Retention and access after termination follow the agreed deletion and export process.",
   "faq.q5": "Which staff languages are supported?",
-  "faq.a5": "The interface is German and English. Microlearning for staff is additionally available in Turkish, Arabic, Polish, Romanian and Ukrainian.",
+  "faq.a5":
+    "The interface and currently integrated training content are German and English. More staff languages are planned and will only be released after specialist review.",
   // New modules & permissions matrix (EN)
   "menu.labels": "Labels",
   "menu.incidents": "Incidents",
@@ -1623,10 +1692,17 @@ const en: Dict = {
   "settings.perms.yourRole": "Your role",
   "settings.perms.legend.yes": "Allowed",
   "settings.perms.legend.no": "Blocked",
+  "menu.haccpFlows": "HACCP flows",
+  "reg.title.short": "Regulation",
+  "app.saving": "Saving…",
+  "cleaning.done": "Done",
+  "common.loading": "Loading…",
+  "dash.thisLocation": "This location",
+  "docs.loading": "Loading documents…",
+  "inspection.stat.evidence": "Evidence records",
+  "inspection.stat.incidents": "Incidents",
+  "inspection.stat.open": "Still open",
 };
-
-
-
 
 const dicts: Record<Language, Dict> = { de, en };
 
@@ -1640,37 +1716,54 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     try {
       const stored = localStorage.getItem("gs-lang");
       if (stored === "de" || stored === "en") setLangState(stored);
-      else if (typeof navigator !== "undefined" && navigator.language?.startsWith("en")) setLangState("en");
-    } catch { /* noop */ }
+      else if (typeof navigator !== "undefined" && navigator.language?.startsWith("en"))
+        setLangState("en");
+    } catch {
+      /* noop */
+    }
   }, []);
 
   const setLang = (l: Language) => {
     if (l === lang) return;
     const doSwap = () => {
       setLangState(l);
-      try { localStorage.setItem("gs-lang", l); } catch { /* noop */ }
+      try {
+        localStorage.setItem("gs-lang", l);
+      } catch {
+        /* noop */
+      }
       if (typeof document !== "undefined") {
         document.documentElement.lang = l;
         document.documentElement.setAttribute("data-lang-changing", "true");
         setTimeout(() => document.documentElement.removeAttribute("data-lang-changing"), 400);
       }
       // Persist to profile if signed in — non-blocking.
-      import("@/integrations/supabase/client").then(({ supabase }) => {
-        supabase.auth.getSession().then(({ data }) => {
-          const uid = data.session?.user?.id;
-          if (uid) supabase.from("profiles").update({ language: l }).eq("id", uid).then(() => {});
-        });
-      }).catch(() => {});
+      import("@/integrations/supabase/client")
+        .then(({ supabase }) => {
+          supabase.auth.getSession().then(({ data }) => {
+            const uid = data.session?.user?.id;
+            if (uid)
+              supabase
+                .from("profiles")
+                .update({ language: l })
+                .eq("id", uid)
+                .then(() => {});
+          });
+        })
+        .catch(() => {});
     };
-    const anyDoc = typeof document !== "undefined" ? (document as Document & { startViewTransition?: (cb: () => void) => unknown }) : null;
+    const anyDoc =
+      typeof document !== "undefined"
+        ? (document as Document & { startViewTransition?: (cb: () => void) => unknown })
+        : null;
     if (anyDoc?.startViewTransition) anyDoc.startViewTransition(doSwap);
     else doSwap();
   };
 
-
-
-  const t = (key: string) => dicts[lang][key] ?? dicts.en[key] ?? key;
-  return <LanguageContext.Provider value={{ lang, setLang, t }}>{children}</LanguageContext.Provider>;
+  const t = (key: string) => dicts[lang][key] ?? dicts.en[key] ?? "";
+  return (
+    <LanguageContext.Provider value={{ lang, setLang, t }}>{children}</LanguageContext.Provider>
+  );
 }
 
 export function useI18n() {

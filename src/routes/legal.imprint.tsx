@@ -5,7 +5,7 @@ export const Route = createFileRoute("/legal/imprint")({
   head: () => ({
     meta: [
       { title: "Impressum · Imprint — Haccora" },
-      { name: "description", content: "Impressum der Haccora GmbH gemäß § 5 DDG." },
+      { name: "description", content: "Impressum von Haccora gemäß § 5 DDG." },
       { property: "og:title", content: "Impressum — Haccora" },
       { property: "og:url", content: "/legal/imprint" },
     ],

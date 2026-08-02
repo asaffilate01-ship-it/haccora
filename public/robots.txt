@@ -1,2 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /app
+Disallow: /login
+Disallow: /onboarding
+Sitemap: https://haccora.de/sitemap.xml

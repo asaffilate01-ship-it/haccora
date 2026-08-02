@@ -6,108 +6,147 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { BrandLogoImage } from "@/components/BrandLogo";
 import { useAuth, canAccess, homeFor, type NavKey } from "@/lib/auth";
 import {
-  LayoutDashboard, ShieldCheck, ClipboardCheck, Thermometer, Sparkles,
-  Wheat, Truck, Users, Gavel, Settings, ArrowLeft, Bell, Search, LogOut,
-  ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, Clock, Command,
-  BellRing, CalendarClock, FileArchive, History,
-  ListChecks, UtensilsCrossed, CalendarDays, Trash2, Boxes,
-  ShoppingCart, Wrench, PackageX, ClipboardList, Tag, AlertOctagon,
-  PackageCheck, HeartPulse, Bug, Flame, MessageSquareWarning, FlaskConical,
+  LayoutDashboard,
+  ShieldCheck,
+  ClipboardCheck,
+  Thermometer,
+  Sparkles,
+  Wheat,
+  Truck,
+  Users,
+  Gavel,
+  Settings,
+  ArrowLeft,
+  Bell,
+  Search,
+  LogOut,
+  ChevronDown,
+  ChevronRight,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  Command,
+  BellRing,
+  CalendarClock,
+  FileArchive,
+  History,
+  ListChecks,
+  UtensilsCrossed,
+  CalendarDays,
+  Trash2,
+  Boxes,
+  ShoppingCart,
+  Wrench,
+  PackageX,
+  ClipboardList,
+  Tag,
+  AlertOctagon,
+  PackageCheck,
+  HeartPulse,
+  Bug,
+  Flame,
+  MessageSquareWarning,
+  FlaskConical,
 } from "lucide-react";
-
 
 export const Route = createFileRoute("/app")({
   component: AppShell,
 });
 
-type NavItem = { to: string; icon: typeof LayoutDashboard; key: string; nav: NavKey; exact?: boolean };
+type NavItem = {
+  to: string;
+  icon: typeof LayoutDashboard;
+  key: string;
+  nav: NavKey;
+  exact?: boolean;
+};
 type NavGroup = { labelKey: string; items: NavItem[] };
 
 const GROUPS: NavGroup[] = [
   {
     labelKey: "nav.group.overview",
     items: [
-      { to: "/app",             icon: LayoutDashboard, key: "menu.dashboard",   nav: "dashboard", exact: true },
+      { to: "/app", icon: LayoutDashboard, key: "menu.dashboard", nav: "dashboard", exact: true },
     ],
   },
   {
     labelKey: "nav.group.routines",
     items: [
-      { to: "/app/routines",    icon: ListChecks,      key: "menu.routines",    nav: "routines" },
-      { to: "/app/rota",        icon: CalendarDays,    key: "menu.rota",        nav: "rota" },
+      { to: "/app/routines", icon: ListChecks, key: "menu.routines", nav: "routines" },
+      { to: "/app/rota", icon: CalendarDays, key: "menu.rota", nav: "rota" },
     ],
   },
   {
     labelKey: "nav.group.compliance",
     items: [
-      { to: "/app/haccp",       icon: ShieldCheck,     key: "menu.haccp",       nav: "haccp" },
-      { to: "/app/haccp-flows", icon: ShieldCheck,     key: "menu.haccpFlows",  nav: "haccp" },
-      { to: "/app/checks",      icon: ClipboardCheck,  key: "menu.checks",      nav: "checks" },
-      { to: "/app/temperature", icon: Thermometer,     key: "menu.temperature", nav: "temperature" },
-      { to: "/app/calibration", icon: Thermometer,     key: "menu.calibration", nav: "calibration" },
-      { to: "/app/cleaning",    icon: Sparkles,        key: "menu.cleaning",    nav: "cleaning" },
-      { to: "/app/pest",        icon: Bug,             key: "menu.pest",        nav: "pest" },
+      { to: "/app/haccp", icon: ShieldCheck, key: "menu.haccp", nav: "haccp" },
+      { to: "/app/haccp-flows", icon: ShieldCheck, key: "menu.haccpFlows", nav: "haccp" },
+      { to: "/app/checks", icon: ClipboardCheck, key: "menu.checks", nav: "checks" },
+      { to: "/app/temperature", icon: Thermometer, key: "menu.temperature", nav: "temperature" },
+      { to: "/app/calibration", icon: Thermometer, key: "menu.calibration", nav: "calibration" },
+      { to: "/app/cleaning", icon: Sparkles, key: "menu.cleaning", nav: "cleaning" },
+      { to: "/app/pest", icon: Bug, key: "menu.pest", nav: "pest" },
     ],
   },
   {
     labelKey: "nav.group.kitchen",
     items: [
-      { to: "/app/menu",        icon: UtensilsCrossed, key: "menu.menu",        nav: "menu" },
-      { to: "/app/recipes",     icon: Wheat,           key: "menu.recipes",     nav: "recipes" },
-      { to: "/app/oil",         icon: Flame,           key: "menu.oil",         nav: "oil" },
-      { to: "/app/suppliers",   icon: Truck,           key: "menu.suppliers",   nav: "suppliers" },
-      { to: "/app/purchasing",  icon: ShoppingCart,    key: "menu.purchasing",  nav: "purchasing" },
-      { to: "/app/goodsin",     icon: PackageCheck,    key: "menu.goodsin",     nav: "goodsin" },
+      { to: "/app/menu", icon: UtensilsCrossed, key: "menu.menu", nav: "menu" },
+      { to: "/app/recipes", icon: Wheat, key: "menu.recipes", nav: "recipes" },
+      { to: "/app/oil", icon: Flame, key: "menu.oil", nav: "oil" },
+      { to: "/app/suppliers", icon: Truck, key: "menu.suppliers", nav: "suppliers" },
+      { to: "/app/purchasing", icon: ShoppingCart, key: "menu.purchasing", nav: "purchasing" },
+      { to: "/app/goodsin", icon: PackageCheck, key: "menu.goodsin", nav: "goodsin" },
     ],
   },
   {
     labelKey: "nav.group.inventory",
     items: [
-      { to: "/app/stock",       icon: Boxes,           key: "menu.stock",       nav: "stock" },
-      { to: "/app/waste",       icon: Trash2,          key: "menu.waste",       nav: "waste" },
-      { to: "/app/recalls",     icon: PackageX,        key: "menu.recalls",     nav: "recalls" },
-      { to: "/app/chemicals",   icon: FlaskConical,    key: "menu.chemicals",   nav: "chemicals" },
+      { to: "/app/stock", icon: Boxes, key: "menu.stock", nav: "stock" },
+      { to: "/app/waste", icon: Trash2, key: "menu.waste", nav: "waste" },
+      { to: "/app/recalls", icon: PackageX, key: "menu.recalls", nav: "recalls" },
+      { to: "/app/chemicals", icon: FlaskConical, key: "menu.chemicals", nav: "chemicals" },
     ],
   },
   {
     labelKey: "nav.group.people",
     items: [
-      { to: "/app/training",    icon: Users,           key: "menu.training",    nav: "training" },
-      { to: "/app/health",      icon: HeartPulse,      key: "menu.health",      nav: "health" },
+      { to: "/app/training", icon: Users, key: "menu.training", nav: "training" },
+      { to: "/app/health", icon: HeartPulse, key: "menu.health", nav: "health" },
     ],
   },
   {
     labelKey: "nav.group.kitchenOps",
-    items: [
-      { to: "/app/labels",      icon: Tag,             key: "menu.labels",      nav: "labels" },
-    ],
+    items: [{ to: "/app/labels", icon: Tag, key: "menu.labels", nav: "labels" }],
   },
   {
     labelKey: "nav.group.assets",
-    items: [
-      { to: "/app/assets",      icon: Wrench,          key: "menu.assets",      nav: "assets" },
-    ],
+    items: [{ to: "/app/assets", icon: Wrench, key: "menu.assets", nav: "assets" }],
   },
 
   {
     labelKey: "nav.group.records",
     items: [
-      { to: "/app/incidents",   icon: AlertOctagon,    key: "menu.incidents",   nav: "incidents" },
-      { to: "/app/complaints",  icon: MessageSquareWarning, key: "menu.complaints", nav: "complaints" },
-      { to: "/app/alerts",      icon: BellRing,        key: "menu.alerts",      nav: "alerts" },
-      { to: "/app/expiry",      icon: CalendarClock,   key: "menu.expiry",      nav: "expiry" },
-      { to: "/app/documents",   icon: FileArchive,     key: "menu.documents",   nav: "documents" },
-      { to: "/app/logs",        icon: History,         key: "menu.logs",        nav: "logs" },
+      { to: "/app/incidents", icon: AlertOctagon, key: "menu.incidents", nav: "incidents" },
+      {
+        to: "/app/complaints",
+        icon: MessageSquareWarning,
+        key: "menu.complaints",
+        nav: "complaints",
+      },
+      { to: "/app/alerts", icon: BellRing, key: "menu.alerts", nav: "alerts" },
+      { to: "/app/expiry", icon: CalendarClock, key: "menu.expiry", nav: "expiry" },
+      { to: "/app/documents", icon: FileArchive, key: "menu.documents", nav: "documents" },
+      { to: "/app/logs", icon: History, key: "menu.logs", nav: "logs" },
     ],
   },
   {
     labelKey: "nav.group.audit",
     items: [
-      { to: "/app/audits",      icon: ClipboardList,   key: "menu.audits",      nav: "audits" },
-      { to: "/app/inspection",  icon: Gavel,           key: "menu.audit",       nav: "audit" },
+      { to: "/app/audits", icon: ClipboardList, key: "menu.audits", nav: "audits" },
+      { to: "/app/inspection", icon: Gavel, key: "menu.audit", nav: "audit" },
     ],
   },
-
 ];
 
 const ALL_ITEMS: NavItem[] = GROUPS.flatMap((g) => g.items);
@@ -125,6 +164,8 @@ function AppShell() {
   useEffect(() => {
     if (hydrated && !user) {
       navigate({ to: "/login", search: { redirect: pathname } as never });
+    } else if (hydrated && user && !user.organizationId) {
+      navigate({ to: "/onboarding", replace: true });
     }
   }, [hydrated, user, navigate, pathname]);
 
@@ -139,45 +180,46 @@ function AppShell() {
   useEffect(() => {
     if (!user) return;
     const PATH_KEY: Array<{ prefix: string; nav: NavKey }> = [
-      { prefix: "/app/haccp",       nav: "haccp" },
-      { prefix: "/app/checks",      nav: "checks" },
+      { prefix: "/app/haccp", nav: "haccp" },
+      { prefix: "/app/checks", nav: "checks" },
       { prefix: "/app/temperature", nav: "temperature" },
-      { prefix: "/app/cleaning",    nav: "cleaning" },
-      { prefix: "/app/recipes",     nav: "recipes" },
-      { prefix: "/app/suppliers",   nav: "suppliers" },
-      { prefix: "/app/training",    nav: "training" },
-      { prefix: "/app/alerts",      nav: "alerts" },
-      { prefix: "/app/expiry",      nav: "expiry" },
-      { prefix: "/app/documents",   nav: "documents" },
-      { prefix: "/app/logs",        nav: "logs" },
-      { prefix: "/app/inspection",  nav: "audit" },
-      { prefix: "/app/settings",    nav: "settings" },
-      { prefix: "/app/routines",    nav: "routines" },
-      { prefix: "/app/menu",        nav: "menu" },
-      { prefix: "/app/rota",        nav: "rota" },
-      { prefix: "/app/waste",       nav: "waste" },
-      { prefix: "/app/stock",       nav: "stock" },
-      { prefix: "/app/purchasing",  nav: "purchasing" },
-      { prefix: "/app/assets",      nav: "assets" },
-      { prefix: "/app/recalls",     nav: "recalls" },
-      { prefix: "/app/audits",      nav: "audits" },
-      { prefix: "/app/labels",      nav: "labels" },
-      { prefix: "/app/incidents",   nav: "incidents" },
-      { prefix: "/app/goodsin",     nav: "goodsin" },
+      { prefix: "/app/cleaning", nav: "cleaning" },
+      { prefix: "/app/recipes", nav: "recipes" },
+      { prefix: "/app/suppliers", nav: "suppliers" },
+      { prefix: "/app/training", nav: "training" },
+      { prefix: "/app/alerts", nav: "alerts" },
+      { prefix: "/app/expiry", nav: "expiry" },
+      { prefix: "/app/documents", nav: "documents" },
+      { prefix: "/app/logs", nav: "logs" },
+      { prefix: "/app/inspection", nav: "audit" },
+      { prefix: "/app/settings", nav: "settings" },
+      { prefix: "/app/routines", nav: "routines" },
+      { prefix: "/app/menu", nav: "menu" },
+      { prefix: "/app/rota", nav: "rota" },
+      { prefix: "/app/waste", nav: "waste" },
+      { prefix: "/app/stock", nav: "stock" },
+      { prefix: "/app/purchasing", nav: "purchasing" },
+      { prefix: "/app/assets", nav: "assets" },
+      { prefix: "/app/recalls", nav: "recalls" },
+      { prefix: "/app/audits", nav: "audits" },
+      { prefix: "/app/labels", nav: "labels" },
+      { prefix: "/app/incidents", nav: "incidents" },
+      { prefix: "/app/goodsin", nav: "goodsin" },
       { prefix: "/app/calibration", nav: "calibration" },
-      { prefix: "/app/health",      nav: "health" },
-      { prefix: "/app/pest",        nav: "pest" },
-      { prefix: "/app/oil",         nav: "oil" },
-      { prefix: "/app/complaints",  nav: "complaints" },
-      { prefix: "/app/chemicals",   nav: "chemicals" },
+      { prefix: "/app/health", nav: "health" },
+      { prefix: "/app/pest", nav: "pest" },
+      { prefix: "/app/oil", nav: "oil" },
+      { prefix: "/app/complaints", nav: "complaints" },
+      { prefix: "/app/chemicals", nav: "chemicals" },
     ];
 
-    const match = PATH_KEY.find((p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"));
-    if (match && !canAccess(user.role, match.nav)) {
+    const match = PATH_KEY.find(
+      (p) => pathname === p.prefix || pathname.startsWith(p.prefix + "/"),
+    );
+    if (match && !canAccess(user.role, match.nav, user.inspectorScopes)) {
       navigate({ to: homeFor(user.role) as never, replace: true });
     }
   }, [user, pathname, navigate]);
-
 
   // Global Cmd/Ctrl+K -> command palette.
   useEffect(() => {
@@ -186,7 +228,11 @@ function AppShell() {
         e.preventDefault();
         setPaletteOpen((v) => !v);
       }
-      if (e.key === "Escape") { setPaletteOpen(false); setNotifOpen(false); setMenuOpen(false); }
+      if (e.key === "Escape") {
+        setPaletteOpen(false);
+        setNotifOpen(false);
+        setMenuOpen(false);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -194,52 +240,89 @@ function AppShell() {
 
   const visibleGroups = useMemo(() => {
     if (!user) return [];
-    return GROUPS
-      .map((g) => ({ ...g, items: g.items.filter((i) => canAccess(user.role, i.nav)) }))
-      .filter((g) => g.items.length > 0);
+    return GROUPS.map((g) => ({
+      ...g,
+      items: g.items.filter((i) => canAccess(user.role, i.nav, user.inspectorScopes)),
+    })).filter((g) => g.items.length > 0);
   }, [user]);
 
   const visibleFlat = useMemo(
-    () => (user ? ALL_ITEMS.filter((i) => canAccess(user.role, i.nav)) : []),
-    [user]
+    () => (user ? ALL_ITEMS.filter((i) => canAccess(user.role, i.nav, user.inspectorScopes)) : []),
+    [user],
   );
 
-  if (!hydrated || !user) {
-    return <div className="min-h-screen grid place-items-center bg-secondary/40 text-sm text-muted-foreground">…</div>;
-  }
+  const doSignOut = () => {
+    signOut();
+    navigate({ to: "/login" });
+  };
 
-  const doSignOut = () => { signOut(); navigate({ to: "/login" }); };
-
-  const current = ALL_ITEMS.find((i) => (i.exact ? pathname === i.to : pathname.startsWith(i.to) && (i.to !== "/app" || pathname === "/app")))
-    ?? ALL_ITEMS.find((i) => !i.exact && pathname.startsWith(i.to));
+  const current =
+    ALL_ITEMS.find((i) =>
+      i.exact
+        ? pathname === i.to
+        : pathname.startsWith(i.to) && (i.to !== "/app" || pathname === "/app"),
+    ) ?? ALL_ITEMS.find((i) => !i.exact && pathname.startsWith(i.to));
 
   // Notifications — live unread alerts from Supabase, role-scoped by RLS.
-  type Notif = { id: string; sev: "high" | "medium" | "low"; title: string; meta: string; to: string };
+  type Notif = {
+    id: string;
+    sev: "high" | "medium" | "low";
+    title: string;
+    meta: string;
+    to: string;
+  };
   const [liveNotifs, setLiveNotifs] = useState<Notif[]>([]);
   useEffect(() => {
     if (!user) return;
     const KIND_TO_ROUTE: Record<string, string> = {
-      temperature: "/app/temperature", cleaning: "/app/cleaning", haccp: "/app/haccp",
-      training: "/app/training", incident: "/app/incidents", expiry: "/app/expiry",
-      audit: "/app/audits", recall: "/app/recalls", asset: "/app/assets",
+      temperature: "/app/temperature",
+      cleaning: "/app/cleaning",
+      haccp: "/app/haccp",
+      training: "/app/training",
+      incident: "/app/incidents",
+      expiry: "/app/expiry",
+      audit: "/app/audits",
+      recall: "/app/recalls",
+      asset: "/app/assets",
     };
-    const sevMap = (s: string): Notif["sev"] => s === "critical" ? "high" : s === "warning" ? "medium" : "low";
+    const sevMap = (s: string): Notif["sev"] =>
+      s === "critical" ? "high" : s === "warning" ? "medium" : "low";
     const load = async () => {
-      const { data } = await supabase.from("alerts").select("id,kind,severity,title,message,created_at")
-        .is("read_at", null).order("created_at", { ascending: false }).limit(8);
-      setLiveNotifs((data ?? []).map((a: any) => ({
-        id: a.id, sev: sevMap(a.severity), title: a.title,
-        meta: a.message ?? new Date(a.created_at).toLocaleString(lang === "de" ? "de-DE" : "en-GB"),
-        to: KIND_TO_ROUTE[a.kind] ?? "/app/alerts",
-      })));
+      const { data } = await supabase
+        .from("alerts")
+        .select("id,kind,severity,title,message,created_at")
+        .is("read_at", null)
+        .order("created_at", { ascending: false })
+        .limit(8);
+      setLiveNotifs(
+        (data ?? []).map((a: any) => ({
+          id: a.id,
+          sev: sevMap(a.severity),
+          title: a.title,
+          meta:
+            a.message ?? new Date(a.created_at).toLocaleString(lang === "de" ? "de-DE" : "en-GB"),
+          to: KIND_TO_ROUTE[a.kind] ?? "/app/alerts",
+        })),
+      );
     };
     load();
-    const ch = supabase.channel("shell-alerts")
-      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load).subscribe();
-    return () => { supabase.removeChannel(ch); };
+    const ch = supabase
+      .channel("shell-alerts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
   }, [user, lang]);
   const notifs = liveNotifs;
 
+  if (!hydrated || !user) {
+    return (
+      <div className="min-h-screen grid place-items-center bg-secondary/40 text-sm text-muted-foreground">
+        …
+      </div>
+    );
+  }
 
   // Command palette matches over role-allowed items.
   const q = paletteQ.trim().toLowerCase();
@@ -247,15 +330,15 @@ function AppShell() {
 
   return (
     <div className="min-h-screen bg-secondary/40 flex flex-col">
-      {/* Demo mode banner */}
+      {/* Active tenant and location context */}
       <div className="sticky top-0 z-40 bg-black text-white text-xs md:text-sm">
         <div className="px-4 md:px-6 h-9 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
             <span className="inline-flex items-center rounded-full bg-[color:var(--color-alert-red)] px-2 py-0.5 text-[10px] font-black uppercase tracking-widest shrink-0">
-              {t("demo.tag")}
+              {lang === "de" ? "Aktiver Betrieb" : "Active workspace"}
             </span>
             <span className="truncate text-white/80 hidden sm:inline">
-              {t("demo.body").replace("{role}", t(`role.${user.role}`))}
+              {user.organizationName ?? user.location} · {user.location} · {t(`role.${user.role}`)}
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -264,244 +347,292 @@ function AppShell() {
               onClick={() => signOut()}
               className="hidden md:inline-flex items-center gap-1 rounded-full border border-white/20 px-3 py-1 text-[11px] font-semibold hover:bg-white/10 transition"
             >
-              {t("demo.switch")}
+              {lang === "de" ? "Konto wechseln" : "Switch account"}
             </Link>
             <button
-              onClick={() => { signOut(); navigate({ to: "/" }); }}
+              onClick={() => {
+                signOut();
+                navigate({ to: "/" });
+              }}
               className="inline-flex items-center gap-1 rounded-full bg-white text-black px-3 py-1 text-[11px] font-bold hover:bg-white/90 transition"
             >
-              <LogOut size={12} /> {t("demo.exit")}
+              <LogOut size={12} /> {lang === "de" ? "Abmelden" : "Sign out"}
             </button>
           </div>
         </div>
       </div>
 
       <div className="flex-1 flex min-h-0">
-      <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-card">
-
-        <div className="px-5 h-[4.5rem] flex items-center gap-3 border-b border-border">
-          <BrandLogoImage className="h-9 w-auto" />
-          <div className="leading-tight min-w-0">
-            <div className="text-[9px] uppercase tracking-widest text-muted-foreground truncate">{t(`role.${user.role}`)}</div>
-          </div>
-        </div>
-
-
-        <nav className="p-3 flex-1 overflow-y-auto space-y-4">
-          {visibleGroups.map((group) => (
-            <div key={group.labelKey}>
-              <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                {t(group.labelKey)}
+        <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-card">
+          <div className="px-5 h-[4.5rem] flex items-center gap-3 border-b border-border">
+            <BrandLogoImage className="h-9 w-auto" />
+            <div className="leading-tight min-w-0">
+              <div className="text-[9px] uppercase tracking-widest text-muted-foreground truncate">
+                {t(`role.${user.role}`)}
               </div>
-              {group.items.map(({ to, icon: Icon, key, exact }) => {
-                const active = exact ? pathname === to : pathname.startsWith(to);
-                return (
-                  <Link
-                    key={to}
-                    to={to as never}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm mb-0.5 transition group relative ${
-                      active
-                        ? "bg-primary text-primary-foreground shadow-sm"
-                        : "text-foreground/80 hover:bg-secondary hover:text-foreground"
-                    }`}
-                  >
-                    <Icon size={16} className={active ? "" : "opacity-70 group-hover:opacity-100"} />
-                    <span className="flex-1 truncate">{t(key)}</span>
-                    {active && <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/80" />}
-                  </Link>
-                );
-              })}
             </div>
-          ))}
-        </nav>
-
-        <div className="p-3 border-t border-border space-y-1">
-          <button
-            onClick={() => setPaletteOpen(true)}
-            className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground transition"
-          >
-            <Search size={16} /> <span className="flex-1 text-left">{t("nav.search")}</span>
-            <kbd className="text-[10px] rounded border border-border bg-secondary px-1.5 py-0.5">⌘K</kbd>
-          </button>
-          {canAccess(user.role, "settings") && (
-            <Link
-              to="/app/settings"
-              className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
-                pathname.startsWith("/app/settings") ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-              }`}
-            >
-              <Settings size={16} /> {t("menu.settings")}
-            </Link>
-          )}
-          <button
-            onClick={doSignOut}
-            className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground transition"
-          >
-            <LogOut size={16} /> {t("auth.signout")}
-          </button>
-        </div>
-      </aside>
-
-      <div className="flex-1 min-w-0 flex flex-col">
-        <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/85 backdrop-blur px-4 md:px-6 flex items-center justify-between gap-3">
-          {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 min-w-0">
-            <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground shrink-0">
-              <ArrowLeft size={14} />
-            </Link>
-            <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-1.5 text-sm min-w-0">
-              <Link to={homeFor(user.role) as never} className="text-muted-foreground hover:text-foreground truncate">
-                {t("app.tag")}
-              </Link>
-              {current && (
-                <>
-                  <ChevronRight size={14} className="text-muted-foreground/60 shrink-0" />
-                  <span className="font-semibold truncate">{t(current.key)}</span>
-                </>
-              )}
-            </nav>
           </div>
 
-          {/* Search trigger */}
-          <button
-            onClick={() => setPaletteOpen(true)}
-            className="hidden md:flex items-center gap-2 flex-1 max-w-md mx-8 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm text-muted-foreground hover:bg-secondary transition"
-          >
-            <Search size={14} />
-            <span className="flex-1 text-left">{t("nav.search")}</span>
-            <kbd className="text-[10px] rounded border border-border bg-secondary px-1.5 py-0.5 inline-flex items-center gap-0.5">
-              <Command size={10} />K
-            </kbd>
-          </button>
-
-          <div className="flex items-center gap-2 md:gap-3 shrink-0">
-            <LanguageToggle />
-
-            {/* Notifications */}
-            <div className="relative">
-              <button
-                onClick={() => { setNotifOpen((v) => !v); setMenuOpen(false); }}
-                className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card hover:bg-secondary transition"
-                aria-label={t("notif.title")}
-              >
-                <Bell size={16} />
-                {notifs.length > 0 && (
-                  <span className="absolute top-1 right-1 h-4 min-w-4 px-1 rounded-full bg-destructive text-[9px] font-bold text-destructive-foreground grid place-items-center">
-                    {notifs.length}
-                  </span>
-                )}
-              </button>
-              {notifOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={() => setNotifOpen(false)} />
-                  <div className="absolute right-0 top-full mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-card shadow-xl z-50 overflow-hidden">
-                    <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-                      <div className="font-display text-sm">{t("notif.title")}</div>
-                      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{notifs.length} {t("notif.new")}</div>
-                    </div>
-                    <div className="max-h-[26rem] overflow-y-auto divide-y divide-border">
-                      {notifs.length === 0 && (
-                        <div className="px-4 py-6 text-sm text-muted-foreground text-center">{t("notif.empty")}</div>
-                      )}
-                      {notifs.map((n) => (
-                        <Link
-                          key={n.id}
-                          to={n.to as never}
-                          onClick={() => setNotifOpen(false)}
-                          className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition"
-                        >
-                          {n.sev === "high"   && <AlertTriangle size={16} className="text-destructive mt-0.5 shrink-0" />}
-                          {n.sev === "medium" && <Clock          size={16} className="text-warning-foreground mt-0.5 shrink-0" />}
-                          {n.sev === "low"    && <CheckCircle2   size={16} className="text-muted-foreground mt-0.5 shrink-0" />}
-                          <div className="min-w-0">
-                            <div className="text-sm font-medium truncate">{n.title}</div>
-                            <div className="text-xs text-muted-foreground truncate">{n.meta}</div>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
+          <nav className="p-3 flex-1 overflow-y-auto space-y-4">
+            {visibleGroups.map((group) => (
+              <div key={group.labelKey}>
+                <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  {t(group.labelKey)}
+                </div>
+                {group.items.map(({ to, icon: Icon, key, exact }) => {
+                  const active = exact ? pathname === to : pathname.startsWith(to);
+                  return (
                     <Link
-                      to="/app/inspection"
-                      onClick={() => setNotifOpen(false)}
-                      className="block px-4 py-2.5 text-center text-xs font-semibold text-primary hover:bg-secondary border-t border-border"
+                      key={to}
+                      to={to as never}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm mb-0.5 transition group relative ${
+                        active
+                          ? "bg-primary text-primary-foreground shadow-sm"
+                          : "text-foreground/80 hover:bg-secondary hover:text-foreground"
+                      }`}
                     >
-                      {t("notif.viewAll")} →
+                      <Icon
+                        size={16}
+                        className={active ? "" : "opacity-70 group-hover:opacity-100"}
+                      />
+                      <span className="flex-1 truncate">{t(key)}</span>
+                      {active && (
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/80" />
+                      )}
                     </Link>
-                  </div>
-                </>
-              )}
+                  );
+                })}
+              </div>
+            ))}
+          </nav>
+
+          <div className="p-3 border-t border-border space-y-1">
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground transition"
+            >
+              <Search size={16} /> <span className="flex-1 text-left">{t("nav.search")}</span>
+              <kbd className="text-[10px] rounded border border-border bg-secondary px-1.5 py-0.5">
+                ⌘K
+              </kbd>
+            </button>
+            {canAccess(user.role, "settings", user.inspectorScopes) && (
+              <Link
+                to="/app/settings"
+                className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
+                  pathname.startsWith("/app/settings")
+                    ? "bg-secondary text-foreground"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                <Settings size={16} /> {t("menu.settings")}
+              </Link>
+            )}
+            <button
+              onClick={doSignOut}
+              className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground transition"
+            >
+              <LogOut size={16} /> {t("auth.signout")}
+            </button>
+          </div>
+        </aside>
+
+        <div className="flex-1 min-w-0 flex flex-col">
+          <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/85 backdrop-blur px-4 md:px-6 flex items-center justify-between gap-3">
+            {/* Breadcrumbs */}
+            <div className="flex items-center gap-2 min-w-0">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground shrink-0"
+              >
+                <ArrowLeft size={14} />
+              </Link>
+              <nav
+                aria-label="Breadcrumb"
+                className="hidden sm:flex items-center gap-1.5 text-sm min-w-0"
+              >
+                <Link
+                  to={homeFor(user.role) as never}
+                  className="text-muted-foreground hover:text-foreground truncate"
+                >
+                  {t("app.tag")}
+                </Link>
+                {current && (
+                  <>
+                    <ChevronRight size={14} className="text-muted-foreground/60 shrink-0" />
+                    <span className="font-semibold truncate">{t(current.key)}</span>
+                  </>
+                )}
+              </nav>
             </div>
 
-            {/* User menu */}
-            <div className="relative">
-              <button
-                onClick={() => { setMenuOpen((v) => !v); setNotifOpen(false); }}
-                className="flex items-center gap-2 rounded-full border border-border bg-card pl-1 pr-3 py-1 hover:bg-secondary transition"
-              >
-                <span className="h-7 w-7 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs font-bold">
-                  {user.initials}
-                </span>
-                <span className="hidden sm:block text-left leading-tight">
-                  <span className="block text-xs font-bold">{user.name}</span>
-                  <span className="block text-[10px] uppercase tracking-wide text-muted-foreground">{t(`role.${user.role}`)}</span>
-                </span>
-                <ChevronDown size={14} className="text-muted-foreground" />
-              </button>
-              {menuOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
-                  <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-border bg-card shadow-xl z-50 overflow-hidden">
-                    <div className="px-4 py-3 border-b border-border">
-                      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{t("auth.signedInAs")}</div>
-                      <div className="mt-1 text-sm font-semibold">{user.name}</div>
-                      <div className="text-xs text-muted-foreground truncate">{user.email}</div>
-                      <div className="mt-1.5 inline-flex items-center rounded-full bg-[color:var(--color-alert-red)]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[color:var(--color-alert-red)]">
-                        {t(`role.${user.role}`)}
+            {/* Search trigger */}
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="hidden md:flex items-center gap-2 flex-1 max-w-md mx-8 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm text-muted-foreground hover:bg-secondary transition"
+            >
+              <Search size={14} />
+              <span className="flex-1 text-left">{t("nav.search")}</span>
+              <kbd className="text-[10px] rounded border border-border bg-secondary px-1.5 py-0.5 inline-flex items-center gap-0.5">
+                <Command size={10} />K
+              </kbd>
+            </button>
+
+            <div className="flex items-center gap-2 md:gap-3 shrink-0">
+              <LanguageToggle />
+
+              {/* Notifications */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setNotifOpen((v) => !v);
+                    setMenuOpen(false);
+                  }}
+                  className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card hover:bg-secondary transition"
+                  aria-label={t("notif.title")}
+                >
+                  <Bell size={16} />
+                  {notifs.length > 0 && (
+                    <span className="absolute top-1 right-1 h-4 min-w-4 px-1 rounded-full bg-destructive text-[9px] font-bold text-destructive-foreground grid place-items-center">
+                      {notifs.length}
+                    </span>
+                  )}
+                </button>
+                {notifOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setNotifOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-card shadow-xl z-50 overflow-hidden">
+                      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+                        <div className="font-display text-sm">{t("notif.title")}</div>
+                        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                          {notifs.length} {t("notif.new")}
+                        </div>
                       </div>
-                    </div>
-                    {canAccess(user.role, "settings") && (
+                      <div className="max-h-[26rem] overflow-y-auto divide-y divide-border">
+                        {notifs.length === 0 && (
+                          <div className="px-4 py-6 text-sm text-muted-foreground text-center">
+                            {t("notif.empty")}
+                          </div>
+                        )}
+                        {notifs.map((n) => (
+                          <Link
+                            key={n.id}
+                            to={n.to as never}
+                            onClick={() => setNotifOpen(false)}
+                            className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition"
+                          >
+                            {n.sev === "high" && (
+                              <AlertTriangle
+                                size={16}
+                                className="text-destructive mt-0.5 shrink-0"
+                              />
+                            )}
+                            {n.sev === "medium" && (
+                              <Clock
+                                size={16}
+                                className="text-warning-foreground mt-0.5 shrink-0"
+                              />
+                            )}
+                            {n.sev === "low" && (
+                              <CheckCircle2
+                                size={16}
+                                className="text-muted-foreground mt-0.5 shrink-0"
+                              />
+                            )}
+                            <div className="min-w-0">
+                              <div className="text-sm font-medium truncate">{n.title}</div>
+                              <div className="text-xs text-muted-foreground truncate">{n.meta}</div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
                       <Link
-                        to="/app/settings"
+                        to="/app/inspection"
+                        onClick={() => setNotifOpen(false)}
+                        className="block px-4 py-2.5 text-center text-xs font-semibold text-primary hover:bg-secondary border-t border-border"
+                      >
+                        {t("notif.viewAll")} →
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* User menu */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setMenuOpen((v) => !v);
+                    setNotifOpen(false);
+                  }}
+                  className="flex items-center gap-2 rounded-full border border-border bg-card pl-1 pr-3 py-1 hover:bg-secondary transition"
+                >
+                  <span className="h-7 w-7 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs font-bold">
+                    {user.initials}
+                  </span>
+                  <span className="hidden sm:block text-left leading-tight">
+                    <span className="block text-xs font-bold">{user.name}</span>
+                    <span className="block text-[10px] uppercase tracking-wide text-muted-foreground">
+                      {t(`role.${user.role}`)}
+                    </span>
+                  </span>
+                  <ChevronDown size={14} className="text-muted-foreground" />
+                </button>
+                {menuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-border bg-card shadow-xl z-50 overflow-hidden">
+                      <div className="px-4 py-3 border-b border-border">
+                        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                          {t("auth.signedInAs")}
+                        </div>
+                        <div className="mt-1 text-sm font-semibold">{user.name}</div>
+                        <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+                        <div className="mt-1.5 inline-flex items-center rounded-full bg-[color:var(--color-alert-red)]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[color:var(--color-alert-red)]">
+                          {t(`role.${user.role}`)}
+                        </div>
+                      </div>
+                      {canAccess(user.role, "settings", user.inspectorScopes) && (
+                        <Link
+                          to="/app/settings"
+                          onClick={() => setMenuOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-secondary"
+                        >
+                          <Settings size={14} /> {t("menu.settings")}
+                        </Link>
+                      )}
+                      <Link
+                        to="/login"
                         onClick={() => setMenuOpen(false)}
                         className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-secondary"
                       >
-                        <Settings size={14} /> {t("menu.settings")}
+                        <Users size={14} /> {t("auth.switch")}
                       </Link>
-                    )}
-                    <Link
-                      to="/login"
-                      onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-secondary"
-                    >
-                      <Users size={14} /> {t("auth.switch")}
-                    </Link>
-                    <button
-                      onClick={doSignOut}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[color:var(--color-alert-red)] hover:bg-secondary"
-                    >
-                      <LogOut size={14} /> {t("auth.signout")}
-                    </button>
-                  </div>
-                </>
-              )}
+                      <button
+                        onClick={doSignOut}
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[color:var(--color-alert-red)] hover:bg-secondary"
+                      >
+                        <LogOut size={14} /> {t("auth.signout")}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
 
-        <main className="flex-1 min-w-0">
-          <Outlet />
-        </main>
+          <main className="flex-1 min-w-0">
+            <Outlet />
+          </main>
 
-        <MobileBottomNav
-          visibleFlat={visibleFlat}
-          visibleGroups={visibleGroups}
-          pathname={pathname}
-          t={t}
-        />
-
+          <MobileBottomNav
+            visibleFlat={visibleFlat}
+            visibleGroups={visibleGroups}
+            pathname={pathname}
+            t={t}
+          />
+        </div>
       </div>
-      </div>
-
 
       {/* Command palette */}
       {paletteOpen && (
@@ -522,16 +653,24 @@ function AppShell() {
                 placeholder={t("palette.placeholder")}
                 className="flex-1 py-4 bg-transparent outline-none text-sm"
               />
-              <kbd className="text-[10px] rounded border border-border bg-secondary px-1.5 py-0.5">ESC</kbd>
+              <kbd className="text-[10px] rounded border border-border bg-secondary px-1.5 py-0.5">
+                ESC
+              </kbd>
             </div>
             <div className="max-h-[50vh] overflow-y-auto py-2">
               {paletteResults.length === 0 && (
-                <div className="px-4 py-6 text-center text-sm text-muted-foreground">{t("palette.empty")}</div>
+                <div className="px-4 py-6 text-center text-sm text-muted-foreground">
+                  {t("palette.empty")}
+                </div>
               )}
               {paletteResults.map(({ to, icon: Icon, key }) => (
                 <button
                   key={to}
-                  onClick={() => { setPaletteOpen(false); setPaletteQ(""); navigate({ to: to as never }); }}
+                  onClick={() => {
+                    setPaletteOpen(false);
+                    setPaletteQ("");
+                    navigate({ to: to as never });
+                  }}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-secondary transition"
                 >
                   <Icon size={16} className="text-muted-foreground" />
@@ -604,7 +743,10 @@ function MobileBottomNav({
       </nav>
 
       {moreOpen && (
-        <div className="md:hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm" onClick={() => setMoreOpen(false)}>
+        <div
+          className="md:hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm"
+          onClick={() => setMoreOpen(false)}
+        >
           <div
             className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-card border-t border-border pb-safe"
             onClick={(e) => e.stopPropagation()}
@@ -653,4 +795,3 @@ function MobileBottomNav({
     </>
   );
 }
-

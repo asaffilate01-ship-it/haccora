@@ -10,42 +10,281 @@ export interface AuthUser {
   initials: string;
   role: Role;
   location: string;
+  organizationId: string | null;
+  locationId: string | null;
+  organizationName: string | null;
+  inspectorScopes: string[];
 }
 
-const NAV_KEYS = ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","labels","incidents","alerts","expiry","documents","logs","audit","settings","goodsin","calibration","health","pest","oil","complaints","chemicals"] as const;
-export type NavKey = typeof NAV_KEYS[number];
+const NAV_KEYS = [
+  "dashboard",
+  "haccp",
+  "checks",
+  "temperature",
+  "cleaning",
+  "routines",
+  "menu",
+  "rota",
+  "waste",
+  "stock",
+  "recipes",
+  "suppliers",
+  "purchasing",
+  "assets",
+  "recalls",
+  "audits",
+  "training",
+  "labels",
+  "incidents",
+  "alerts",
+  "expiry",
+  "documents",
+  "logs",
+  "audit",
+  "settings",
+  "goodsin",
+  "calibration",
+  "health",
+  "pest",
+  "oil",
+  "complaints",
+  "chemicals",
+] as const;
+export type NavKey = (typeof NAV_KEYS)[number];
 
 export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
-  owner:     ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","labels","incidents","alerts","expiry","documents","logs","audit","settings","goodsin","calibration","health","pest","oil","complaints","chemicals"],
-  manager:   ["dashboard","haccp","checks","temperature","cleaning","routines","menu","rota","waste","stock","recipes","suppliers","purchasing","assets","recalls","audits","training","labels","incidents","alerts","expiry","documents","logs","audit","settings","goodsin","calibration","health","pest","oil","complaints","chemicals"],
-  chef:      ["dashboard","haccp","checks","temperature","cleaning","routines","menu","waste","stock","recipes","purchasing","assets","recalls","training","labels","incidents","alerts","expiry","documents","settings","goodsin","calibration","pest","oil","complaints","chemicals"],
-  staff:     ["dashboard","checks","temperature","cleaning","routines","rota","waste","training","labels","incidents","alerts","expiry","goodsin","calibration","pest","oil"],
-  inspector: ["dashboard","documents","logs","audit","audits","recalls","incidents","goodsin","calibration","health","pest","oil","complaints","chemicals"],
+  owner: [
+    "dashboard",
+    "haccp",
+    "checks",
+    "temperature",
+    "cleaning",
+    "routines",
+    "menu",
+    "rota",
+    "waste",
+    "stock",
+    "recipes",
+    "suppliers",
+    "purchasing",
+    "assets",
+    "recalls",
+    "audits",
+    "training",
+    "labels",
+    "incidents",
+    "alerts",
+    "expiry",
+    "documents",
+    "logs",
+    "audit",
+    "settings",
+    "goodsin",
+    "calibration",
+    "health",
+    "pest",
+    "oil",
+    "complaints",
+    "chemicals",
+  ],
+  manager: [
+    "dashboard",
+    "haccp",
+    "checks",
+    "temperature",
+    "cleaning",
+    "routines",
+    "menu",
+    "rota",
+    "waste",
+    "stock",
+    "recipes",
+    "suppliers",
+    "purchasing",
+    "assets",
+    "recalls",
+    "audits",
+    "training",
+    "labels",
+    "incidents",
+    "alerts",
+    "expiry",
+    "documents",
+    "logs",
+    "audit",
+    "settings",
+    "goodsin",
+    "calibration",
+    "health",
+    "pest",
+    "oil",
+    "complaints",
+    "chemicals",
+  ],
+  chef: [
+    "dashboard",
+    "haccp",
+    "checks",
+    "temperature",
+    "cleaning",
+    "routines",
+    "menu",
+    "waste",
+    "stock",
+    "recipes",
+    "purchasing",
+    "assets",
+    "recalls",
+    "training",
+    "labels",
+    "incidents",
+    "alerts",
+    "expiry",
+    "documents",
+    "settings",
+    "goodsin",
+    "calibration",
+    "pest",
+    "oil",
+    "complaints",
+    "chemicals",
+  ],
+  staff: [
+    "dashboard",
+    "checks",
+    "temperature",
+    "cleaning",
+    "routines",
+    "rota",
+    "waste",
+    "training",
+    "labels",
+    "incidents",
+    "alerts",
+    "expiry",
+    "goodsin",
+    "calibration",
+    "pest",
+    "oil",
+  ],
+  inspector: [
+    "haccp",
+    "checks",
+    "temperature",
+    "cleaning",
+    "routines",
+    "menu",
+    "recipes",
+    "suppliers",
+    "purchasing",
+    "recalls",
+    "training",
+    "documents",
+    "audit",
+    "audits",
+    "incidents",
+    "expiry",
+    "goodsin",
+    "calibration",
+    "pest",
+  ],
 };
 
-export function canAccess(role: Role, key: NavKey) { return ROLE_PERMISSIONS[role].includes(key); }
-export function homeFor(role: Role): string { return role === "inspector" ? "/app/inspection" : "/app"; }
+const INSPECTOR_SCOPE_BY_NAV: Partial<Record<NavKey, string>> = {
+  haccp: "haccp",
+  checks: "cleaning",
+  cleaning: "cleaning",
+  routines: "cleaning",
+  temperature: "temperature",
+  calibration: "temperature",
+  menu: "allergens",
+  recipes: "allergens",
+  training: "training",
+  suppliers: "traceability",
+  purchasing: "traceability",
+  recalls: "traceability",
+  goodsin: "traceability",
+  expiry: "traceability",
+  audits: "audits",
+  pest: "pest",
+  documents: "documents",
+  incidents: "incidents",
+};
+
+export function canAccess(role: Role, key: NavKey, inspectorScopes: string[] = []) {
+  if (!ROLE_PERMISSIONS[role].includes(key)) return false;
+  if (role !== "inspector" || key === "audit") return true;
+  const requiredScope = INSPECTOR_SCOPE_BY_NAV[key];
+  return !!requiredScope && inspectorScopes.includes(requiredScope);
+}
+export function homeFor(role: Role): string {
+  return role === "inspector" ? "/app/inspection" : "/app";
+}
 
 function initialsOf(name: string) {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((s) => s[0]?.toUpperCase() ?? "").join("") || "GS";
+  return (
+    name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((s) => s[0]?.toUpperCase() ?? "")
+      .join("") || "GS"
+  );
 }
 
 async function fetchAuthUser(userId: string, email: string): Promise<AuthUser | null> {
-  const [{ data: profile }, { data: roleRow }] = await Promise.all([
-    supabase.from("profiles").select("full_name, location, restaurant_name").eq("id", userId).maybeSingle(),
-    supabase.from("user_roles").select("role").eq("user_id", userId).order("created_at", { ascending: true }).limit(1).maybeSingle(),
+  const [{ data: profile }, { data: context }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("full_name, location, restaurant_name")
+      .eq("id", userId)
+      .maybeSingle(),
+    supabase.rpc("get_my_context"),
   ]);
+  const workspace =
+    context && typeof context === "object" && !Array.isArray(context)
+      ? (context as Record<string, unknown>)
+      : {};
   const name = profile?.full_name || email.split("@")[0];
-  const role = (roleRow?.role ?? "staff") as Role;
-  const location = profile?.location || profile?.restaurant_name || "Haccora";
-  return { id: userId, name, email, initials: initialsOf(name), role, location };
+  const role = (workspace.role ?? "staff") as Role;
+  const organizationName =
+    typeof workspace.organization_name === "string" ? workspace.organization_name : null;
+  const inspectorScopes = Array.isArray(workspace.evidence_scopes)
+    ? workspace.evidence_scopes.filter((scope): scope is string => typeof scope === "string")
+    : [];
+  const location =
+    (typeof workspace.location_name === "string" ? workspace.location_name : null) ||
+    profile?.location ||
+    organizationName ||
+    profile?.restaurant_name ||
+    "Haccora";
+  return {
+    id: userId,
+    name,
+    email,
+    initials: initialsOf(name),
+    role,
+    location,
+    organizationId:
+      typeof workspace.organization_id === "string" ? workspace.organization_id : null,
+    locationId: typeof workspace.location_id === "string" ? workspace.location_id : null,
+    organizationName,
+    inspectorScopes,
+  };
 }
 
 type Ctx = {
   user: AuthUser | null;
   hydrated: boolean;
   signInWithEmail: (email: string, password: string) => Promise<{ error?: string }>;
-  signUpWithEmail: (input: { email: string; password: string; name: string; role: Role; restaurant?: string }) => Promise<{ error?: string }>;
+  signUpWithEmail: (input: {
+    email: string;
+    password: string;
+    name: string;
+    restaurant?: string;
+    language?: "de" | "en";
+  }) => Promise<{ error?: string; needsEmailConfirmation?: boolean }>;
+  requestPasswordReset: (email: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
 };
@@ -58,7 +297,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loadFromSession = async () => {
     const { data } = await supabase.auth.getSession();
     const s = data.session;
-    if (!s?.user) { setUser(null); return; }
+    if (!s?.user) {
+      setUser(null);
+      return;
+    }
     const u = await fetchAuthUser(s.user.id, s.user.email ?? "");
     setUser(u);
   };
@@ -66,14 +308,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Listener first, then hydrate
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) { setUser(null); return; }
+      if (event === "SIGNED_OUT" || !session) {
+        setUser(null);
+        return;
+      }
       if (session.user) {
         // defer to avoid blocking the callback
-        setTimeout(() => { fetchAuthUser(session.user.id, session.user.email ?? "").then(setUser); }, 0);
+        setTimeout(() => {
+          fetchAuthUser(session.user.id, session.user.email ?? "").then(setUser);
+        }, 0);
       }
     });
     loadFromSession().finally(() => setHydrated(true));
-    return () => { sub.subscription.unsubscribe(); };
+    return () => {
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   const signInWithEmail = async (email: string, password: string) => {
@@ -82,25 +331,64 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return {};
   };
 
-  const signUpWithEmail: Ctx["signUpWithEmail"] = async ({ email, password, name, role, restaurant }) => {
-    const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/app` : undefined;
-    const { error } = await supabase.auth.signUp({
+  const signUpWithEmail: Ctx["signUpWithEmail"] = async ({
+    email,
+    password,
+    name,
+    restaurant,
+    language,
+  }) => {
+    let redirectTo: string | undefined;
+    if (typeof window !== "undefined") {
+      const invite = new URLSearchParams(window.location.search).get("invite");
+      const inspectorInvite = new URLSearchParams(window.location.search).get("inspectorInvite");
+      if (invite) {
+        redirectTo = `${window.location.origin}/login?invite=${encodeURIComponent(invite)}`;
+      } else if (inspectorInvite) {
+        redirectTo = `${window.location.origin}/login?inspectorInvite=${encodeURIComponent(inspectorInvite)}`;
+      } else {
+        redirectTo = `${window.location.origin}/onboarding`;
+      }
+    }
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: redirectTo,
-        data: { full_name: name, role, restaurant_name: restaurant ?? null },
+        data: { full_name: name, restaurant_name: restaurant ?? null, language: language ?? "de" },
       },
     });
     if (error) return { error: error.message };
-    return {};
+    return { needsEmailConfirmation: !data.session };
   };
 
-  const signOut = async () => { await supabase.auth.signOut(); setUser(null); };
-  const refresh = async () => { await loadFromSession(); };
+  const requestPasswordReset = async (email: string) => {
+    const redirectTo =
+      typeof window !== "undefined" ? `${window.location.origin}/login?reset=1` : undefined;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+    return error ? { error: error.message } : {};
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+  };
+  const refresh = async () => {
+    await loadFromSession();
+  };
 
   return (
-    <AuthContext.Provider value={{ user, hydrated, signInWithEmail, signUpWithEmail, signOut, refresh }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        hydrated,
+        signInWithEmail,
+        signUpWithEmail,
+        requestPasswordReset,
+        signOut,
+        refresh,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -112,4 +400,4 @@ export function useAuth() {
   return ctx;
 }
 
-export const ROLES: Role[] = ["owner","manager","chef","staff","inspector"];
+export const ROLES: Role[] = ["owner", "manager", "chef", "staff", "inspector"];

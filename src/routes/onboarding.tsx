@@ -1,9 +1,21 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { ShieldCheck, ChevronRight, ChevronLeft, Utensils, Coffee, Building2, Store, Hotel, CheckCircle2, Loader2 } from "lucide-react";
+import {
+  ShieldCheck,
+  ChevronRight,
+  ChevronLeft,
+  Utensils,
+  Coffee,
+  Building2,
+  Store,
+  Hotel,
+  CheckCircle2,
+  Loader2,
+} from "lucide-react";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
@@ -16,17 +28,29 @@ export const Route = createFileRoute("/onboarding")({
 });
 
 const VERTICALS = [
-  { id: "restaurant", icon: Utensils,  deL: "Restaurant",        enL: "Restaurant" },
-  { id: "cafe",       icon: Coffee,    deL: "Café / Bäckerei",   enL: "Café / bakery" },
-  { id: "hotel",      icon: Hotel,     deL: "Hotel-Gastronomie", enL: "Hotel catering" },
-  { id: "canteen",    icon: Building2, deL: "Kantine / GV",      enL: "Canteen / catering" },
-  { id: "takeaway",   icon: Store,     deL: "Take-away / Kiosk", enL: "Take-away / kiosk" },
+  { id: "restaurant", icon: Utensils, deL: "Restaurant", enL: "Restaurant" },
+  { id: "cafe", icon: Coffee, deL: "Café / Bäckerei", enL: "Café / bakery" },
+  { id: "hotel", icon: Hotel, deL: "Hotel-Gastronomie", enL: "Hotel catering" },
+  { id: "canteen", icon: Building2, deL: "Kantine / GV", enL: "Canteen / catering" },
+  { id: "takeaway", icon: Store, deL: "Take-away / Kiosk", enL: "Take-away / kiosk" },
 ];
+
+const MODULES = [
+  "haccp",
+  "temperature",
+  "cleaning",
+  "menu",
+  "purchasing",
+  "rota",
+  "training",
+  "audits",
+] as const;
 
 function OnboardingPage() {
   const { lang } = useI18n();
   const t = (de: string, en: string) => (lang === "de" ? de : en);
   const navigate = useNavigate();
+  const { user: authUser, hydrated, refresh } = useAuth();
   const [step, setStep] = useState(0);
   const [vertical, setVertical] = useState<string | null>(null);
   const [name, setName] = useState("");
@@ -34,7 +58,15 @@ function OnboardingPage() {
   const [businessState, setBusinessState] = useState("Berlin");
   const [size, setSize] = useState("11-30");
   const [locations, setLocations] = useState(1);
+  const [modules, setModules] = useState<string[]>([...MODULES]);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (hydrated && !authUser)
+      navigate({ to: "/login", search: { redirect: "/onboarding" } as never });
+    if (hydrated && authUser?.organizationId) navigate({ to: "/app", replace: true });
+  }, [authUser, hydrated, navigate]);
 
   const steps = [
     t("Betriebstyp", "Business type"),
@@ -46,17 +78,46 @@ function OnboardingPage() {
   const last = step === steps.length - 1;
 
   const persistAndFinish = async () => {
+    if (!name.trim()) {
+      setError(t("Bitte geben Sie einen Firmennamen ein.", "Please enter a company name."));
+      setStep(1);
+      return;
+    }
     setSaving(true);
-    const { data: { user } } = await supabase.auth.getUser();
+    setError(null);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (user) {
-      await supabase.from("profiles").update({
-        restaurant_name: name || null,
-        vertical, vat_id: vatId || null,
-        business_state: businessState,
-        team_size: size,
-        location_count: locations,
-        onboarded_at: new Date().toISOString(),
-      }).eq("id", user.id);
+      const { error: bootstrapError } = await supabase.rpc("bootstrap_my_organization", {
+        p_name: name.trim(),
+        p_location_name: name.trim(),
+        p_business_state: businessState,
+        p_modules: modules,
+      });
+      if (bootstrapError) {
+        setError(bootstrapError.message);
+        setSaving(false);
+        return;
+      }
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update({
+          restaurant_name: name || null,
+          vertical,
+          vat_id: vatId || null,
+          business_state: businessState,
+          team_size: size,
+          location_count: locations,
+          onboarded_at: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+      if (profileError) {
+        setError(profileError.message);
+        setSaving(false);
+        return;
+      }
+      await refresh();
     }
     setSaving(false);
     navigate({ to: user ? "/app" : "/login" });
@@ -66,10 +127,14 @@ function OnboardingPage() {
     <div className="min-h-screen bg-secondary/40 flex flex-col">
       <header className="h-14 px-6 flex items-center justify-between border-b border-border bg-card">
         <Link to="/" className="flex items-center gap-2">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"><ShieldCheck size={16} /></span>
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <ShieldCheck size={16} />
+          </span>
           <div className="leading-tight">
             <span className="font-display block">Haccora</span>
-            <span className="text-[9px] font-bold tracking-[0.1em] text-muted-foreground uppercase">{t("Sicher. Sauber. Nachweisbar.", "Safe. Clean. Traceable.")}</span>
+            <span className="text-[9px] font-bold tracking-[0.1em] text-muted-foreground uppercase">
+              {t("Sicher. Sauber. Nachweisbar.", "Safe. Clean. Traceable.")}
+            </span>
           </div>
         </Link>
         <LanguageToggle />
@@ -80,16 +145,26 @@ function OnboardingPage() {
         <div className="flex items-center gap-2 mb-8">
           {steps.map((s, i) => (
             <div key={i} className="flex items-center gap-2 flex-1">
-              <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-bold shrink-0 ${
-                i < step ? "bg-success text-white" : i === step ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
-              }`}>
+              <div
+                className={`h-8 w-8 rounded-full grid place-items-center text-xs font-bold shrink-0 ${
+                  i < step
+                    ? "bg-success text-white"
+                    : i === step
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-muted-foreground"
+                }`}
+              >
                 {i < step ? <CheckCircle2 size={14} /> : i + 1}
               </div>
-              {i < steps.length - 1 && <div className={`flex-1 h-0.5 ${i < step ? "bg-success" : "bg-border"}`} />}
+              {i < steps.length - 1 && (
+                <div className={`flex-1 h-0.5 ${i < step ? "bg-success" : "bg-border"}`} />
+              )}
             </div>
           ))}
         </div>
-        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{t("Schritt", "Step")} {step + 1} / {steps.length}</div>
+        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+          {t("Schritt", "Step")} {step + 1} / {steps.length}
+        </div>
         <h1 className="text-3xl md:text-4xl mt-1">{steps[step]}</h1>
 
         <div className="mt-8 surface p-6 md:p-8">
@@ -99,7 +174,11 @@ function OnboardingPage() {
                 const Icon = v.icon;
                 const on = vertical === v.id;
                 return (
-                  <button key={v.id} onClick={() => setVertical(v.id)} className={`p-5 rounded-xl border text-left transition ${on ? "border-primary bg-primary/5" : "border-border hover:bg-secondary/50"}`}>
+                  <button
+                    key={v.id}
+                    onClick={() => setVertical(v.id)}
+                    className={`p-5 rounded-xl border text-left transition ${on ? "border-primary bg-primary/5" : "border-border hover:bg-secondary/50"}`}
+                  >
                     <Icon size={22} className={on ? "text-primary" : "text-muted-foreground"} />
                     <div className="font-medium mt-3">{lang === "de" ? v.deL : v.enL}</div>
                   </button>
@@ -111,17 +190,41 @@ function OnboardingPage() {
           {step === 1 && (
             <div className="space-y-4 max-w-md">
               <label className="block">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{t("Firmenname", "Company name")}</div>
-                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Kreuzberg Kitchen GmbH" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+                  {t("Firmenname", "Company name")}
+                </div>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Kreuzberg Kitchen GmbH"
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+                />
               </label>
               <label className="block">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{t("Umsatzsteuer-ID (optional)", "VAT ID (optional)")}</div>
-                <input value={vatId} onChange={(e)=>setVatId(e.target.value)} placeholder="DE 123 456 789" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+                  {t("Umsatzsteuer-ID (optional)", "VAT ID (optional)")}
+                </div>
+                <input
+                  value={vatId}
+                  onChange={(e) => setVatId(e.target.value)}
+                  placeholder="DE 123 456 789"
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+                />
               </label>
               <label className="block">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{t("Bundesland", "State")}</div>
-                <select value={businessState} onChange={(e)=>setBusinessState(e.target.value)} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm">
-                  <option>Berlin</option><option>Bayern</option><option>Nordrhein-Westfalen</option><option>Hamburg</option><option>Baden-Württemberg</option>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+                  {t("Bundesland", "State")}
+                </div>
+                <select
+                  value={businessState}
+                  onChange={(e) => setBusinessState(e.target.value)}
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+                >
+                  <option>Berlin</option>
+                  <option>Bayern</option>
+                  <option>Nordrhein-Westfalen</option>
+                  <option>Hamburg</option>
+                  <option>Baden-Württemberg</option>
                 </select>
               </label>
             </div>
@@ -130,8 +233,14 @@ function OnboardingPage() {
           {step === 2 && (
             <div className="grid md:grid-cols-2 gap-6">
               <label className="block">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{t("Teamgröße", "Team size")}</div>
-                <select value={size} onChange={(e) => setSize(e.target.value)} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm">
+                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+                  {t("Teamgröße", "Team size")}
+                </div>
+                <select
+                  value={size}
+                  onChange={(e) => setSize(e.target.value)}
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+                >
                   <option value="1-10">1–10</option>
                   <option value="11-30">11–30</option>
                   <option value="31-100">31–100</option>
@@ -139,18 +248,53 @@ function OnboardingPage() {
                 </select>
               </label>
               <label className="block">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{t("Standorte", "Locations")}</div>
-                <input type="number" min={1} value={locations} onChange={(e) => setLocations(Number(e.target.value))} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm" />
+                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+                  {t("Standorte", "Locations")}
+                </div>
+                <input
+                  type="number"
+                  min={1}
+                  value={locations}
+                  onChange={(e) => setLocations(Number(e.target.value))}
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+                />
               </label>
             </div>
           )}
 
           {step === 3 && (
             <div className="grid sm:grid-cols-2 gap-3">
-              {["HACCP", "Temperature", "Cleaning", "Menu & Allergens", "Purchasing", "Rota & clock-in", "Training / LMS", "Audits"].map((m) => (
-                <label key={m} className="flex items-center gap-3 px-4 py-3 rounded-lg border border-border cursor-pointer hover:bg-secondary/40">
-                  <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-border" />
-                  <span className="text-sm">{m}</span>
+              {MODULES.map((moduleKey) => (
+                <label
+                  key={moduleKey}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg border border-border cursor-pointer hover:bg-secondary/40"
+                >
+                  <input
+                    type="checkbox"
+                    checked={modules.includes(moduleKey)}
+                    onChange={(event) =>
+                      setModules((current) =>
+                        event.target.checked
+                          ? [...current, moduleKey]
+                          : current.filter((key) => key !== moduleKey),
+                      )
+                    }
+                    className="h-4 w-4 rounded border-border"
+                  />
+                  <span className="text-sm">
+                    {
+                      {
+                        haccp: "HACCP",
+                        temperature: "Temperature",
+                        cleaning: "Cleaning",
+                        menu: "Menu & Allergens",
+                        purchasing: "Purchasing",
+                        rota: "Rota & clock-in",
+                        training: "Training / LMS",
+                        audits: "Audits",
+                      }[moduleKey]
+                    }
+                  </span>
                 </label>
               ))}
             </div>
@@ -161,17 +305,41 @@ function OnboardingPage() {
               <div className="mx-auto h-16 w-16 rounded-full bg-success/15 text-success grid place-items-center">
                 <CheckCircle2 size={30} />
               </div>
-              <h2 className="font-display text-2xl mt-4">{t("Alles bereit!", "You're all set!")}</h2>
+              <h2 className="font-display text-2xl mt-4">
+                {t("Alles bereit!", "You're all set!")}
+              </h2>
               <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
-                {t(`${name || "Ihr Betrieb"} ist eingerichtet. Wählen Sie eine Rolle, um die Demo zu erkunden.`,
-                   `${name || "Your business"} is configured. Pick a role to explore the demo.`)}
+                {t(
+                  `${name || "Ihr Betrieb"} wird als geschützter Arbeitsbereich eingerichtet. Sie starten als Inhaber und können Ihr Team sicher einladen.`,
+                  `${name || "Your business"} will be created as a protected workspace. You start as owner and can invite your team securely.`,
+                )}
               </p>
-              <button onClick={persistAndFinish} disabled={saving} className="btn-alert-solid mt-6 disabled:opacity-60">
-                {saving ? <><Loader2 size={14} className="inline animate-spin mr-1"/>{t("Speichere…","Saving…")}</> : t("Weiter zur App", "Continue to app")}
+              <button
+                onClick={persistAndFinish}
+                disabled={saving}
+                className="btn-alert-solid mt-6 disabled:opacity-60"
+              >
+                {saving ? (
+                  <>
+                    <Loader2 size={14} className="inline animate-spin mr-1" />
+                    {t("Speichere…", "Saving…")}
+                  </>
+                ) : (
+                  t("Weiter zur App", "Continue to app")
+                )}
               </button>
             </div>
           )}
         </div>
+
+        {error && (
+          <div
+            role="alert"
+            className="mt-4 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive"
+          >
+            {error}
+          </div>
+        )}
 
         {!last && (
           <div className="flex items-center justify-between mt-6">
@@ -180,14 +348,20 @@ function OnboardingPage() {
               disabled={step === 0}
               className="inline-flex items-center gap-1 text-sm text-muted-foreground disabled:opacity-40"
             >
-              <ChevronLeft size={14} />{t("Zurück", "Back")}
+              <ChevronLeft size={14} />
+              {t("Zurück", "Back")}
             </button>
             <button
               onClick={() => setStep((s) => s + 1)}
-              disabled={step === 0 && !vertical}
+              disabled={
+                (step === 0 && !vertical) ||
+                (step === 1 && !name.trim()) ||
+                (step === 3 && modules.length === 0)
+              }
               className="btn-alert-solid text-sm disabled:opacity-50"
             >
-              {t("Weiter", "Continue")}<ChevronRight size={14} className="inline ml-1" />
+              {t("Weiter", "Continue")}
+              <ChevronRight size={14} className="inline ml-1" />
             </button>
           </div>
         )}
