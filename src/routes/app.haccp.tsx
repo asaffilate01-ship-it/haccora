@@ -126,7 +126,7 @@ function HaccpPage() {
     const { data, error } = await supabase.rpc("record_haccp_plan", {
       p_plan: rows as unknown as import("@/integrations/supabase/types").Json,
       p_approve: approve,
-      p_statement: statement,
+      p_statement: statement ?? undefined,
     });
     setBusy(false);
     if (error) setErr(error.message);

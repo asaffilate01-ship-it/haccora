@@ -120,9 +120,9 @@ function SettingsPage() {
     }
     const profileResult = await supabase.from("profiles").update(patch).eq("id", authUser.id);
     const preferenceResult = await supabase.rpc("set_my_notification_preferences", {
-      p_email_enabled: patch.email_alerts ?? null,
-      p_push_enabled: patch.push_alerts ?? null,
-      p_weekly_digest: patch.weekly_digest ?? null,
+      p_email_enabled: patch.email_alerts,
+      p_push_enabled: patch.push_alerts,
+      p_weekly_digest: patch.weekly_digest,
     });
     if (profileResult.error || preferenceResult.error) {
       setSaveState("error");
