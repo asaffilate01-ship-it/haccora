@@ -1,3659 +1,3651 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
+    PostgrestVersion: "14.5";
+  };
   public: {
     Tables: {
       activity_logs: {
         Row: {
-          action: string
-          created_at: string
-          entity: string | null
-          entity_id: string | null
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          meta: Json | null
-          organization_id: string | null
-          user_id: string
-        }
+          action: string;
+          created_at: string;
+          entity: string | null;
+          entity_id: string | null;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          meta: Json | null;
+          organization_id: string | null;
+          user_id: string;
+        };
         Insert: {
-          action: string
-          created_at?: string
-          entity?: string | null
-          entity_id?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          meta?: Json | null
-          organization_id?: string | null
-          user_id: string
-        }
+          action: string;
+          created_at?: string;
+          entity?: string | null;
+          entity_id?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          meta?: Json | null;
+          organization_id?: string | null;
+          user_id: string;
+        };
         Update: {
-          action?: string
-          created_at?: string
-          entity?: string | null
-          entity_id?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          meta?: Json | null
-          organization_id?: string | null
-          user_id?: string
-        }
+          action?: string;
+          created_at?: string;
+          entity?: string | null;
+          entity_id?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          meta?: Json | null;
+          organization_id?: string | null;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "activity_logs_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "activity_logs_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "activity_logs_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "activity_logs_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_activity_logs_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_activity_logs_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       alerts: {
         Row: {
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          kind: string
-          location_id: string | null
-          message: string | null
-          organization_id: string | null
-          read_at: string | null
-          severity: string
-          title: string
-          user_id: string
-        }
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          kind: string;
+          location_id: string | null;
+          message: string | null;
+          organization_id: string | null;
+          read_at: string | null;
+          severity: string;
+          title: string;
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind: string
-          location_id?: string | null
-          message?: string | null
-          organization_id?: string | null
-          read_at?: string | null
-          severity?: string
-          title: string
-          user_id: string
-        }
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind: string;
+          location_id?: string | null;
+          message?: string | null;
+          organization_id?: string | null;
+          read_at?: string | null;
+          severity?: string;
+          title: string;
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location_id?: string | null
-          message?: string | null
-          organization_id?: string | null
-          read_at?: string | null
-          severity?: string
-          title?: string
-          user_id?: string
-        }
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          message?: string | null;
+          organization_id?: string | null;
+          read_at?: string | null;
+          severity?: string;
+          title?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "alerts_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "alerts_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "alerts_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "alerts_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_alerts_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_alerts_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       assets: {
         Row: {
-          category: string | null
-          created_at: string
-          created_by: string | null
-          id: string
-          idempotency_key: string | null
-          last_service_at: string | null
-          location: string | null
-          location_id: string | null
-          name: string
-          next_service_at: string | null
-          organization_id: string | null
-          serial: string | null
-          status: string
-          updated_at: string
-        }
+          category: string | null;
+          created_at: string;
+          created_by: string | null;
+          id: string;
+          idempotency_key: string | null;
+          last_service_at: string | null;
+          location: string | null;
+          location_id: string | null;
+          name: string;
+          next_service_at: string | null;
+          organization_id: string | null;
+          serial: string | null;
+          status: string;
+          updated_at: string;
+        };
         Insert: {
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
-          id?: string
-          idempotency_key?: string | null
-          last_service_at?: string | null
-          location?: string | null
-          location_id?: string | null
-          name: string
-          next_service_at?: string | null
-          organization_id?: string | null
-          serial?: string | null
-          status?: string
-          updated_at?: string
-        }
+          category?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          last_service_at?: string | null;
+          location?: string | null;
+          location_id?: string | null;
+          name: string;
+          next_service_at?: string | null;
+          organization_id?: string | null;
+          serial?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
         Update: {
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
-          id?: string
-          idempotency_key?: string | null
-          last_service_at?: string | null
-          location?: string | null
-          location_id?: string | null
-          name?: string
-          next_service_at?: string | null
-          organization_id?: string | null
-          serial?: string | null
-          status?: string
-          updated_at?: string
-        }
+          category?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          last_service_at?: string | null;
+          location?: string | null;
+          location_id?: string | null;
+          name?: string;
+          next_service_at?: string | null;
+          organization_id?: string | null;
+          serial?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "assets_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "assets_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "assets_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "assets_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_assets_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_assets_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       audit_events: {
         Row: {
-          action: string
-          actor_id: string | null
-          after_data: Json | null
-          before_data: Json | null
-          entity: string
-          entity_id: string | null
-          id: string
-          location_id: string | null
-          occurred_at: string
-          organization_id: string
-          previous_hash: string | null
-          record_hash: string
-        }
+          action: string;
+          actor_id: string | null;
+          after_data: Json | null;
+          before_data: Json | null;
+          entity: string;
+          entity_id: string | null;
+          id: string;
+          location_id: string | null;
+          occurred_at: string;
+          organization_id: string;
+          previous_hash: string | null;
+          record_hash: string;
+        };
         Insert: {
-          action: string
-          actor_id?: string | null
-          after_data?: Json | null
-          before_data?: Json | null
-          entity: string
-          entity_id?: string | null
-          id?: string
-          location_id?: string | null
-          occurred_at?: string
-          organization_id: string
-          previous_hash?: string | null
-          record_hash: string
-        }
+          action: string;
+          actor_id?: string | null;
+          after_data?: Json | null;
+          before_data?: Json | null;
+          entity: string;
+          entity_id?: string | null;
+          id?: string;
+          location_id?: string | null;
+          occurred_at?: string;
+          organization_id: string;
+          previous_hash?: string | null;
+          record_hash: string;
+        };
         Update: {
-          action?: string
-          actor_id?: string | null
-          after_data?: Json | null
-          before_data?: Json | null
-          entity?: string
-          entity_id?: string | null
-          id?: string
-          location_id?: string | null
-          occurred_at?: string
-          organization_id?: string
-          previous_hash?: string | null
-          record_hash?: string
-        }
+          action?: string;
+          actor_id?: string | null;
+          after_data?: Json | null;
+          before_data?: Json | null;
+          entity?: string;
+          entity_id?: string | null;
+          id?: string;
+          location_id?: string | null;
+          occurred_at?: string;
+          organization_id?: string;
+          previous_hash?: string | null;
+          record_hash?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "audit_events_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "audit_events_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "audit_events_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "audit_events_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_audit_event_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_audit_event_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       audits: {
         Row: {
-          audit_type: string
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          performed_at: string
-          performed_by: string | null
-          score: number | null
-          status: string
-          title: string
-          updated_at: string
-        }
+          audit_type: string;
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          performed_at: string;
+          performed_by: string | null;
+          score: number | null;
+          status: string;
+          title: string;
+          updated_at: string;
+        };
         Insert: {
-          audit_type?: string
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          performed_at?: string
-          performed_by?: string | null
-          score?: number | null
-          status?: string
-          title: string
-          updated_at?: string
-        }
+          audit_type?: string;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          performed_at?: string;
+          performed_by?: string | null;
+          score?: number | null;
+          status?: string;
+          title: string;
+          updated_at?: string;
+        };
         Update: {
-          audit_type?: string
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          performed_at?: string
-          performed_by?: string | null
-          score?: number | null
-          status?: string
-          title?: string
-          updated_at?: string
-        }
+          audit_type?: string;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          performed_at?: string;
+          performed_by?: string | null;
+          score?: number | null;
+          status?: string;
+          title?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "audits_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "audits_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "audits_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "audits_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_audits_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_audits_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       calibration_logs: {
         Row: {
-          created_at: string
-          deviation_c: number | null
-          device: string
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          measured_c: number | null
-          method: string
-          next_due: string | null
-          notes: string | null
-          organization_id: string | null
-          passed: boolean
-          performed_at: string
-          performed_by: string | null
-          reference_c: number | null
-          serial_no: string | null
-          updated_at: string
-          user_id: string
-        }
+          created_at: string;
+          deviation_c: number | null;
+          device: string;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          measured_c: number | null;
+          method: string;
+          next_due: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          passed: boolean;
+          performed_at: string;
+          performed_by: string | null;
+          reference_c: number | null;
+          serial_no: string | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          deviation_c?: number | null
-          device: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          measured_c?: number | null
-          method?: string
-          next_due?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          passed?: boolean
-          performed_at?: string
-          performed_by?: string | null
-          reference_c?: number | null
-          serial_no?: string | null
-          updated_at?: string
-          user_id: string
-        }
+          created_at?: string;
+          deviation_c?: number | null;
+          device: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          measured_c?: number | null;
+          method?: string;
+          next_due?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          passed?: boolean;
+          performed_at?: string;
+          performed_by?: string | null;
+          reference_c?: number | null;
+          serial_no?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          deviation_c?: number | null
-          device?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          measured_c?: number | null
-          method?: string
-          next_due?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          passed?: boolean
-          performed_at?: string
-          performed_by?: string | null
-          reference_c?: number | null
-          serial_no?: string | null
-          updated_at?: string
-          user_id?: string
-        }
+          created_at?: string;
+          deviation_c?: number | null;
+          device?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          measured_c?: number | null;
+          method?: string;
+          next_due?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          passed?: boolean;
+          performed_at?: string;
+          performed_by?: string | null;
+          reference_c?: number | null;
+          serial_no?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "calibration_logs_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "calibration_logs_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "calibration_logs_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "calibration_logs_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_calibration_logs_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_calibration_logs_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       checks: {
         Row: {
-          completed_at: string | null
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          kind: string
-          location_id: string | null
-          note: string | null
-          organization_id: string | null
-          status: string
-          title: string
-          user_id: string
-        }
+          completed_at: string | null;
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          kind: string;
+          location_id: string | null;
+          note: string | null;
+          organization_id: string | null;
+          status: string;
+          title: string;
+          user_id: string;
+        };
         Insert: {
-          completed_at?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind: string
-          location_id?: string | null
-          note?: string | null
-          organization_id?: string | null
-          status?: string
-          title: string
-          user_id: string
-        }
+          completed_at?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind: string;
+          location_id?: string | null;
+          note?: string | null;
+          organization_id?: string | null;
+          status?: string;
+          title: string;
+          user_id: string;
+        };
         Update: {
-          completed_at?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location_id?: string | null
-          note?: string | null
-          organization_id?: string | null
-          status?: string
-          title?: string
-          user_id?: string
-        }
+          completed_at?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          note?: string | null;
+          organization_id?: string | null;
+          status?: string;
+          title?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "checks_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "checks_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "checks_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "checks_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_checks_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_checks_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       chemicals: {
         Row: {
-          created_at: string
-          ghs_pictograms: string[] | null
-          hazard_class: string | null
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          name: string
-          next_review: string | null
-          notes: string | null
-          organization_id: string | null
-          ppe_required: string | null
-          reviewed_on: string | null
-          sds_url: string | null
-          storage_location: string | null
-          supplier: string | null
-          updated_at: string
-          user_id: string
-        }
+          created_at: string;
+          ghs_pictograms: string[] | null;
+          hazard_class: string | null;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          name: string;
+          next_review: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          ppe_required: string | null;
+          reviewed_on: string | null;
+          sds_url: string | null;
+          storage_location: string | null;
+          supplier: string | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          ghs_pictograms?: string[] | null
-          hazard_class?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name: string
-          next_review?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          ppe_required?: string | null
-          reviewed_on?: string | null
-          sds_url?: string | null
-          storage_location?: string | null
-          supplier?: string | null
-          updated_at?: string
-          user_id: string
-        }
+          created_at?: string;
+          ghs_pictograms?: string[] | null;
+          hazard_class?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name: string;
+          next_review?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          ppe_required?: string | null;
+          reviewed_on?: string | null;
+          sds_url?: string | null;
+          storage_location?: string | null;
+          supplier?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          ghs_pictograms?: string[] | null
-          hazard_class?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name?: string
-          next_review?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          ppe_required?: string | null
-          reviewed_on?: string | null
-          sds_url?: string | null
-          storage_location?: string | null
-          supplier?: string | null
-          updated_at?: string
-          user_id?: string
-        }
+          created_at?: string;
+          ghs_pictograms?: string[] | null;
+          hazard_class?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name?: string;
+          next_review?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          ppe_required?: string | null;
+          reviewed_on?: string | null;
+          sds_url?: string | null;
+          storage_location?: string | null;
+          supplier?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "chemicals_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "chemicals_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "chemicals_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "chemicals_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_chemicals_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_chemicals_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       complaints: {
         Row: {
-          channel: string | null
-          closed_at: string | null
-          contact: string | null
-          created_at: string
-          description: string
-          guest_name: string | null
-          id: string
-          idempotency_key: string | null
-          kind: string
-          location_id: string | null
-          occurred_at: string
-          organization_id: string | null
-          resolution: string | null
-          severity: string
-          status: string
-          updated_at: string
-          user_id: string
-        }
+          channel: string | null;
+          closed_at: string | null;
+          contact: string | null;
+          created_at: string;
+          description: string;
+          guest_name: string | null;
+          id: string;
+          idempotency_key: string | null;
+          kind: string;
+          location_id: string | null;
+          occurred_at: string;
+          organization_id: string | null;
+          resolution: string | null;
+          severity: string;
+          status: string;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          channel?: string | null
-          closed_at?: string | null
-          contact?: string | null
-          created_at?: string
-          description: string
-          guest_name?: string | null
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location_id?: string | null
-          occurred_at?: string
-          organization_id?: string | null
-          resolution?: string | null
-          severity?: string
-          status?: string
-          updated_at?: string
-          user_id: string
-        }
+          channel?: string | null;
+          closed_at?: string | null;
+          contact?: string | null;
+          created_at?: string;
+          description: string;
+          guest_name?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          occurred_at?: string;
+          organization_id?: string | null;
+          resolution?: string | null;
+          severity?: string;
+          status?: string;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          channel?: string | null
-          closed_at?: string | null
-          contact?: string | null
-          created_at?: string
-          description?: string
-          guest_name?: string | null
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location_id?: string | null
-          occurred_at?: string
-          organization_id?: string | null
-          resolution?: string | null
-          severity?: string
-          status?: string
-          updated_at?: string
-          user_id?: string
-        }
+          channel?: string | null;
+          closed_at?: string | null;
+          contact?: string | null;
+          created_at?: string;
+          description?: string;
+          guest_name?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          occurred_at?: string;
+          organization_id?: string | null;
+          resolution?: string | null;
+          severity?: string;
+          status?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "complaints_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "complaints_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "complaints_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "complaints_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_complaints_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_complaints_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       contact_requests: {
         Row: {
-          business_name: string | null
-          consent_at: string
-          created_at: string
-          email: string
-          first_name: string
-          id: string
-          last_name: string
-          locale: string
-          phone: string | null
-          source_ip_hash: string
-          status: string
-          user_agent: string | null
-        }
+          business_name: string | null;
+          consent_at: string;
+          created_at: string;
+          email: string;
+          first_name: string;
+          id: string;
+          last_name: string;
+          locale: string;
+          phone: string | null;
+          source_ip_hash: string;
+          status: string;
+          user_agent: string | null;
+        };
         Insert: {
-          business_name?: string | null
-          consent_at: string
-          created_at?: string
-          email: string
-          first_name: string
-          id?: string
-          last_name: string
-          locale?: string
-          phone?: string | null
-          source_ip_hash: string
-          status?: string
-          user_agent?: string | null
-        }
+          business_name?: string | null;
+          consent_at: string;
+          created_at?: string;
+          email: string;
+          first_name: string;
+          id?: string;
+          last_name: string;
+          locale?: string;
+          phone?: string | null;
+          source_ip_hash: string;
+          status?: string;
+          user_agent?: string | null;
+        };
         Update: {
-          business_name?: string | null
-          consent_at?: string
-          created_at?: string
-          email?: string
-          first_name?: string
-          id?: string
-          last_name?: string
-          locale?: string
-          phone?: string | null
-          source_ip_hash?: string
-          status?: string
-          user_agent?: string | null
-        }
-        Relationships: []
-      }
+          business_name?: string | null;
+          consent_at?: string;
+          created_at?: string;
+          email?: string;
+          first_name?: string;
+          id?: string;
+          last_name?: string;
+          locale?: string;
+          phone?: string | null;
+          source_ip_hash?: string;
+          status?: string;
+          user_agent?: string | null;
+        };
+        Relationships: [];
+      };
       corrective_actions: {
         Row: {
-          completed_at: string | null
-          created_at: string
-          created_by: string
-          description: string
-          due_at: string | null
-          id: string
-          location_id: string | null
-          organization_id: string
-          owner_id: string | null
-          source_id: string
-          source_table: string
-          status: string
-          updated_at: string
-          verified_at: string | null
-          verified_by: string | null
-        }
+          completed_at: string | null;
+          created_at: string;
+          created_by: string;
+          description: string;
+          due_at: string | null;
+          id: string;
+          location_id: string | null;
+          organization_id: string;
+          owner_id: string | null;
+          source_id: string;
+          source_table: string;
+          status: string;
+          updated_at: string;
+          verified_at: string | null;
+          verified_by: string | null;
+        };
         Insert: {
-          completed_at?: string | null
-          created_at?: string
-          created_by?: string
-          description: string
-          due_at?: string | null
-          id?: string
-          location_id?: string | null
-          organization_id?: string
-          owner_id?: string | null
-          source_id: string
-          source_table: string
-          status?: string
-          updated_at?: string
-          verified_at?: string | null
-          verified_by?: string | null
-        }
+          completed_at?: string | null;
+          created_at?: string;
+          created_by?: string;
+          description: string;
+          due_at?: string | null;
+          id?: string;
+          location_id?: string | null;
+          organization_id?: string;
+          owner_id?: string | null;
+          source_id: string;
+          source_table: string;
+          status?: string;
+          updated_at?: string;
+          verified_at?: string | null;
+          verified_by?: string | null;
+        };
         Update: {
-          completed_at?: string | null
-          created_at?: string
-          created_by?: string
-          description?: string
-          due_at?: string | null
-          id?: string
-          location_id?: string | null
-          organization_id?: string
-          owner_id?: string | null
-          source_id?: string
-          source_table?: string
-          status?: string
-          updated_at?: string
-          verified_at?: string | null
-          verified_by?: string | null
-        }
+          completed_at?: string | null;
+          created_at?: string;
+          created_by?: string;
+          description?: string;
+          due_at?: string | null;
+          id?: string;
+          location_id?: string | null;
+          organization_id?: string;
+          owner_id?: string | null;
+          source_id?: string;
+          source_table?: string;
+          status?: string;
+          updated_at?: string;
+          verified_at?: string | null;
+          verified_by?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "corrective_actions_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "corrective_actions_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "corrective_actions_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "corrective_actions_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_corrective_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_corrective_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       device_push_tokens: {
         Row: {
-          created_at: string
-          enabled: boolean
-          id: string
-          organization_id: string
-          platform: string
-          token: string
-          updated_at: string
-          user_id: string
-        }
+          created_at: string;
+          enabled: boolean;
+          id: string;
+          organization_id: string;
+          platform: string;
+          token: string;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          enabled?: boolean
-          id?: string
-          organization_id: string
-          platform: string
-          token: string
-          updated_at?: string
-          user_id: string
-        }
+          created_at?: string;
+          enabled?: boolean;
+          id?: string;
+          organization_id: string;
+          platform: string;
+          token: string;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          enabled?: boolean
-          id?: string
-          organization_id?: string
-          platform?: string
-          token?: string
-          updated_at?: string
-          user_id?: string
-        }
+          created_at?: string;
+          enabled?: boolean;
+          id?: string;
+          organization_id?: string;
+          platform?: string;
+          token?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "device_push_tokens_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "device_push_tokens_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_push_token_membership"
-            columns: ["organization_id", "user_id"]
-            isOneToOne: false
-            referencedRelation: "organization_memberships"
-            referencedColumns: ["organization_id", "user_id"]
+            foreignKeyName: "fk_push_token_membership";
+            columns: ["organization_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "organization_memberships";
+            referencedColumns: ["organization_id", "user_id"];
           },
-        ]
-      }
+        ];
+      };
       documents: {
         Row: {
-          archived_at: string | null
-          category: string
-          created_at: string
-          expires_at: string | null
-          file_size: number | null
-          file_url: string | null
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          mime_type: string | null
-          organization_id: string | null
-          sha256: string | null
-          storage_path: string | null
-          title: string
-          user_id: string
-          version: string | null
-        }
+          archived_at: string | null;
+          category: string;
+          created_at: string;
+          expires_at: string | null;
+          file_size: number | null;
+          file_url: string | null;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          mime_type: string | null;
+          organization_id: string | null;
+          sha256: string | null;
+          storage_path: string | null;
+          title: string;
+          user_id: string;
+          version: string | null;
+        };
         Insert: {
-          archived_at?: string | null
-          category: string
-          created_at?: string
-          expires_at?: string | null
-          file_size?: number | null
-          file_url?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          mime_type?: string | null
-          organization_id?: string | null
-          sha256?: string | null
-          storage_path?: string | null
-          title: string
-          user_id: string
-          version?: string | null
-        }
+          archived_at?: string | null;
+          category: string;
+          created_at?: string;
+          expires_at?: string | null;
+          file_size?: number | null;
+          file_url?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          mime_type?: string | null;
+          organization_id?: string | null;
+          sha256?: string | null;
+          storage_path?: string | null;
+          title: string;
+          user_id: string;
+          version?: string | null;
+        };
         Update: {
-          archived_at?: string | null
-          category?: string
-          created_at?: string
-          expires_at?: string | null
-          file_size?: number | null
-          file_url?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          mime_type?: string | null
-          organization_id?: string | null
-          sha256?: string | null
-          storage_path?: string | null
-          title?: string
-          user_id?: string
-          version?: string | null
-        }
+          archived_at?: string | null;
+          category?: string;
+          created_at?: string;
+          expires_at?: string | null;
+          file_size?: number | null;
+          file_url?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          mime_type?: string | null;
+          organization_id?: string | null;
+          sha256?: string | null;
+          storage_path?: string | null;
+          title?: string;
+          user_id?: string;
+          version?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "documents_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "documents_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "documents_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "documents_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_documents_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_documents_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       expiry_items: {
         Row: {
-          batch: string | null
-          created_at: string
-          expires_on: string
-          id: string
-          idempotency_key: string | null
-          location: string | null
-          location_id: string | null
-          name: string
-          note: string | null
-          organization_id: string | null
-          qty: number | null
-          status: string
-          unit: string | null
-          updated_at: string
-          user_id: string
-        }
+          batch: string | null;
+          created_at: string;
+          expires_on: string;
+          id: string;
+          idempotency_key: string | null;
+          location: string | null;
+          location_id: string | null;
+          name: string;
+          note: string | null;
+          organization_id: string | null;
+          qty: number | null;
+          status: string;
+          unit: string | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          batch?: string | null
-          created_at?: string
-          expires_on: string
-          id?: string
-          idempotency_key?: string | null
-          location?: string | null
-          location_id?: string | null
-          name: string
-          note?: string | null
-          organization_id?: string | null
-          qty?: number | null
-          status?: string
-          unit?: string | null
-          updated_at?: string
-          user_id: string
-        }
+          batch?: string | null;
+          created_at?: string;
+          expires_on: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location?: string | null;
+          location_id?: string | null;
+          name: string;
+          note?: string | null;
+          organization_id?: string | null;
+          qty?: number | null;
+          status?: string;
+          unit?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          batch?: string | null
-          created_at?: string
-          expires_on?: string
-          id?: string
-          idempotency_key?: string | null
-          location?: string | null
-          location_id?: string | null
-          name?: string
-          note?: string | null
-          organization_id?: string | null
-          qty?: number | null
-          status?: string
-          unit?: string | null
-          updated_at?: string
-          user_id?: string
-        }
+          batch?: string | null;
+          created_at?: string;
+          expires_on?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location?: string | null;
+          location_id?: string | null;
+          name?: string;
+          note?: string | null;
+          organization_id?: string | null;
+          qty?: number | null;
+          status?: string;
+          unit?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "expiry_items_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "expiry_items_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "expiry_items_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "expiry_items_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "fk_expiry_items_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_expiry_items_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
-        ]
-      }
+        ];
+      };
       goods_in_logs: {
         Row: {
-          batch_lot: string | null
-          best_before: string | null
-          created_at: string
-          delivery_temp_c: number | null
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          packaging_ok: boolean | null
-          photo_url: string | null
-          product: string
-          quantity: number | null
-          received_at: string
-          status: string
-          supplier: string
-          temp_ok: boolean | null
-          unit: string | null
-          updated_at: string
-          user_id: string
-        }
+          batch_lot: string | null;
+          best_before: string | null;
+          created_at: string;
+          delivery_temp_c: number | null;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          packaging_ok: boolean | null;
+          photo_url: string | null;
+          product: string;
+          quantity: number | null;
+          received_at: string;
+          status: string;
+          supplier: string;
+          temp_ok: boolean | null;
+          unit: string | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          batch_lot?: string | null
-          best_before?: string | null
-          created_at?: string
-          delivery_temp_c?: number | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          packaging_ok?: boolean | null
-          photo_url?: string | null
-          product: string
-          quantity?: number | null
-          received_at?: string
-          status?: string
-          supplier: string
-          temp_ok?: boolean | null
-          unit?: string | null
-          updated_at?: string
-          user_id: string
-        }
+          batch_lot?: string | null;
+          best_before?: string | null;
+          created_at?: string;
+          delivery_temp_c?: number | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          packaging_ok?: boolean | null;
+          photo_url?: string | null;
+          product: string;
+          quantity?: number | null;
+          received_at?: string;
+          status?: string;
+          supplier: string;
+          temp_ok?: boolean | null;
+          unit?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          batch_lot?: string | null
-          best_before?: string | null
-          created_at?: string
-          delivery_temp_c?: number | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          packaging_ok?: boolean | null
-          photo_url?: string | null
-          product?: string
-          quantity?: number | null
-          received_at?: string
-          status?: string
-          supplier?: string
-          temp_ok?: boolean | null
-          unit?: string | null
-          updated_at?: string
-          user_id?: string
-        }
+          batch_lot?: string | null;
+          best_before?: string | null;
+          created_at?: string;
+          delivery_temp_c?: number | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          packaging_ok?: boolean | null;
+          photo_url?: string | null;
+          product?: string;
+          quantity?: number | null;
+          received_at?: string;
+          status?: string;
+          supplier?: string;
+          temp_ok?: boolean | null;
+          unit?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_goods_in_logs_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_goods_in_logs_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "goods_in_logs_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "goods_in_logs_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "goods_in_logs_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "goods_in_logs_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       haccp_flow_runs: {
         Row: {
-          captured_at: string | null
-          ccp_unit: string | null
-          ccp_value: number | null
-          corrective_action: string | null
-          created_at: string
-          flow_key: string
-          geo_accuracy: number | null
-          geo_lat: number | null
-          geo_lng: number | null
-          id: string
-          idempotency_key: string | null
-          in_range: boolean | null
-          location: string | null
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          performed_at: string
-          performed_by: string | null
-          photo_path: string | null
-          product: string | null
-          status: string
-          steps: Json
-          target_max: number | null
-          target_min: number | null
-          title: string
-        }
+          captured_at: string | null;
+          ccp_unit: string | null;
+          ccp_value: number | null;
+          corrective_action: string | null;
+          created_at: string;
+          flow_key: string;
+          geo_accuracy: number | null;
+          geo_lat: number | null;
+          geo_lng: number | null;
+          id: string;
+          idempotency_key: string | null;
+          in_range: boolean | null;
+          location: string | null;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          performed_at: string;
+          performed_by: string | null;
+          photo_path: string | null;
+          product: string | null;
+          status: string;
+          steps: Json;
+          target_max: number | null;
+          target_min: number | null;
+          title: string;
+        };
         Insert: {
-          captured_at?: string | null
-          ccp_unit?: string | null
-          ccp_value?: number | null
-          corrective_action?: string | null
-          created_at?: string
-          flow_key: string
-          geo_accuracy?: number | null
-          geo_lat?: number | null
-          geo_lng?: number | null
-          id?: string
-          idempotency_key?: string | null
-          in_range?: boolean | null
-          location?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          performed_at?: string
-          performed_by?: string | null
-          photo_path?: string | null
-          product?: string | null
-          status?: string
-          steps?: Json
-          target_max?: number | null
-          target_min?: number | null
-          title: string
-        }
+          captured_at?: string | null;
+          ccp_unit?: string | null;
+          ccp_value?: number | null;
+          corrective_action?: string | null;
+          created_at?: string;
+          flow_key: string;
+          geo_accuracy?: number | null;
+          geo_lat?: number | null;
+          geo_lng?: number | null;
+          id?: string;
+          idempotency_key?: string | null;
+          in_range?: boolean | null;
+          location?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          performed_at?: string;
+          performed_by?: string | null;
+          photo_path?: string | null;
+          product?: string | null;
+          status?: string;
+          steps?: Json;
+          target_max?: number | null;
+          target_min?: number | null;
+          title: string;
+        };
         Update: {
-          captured_at?: string | null
-          ccp_unit?: string | null
-          ccp_value?: number | null
-          corrective_action?: string | null
-          created_at?: string
-          flow_key?: string
-          geo_accuracy?: number | null
-          geo_lat?: number | null
-          geo_lng?: number | null
-          id?: string
-          idempotency_key?: string | null
-          in_range?: boolean | null
-          location?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          performed_at?: string
-          performed_by?: string | null
-          photo_path?: string | null
-          product?: string | null
-          status?: string
-          steps?: Json
-          target_max?: number | null
-          target_min?: number | null
-          title?: string
-        }
+          captured_at?: string | null;
+          ccp_unit?: string | null;
+          ccp_value?: number | null;
+          corrective_action?: string | null;
+          created_at?: string;
+          flow_key?: string;
+          geo_accuracy?: number | null;
+          geo_lat?: number | null;
+          geo_lng?: number | null;
+          id?: string;
+          idempotency_key?: string | null;
+          in_range?: boolean | null;
+          location?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          performed_at?: string;
+          performed_by?: string | null;
+          photo_path?: string | null;
+          product?: string | null;
+          status?: string;
+          steps?: Json;
+          target_max?: number | null;
+          target_min?: number | null;
+          title?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_haccp_flow_runs_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_haccp_flow_runs_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "haccp_flow_runs_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "haccp_flow_runs_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "haccp_flow_runs_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "haccp_flow_runs_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       haccp_hazards: {
         Row: {
-          control: string
-          corrective_action: string | null
-          created_at: string
-          created_by: string | null
-          critical_limit: string | null
-          hazard: string
-          id: string
-          idempotency_key: string | null
-          is_ccp: boolean
-          location_id: string | null
-          monitoring: string | null
-          organization_id: string | null
-          status: string
-          step: string
-          updated_at: string
-        }
+          control: string;
+          corrective_action: string | null;
+          created_at: string;
+          created_by: string | null;
+          critical_limit: string | null;
+          hazard: string;
+          id: string;
+          idempotency_key: string | null;
+          is_ccp: boolean;
+          location_id: string | null;
+          monitoring: string | null;
+          organization_id: string | null;
+          status: string;
+          step: string;
+          updated_at: string;
+        };
         Insert: {
-          control: string
-          corrective_action?: string | null
-          created_at?: string
-          created_by?: string | null
-          critical_limit?: string | null
-          hazard: string
-          id?: string
-          idempotency_key?: string | null
-          is_ccp?: boolean
-          location_id?: string | null
-          monitoring?: string | null
-          organization_id?: string | null
-          status?: string
-          step: string
-          updated_at?: string
-        }
+          control: string;
+          corrective_action?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          critical_limit?: string | null;
+          hazard: string;
+          id?: string;
+          idempotency_key?: string | null;
+          is_ccp?: boolean;
+          location_id?: string | null;
+          monitoring?: string | null;
+          organization_id?: string | null;
+          status?: string;
+          step: string;
+          updated_at?: string;
+        };
         Update: {
-          control?: string
-          corrective_action?: string | null
-          created_at?: string
-          created_by?: string | null
-          critical_limit?: string | null
-          hazard?: string
-          id?: string
-          idempotency_key?: string | null
-          is_ccp?: boolean
-          location_id?: string | null
-          monitoring?: string | null
-          organization_id?: string | null
-          status?: string
-          step?: string
-          updated_at?: string
-        }
+          control?: string;
+          corrective_action?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          critical_limit?: string | null;
+          hazard?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          is_ccp?: boolean;
+          location_id?: string | null;
+          monitoring?: string | null;
+          organization_id?: string | null;
+          status?: string;
+          step?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_haccp_hazards_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_haccp_hazards_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "haccp_hazards_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "haccp_hazards_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "haccp_hazards_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "haccp_hazards_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       haccp_plan_versions: {
         Row: {
-          approval_statement: string | null
-          approved_at: string | null
-          approved_by: string | null
-          content_hash: string | null
-          created_at: string
-          created_by: string
-          id: string
-          location_id: string | null
-          organization_id: string
-          plan: Json
-          status: string
-          submitted_at: string | null
-          submitted_by: string | null
-          version: number
-        }
+          approval_statement: string | null;
+          approved_at: string | null;
+          approved_by: string | null;
+          content_hash: string | null;
+          created_at: string;
+          created_by: string;
+          id: string;
+          location_id: string | null;
+          organization_id: string;
+          plan: Json;
+          status: string;
+          submitted_at: string | null;
+          submitted_by: string | null;
+          version: number;
+        };
         Insert: {
-          approval_statement?: string | null
-          approved_at?: string | null
-          approved_by?: string | null
-          content_hash?: string | null
-          created_at?: string
-          created_by?: string
-          id?: string
-          location_id?: string | null
-          organization_id?: string
-          plan: Json
-          status?: string
-          submitted_at?: string | null
-          submitted_by?: string | null
-          version: number
-        }
+          approval_statement?: string | null;
+          approved_at?: string | null;
+          approved_by?: string | null;
+          content_hash?: string | null;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          location_id?: string | null;
+          organization_id?: string;
+          plan: Json;
+          status?: string;
+          submitted_at?: string | null;
+          submitted_by?: string | null;
+          version: number;
+        };
         Update: {
-          approval_statement?: string | null
-          approved_at?: string | null
-          approved_by?: string | null
-          content_hash?: string | null
-          created_at?: string
-          created_by?: string
-          id?: string
-          location_id?: string | null
-          organization_id?: string
-          plan?: Json
-          status?: string
-          submitted_at?: string | null
-          submitted_by?: string | null
-          version?: number
-        }
+          approval_statement?: string | null;
+          approved_at?: string | null;
+          approved_by?: string | null;
+          content_hash?: string | null;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          location_id?: string | null;
+          organization_id?: string;
+          plan?: Json;
+          status?: string;
+          submitted_at?: string | null;
+          submitted_by?: string | null;
+          version?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_haccp_version_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_haccp_version_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "haccp_plan_versions_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "haccp_plan_versions_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "haccp_plan_versions_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "haccp_plan_versions_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       health_register: {
         Row: {
-          created_at: string
-          expires_on: string | null
-          fitness_cleared_on: string | null
-          id: string
-          idempotency_key: string | null
-          issued_on: string | null
-          kind: string
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          staff_name: string
-          status: string
-          symptoms: string | null
-          updated_at: string
-          user_id: string
-        }
+          created_at: string;
+          expires_on: string | null;
+          fitness_cleared_on: string | null;
+          id: string;
+          idempotency_key: string | null;
+          issued_on: string | null;
+          kind: string;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          staff_name: string;
+          status: string;
+          symptoms: string | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          expires_on?: string | null
-          fitness_cleared_on?: string | null
-          id?: string
-          idempotency_key?: string | null
-          issued_on?: string | null
-          kind?: string
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          staff_name: string
-          status?: string
-          symptoms?: string | null
-          updated_at?: string
-          user_id: string
-        }
+          created_at?: string;
+          expires_on?: string | null;
+          fitness_cleared_on?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          issued_on?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          staff_name: string;
+          status?: string;
+          symptoms?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          expires_on?: string | null
-          fitness_cleared_on?: string | null
-          id?: string
-          idempotency_key?: string | null
-          issued_on?: string | null
-          kind?: string
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          staff_name?: string
-          status?: string
-          symptoms?: string | null
-          updated_at?: string
-          user_id?: string
-        }
+          created_at?: string;
+          expires_on?: string | null;
+          fitness_cleared_on?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          issued_on?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          staff_name?: string;
+          status?: string;
+          symptoms?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_health_register_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_health_register_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "health_register_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "health_register_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "health_register_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "health_register_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       incidents: {
         Row: {
-          closed_at: string | null
-          created_at: string
-          description: string | null
-          id: string
-          idempotency_key: string | null
-          kind: string
-          location_id: string | null
-          occurred_at: string
-          organization_id: string | null
-          root_cause: string | null
-          severity: string
-          status: string
-          title: string
-          user_id: string
-        }
+          closed_at: string | null;
+          created_at: string;
+          description: string | null;
+          id: string;
+          idempotency_key: string | null;
+          kind: string;
+          location_id: string | null;
+          occurred_at: string;
+          organization_id: string | null;
+          root_cause: string | null;
+          severity: string;
+          status: string;
+          title: string;
+          user_id: string;
+        };
         Insert: {
-          closed_at?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          idempotency_key?: string | null
-          kind: string
-          location_id?: string | null
-          occurred_at?: string
-          organization_id?: string | null
-          root_cause?: string | null
-          severity?: string
-          status?: string
-          title: string
-          user_id: string
-        }
+          closed_at?: string | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          kind: string;
+          location_id?: string | null;
+          occurred_at?: string;
+          organization_id?: string | null;
+          root_cause?: string | null;
+          severity?: string;
+          status?: string;
+          title: string;
+          user_id: string;
+        };
         Update: {
-          closed_at?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location_id?: string | null
-          occurred_at?: string
-          organization_id?: string | null
-          root_cause?: string | null
-          severity?: string
-          status?: string
-          title?: string
-          user_id?: string
-        }
+          closed_at?: string | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          occurred_at?: string;
+          organization_id?: string | null;
+          root_cause?: string | null;
+          severity?: string;
+          status?: string;
+          title?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_incidents_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_incidents_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "incidents_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "incidents_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "incidents_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "incidents_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       ingredients: {
         Row: {
-          allergens: string[]
-          created_at: string
-          id: string
-          name: string
-          organization_id: string
-          specification_document_id: string | null
-          supplier_id: string | null
-          updated_at: string
-        }
+          allergens: string[];
+          created_at: string;
+          id: string;
+          name: string;
+          organization_id: string;
+          specification_document_id: string | null;
+          supplier_id: string | null;
+          updated_at: string;
+        };
         Insert: {
-          allergens?: string[]
-          created_at?: string
-          id?: string
-          name: string
-          organization_id?: string
-          specification_document_id?: string | null
-          supplier_id?: string | null
-          updated_at?: string
-        }
+          allergens?: string[];
+          created_at?: string;
+          id?: string;
+          name: string;
+          organization_id?: string;
+          specification_document_id?: string | null;
+          supplier_id?: string | null;
+          updated_at?: string;
+        };
         Update: {
-          allergens?: string[]
-          created_at?: string
-          id?: string
-          name?: string
-          organization_id?: string
-          specification_document_id?: string | null
-          supplier_id?: string | null
-          updated_at?: string
-        }
+          allergens?: string[];
+          created_at?: string;
+          id?: string;
+          name?: string;
+          organization_id?: string;
+          specification_document_id?: string | null;
+          supplier_id?: string | null;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_ingredient_document_organization"
-            columns: ["specification_document_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "documents"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_ingredient_document_organization";
+            columns: ["specification_document_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "fk_ingredient_supplier_organization"
-            columns: ["supplier_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "suppliers"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_ingredient_supplier_organization";
+            columns: ["supplier_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "suppliers";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "ingredients_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "ingredients_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "ingredients_specification_document_id_fkey"
-            columns: ["specification_document_id"]
-            isOneToOne: false
-            referencedRelation: "documents"
-            referencedColumns: ["id"]
+            foreignKeyName: "ingredients_specification_document_id_fkey";
+            columns: ["specification_document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "ingredients_supplier_id_fkey"
-            columns: ["supplier_id"]
-            isOneToOne: false
-            referencedRelation: "suppliers"
-            referencedColumns: ["id"]
+            foreignKeyName: "ingredients_supplier_id_fkey";
+            columns: ["supplier_id"];
+            isOneToOne: false;
+            referencedRelation: "suppliers";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       inspector_access_grants: {
         Row: {
-          created_at: string
-          evidence_scopes: string[]
-          granted_by: string
-          id: string
-          inspector_user_id: string
-          location_ids: string[]
-          organization_id: string
-          reason: string | null
-          revoked_at: string | null
-          valid_from: string
-          valid_until: string
-        }
+          created_at: string;
+          evidence_scopes: string[];
+          granted_by: string;
+          id: string;
+          inspector_user_id: string;
+          location_ids: string[];
+          organization_id: string;
+          reason: string | null;
+          revoked_at: string | null;
+          valid_from: string;
+          valid_until: string;
+        };
         Insert: {
-          created_at?: string
-          evidence_scopes?: string[]
-          granted_by: string
-          id?: string
-          inspector_user_id: string
-          location_ids: string[]
-          organization_id: string
-          reason?: string | null
-          revoked_at?: string | null
-          valid_from?: string
-          valid_until: string
-        }
+          created_at?: string;
+          evidence_scopes?: string[];
+          granted_by: string;
+          id?: string;
+          inspector_user_id: string;
+          location_ids: string[];
+          organization_id: string;
+          reason?: string | null;
+          revoked_at?: string | null;
+          valid_from?: string;
+          valid_until: string;
+        };
         Update: {
-          created_at?: string
-          evidence_scopes?: string[]
-          granted_by?: string
-          id?: string
-          inspector_user_id?: string
-          location_ids?: string[]
-          organization_id?: string
-          reason?: string | null
-          revoked_at?: string | null
-          valid_from?: string
-          valid_until?: string
-        }
+          created_at?: string;
+          evidence_scopes?: string[];
+          granted_by?: string;
+          id?: string;
+          inspector_user_id?: string;
+          location_ids?: string[];
+          organization_id?: string;
+          reason?: string | null;
+          revoked_at?: string | null;
+          valid_from?: string;
+          valid_until?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "inspector_access_grants_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "inspector_access_grants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       inspector_access_invitations: {
         Row: {
-          accepted_at: string | null
-          access_valid_until: string
-          created_at: string
-          email: string
-          evidence_scopes: string[]
-          expires_at: string
-          id: string
-          invited_by: string
-          location_ids: string[]
-          organization_id: string
-          reason: string | null
-          revoked_at: string | null
-          token_hash: string
-        }
+          accepted_at: string | null;
+          access_valid_until: string;
+          created_at: string;
+          email: string;
+          evidence_scopes: string[];
+          expires_at: string;
+          id: string;
+          invited_by: string;
+          location_ids: string[];
+          organization_id: string;
+          reason: string | null;
+          revoked_at: string | null;
+          token_hash: string;
+        };
         Insert: {
-          accepted_at?: string | null
-          access_valid_until: string
-          created_at?: string
-          email: string
-          evidence_scopes: string[]
-          expires_at: string
-          id?: string
-          invited_by: string
-          location_ids?: string[]
-          organization_id: string
-          reason?: string | null
-          revoked_at?: string | null
-          token_hash: string
-        }
+          accepted_at?: string | null;
+          access_valid_until: string;
+          created_at?: string;
+          email: string;
+          evidence_scopes: string[];
+          expires_at: string;
+          id?: string;
+          invited_by: string;
+          location_ids?: string[];
+          organization_id: string;
+          reason?: string | null;
+          revoked_at?: string | null;
+          token_hash: string;
+        };
         Update: {
-          accepted_at?: string | null
-          access_valid_until?: string
-          created_at?: string
-          email?: string
-          evidence_scopes?: string[]
-          expires_at?: string
-          id?: string
-          invited_by?: string
-          location_ids?: string[]
-          organization_id?: string
-          reason?: string | null
-          revoked_at?: string | null
-          token_hash?: string
-        }
+          accepted_at?: string | null;
+          access_valid_until?: string;
+          created_at?: string;
+          email?: string;
+          evidence_scopes?: string[];
+          expires_at?: string;
+          id?: string;
+          invited_by?: string;
+          location_ids?: string[];
+          organization_id?: string;
+          reason?: string | null;
+          revoked_at?: string | null;
+          token_hash?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "inspector_access_invitations_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "inspector_access_invitations_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       label_prints: {
         Row: {
-          allergens: string[]
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          kind: string
-          location_id: string | null
-          organization_id: string | null
-          printed_by: string | null
-          product_name: string
-          use_by: string | null
-        }
+          allergens: string[];
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          kind: string;
+          location_id: string | null;
+          organization_id: string | null;
+          printed_by: string | null;
+          product_name: string;
+          use_by: string | null;
+        };
         Insert: {
-          allergens?: string[]
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind: string
-          location_id?: string | null
-          organization_id?: string | null
-          printed_by?: string | null
-          product_name: string
-          use_by?: string | null
-        }
+          allergens?: string[];
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind: string;
+          location_id?: string | null;
+          organization_id?: string | null;
+          printed_by?: string | null;
+          product_name: string;
+          use_by?: string | null;
+        };
         Update: {
-          allergens?: string[]
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location_id?: string | null
-          organization_id?: string | null
-          printed_by?: string | null
-          product_name?: string
-          use_by?: string | null
-        }
+          allergens?: string[];
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location_id?: string | null;
+          organization_id?: string | null;
+          printed_by?: string | null;
+          product_name?: string;
+          use_by?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_label_prints_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_label_prints_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "label_prints_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "label_prints_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "label_prints_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "label_prints_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       locations: {
         Row: {
-          address: Json
-          business_state: string | null
-          created_at: string
-          id: string
-          is_active: boolean
-          name: string
-          organization_id: string
-          timezone: string
-          updated_at: string
-        }
+          address: Json;
+          business_state: string | null;
+          created_at: string;
+          id: string;
+          is_active: boolean;
+          name: string;
+          organization_id: string;
+          timezone: string;
+          updated_at: string;
+        };
         Insert: {
-          address?: Json
-          business_state?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          name: string
-          organization_id: string
-          timezone?: string
-          updated_at?: string
-        }
+          address?: Json;
+          business_state?: string | null;
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          name: string;
+          organization_id: string;
+          timezone?: string;
+          updated_at?: string;
+        };
         Update: {
-          address?: Json
-          business_state?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          name?: string
-          organization_id?: string
-          timezone?: string
-          updated_at?: string
-        }
+          address?: Json;
+          business_state?: string | null;
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          name?: string;
+          organization_id?: string;
+          timezone?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "locations_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "locations_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       notification_outbox: {
         Row: {
-          attempts: number
-          channel: string
-          created_at: string
-          id: string
-          idempotency_key: string
-          last_error: string | null
-          next_attempt_at: string
-          organization_id: string
-          payload: Json
-          processing_at: string | null
-          recipient_id: string
-          sent_at: string | null
-          status: string
-          template: string
-        }
+          attempts: number;
+          channel: string;
+          created_at: string;
+          id: string;
+          idempotency_key: string;
+          last_error: string | null;
+          next_attempt_at: string;
+          organization_id: string;
+          payload: Json;
+          processing_at: string | null;
+          recipient_id: string;
+          sent_at: string | null;
+          status: string;
+          template: string;
+        };
         Insert: {
-          attempts?: number
-          channel: string
-          created_at?: string
-          id?: string
-          idempotency_key: string
-          last_error?: string | null
-          next_attempt_at?: string
-          organization_id: string
-          payload: Json
-          processing_at?: string | null
-          recipient_id: string
-          sent_at?: string | null
-          status?: string
-          template: string
-        }
+          attempts?: number;
+          channel: string;
+          created_at?: string;
+          id?: string;
+          idempotency_key: string;
+          last_error?: string | null;
+          next_attempt_at?: string;
+          organization_id: string;
+          payload: Json;
+          processing_at?: string | null;
+          recipient_id: string;
+          sent_at?: string | null;
+          status?: string;
+          template: string;
+        };
         Update: {
-          attempts?: number
-          channel?: string
-          created_at?: string
-          id?: string
-          idempotency_key?: string
-          last_error?: string | null
-          next_attempt_at?: string
-          organization_id?: string
-          payload?: Json
-          processing_at?: string | null
-          recipient_id?: string
-          sent_at?: string | null
-          status?: string
-          template?: string
-        }
+          attempts?: number;
+          channel?: string;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string;
+          last_error?: string | null;
+          next_attempt_at?: string;
+          organization_id?: string;
+          payload?: Json;
+          processing_at?: string | null;
+          recipient_id?: string;
+          sent_at?: string | null;
+          status?: string;
+          template?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "notification_outbox_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "notification_outbox_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       notification_preferences: {
         Row: {
-          critical_only: boolean
-          email_enabled: boolean
-          organization_id: string
-          push_enabled: boolean
-          updated_at: string
-          user_id: string
-          weekly_digest: boolean
-        }
+          critical_only: boolean;
+          email_enabled: boolean;
+          organization_id: string;
+          push_enabled: boolean;
+          updated_at: string;
+          user_id: string;
+          weekly_digest: boolean;
+        };
         Insert: {
-          critical_only?: boolean
-          email_enabled?: boolean
-          organization_id: string
-          push_enabled?: boolean
-          updated_at?: string
-          user_id: string
-          weekly_digest?: boolean
-        }
+          critical_only?: boolean;
+          email_enabled?: boolean;
+          organization_id: string;
+          push_enabled?: boolean;
+          updated_at?: string;
+          user_id: string;
+          weekly_digest?: boolean;
+        };
         Update: {
-          critical_only?: boolean
-          email_enabled?: boolean
-          organization_id?: string
-          push_enabled?: boolean
-          updated_at?: string
-          user_id?: string
-          weekly_digest?: boolean
-        }
+          critical_only?: boolean;
+          email_enabled?: boolean;
+          organization_id?: string;
+          push_enabled?: boolean;
+          updated_at?: string;
+          user_id?: string;
+          weekly_digest?: boolean;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_notification_preference_membership"
-            columns: ["organization_id", "user_id"]
-            isOneToOne: false
-            referencedRelation: "organization_memberships"
-            referencedColumns: ["organization_id", "user_id"]
+            foreignKeyName: "fk_notification_preference_membership";
+            columns: ["organization_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "organization_memberships";
+            referencedColumns: ["organization_id", "user_id"];
           },
           {
-            foreignKeyName: "notification_preferences_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "notification_preferences_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       oil_tests: {
         Row: {
-          changed: boolean | null
-          created_at: string
-          fryer: string
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          status: string
-          temperature_c: number | null
-          tested_at: string
-          tpm_percent: number | null
-          updated_at: string
-          user_id: string
-        }
+          changed: boolean | null;
+          created_at: string;
+          fryer: string;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          status: string;
+          temperature_c: number | null;
+          tested_at: string;
+          tpm_percent: number | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          changed?: boolean | null
-          created_at?: string
-          fryer: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          status?: string
-          temperature_c?: number | null
-          tested_at?: string
-          tpm_percent?: number | null
-          updated_at?: string
-          user_id: string
-        }
+          changed?: boolean | null;
+          created_at?: string;
+          fryer: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          status?: string;
+          temperature_c?: number | null;
+          tested_at?: string;
+          tpm_percent?: number | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          changed?: boolean | null
-          created_at?: string
-          fryer?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          status?: string
-          temperature_c?: number | null
-          tested_at?: string
-          tpm_percent?: number | null
-          updated_at?: string
-          user_id?: string
-        }
+          changed?: boolean | null;
+          created_at?: string;
+          fryer?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          status?: string;
+          temperature_c?: number | null;
+          tested_at?: string;
+          tpm_percent?: number | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_oil_tests_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_oil_tests_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "oil_tests_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "oil_tests_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "oil_tests_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "oil_tests_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       organization_invitations: {
         Row: {
-          accepted_at: string | null
-          created_at: string
-          email: string
-          expires_at: string
-          id: string
-          invited_by: string
-          organization_id: string
-          revoked_at: string | null
-          role: Database["public"]["Enums"]["app_role"]
-          token_hash: string
-        }
+          accepted_at: string | null;
+          created_at: string;
+          email: string;
+          expires_at: string;
+          id: string;
+          invited_by: string;
+          organization_id: string;
+          revoked_at: string | null;
+          role: Database["public"]["Enums"]["app_role"];
+          token_hash: string;
+        };
         Insert: {
-          accepted_at?: string | null
-          created_at?: string
-          email: string
-          expires_at: string
-          id?: string
-          invited_by: string
-          organization_id: string
-          revoked_at?: string | null
-          role: Database["public"]["Enums"]["app_role"]
-          token_hash: string
-        }
+          accepted_at?: string | null;
+          created_at?: string;
+          email: string;
+          expires_at: string;
+          id?: string;
+          invited_by: string;
+          organization_id: string;
+          revoked_at?: string | null;
+          role: Database["public"]["Enums"]["app_role"];
+          token_hash: string;
+        };
         Update: {
-          accepted_at?: string | null
-          created_at?: string
-          email?: string
-          expires_at?: string
-          id?: string
-          invited_by?: string
-          organization_id?: string
-          revoked_at?: string | null
-          role?: Database["public"]["Enums"]["app_role"]
-          token_hash?: string
-        }
+          accepted_at?: string | null;
+          created_at?: string;
+          email?: string;
+          expires_at?: string;
+          id?: string;
+          invited_by?: string;
+          organization_id?: string;
+          revoked_at?: string | null;
+          role?: Database["public"]["Enums"]["app_role"];
+          token_hash?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "organization_invitations_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "organization_invitations_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       organization_memberships: {
         Row: {
-          accepted_at: string | null
-          created_at: string
-          default_location_id: string | null
-          id: string
-          invited_by: string | null
-          organization_id: string
-          role: Database["public"]["Enums"]["app_role"]
-          status: string
-          updated_at: string
-          user_id: string
-        }
+          accepted_at: string | null;
+          created_at: string;
+          default_location_id: string | null;
+          id: string;
+          invited_by: string | null;
+          organization_id: string;
+          role: Database["public"]["Enums"]["app_role"];
+          status: string;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          accepted_at?: string | null
-          created_at?: string
-          default_location_id?: string | null
-          id?: string
-          invited_by?: string | null
-          organization_id: string
-          role: Database["public"]["Enums"]["app_role"]
-          status?: string
-          updated_at?: string
-          user_id: string
-        }
+          accepted_at?: string | null;
+          created_at?: string;
+          default_location_id?: string | null;
+          id?: string;
+          invited_by?: string | null;
+          organization_id: string;
+          role: Database["public"]["Enums"]["app_role"];
+          status?: string;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          accepted_at?: string | null
-          created_at?: string
-          default_location_id?: string | null
-          id?: string
-          invited_by?: string | null
-          organization_id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          status?: string
-          updated_at?: string
-          user_id?: string
-        }
+          accepted_at?: string | null;
+          created_at?: string;
+          default_location_id?: string | null;
+          id?: string;
+          invited_by?: string | null;
+          organization_id?: string;
+          role?: Database["public"]["Enums"]["app_role"];
+          status?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_membership_location_organization"
-            columns: ["default_location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_membership_location_organization";
+            columns: ["default_location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "organization_memberships_default_location_id_fkey"
-            columns: ["default_location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "organization_memberships_default_location_id_fkey";
+            columns: ["default_location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "organization_memberships_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "organization_memberships_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       organizations: {
         Row: {
-          archived_at: string | null
-          country_code: string
-          created_at: string
-          created_by: string | null
-          enabled_modules: string[]
-          id: string
-          name: string
-          slug: string
-          timezone: string
-          updated_at: string
-        }
+          archived_at: string | null;
+          country_code: string;
+          created_at: string;
+          created_by: string | null;
+          enabled_modules: string[];
+          id: string;
+          name: string;
+          slug: string;
+          timezone: string;
+          updated_at: string;
+        };
         Insert: {
-          archived_at?: string | null
-          country_code?: string
-          created_at?: string
-          created_by?: string | null
-          enabled_modules?: string[]
-          id?: string
-          name: string
-          slug: string
-          timezone?: string
-          updated_at?: string
-        }
+          archived_at?: string | null;
+          country_code?: string;
+          created_at?: string;
+          created_by?: string | null;
+          enabled_modules?: string[];
+          id?: string;
+          name: string;
+          slug: string;
+          timezone?: string;
+          updated_at?: string;
+        };
         Update: {
-          archived_at?: string | null
-          country_code?: string
-          created_at?: string
-          created_by?: string | null
-          enabled_modules?: string[]
-          id?: string
-          name?: string
-          slug?: string
-          timezone?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          archived_at?: string | null;
+          country_code?: string;
+          created_at?: string;
+          created_by?: string | null;
+          enabled_modules?: string[];
+          id?: string;
+          name?: string;
+          slug?: string;
+          timezone?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       pest_sightings: {
         Row: {
-          action_taken: string | null
-          contractor: string | null
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          kind: string
-          location: string | null
-          location_id: string | null
-          observed_at: string
-          organization_id: string | null
-          photo_url: string | null
-          resolved_at: string | null
-          severity: string
-          species: string | null
-          updated_at: string
-          user_id: string
-        }
+          action_taken: string | null;
+          contractor: string | null;
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          kind: string;
+          location: string | null;
+          location_id: string | null;
+          observed_at: string;
+          organization_id: string | null;
+          photo_url: string | null;
+          resolved_at: string | null;
+          severity: string;
+          species: string | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          action_taken?: string | null
-          contractor?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location?: string | null
-          location_id?: string | null
-          observed_at?: string
-          organization_id?: string | null
-          photo_url?: string | null
-          resolved_at?: string | null
-          severity?: string
-          species?: string | null
-          updated_at?: string
-          user_id: string
-        }
+          action_taken?: string | null;
+          contractor?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location?: string | null;
+          location_id?: string | null;
+          observed_at?: string;
+          organization_id?: string | null;
+          photo_url?: string | null;
+          resolved_at?: string | null;
+          severity?: string;
+          species?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          action_taken?: string | null
-          contractor?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          kind?: string
-          location?: string | null
-          location_id?: string | null
-          observed_at?: string
-          organization_id?: string | null
-          photo_url?: string | null
-          resolved_at?: string | null
-          severity?: string
-          species?: string | null
-          updated_at?: string
-          user_id?: string
-        }
+          action_taken?: string | null;
+          contractor?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          kind?: string;
+          location?: string | null;
+          location_id?: string | null;
+          observed_at?: string;
+          organization_id?: string | null;
+          photo_url?: string | null;
+          resolved_at?: string | null;
+          severity?: string;
+          species?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_pest_sightings_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_pest_sightings_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "pest_sightings_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "pest_sightings_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "pest_sightings_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "pest_sightings_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       profiles: {
         Row: {
-          avatar_url: string | null
-          business_state: string | null
-          created_at: string
-          current_location_id: string | null
-          current_organization_id: string | null
-          deactivated_at: string | null
-          email_alerts: boolean
-          full_name: string | null
-          id: string
-          language: string
-          location: string | null
-          location_count: number | null
-          onboarded_at: string | null
-          push_alerts: boolean
-          restaurant_name: string | null
-          team_size: string | null
-          updated_at: string
-          vat_id: string | null
-          vertical: string | null
-          weekly_digest: boolean
-        }
+          avatar_url: string | null;
+          business_state: string | null;
+          created_at: string;
+          current_location_id: string | null;
+          current_organization_id: string | null;
+          deactivated_at: string | null;
+          email_alerts: boolean;
+          full_name: string | null;
+          id: string;
+          language: string;
+          location: string | null;
+          location_count: number | null;
+          onboarded_at: string | null;
+          push_alerts: boolean;
+          restaurant_name: string | null;
+          team_size: string | null;
+          updated_at: string;
+          vat_id: string | null;
+          vertical: string | null;
+          weekly_digest: boolean;
+        };
         Insert: {
-          avatar_url?: string | null
-          business_state?: string | null
-          created_at?: string
-          current_location_id?: string | null
-          current_organization_id?: string | null
-          deactivated_at?: string | null
-          email_alerts?: boolean
-          full_name?: string | null
-          id: string
-          language?: string
-          location?: string | null
-          location_count?: number | null
-          onboarded_at?: string | null
-          push_alerts?: boolean
-          restaurant_name?: string | null
-          team_size?: string | null
-          updated_at?: string
-          vat_id?: string | null
-          vertical?: string | null
-          weekly_digest?: boolean
-        }
+          avatar_url?: string | null;
+          business_state?: string | null;
+          created_at?: string;
+          current_location_id?: string | null;
+          current_organization_id?: string | null;
+          deactivated_at?: string | null;
+          email_alerts?: boolean;
+          full_name?: string | null;
+          id: string;
+          language?: string;
+          location?: string | null;
+          location_count?: number | null;
+          onboarded_at?: string | null;
+          push_alerts?: boolean;
+          restaurant_name?: string | null;
+          team_size?: string | null;
+          updated_at?: string;
+          vat_id?: string | null;
+          vertical?: string | null;
+          weekly_digest?: boolean;
+        };
         Update: {
-          avatar_url?: string | null
-          business_state?: string | null
-          created_at?: string
-          current_location_id?: string | null
-          current_organization_id?: string | null
-          deactivated_at?: string | null
-          email_alerts?: boolean
-          full_name?: string | null
-          id?: string
-          language?: string
-          location?: string | null
-          location_count?: number | null
-          onboarded_at?: string | null
-          push_alerts?: boolean
-          restaurant_name?: string | null
-          team_size?: string | null
-          updated_at?: string
-          vat_id?: string | null
-          vertical?: string | null
-          weekly_digest?: boolean
-        }
+          avatar_url?: string | null;
+          business_state?: string | null;
+          created_at?: string;
+          current_location_id?: string | null;
+          current_organization_id?: string | null;
+          deactivated_at?: string | null;
+          email_alerts?: boolean;
+          full_name?: string | null;
+          id?: string;
+          language?: string;
+          location?: string | null;
+          location_count?: number | null;
+          onboarded_at?: string | null;
+          push_alerts?: boolean;
+          restaurant_name?: string | null;
+          team_size?: string | null;
+          updated_at?: string;
+          vat_id?: string | null;
+          vertical?: string | null;
+          weekly_digest?: boolean;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_profile_location_organization"
-            columns: ["current_location_id", "current_organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_profile_location_organization";
+            columns: ["current_location_id", "current_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "profiles_current_location_id_fkey"
-            columns: ["current_location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "profiles_current_location_id_fkey";
+            columns: ["current_location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "profiles_current_organization_id_fkey"
-            columns: ["current_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "profiles_current_organization_id_fkey";
+            columns: ["current_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       purchase_order_lines: {
         Row: {
-          created_at: string
-          description: string
-          id: string
-          ingredient_id: string | null
-          organization_id: string
-          purchase_order_id: string
-          quantity: number
-          unit: string
-          unit_price_eur: number
-        }
+          created_at: string;
+          description: string;
+          id: string;
+          ingredient_id: string | null;
+          organization_id: string;
+          purchase_order_id: string;
+          quantity: number;
+          unit: string;
+          unit_price_eur: number;
+        };
         Insert: {
-          created_at?: string
-          description: string
-          id?: string
-          ingredient_id?: string | null
-          organization_id?: string
-          purchase_order_id: string
-          quantity: number
-          unit: string
-          unit_price_eur?: number
-        }
+          created_at?: string;
+          description: string;
+          id?: string;
+          ingredient_id?: string | null;
+          organization_id?: string;
+          purchase_order_id: string;
+          quantity: number;
+          unit: string;
+          unit_price_eur?: number;
+        };
         Update: {
-          created_at?: string
-          description?: string
-          id?: string
-          ingredient_id?: string | null
-          organization_id?: string
-          purchase_order_id?: string
-          quantity?: number
-          unit?: string
-          unit_price_eur?: number
-        }
+          created_at?: string;
+          description?: string;
+          id?: string;
+          ingredient_id?: string | null;
+          organization_id?: string;
+          purchase_order_id?: string;
+          quantity?: number;
+          unit?: string;
+          unit_price_eur?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_po_line_ingredient_organization"
-            columns: ["ingredient_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "ingredients"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_po_line_ingredient_organization";
+            columns: ["ingredient_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "ingredients";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "fk_po_line_order_organization"
-            columns: ["purchase_order_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "purchase_orders"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_po_line_order_organization";
+            columns: ["purchase_order_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "purchase_orders";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "purchase_order_lines_ingredient_id_fkey"
-            columns: ["ingredient_id"]
-            isOneToOne: false
-            referencedRelation: "ingredients"
-            referencedColumns: ["id"]
+            foreignKeyName: "purchase_order_lines_ingredient_id_fkey";
+            columns: ["ingredient_id"];
+            isOneToOne: false;
+            referencedRelation: "ingredients";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "purchase_order_lines_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "purchase_order_lines_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "purchase_order_lines_purchase_order_id_fkey"
-            columns: ["purchase_order_id"]
-            isOneToOne: false
-            referencedRelation: "purchase_orders"
-            referencedColumns: ["id"]
+            foreignKeyName: "purchase_order_lines_purchase_order_id_fkey";
+            columns: ["purchase_order_id"];
+            isOneToOne: false;
+            referencedRelation: "purchase_orders";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       purchase_orders: {
         Row: {
-          created_at: string
-          created_by: string | null
-          expected_date: string | null
-          id: string
-          idempotency_key: string | null
-          line_count: number
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          po_number: string
-          status: string
-          supplier: string
-          total_eur: number
-          updated_at: string
-        }
+          created_at: string;
+          created_by: string | null;
+          expected_date: string | null;
+          id: string;
+          idempotency_key: string | null;
+          line_count: number;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          po_number: string;
+          status: string;
+          supplier: string;
+          total_eur: number;
+          updated_at: string;
+        };
         Insert: {
-          created_at?: string
-          created_by?: string | null
-          expected_date?: string | null
-          id?: string
-          idempotency_key?: string | null
-          line_count?: number
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          po_number: string
-          status?: string
-          supplier: string
-          total_eur?: number
-          updated_at?: string
-        }
+          created_at?: string;
+          created_by?: string | null;
+          expected_date?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          line_count?: number;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          po_number: string;
+          status?: string;
+          supplier: string;
+          total_eur?: number;
+          updated_at?: string;
+        };
         Update: {
-          created_at?: string
-          created_by?: string | null
-          expected_date?: string | null
-          id?: string
-          idempotency_key?: string | null
-          line_count?: number
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          po_number?: string
-          status?: string
-          supplier?: string
-          total_eur?: number
-          updated_at?: string
-        }
+          created_at?: string;
+          created_by?: string | null;
+          expected_date?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          line_count?: number;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          po_number?: string;
+          status?: string;
+          supplier?: string;
+          total_eur?: number;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_purchase_orders_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_purchase_orders_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "purchase_orders_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "purchase_orders_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "purchase_orders_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "purchase_orders_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       recalls: {
         Row: {
-          batch: string | null
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          initiated_at: string
-          initiated_by: string | null
-          location_id: string | null
-          organization_id: string | null
-          product: string
-          reason: string
-          severity: string
-          status: string
-          updated_at: string
-        }
+          batch: string | null;
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          initiated_at: string;
+          initiated_by: string | null;
+          location_id: string | null;
+          organization_id: string | null;
+          product: string;
+          reason: string;
+          severity: string;
+          status: string;
+          updated_at: string;
+        };
         Insert: {
-          batch?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          initiated_at?: string
-          initiated_by?: string | null
-          location_id?: string | null
-          organization_id?: string | null
-          product: string
-          reason: string
-          severity?: string
-          status?: string
-          updated_at?: string
-        }
+          batch?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          initiated_at?: string;
+          initiated_by?: string | null;
+          location_id?: string | null;
+          organization_id?: string | null;
+          product: string;
+          reason: string;
+          severity?: string;
+          status?: string;
+          updated_at?: string;
+        };
         Update: {
-          batch?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          initiated_at?: string
-          initiated_by?: string | null
-          location_id?: string | null
-          organization_id?: string | null
-          product?: string
-          reason?: string
-          severity?: string
-          status?: string
-          updated_at?: string
-        }
+          batch?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          initiated_at?: string;
+          initiated_by?: string | null;
+          location_id?: string | null;
+          organization_id?: string | null;
+          product?: string;
+          reason?: string;
+          severity?: string;
+          status?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_recalls_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_recalls_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "recalls_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "recalls_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "recalls_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "recalls_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       recipe_ingredients: {
         Row: {
-          ingredient_id: string
-          organization_id: string
-          quantity: number
-          recipe_id: string
-          unit: string
-        }
+          ingredient_id: string;
+          organization_id: string;
+          quantity: number;
+          recipe_id: string;
+          unit: string;
+        };
         Insert: {
-          ingredient_id: string
-          organization_id?: string
-          quantity: number
-          recipe_id: string
-          unit: string
-        }
+          ingredient_id: string;
+          organization_id?: string;
+          quantity: number;
+          recipe_id: string;
+          unit: string;
+        };
         Update: {
-          ingredient_id?: string
-          organization_id?: string
-          quantity?: number
-          recipe_id?: string
-          unit?: string
-        }
+          ingredient_id?: string;
+          organization_id?: string;
+          quantity?: number;
+          recipe_id?: string;
+          unit?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_recipe_ingredient_item_organization"
-            columns: ["ingredient_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "ingredients"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_recipe_ingredient_item_organization";
+            columns: ["ingredient_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "ingredients";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "fk_recipe_ingredient_recipe_organization"
-            columns: ["recipe_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "recipes"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_recipe_ingredient_recipe_organization";
+            columns: ["recipe_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "recipes";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "recipe_ingredients_ingredient_id_fkey"
-            columns: ["ingredient_id"]
-            isOneToOne: false
-            referencedRelation: "ingredients"
-            referencedColumns: ["id"]
+            foreignKeyName: "recipe_ingredients_ingredient_id_fkey";
+            columns: ["ingredient_id"];
+            isOneToOne: false;
+            referencedRelation: "ingredients";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "recipe_ingredients_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "recipe_ingredients_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "recipe_ingredients_recipe_id_fkey"
-            columns: ["recipe_id"]
-            isOneToOne: false
-            referencedRelation: "recipes"
-            referencedColumns: ["id"]
+            foreignKeyName: "recipe_ingredients_recipe_id_fkey";
+            columns: ["recipe_id"];
+            isOneToOne: false;
+            referencedRelation: "recipes";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       recipes: {
         Row: {
-          allergens: string[]
-          category: string | null
-          cost_eur: number
-          created_at: string
-          created_by: string | null
-          flagged: boolean
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          name: string
-          notes: string | null
-          organization_id: string | null
-          price_eur: number
-          updated_at: string
-        }
+          allergens: string[];
+          category: string | null;
+          cost_eur: number;
+          created_at: string;
+          created_by: string | null;
+          flagged: boolean;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          name: string;
+          notes: string | null;
+          organization_id: string | null;
+          price_eur: number;
+          updated_at: string;
+        };
         Insert: {
-          allergens?: string[]
-          category?: string | null
-          cost_eur?: number
-          created_at?: string
-          created_by?: string | null
-          flagged?: boolean
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name: string
-          notes?: string | null
-          organization_id?: string | null
-          price_eur?: number
-          updated_at?: string
-        }
+          allergens?: string[];
+          category?: string | null;
+          cost_eur?: number;
+          created_at?: string;
+          created_by?: string | null;
+          flagged?: boolean;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name: string;
+          notes?: string | null;
+          organization_id?: string | null;
+          price_eur?: number;
+          updated_at?: string;
+        };
         Update: {
-          allergens?: string[]
-          category?: string | null
-          cost_eur?: number
-          created_at?: string
-          created_by?: string | null
-          flagged?: boolean
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name?: string
-          notes?: string | null
-          organization_id?: string | null
-          price_eur?: number
-          updated_at?: string
-        }
+          allergens?: string[];
+          category?: string | null;
+          cost_eur?: number;
+          created_at?: string;
+          created_by?: string | null;
+          flagged?: boolean;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name?: string;
+          notes?: string | null;
+          organization_id?: string | null;
+          price_eur?: number;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_recipes_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_recipes_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "recipes_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "recipes_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "recipes_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "recipes_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       sensor_devices: {
         Row: {
-          created_at: string
-          created_by: string
-          external_device_id: string
-          id: string
-          is_active: boolean
-          last_seen_at: string | null
-          location_id: string | null
-          name: string
-          organization_id: string
-          secret_hash: string
-          target_max: number
-          target_min: number
-        }
+          created_at: string;
+          created_by: string;
+          external_device_id: string;
+          id: string;
+          is_active: boolean;
+          last_seen_at: string | null;
+          location_id: string | null;
+          name: string;
+          organization_id: string;
+          secret_hash: string;
+          target_max: number;
+          target_min: number;
+        };
         Insert: {
-          created_at?: string
-          created_by?: string
-          external_device_id: string
-          id?: string
-          is_active?: boolean
-          last_seen_at?: string | null
-          location_id?: string | null
-          name: string
-          organization_id: string
-          secret_hash: string
-          target_max: number
-          target_min: number
-        }
+          created_at?: string;
+          created_by?: string;
+          external_device_id: string;
+          id?: string;
+          is_active?: boolean;
+          last_seen_at?: string | null;
+          location_id?: string | null;
+          name: string;
+          organization_id: string;
+          secret_hash: string;
+          target_max: number;
+          target_min: number;
+        };
         Update: {
-          created_at?: string
-          created_by?: string
-          external_device_id?: string
-          id?: string
-          is_active?: boolean
-          last_seen_at?: string | null
-          location_id?: string | null
-          name?: string
-          organization_id?: string
-          secret_hash?: string
-          target_max?: number
-          target_min?: number
-        }
+          created_at?: string;
+          created_by?: string;
+          external_device_id?: string;
+          id?: string;
+          is_active?: boolean;
+          last_seen_at?: string | null;
+          location_id?: string | null;
+          name?: string;
+          organization_id?: string;
+          secret_hash?: string;
+          target_max?: number;
+          target_min?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_sensor_device_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_sensor_device_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "sensor_devices_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "sensor_devices_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "sensor_devices_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "sensor_devices_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       sensor_readings: {
         Row: {
-          captured_at: string
-          device_id: string
-          external_event_id: string
-          id: string
-          location_id: string | null
-          organization_id: string
-          raw_payload: Json
-          reading: number
-          received_at: string
-          unit: string
-        }
+          captured_at: string;
+          device_id: string;
+          external_event_id: string;
+          id: string;
+          location_id: string | null;
+          organization_id: string;
+          raw_payload: Json;
+          reading: number;
+          received_at: string;
+          unit: string;
+        };
         Insert: {
-          captured_at: string
-          device_id: string
-          external_event_id: string
-          id?: string
-          location_id?: string | null
-          organization_id: string
-          raw_payload?: Json
-          reading: number
-          received_at?: string
-          unit?: string
-        }
+          captured_at: string;
+          device_id: string;
+          external_event_id: string;
+          id?: string;
+          location_id?: string | null;
+          organization_id: string;
+          raw_payload?: Json;
+          reading: number;
+          received_at?: string;
+          unit?: string;
+        };
         Update: {
-          captured_at?: string
-          device_id?: string
-          external_event_id?: string
-          id?: string
-          location_id?: string | null
-          organization_id?: string
-          raw_payload?: Json
-          reading?: number
-          received_at?: string
-          unit?: string
-        }
+          captured_at?: string;
+          device_id?: string;
+          external_event_id?: string;
+          id?: string;
+          location_id?: string | null;
+          organization_id?: string;
+          raw_payload?: Json;
+          reading?: number;
+          received_at?: string;
+          unit?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_sensor_reading_device_organization"
-            columns: ["device_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "sensor_devices"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_sensor_reading_device_organization";
+            columns: ["device_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "sensor_devices";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "fk_sensor_reading_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_sensor_reading_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "sensor_readings_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "sensor_devices"
-            referencedColumns: ["id"]
+            foreignKeyName: "sensor_readings_device_id_fkey";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "sensor_devices";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "sensor_readings_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "sensor_readings_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "sensor_readings_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "sensor_readings_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       shifts: {
         Row: {
-          created_at: string
-          created_by: string | null
-          end_time: string
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          role_label: string | null
-          shift_date: string
-          staff_id: string | null
-          staff_name: string
-          start_time: string
-          updated_at: string
-        }
+          created_at: string;
+          created_by: string | null;
+          end_time: string;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          role_label: string | null;
+          shift_date: string;
+          staff_id: string | null;
+          staff_name: string;
+          start_time: string;
+          updated_at: string;
+        };
         Insert: {
-          created_at?: string
-          created_by?: string | null
-          end_time: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          role_label?: string | null
-          shift_date: string
-          staff_id?: string | null
-          staff_name: string
-          start_time: string
-          updated_at?: string
-        }
+          created_at?: string;
+          created_by?: string | null;
+          end_time: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          role_label?: string | null;
+          shift_date: string;
+          staff_id?: string | null;
+          staff_name: string;
+          start_time: string;
+          updated_at?: string;
+        };
         Update: {
-          created_at?: string
-          created_by?: string | null
-          end_time?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          role_label?: string | null
-          shift_date?: string
-          staff_id?: string | null
-          staff_name?: string
-          start_time?: string
-          updated_at?: string
-        }
+          created_at?: string;
+          created_by?: string | null;
+          end_time?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          role_label?: string | null;
+          shift_date?: string;
+          staff_id?: string | null;
+          staff_name?: string;
+          start_time?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_shifts_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_shifts_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "shifts_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "shifts_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "shifts_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "shifts_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       stock_items: {
         Row: {
-          category: string | null
-          created_at: string
-          created_by: string | null
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          name: string
-          organization_id: string | null
-          par: number
-          qty: number
-          supplier: string | null
-          unit: string
-          updated_at: string
-        }
+          category: string | null;
+          created_at: string;
+          created_by: string | null;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          name: string;
+          organization_id: string | null;
+          par: number;
+          qty: number;
+          supplier: string | null;
+          unit: string;
+          updated_at: string;
+        };
         Insert: {
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name: string
-          organization_id?: string | null
-          par?: number
-          qty?: number
-          supplier?: string | null
-          unit?: string
-          updated_at?: string
-        }
+          category?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name: string;
+          organization_id?: string | null;
+          par?: number;
+          qty?: number;
+          supplier?: string | null;
+          unit?: string;
+          updated_at?: string;
+        };
         Update: {
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name?: string
-          organization_id?: string | null
-          par?: number
-          qty?: number
-          supplier?: string | null
-          unit?: string
-          updated_at?: string
-        }
+          category?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name?: string;
+          organization_id?: string | null;
+          par?: number;
+          qty?: number;
+          supplier?: string | null;
+          unit?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_stock_items_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_stock_items_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "stock_items_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "stock_items_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "stock_items_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "stock_items_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       stock_movements: {
         Row: {
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          movement_type: string
-          organization_id: string
-          quantity: number
-          recorded_at: string
-          recorded_by: string
-          reference_id: string | null
-          reference_table: string | null
-          stock_item_id: string
-        }
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          movement_type: string;
+          organization_id: string;
+          quantity: number;
+          recorded_at: string;
+          recorded_by: string;
+          reference_id: string | null;
+          reference_table: string | null;
+          stock_item_id: string;
+        };
         Insert: {
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          movement_type: string
-          organization_id?: string
-          quantity: number
-          recorded_at?: string
-          recorded_by?: string
-          reference_id?: string | null
-          reference_table?: string | null
-          stock_item_id: string
-        }
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          movement_type: string;
+          organization_id?: string;
+          quantity: number;
+          recorded_at?: string;
+          recorded_by?: string;
+          reference_id?: string | null;
+          reference_table?: string | null;
+          stock_item_id: string;
+        };
         Update: {
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          movement_type?: string
-          organization_id?: string
-          quantity?: number
-          recorded_at?: string
-          recorded_by?: string
-          reference_id?: string | null
-          reference_table?: string | null
-          stock_item_id?: string
-        }
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          movement_type?: string;
+          organization_id?: string;
+          quantity?: number;
+          recorded_at?: string;
+          recorded_by?: string;
+          reference_id?: string | null;
+          reference_table?: string | null;
+          stock_item_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_stock_movement_item_organization"
-            columns: ["stock_item_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "stock_items"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_stock_movement_item_organization";
+            columns: ["stock_item_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "stock_items";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "fk_stock_movement_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_stock_movement_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "stock_movements_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "stock_movements_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "stock_movements_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "stock_movements_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "stock_movements_stock_item_id_fkey"
-            columns: ["stock_item_id"]
-            isOneToOne: false
-            referencedRelation: "stock_items"
-            referencedColumns: ["id"]
+            foreignKeyName: "stock_movements_stock_item_id_fkey";
+            columns: ["stock_item_id"];
+            isOneToOne: false;
+            referencedRelation: "stock_items";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       subscriptions: {
         Row: {
-          current_period_end: string | null
-          organization_id: string
-          plan: string
-          provider_customer_id: string | null
-          provider_subscription_id: string | null
-          seats: number
-          status: string
-          updated_at: string
-        }
+          current_period_end: string | null;
+          organization_id: string;
+          plan: string;
+          provider_customer_id: string | null;
+          provider_subscription_id: string | null;
+          seats: number;
+          status: string;
+          updated_at: string;
+        };
         Insert: {
-          current_period_end?: string | null
-          organization_id: string
-          plan?: string
-          provider_customer_id?: string | null
-          provider_subscription_id?: string | null
-          seats?: number
-          status?: string
-          updated_at?: string
-        }
+          current_period_end?: string | null;
+          organization_id: string;
+          plan?: string;
+          provider_customer_id?: string | null;
+          provider_subscription_id?: string | null;
+          seats?: number;
+          status?: string;
+          updated_at?: string;
+        };
         Update: {
-          current_period_end?: string | null
-          organization_id?: string
-          plan?: string
-          provider_customer_id?: string | null
-          provider_subscription_id?: string | null
-          seats?: number
-          status?: string
-          updated_at?: string
-        }
+          current_period_end?: string | null;
+          organization_id?: string;
+          plan?: string;
+          provider_customer_id?: string | null;
+          provider_subscription_id?: string | null;
+          seats?: number;
+          status?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "subscriptions_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: true
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "subscriptions_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: true;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       suppliers: {
         Row: {
-          category: string | null
-          cert_expires_on: string | null
-          contact: string | null
-          created_at: string
-          created_by: string
-          email: string | null
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          name: string
-          note: string | null
-          organization_id: string | null
-          phone: string | null
-          status: string
-          updated_at: string
-        }
+          category: string | null;
+          cert_expires_on: string | null;
+          contact: string | null;
+          created_at: string;
+          created_by: string;
+          email: string | null;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          name: string;
+          note: string | null;
+          organization_id: string | null;
+          phone: string | null;
+          status: string;
+          updated_at: string;
+        };
         Insert: {
-          category?: string | null
-          cert_expires_on?: string | null
-          contact?: string | null
-          created_at?: string
-          created_by: string
-          email?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name: string
-          note?: string | null
-          organization_id?: string | null
-          phone?: string | null
-          status?: string
-          updated_at?: string
-        }
+          category?: string | null;
+          cert_expires_on?: string | null;
+          contact?: string | null;
+          created_at?: string;
+          created_by: string;
+          email?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name: string;
+          note?: string | null;
+          organization_id?: string | null;
+          phone?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
         Update: {
-          category?: string | null
-          cert_expires_on?: string | null
-          contact?: string | null
-          created_at?: string
-          created_by?: string
-          email?: string | null
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          name?: string
-          note?: string | null
-          organization_id?: string | null
-          phone?: string | null
-          status?: string
-          updated_at?: string
-        }
+          category?: string | null;
+          cert_expires_on?: string | null;
+          contact?: string | null;
+          created_at?: string;
+          created_by?: string;
+          email?: string | null;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          name?: string;
+          note?: string | null;
+          organization_id?: string | null;
+          phone?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_suppliers_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_suppliers_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "suppliers_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "suppliers_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "suppliers_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "suppliers_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       temperature_logs: {
         Row: {
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          location: string
-          location_id: string | null
-          logged_at: string
-          note: string | null
-          organization_id: string | null
-          reading: number
-          status: string
-          target_max: number | null
-          target_min: number | null
-          user_id: string
-        }
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          location: string;
+          location_id: string | null;
+          logged_at: string;
+          note: string | null;
+          organization_id: string | null;
+          reading: number;
+          status: string;
+          target_max: number | null;
+          target_min: number | null;
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location: string
-          location_id?: string | null
-          logged_at?: string
-          note?: string | null
-          organization_id?: string | null
-          reading: number
-          status?: string
-          target_max?: number | null
-          target_min?: number | null
-          user_id: string
-        }
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location: string;
+          location_id?: string | null;
+          logged_at?: string;
+          note?: string | null;
+          organization_id?: string | null;
+          reading: number;
+          status?: string;
+          target_max?: number | null;
+          target_min?: number | null;
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location?: string
-          location_id?: string | null
-          logged_at?: string
-          note?: string | null
-          organization_id?: string | null
-          reading?: number
-          status?: string
-          target_max?: number | null
-          target_min?: number | null
-          user_id?: string
-        }
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location?: string;
+          location_id?: string | null;
+          logged_at?: string;
+          note?: string | null;
+          organization_id?: string | null;
+          reading?: number;
+          status?: string;
+          target_max?: number | null;
+          target_min?: number | null;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_temperature_logs_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_temperature_logs_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "temperature_logs_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "temperature_logs_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "temperature_logs_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "temperature_logs_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       time_clock: {
         Row: {
-          clock_in: string
-          clock_out: string | null
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          notes: string | null
-          organization_id: string | null
-          role_label: string | null
-          updated_at: string
-          user_id: string
-        }
+          clock_in: string;
+          clock_out: string | null;
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          notes: string | null;
+          organization_id: string | null;
+          role_label: string | null;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          clock_in?: string
-          clock_out?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          role_label?: string | null
-          updated_at?: string
-          user_id: string
-        }
+          clock_in?: string;
+          clock_out?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          role_label?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          clock_in?: string
-          clock_out?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          notes?: string | null
-          organization_id?: string | null
-          role_label?: string | null
-          updated_at?: string
-          user_id?: string
-        }
+          clock_in?: string;
+          clock_out?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          notes?: string | null;
+          organization_id?: string | null;
+          role_label?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_time_clock_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_time_clock_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "time_clock_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "time_clock_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "time_clock_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "time_clock_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       training_courses: {
         Row: {
-          created_at: string
-          id: string
-          minutes: number
-          modules: number
-          organization_id: string | null
-          required: boolean
-          title_de: string
-          title_en: string
-        }
+          created_at: string;
+          id: string;
+          minutes: number;
+          modules: number;
+          organization_id: string | null;
+          required: boolean;
+          title_de: string;
+          title_en: string;
+        };
         Insert: {
-          created_at?: string
-          id?: string
-          minutes?: number
-          modules?: number
-          organization_id?: string | null
-          required?: boolean
-          title_de: string
-          title_en: string
-        }
+          created_at?: string;
+          id?: string;
+          minutes?: number;
+          modules?: number;
+          organization_id?: string | null;
+          required?: boolean;
+          title_de: string;
+          title_en: string;
+        };
         Update: {
-          created_at?: string
-          id?: string
-          minutes?: number
-          modules?: number
-          organization_id?: string | null
-          required?: boolean
-          title_de?: string
-          title_en?: string
-        }
+          created_at?: string;
+          id?: string;
+          minutes?: number;
+          modules?: number;
+          organization_id?: string | null;
+          required?: boolean;
+          title_de?: string;
+          title_en?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "training_courses_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "training_courses_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       training_records: {
         Row: {
-          certificate_valid_to: string | null
-          completed_at: string | null
-          course_id: string | null
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          location_id: string | null
-          organization_id: string | null
-          progress: number
-          score: number | null
-          updated_at: string
-          user_id: string
-          verification_note: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }
+          certificate_valid_to: string | null;
+          completed_at: string | null;
+          course_id: string | null;
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          location_id: string | null;
+          organization_id: string | null;
+          progress: number;
+          score: number | null;
+          updated_at: string;
+          user_id: string;
+          verification_note: string | null;
+          verified_at: string | null;
+          verified_by: string | null;
+        };
         Insert: {
-          certificate_valid_to?: string | null
-          completed_at?: string | null
-          course_id?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          organization_id?: string | null
-          progress?: number
-          score?: number | null
-          updated_at?: string
-          user_id: string
-          verification_note?: string | null
-          verified_at?: string | null
-          verified_by?: string | null
-        }
+          certificate_valid_to?: string | null;
+          completed_at?: string | null;
+          course_id?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          organization_id?: string | null;
+          progress?: number;
+          score?: number | null;
+          updated_at?: string;
+          user_id: string;
+          verification_note?: string | null;
+          verified_at?: string | null;
+          verified_by?: string | null;
+        };
         Update: {
-          certificate_valid_to?: string | null
-          completed_at?: string | null
-          course_id?: string | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          location_id?: string | null
-          organization_id?: string | null
-          progress?: number
-          score?: number | null
-          updated_at?: string
-          user_id?: string
-          verification_note?: string | null
-          verified_at?: string | null
-          verified_by?: string | null
-        }
+          certificate_valid_to?: string | null;
+          completed_at?: string | null;
+          course_id?: string | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          location_id?: string | null;
+          organization_id?: string | null;
+          progress?: number;
+          score?: number | null;
+          updated_at?: string;
+          user_id?: string;
+          verification_note?: string | null;
+          verified_at?: string | null;
+          verified_by?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_training_records_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_training_records_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "training_records_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "training_courses"
-            referencedColumns: ["id"]
+            foreignKeyName: "training_records_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "training_courses";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "training_records_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "training_records_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "training_records_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "training_records_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       user_roles: {
         Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          created_at: string;
+          id: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          created_at?: string;
+          id?: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          id?: string;
+          role?: Database["public"]["Enums"]["app_role"];
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       waste_entries: {
         Row: {
-          cost_eur: number | null
-          created_at: string
-          id: string
-          idempotency_key: string | null
-          item: string
-          location_id: string | null
-          logged_at: string
-          note: string | null
-          organization_id: string | null
-          qty: number
-          reason: string
-          unit: string
-          user_id: string
-        }
+          cost_eur: number | null;
+          created_at: string;
+          id: string;
+          idempotency_key: string | null;
+          item: string;
+          location_id: string | null;
+          logged_at: string;
+          note: string | null;
+          organization_id: string | null;
+          qty: number;
+          reason: string;
+          unit: string;
+          user_id: string;
+        };
         Insert: {
-          cost_eur?: number | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          item: string
-          location_id?: string | null
-          logged_at?: string
-          note?: string | null
-          organization_id?: string | null
-          qty: number
-          reason: string
-          unit?: string
-          user_id: string
-        }
+          cost_eur?: number | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          item: string;
+          location_id?: string | null;
+          logged_at?: string;
+          note?: string | null;
+          organization_id?: string | null;
+          qty: number;
+          reason: string;
+          unit?: string;
+          user_id: string;
+        };
         Update: {
-          cost_eur?: number | null
-          created_at?: string
-          id?: string
-          idempotency_key?: string | null
-          item?: string
-          location_id?: string | null
-          logged_at?: string
-          note?: string | null
-          organization_id?: string | null
-          qty?: number
-          reason?: string
-          unit?: string
-          user_id?: string
-        }
+          cost_eur?: number | null;
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          item?: string;
+          location_id?: string | null;
+          logged_at?: string;
+          note?: string | null;
+          organization_id?: string | null;
+          qty?: number;
+          reason?: string;
+          unit?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "fk_waste_entries_location_organization"
-            columns: ["location_id", "organization_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id", "organization_id"]
+            foreignKeyName: "fk_waste_entries_location_organization";
+            columns: ["location_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id", "organization_id"];
           },
           {
-            foreignKeyName: "waste_entries_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "locations"
-            referencedColumns: ["id"]
+            foreignKeyName: "waste_entries_location_id_fkey";
+            columns: ["location_id"];
+            isOneToOne: false;
+            referencedRelation: "locations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "waste_entries_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
+            foreignKeyName: "waste_entries_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
           },
-        ]
-      }
-    }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      accept_inspector_invitation: { Args: { p_token: string }; Returns: Json }
+      accept_inspector_invitation: { Args: { p_token: string }; Returns: Json };
       accept_organization_invitation: {
-        Args: { p_token: string }
-        Returns: Json
-      }
+        Args: { p_token: string };
+        Returns: Json;
+      };
       bootstrap_my_organization: {
         Args: {
-          p_business_state?: string
-          p_location_name?: string
-          p_modules?: string[]
-          p_name: string
-        }
-        Returns: Json
-      }
+          p_business_state?: string;
+          p_location_name?: string;
+          p_modules?: string[];
+          p_name: string;
+        };
+        Returns: Json;
+      };
       can_contribute_to_organization: {
-        Args: { p_organization_id: string }
-        Returns: boolean
-      }
+        Args: { p_organization_id: string };
+        Returns: boolean;
+      };
       can_manage_organization: {
-        Args: { p_organization_id: string }
-        Returns: boolean
-      }
+        Args: { p_organization_id: string };
+        Returns: boolean;
+      };
       can_operate_record: {
         Args: {
-          p_actor_id: string
-          p_location_id?: string
-          p_organization_id: string
-        }
-        Returns: boolean
-      }
+          p_actor_id: string;
+          p_location_id?: string;
+          p_organization_id: string;
+        };
+        Returns: boolean;
+      };
       can_read_organization: {
-        Args: { p_organization_id: string }
-        Returns: boolean
-      }
-      current_location_id: { Args: never; Returns: string }
-      current_organization_id: { Args: never; Returns: string }
+        Args: { p_organization_id: string };
+        Returns: boolean;
+      };
+      current_location_id: { Args: never; Returns: string };
+      current_organization_id: { Args: never; Returns: string };
       current_user_role: {
-        Args: never
-        Returns: Database["public"]["Enums"]["app_role"]
-      }
-      disable_my_push_token: { Args: { p_token: string }; Returns: undefined }
-      get_my_context: { Args: never; Returns: Json }
+        Args: never;
+        Returns: Database["public"]["Enums"]["app_role"];
+      };
+      disable_my_push_token: { Args: { p_token: string }; Returns: undefined };
+      get_my_context: { Args: never; Returns: Json };
       has_org_role: {
         Args: {
-          p_organization_id: string
-          p_roles: Database["public"]["Enums"]["app_role"][]
-        }
-        Returns: boolean
-      }
+          p_organization_id: string;
+          p_roles: Database["public"]["Enums"]["app_role"][];
+        };
+        Returns: boolean;
+      };
       has_role: {
         Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+          _role: Database["public"]["Enums"]["app_role"];
+          _user_id: string;
+        };
+        Returns: boolean;
+      };
       has_valid_inspector_grant: {
         Args: {
-          p_location_id?: string
-          p_organization_id: string
-          p_scope?: string
-        }
-        Returns: boolean
-      }
-      is_inspector: { Args: { _user_id: string }; Returns: boolean }
-      is_manager_or_owner: { Args: { _user_id: string }; Returns: boolean }
+          p_location_id?: string;
+          p_organization_id: string;
+          p_scope?: string;
+        };
+        Returns: boolean;
+      };
+      is_inspector: { Args: { _user_id: string }; Returns: boolean };
+      is_manager_or_owner: { Args: { _user_id: string }; Returns: boolean };
       is_valid_profile_context: {
-        Args: { p_location_id: string; p_organization_id: string }
-        Returns: boolean
-      }
+        Args: { p_location_id: string; p_organization_id: string };
+        Returns: boolean;
+      };
       record_evidence_export: {
-        Args: { p_from: string; p_to: string }
-        Returns: undefined
-      }
+        Args: { p_from: string; p_to: string };
+        Returns: undefined;
+      };
       record_haccp_plan: {
-        Args: { p_approve?: boolean; p_plan: Json; p_statement?: string }
-        Returns: Json
-      }
+        Args: { p_approve?: boolean; p_plan: Json; p_statement?: string };
+        Returns: Json;
+      };
       register_my_push_token: {
-        Args: { p_platform: string; p_token: string }
-        Returns: undefined
-      }
+        Args: { p_platform: string; p_token: string };
+        Returns: undefined;
+      };
       set_my_notification_preferences: {
         Args: {
-          p_email_enabled?: boolean
-          p_push_enabled?: boolean
-          p_weekly_digest?: boolean
-        }
-        Returns: undefined
-      }
-      try_uuid: { Args: { p_value: string }; Returns: string }
-    }
+          p_email_enabled?: boolean;
+          p_push_enabled?: boolean;
+          p_weekly_digest?: boolean;
+        };
+        Returns: undefined;
+      };
+      try_uuid: { Args: { p_value: string }; Returns: string };
+    };
     Enums: {
-      app_role: "owner" | "manager" | "chef" | "staff" | "inspector"
-    }
+      app_role: "owner" | "manager" | "chef" | "staff" | "inspector";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">];
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+    : never;
 
 export const Constants = {
   public: {
@@ -3661,4 +3653,4 @@ export const Constants = {
       app_role: ["owner", "manager", "chef", "staff", "inspector"],
     },
   },
-} as const
+} as const;
