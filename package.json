@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "node scripts/clean-build-output.mjs && vite build && node scripts/check-build-budget.mjs",
+    "build": "node scripts/clean-build-output.mjs && vite build && node scripts/check-build-budget.mjs && node scripts/check-built-worker.mjs",
     "build:dev": "vite build --mode development",
-    "preview": "vite preview",
+    "preview": "nitro preview",
     "lint": "eslint .",
     "lint:check": "eslint . --max-warnings=0",
     "format": "prettier --write .",
@@ -20,6 +20,7 @@
     "migrations:check": "node scripts/check-migration-lineage.mjs",
     "secrets:check": "node scripts/check-secrets.mjs",
     "health:check": "node scripts/check-deployment-health.mjs",
+    "smoke:worker": "node scripts/check-built-worker.mjs",
     "launch:preflight": "node --env-file-if-exists=.env scripts/verify-launch-env.mjs",
     "quality": "npm run verify && npm run migrations:check && npm run secrets:check && npm run typecheck && npm test && npm run lint:check && npm run format:check && npm run build"
   },

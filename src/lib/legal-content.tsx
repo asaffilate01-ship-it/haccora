@@ -18,6 +18,27 @@ const P = ({ children }: { children: ReactNode }) => (
 const UL = ({ children }: { children: ReactNode }) => (
   <ul className="mt-3 space-y-1.5 list-disc pl-5 text-[15px] text-black/75">{children}</ul>
 );
+type LegalField = keyof typeof PUBLIC_CONFIG.legal;
+const ConfiguredLegalValue = ({ field, fallback }: { field: LegalField; fallback: string }) => (
+  <>{PUBLIC_CONFIG.legal[field] ?? fallback}</>
+);
+const ConfiguredLegalAddress = ({
+  fallback,
+  separator = ", ",
+  includeEmail = false,
+}: {
+  fallback: string;
+  separator?: string;
+  includeEmail?: boolean;
+}) => {
+  const values = [
+    PUBLIC_CONFIG.legal.companyName,
+    PUBLIC_CONFIG.legal.addressLine1,
+    PUBLIC_CONFIG.legal.postalCity,
+    ...(includeEmail ? [PUBLIC_CONFIG.legal.email] : []),
+  ];
+  return <>{values.filter(Boolean).join(separator) || fallback}</>;
+};
 const Address = ({ lang = "de" }: { lang?: Language }) => (
   <address className="not-italic mt-3 text-[15px] text-black/75">
     {!legalIdentityComplete && (
@@ -235,18 +256,17 @@ const de: Record<LegalKey, LegalDoc> = {
         </P>
         <H>1. Kontaktwege</H>
         <UL>
-          <li>E-Mail: {PUBLIC_CONFIG.legal.email ?? "vor Veröffentlichung konfigurieren"}</li>
           <li>
-            Post:{" "}
-            {[
-              PUBLIC_CONFIG.legal.companyName,
-              PUBLIC_CONFIG.legal.addressLine1,
-              PUBLIC_CONFIG.legal.postalCity,
-            ]
-              .filter(Boolean)
-              .join(", ") || "vor Veröffentlichung konfigurieren"}
+            E-Mail:{" "}
+            <ConfiguredLegalValue field="email" fallback="vor Veröffentlichung konfigurieren" />
           </li>
-          <li>Telefon: {PUBLIC_CONFIG.legal.phone ?? "vor Veröffentlichung konfigurieren"}</li>
+          <li>
+            Post: <ConfiguredLegalAddress fallback="vor Veröffentlichung konfigurieren" />
+          </li>
+          <li>
+            Telefon:{" "}
+            <ConfiguredLegalValue field="phone" fallback="vor Veröffentlichung konfigurieren" />
+          </li>
         </UL>
         <H>2. Bearbeitungsfristen</H>
         <P>
@@ -306,14 +326,11 @@ const en: Record<LegalKey, LegalDoc> = {
         </P>
         <H>1. Controller</H>
         <address className="not-italic mt-3 text-[15px] text-black/75">
-          {[
-            PUBLIC_CONFIG.legal.companyName,
-            PUBLIC_CONFIG.legal.addressLine1,
-            PUBLIC_CONFIG.legal.postalCity,
-            PUBLIC_CONFIG.legal.email,
-          ]
-            .filter(Boolean)
-            .join(" · ") || "Legal identity must be configured before publication"}
+          <ConfiguredLegalAddress
+            fallback="Legal identity must be configured before publication"
+            separator=" · "
+            includeEmail
+          />
         </address>
         <H>2. Data protection officer</H>
         <P>
@@ -450,18 +467,15 @@ const en: Record<LegalKey, LegalDoc> = {
         </P>
         <H>1. How to reach us</H>
         <UL>
-          <li>Email: {PUBLIC_CONFIG.legal.email ?? "configure before publication"}</li>
           <li>
-            Post:{" "}
-            {[
-              PUBLIC_CONFIG.legal.companyName,
-              PUBLIC_CONFIG.legal.addressLine1,
-              PUBLIC_CONFIG.legal.postalCity,
-            ]
-              .filter(Boolean)
-              .join(", ") || "configure before publication"}
+            Email: <ConfiguredLegalValue field="email" fallback="configure before publication" />
           </li>
-          <li>Phone: {PUBLIC_CONFIG.legal.phone ?? "configure before publication"}</li>
+          <li>
+            Post: <ConfiguredLegalAddress fallback="configure before publication" />
+          </li>
+          <li>
+            Phone: <ConfiguredLegalValue field="phone" fallback="configure before publication" />
+          </li>
         </UL>
         <H>2. Response times</H>
         <P>

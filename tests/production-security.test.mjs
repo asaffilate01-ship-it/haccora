@@ -427,14 +427,19 @@ test("release governance requires production preflight, native export and uptime
   assert.match(owners, /@asaffilate01-ship-it/);
 });
 
-test("production build splits high-cost vendors and enforces a bundle budget", async () => {
+test("production build splits vendors, enforces its budget and smoke-tests the worker", async () => {
   const vite = await readFile("vite.config.ts", "utf8");
   const packageJson = JSON.parse(await readFile("package.json", "utf8"));
   const budget = await readFile("scripts/check-build-budget.mjs", "utf8");
+  const workerSmoke = await readFile("scripts/check-built-worker.mjs", "utf8");
   assert.match(vite, /codeSplitting/);
   assert.match(vite, /vendor-tanstack/);
   assert.match(vite, /vendor-supabase/);
   assert.match(packageJson.scripts.build, /check-build-budget\.mjs/);
   assert.match(packageJson.scripts.build, /clean-build-output\.mjs/);
+  assert.match(packageJson.scripts.build, /check-built-worker\.mjs/);
+  assert.equal(packageJson.scripts.preview, "nitro preview");
   assert.match(budget, /500 \* 1024/);
+  assert.match(workerSmoke, /generic HTTPError payload/);
+  assert.match(workerSmoke, /content-security-policy/);
 });

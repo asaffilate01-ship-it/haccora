@@ -1,0 +1,89 @@
+# Go-live status — 2026-08-02
+
+Baseline: GitHub `main` at `be8ecf8cec8cb474cfc401d4f1aa5912f26e39b6`, plus the HTTP 500 repair in this change set.
+
+## Decision
+
+The repaired source is deployable to a controlled staging environment, but the product is not yet approved for a public production launch. Repository/code readiness is approximately **93/100**. End-to-end launch readiness is approximately **71/100** because production provider configuration, legal approval, data recovery evidence, monitoring/on-call proof and signed mobile-store releases are still external blockers.
+
+Scores are evidence-based release gates, not a claim that all product behavior has been independently certified.
+
+| Gate                                |      Score | Evidence and remaining gap                                                                                                                                                                       |
+| ----------------------------------- | ---------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Web runtime and performance         |      14/15 | Production Cloudflare worker returns 200 for six critical routes; CSP/security headers are present; largest browser chunk is below 500 KiB. A real-domain post-deploy check remains.             |
+| Code quality and automated testing  |      14/15 | Full quality gate and 48 tests pass. GitHub Actions must run green on the uploaded commit.                                                                                                       |
+| Security and privacy implementation |      16/20 | Tenant/RLS, private storage, immutable audit, secret scanning and zero high production dependency findings are present. Independent penetration test and production configuration review remain. |
+| Database and backend                |      11/15 | 18 migrations, 195 policy declarations and 56 function definitions pass repository checks. Linked-project ledger reconciliation, staging migration, backup and restore evidence remain.          |
+| Operations and monitoring           |       6/10 | Health endpoint, uptime workflow, rollback and incident runbooks exist. Production URL, alert routing, Sentry/equivalent, named on-call and an exercised rollback remain.                        |
+| Legal and public content            |       3/10 | Legal routes and fail-closed launch checks exist. Real entity fields, final bilingual copy and documented counsel approval remain.                                                               |
+| Native iOS and Android              |       5/10 | Typecheck and Expo export pass for web, iOS and Android. EAS project, signing, real-device QA, store declarations and TestFlight/Play evidence remain.                                           |
+| Providers and commercial flows      |        2/5 | Billing, notification, malware and integration paths exist. Live provider credentials and end-to-end production-mode verification remain.                                                        |
+| **Total**                           | **71/100** | Public go-live remains blocked.                                                                                                                                                                  |
+
+## HTTP 500 incident and repair
+
+The exact production response was reproduced from `.output/server/index.mjs`:
+
+```json
+{ "status": 500, "unhandled": true, "message": "HTTPError" }
+```
+
+Manual Rolldown vendor splitting created a circular SSR chunk dependency. `legal-content.tsx` evaluated configured legal fields at module-import time before the chunk exporting `PUBLIC_CONFIG` had initialized. Nitro then masked the resulting `TypeError` as the generic response above.
+
+The repair defers configured legal-value reads until React renders the legal content. The production build now also executes `scripts/check-built-worker.mjs`, which imports the generated Cloudflare worker and verifies `/`, `/login`, `/blog`, `/legal/privacy`, `/health.json` and `/app`. It rejects non-200 responses, the generic `HTTPError` payload, wrong content types, or missing CSP/nosniff headers. `npm run preview` now starts Nitro's generated worker instead of looking for the nonexistent TanStack `dist/server/server.js` output.
+
+## Automated evidence after the repair
+
+- Root quality gate: passed
+- Unit/security tests: 48 passed, 0 failed
+- Production worker smoke routes: 6 passed, 0 failed
+- Browser bundle gate: passed, maximum 500 KiB per chunk
+- Migration lineage: 18 migrations, 195 policy declarations, 56 function definitions
+- Root, native and Edge production dependency audits: 0 vulnerabilities reported
+- Native TypeScript check: passed
+- Expo export: web, iOS and Android passed
+- Tracked-file secret scan: passed
+
+## Current launch-preflight blockers
+
+The production preflight reports 24 unresolved items:
+
+1. `PUBLIC_APP_URL`
+2. `MALWARE_SCAN_URL`
+3. `VITE_SUPPORT_URL`
+4. `VITE_STATUS_URL`
+5. `ALLOWED_ORIGINS`
+6. `RESEND_API_KEY`
+7. `NOTIFICATION_FROM_EMAIL`
+8. `STRIPE_SECRET_KEY`
+9. `STRIPE_WEBHOOK_SECRET`
+10. `STRIPE_PRICE_PRO`
+11. `MALWARE_SCAN_TOKEN`
+12. `CONTACT_HASH_SALT`
+13. `CRON_SECRET`
+14. `INTEGRATION_ENCRYPTION_KEY`
+15. `VITE_LEGAL_COMPANY_NAME`
+16. `VITE_LEGAL_ADDRESS_LINE_1`
+17. `VITE_LEGAL_POSTAL_CITY`
+18. `VITE_LEGAL_EMAIL`
+19. `VITE_LEGAL_PHONE`
+20. `VITE_LEGAL_REGISTER`
+21. `VITE_LEGAL_MANAGING_DIRECTOR`
+22. `VITE_LEGAL_CONTENT_APPROVED=true` after documented counsel approval
+23. `STRIPE_LIVE_MODE=true` after live-mode provider verification
+24. Replace the EAS project placeholder in `mobile/app.json`
+
+These values belong in managed production secrets/configuration, not in GitHub.
+
+## Ordered path to 100/100
+
+1. Upload this repair, require a green GitHub Actions run, deploy to staging and run `npm run health:check` against the real HTTPS URL.
+2. Configure all 24 preflight items in the hosting/Supabase/EAS environments and obtain a passing `npm run launch:preflight` without exposing values.
+3. Reconcile the production Supabase migration ledger, apply to staging, run the fresh-database/RLS suite, back up database and storage, and complete a timed restore drill.
+4. Exercise real Resend/push, malware scanning, Stripe live-mode test products/webhooks, cron dispatch and outbound integrations; capture provider evidence and alert delivery.
+5. Configure production monitoring, status page, on-call ownership and escalation; deliberately trigger and resolve a staging alert and rollback drill.
+6. Complete cross-tenant, role, inspector-scope, offline conflict, upload, export, billing and real-device acceptance tests from `docs/PRODUCTION_READINESS.md`.
+7. Create signed iOS/Android builds, test on physical devices, complete privacy/data-safety declarations, screenshots and store review through TestFlight and Play internal testing.
+8. Obtain written product, security, privacy/legal and food-safety specialist approvals, then complete `docs/RELEASE_EVIDENCE.md` for the exact release commit and immutable artifact.
+
+Production launch is approved only when the preflight is green, the exact deployment commit has green workflows, post-deploy health checks pass, recovery/alert evidence exists, mobile store candidates are signed and tested, and every named approver has signed the release record.
