@@ -53,7 +53,9 @@ async function walk(directory) {
     if (
       (entry.name === ".env" || /^\.env\.(?!example$)/.test(entry.name)) &&
       relative !== ".env.example" &&
-      relative !== "mobile/.env.example"
+      relative !== "mobile/.env.example" &&
+      // The hosting platform generates and manages the root .env; it is not committed.
+      relative !== ".env"
     ) {
       findings.push(`${relative}: environment file must not be committed`);
       continue;
