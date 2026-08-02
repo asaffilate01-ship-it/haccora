@@ -47,6 +47,7 @@ import {
   Flame,
   MessageSquareWarning,
   FlaskConical,
+  LockKeyhole,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app")({
@@ -67,12 +68,14 @@ const GROUPS: NavGroup[] = [
     labelKey: "nav.group.overview",
     items: [
       { to: "/app", icon: LayoutDashboard, key: "menu.dashboard", nav: "dashboard", exact: true },
+      { to: "/app/control-centre", icon: Command, key: "menu.control", nav: "control" },
     ],
   },
   {
     labelKey: "nav.group.routines",
     items: [
       { to: "/app/routines", icon: ListChecks, key: "menu.routines", nav: "routines" },
+      { to: "/app/workflows", icon: ClipboardList, key: "menu.workflows", nav: "workflows" },
       { to: "/app/rota", icon: CalendarDays, key: "menu.rota", nav: "rota" },
     ],
   },
@@ -145,6 +148,7 @@ const GROUPS: NavGroup[] = [
     items: [
       { to: "/app/audits", icon: ClipboardList, key: "menu.audits", nav: "audits" },
       { to: "/app/inspection", icon: Gavel, key: "menu.audit", nav: "audit" },
+      { to: "/app/security", icon: LockKeyhole, key: "menu.security", nav: "security" },
     ],
   },
 ];
@@ -211,6 +215,9 @@ function AppShell() {
       { prefix: "/app/oil", nav: "oil" },
       { prefix: "/app/complaints", nav: "complaints" },
       { prefix: "/app/chemicals", nav: "chemicals" },
+      { prefix: "/app/security", nav: "security" },
+      { prefix: "/app/control-centre", nav: "control" },
+      { prefix: "/app/workflows", nav: "workflows" },
     ];
 
     const match = PATH_KEY.find(

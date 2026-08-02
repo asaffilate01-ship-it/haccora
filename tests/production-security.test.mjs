@@ -120,3 +120,116 @@ test("service worker never caches authenticated routes", async () => {
   assert.match(worker, /url\.pathname\.startsWith\("\/app"\)/);
   assert.doesNotMatch(worker, /const SHELL = \[[^\]]*"\/login"/s);
 });
+
+test("v2 security events are immutable and tenant scoped", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802090000_v2_security_privacy_launch.sql",
+    "utf8",
+  );
+  assert.match(migration, /security_events_immutable/);
+  assert.match(migration, /can_manage_organization\(organization_id\)/);
+  assert.match(migration, /security events are immutable/);
+});
+
+test("v2 sensitive approvals require a different decision maker", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802090000_v2_security_privacy_launch.sql",
+    "utf8",
+  );
+  assert.match(migration, /decided_by <> requested_by/);
+  assert.match(migration, /two-person approval required/);
+  assert.match(migration, /FOR UPDATE/);
+});
+
+test("v2 privacy requests are authenticated and documented", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802090000_v2_security_privacy_launch.sql",
+    "utf8",
+  );
+  const edge = await readFile("supabase/functions/privacy-requests/index.ts", "utf8");
+  assert.match(migration, /privacy_request_self_create/);
+  assert.match(edge, /requireUser/);
+  assert.match(edge, /privacy_request_submitted/);
+});
+
+test("v2 document downloads require a clean scan verdict", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802090000_v2_security_privacy_launch.sql",
+    "utf8",
+  );
+  const documents = await readFile("src/routes/app.documents.tsx", "utf8");
+  assert.match(migration, /scan\.status = 'clean'/);
+  assert.match(migration, /claim_file_scan_jobs/);
+  assert.match(documents, /get_document_scan_status/);
+});
+
+test("v2 device sessions store only hashed network identifiers", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802090000_v2_security_privacy_launch.sql",
+    "utf8",
+  );
+  const edge = await readFile("supabase/functions/security-center/index.ts", "utf8");
+  assert.match(migration, /ip_hash text/);
+  assert.doesNotMatch(migration, /\bip_address\b/);
+  assert.match(edge, /sha256\(`\$\{salt\}:\$\{ip\}`\)/);
+});
+
+test("v2 workflows are versioned and cannot complete with missing required steps", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802100000_v2_operations_control.sql",
+    "utf8",
+  );
+  assert.match(migration, /workflow_template_versions/);
+  assert.match(migration, /workflow_step_results/);
+  assert.match(migration, /required workflow steps are incomplete/);
+  assert.match(migration, /UNIQUE \(organization_id, idempotency_key\)/);
+});
+
+test("v2 corrective actions require evidence before verification", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802100000_v2_operations_control.sql",
+    "utf8",
+  );
+  assert.match(migration, /transition_corrective_action/);
+  assert.match(migration, /verification evidence required/);
+  assert.match(migration, /verification requires manager/);
+  assert.match(migration, /corrective_action_events/);
+});
+
+test("v2 exceptions enter one tenant-scoped operations inbox", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802100000_v2_operations_control.sql",
+    "utf8",
+  );
+  const control = await readFile("src/routes/app.control-centre.tsx", "utf8");
+  assert.match(migration, /unified_inbox_items/);
+  assert.match(migration, /can_read_organization\(organization_id\)/);
+  assert.match(migration, /trg_temperature_corrective_action/);
+  assert.match(migration, /trg_sensor_excursion_corrective_action/);
+  assert.match(control, /transition_corrective_action/);
+});
+
+test("v2 sensor offline detection runs only through the cron service role", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802100000_v2_operations_control.sql",
+    "utf8",
+  );
+  const edge = await readFile("supabase/functions/operations-dispatch/index.ts", "utf8");
+  assert.match(migration, /auth\.role\(\) <> 'service_role'/);
+  assert.match(migration, /REVOKE ALL ON FUNCTION public\.dispatch_operations_control/);
+  assert.match(edge, /constantTimeEqual/);
+  assert.match(edge, /x-cron-secret/);
+});
+
+test("v2 traceability and governed content preserve source and approval evidence", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802100000_v2_operations_control.sql",
+    "utf8",
+  );
+  assert.match(migration, /traceability_edges/);
+  assert.match(migration, /recall_drills/);
+  assert.match(migration, /regulatory_content_versions/);
+  assert.match(migration, /source_url text NOT NULL/);
+  assert.match(migration, /review_statement text/);
+  assert.match(migration, /training_course_versions/);
+});

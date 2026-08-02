@@ -177,6 +177,21 @@ function DocumentsPage() {
   const openDocument = async (row: Row) => {
     setErr(null);
     if (row.storage_path) {
+      const scan = await (supabase as any).rpc("get_document_scan_status", {
+        p_document_id: row.id,
+      });
+      if (scan.error || scan.data !== "clean") {
+        setErr(
+          scan.data === "infected"
+            ? lang === "de"
+              ? "Die Datei wurde blockiert. Bitte laden Sie eine saubere Datei hoch."
+              : "The file was blocked. Upload a clean replacement."
+            : lang === "de"
+              ? "Die Sicherheitsprüfung der Datei ist noch nicht abgeschlossen."
+              : "The file security scan has not completed yet.",
+        );
+        return;
+      }
       const signed = await supabase.storage
         .from("documents")
         .createSignedUrl(row.storage_path, 5 * 60);
