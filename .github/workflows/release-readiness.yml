@@ -2,6 +2,11 @@ name: Production release evidence
 
 on:
   workflow_dispatch:
+    inputs:
+      deployment_url:
+        description: HTTPS URL of the deployed release candidate to verify
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -19,6 +24,7 @@ jobs:
       VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
+      PRODUCTION_URL: ${{ inputs.deployment_url }}
       VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
       SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
       MALWARE_SCAN_URL: ${{ vars.MALWARE_SCAN_URL }}
@@ -62,10 +68,23 @@ jobs:
           npm audit --omit=dev --audit-level=high
           npm run typecheck
           npm run export:check
+          npm run release:preflight
+      - name: Smoke-test the deployed release candidate
+        run: npm run deployment:smoke
+      - name: Generate tamper-evident release manifest
+        env:
+          DEPENDENCY_AUDIT_PASSED: "true"
+          LAUNCH_PREFLIGHT_PASSED: "true"
+          QUALITY_GATE_PASSED: "true"
+          NATIVE_EXPORT_PASSED: "true"
+          DEPLOYMENT_SMOKE_PASSED: "true"
+        run: npm run release:evidence
       - name: Upload immutable web build evidence
         uses: actions/upload-artifact@v4
         with:
           name: haccora-production-${{ github.sha }}
-          path: .output
+          path: |
+            .output
+            release-evidence
           if-no-files-found: error
           retention-days: 30

@@ -60,6 +60,8 @@ const required = [
   ".github/pull_request_template.md",
   "SECURITY.md",
   "scripts/check-deployment-health.mjs",
+  "scripts/check-deployment-smoke.mjs",
+  "scripts/generate-release-evidence.mjs",
   "scripts/check-build-budget.mjs",
   "scripts/check-built-worker.mjs",
   "scripts/clean-build-output.mjs",
@@ -70,6 +72,9 @@ const required = [
   "docs/INCIDENT_RESPONSE.md",
   "docs/RESTORE_DRILL.md",
   "docs/RELEASE_EVIDENCE.md",
+  "mobile/scripts/verify-store-readiness.mjs",
+  "mobile/store/PRIVACY_DATA_MAP.md",
+  "mobile/store/STORE_RELEASE_CHECKLIST.md",
   "docs/GO_LIVE_STATUS_2026-08-02.md",
   "docs/V2_FILE_3_COMPLETE.md",
 ];
@@ -177,6 +182,9 @@ for (const marker of [
   "npm run launch:preflight",
   "npm run quality",
   "npm run export:check",
+  "npm run release:preflight",
+  "npm run deployment:smoke",
+  "npm run release:evidence",
   "actions/upload-artifact@v4",
 ]) {
   if (!releaseWorkflow.includes(marker)) {
@@ -185,8 +193,10 @@ for (const marker of [
 }
 
 const uptimeWorkflow = await readFile(path.join(root, ".github/workflows/uptime.yml"), "utf8");
-if (!uptimeWorkflow.includes("node scripts/check-deployment-health.mjs")) {
-  failures.push("Production uptime workflow does not run the health verifier");
+for (const marker of ["check-deployment-health.mjs", "check-deployment-smoke.mjs"]) {
+  if (!uptimeWorkflow.includes(marker)) {
+    failures.push(`Production uptime workflow is missing: ${marker}`);
+  }
 }
 
 const operationsMigration = await readFile(
@@ -278,6 +288,9 @@ if (mobilePackage.dependencies?.["expo-file-system"] !== "~57.0.1") {
 }
 if (!mobilePackage.scripts?.["export:check"]?.includes("--platform all")) {
   failures.push("Native release verification must export iOS, Android and web bundles");
+}
+if (mobilePackage.scripts?.["release:preflight"] !== "node scripts/verify-store-readiness.mjs") {
+  failures.push("Native release verification must enforce the store configuration preflight");
 }
 
 const forbiddenDuplicateMigrations = [

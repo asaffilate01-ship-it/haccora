@@ -411,20 +411,41 @@ test("production preflight blocks placeholders, missing approvals and incomplete
   assert.match(preflight, /INTEGRATION_ENCRYPTION_KEY/);
 });
 
-test("release governance requires production preflight, native export and uptime evidence", async () => {
+test("release governance requires preflight, deployment smoke and tamper-evident artifacts", async () => {
   const release = await readFile(".github/workflows/release-readiness.yml", "utf8");
   const uptime = await readFile(".github/workflows/uptime.yml", "utf8");
   const health = await readFile("scripts/check-deployment-health.mjs", "utf8");
+  const smoke = await readFile("scripts/check-deployment-smoke.mjs", "utf8");
+  const evidence = await readFile("scripts/generate-release-evidence.mjs", "utf8");
   const owners = await readFile(".github/CODEOWNERS", "utf8");
   assert.match(release, /environment: production/);
   assert.match(release, /npm run launch:preflight/);
   assert.match(release, /npm run export:check/);
+  assert.match(release, /npm run release:preflight/);
+  assert.match(release, /npm run deployment:smoke/);
+  assert.match(release, /npm run release:evidence/);
   assert.match(release, /actions\/upload-artifact@v4/);
   assert.match(uptime, /schedule:/);
   assert.match(uptime, /check-deployment-health\.mjs/);
+  assert.match(uptime, /check-deployment-smoke\.mjs/);
   assert.match(health, /redirect: "error"/);
   assert.match(health, /Cache-Control: no-store/);
+  assert.match(smoke, /generic HTTPError payload/);
+  assert.match(smoke, /content-security-policy/);
+  assert.match(evidence, /createHash\("sha256"\)/);
   assert.match(owners, /@asaffilate01-ship-it/);
+});
+
+test("native release configuration has a fail-closed store gate and privacy map", async () => {
+  const mobile = JSON.parse(await readFile("mobile/package.json", "utf8"));
+  const preflight = await readFile("mobile/scripts/verify-store-readiness.mjs", "utf8");
+  const privacy = await readFile("mobile/store/PRIVACY_DATA_MAP.md", "utf8");
+  assert.equal(mobile.scripts["release:preflight"], "node scripts/verify-store-readiness.mjs");
+  assert.match(preflight, /EAS projectId/);
+  assert.match(preflight, /NSCameraUsageDescription/);
+  assert.match(preflight, /blockedPermissions/);
+  assert.match(privacy, /App Store privacy questionnaire/);
+  assert.match(privacy, /Push notification token/);
 });
 
 test("production build splits vendors, enforces its budget and smoke-tests the worker", async () => {

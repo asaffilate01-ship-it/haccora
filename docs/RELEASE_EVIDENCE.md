@@ -1,11 +1,11 @@
 # Production release evidence
 
-Copy this template into the private release record for each candidate. Link evidence; do not paste secrets, personal data or production database contents into GitHub.
+Run the manual `Production release evidence` workflow against the deployed HTTPS candidate. It creates `release-evidence/release-manifest.json` and `.md` with the exact commit, gate results, per-file hashes and aggregate SHA-256 for the web artifact. Copy this human-approval template into the private release record. Link evidence; do not paste secrets, personal data or production database contents into GitHub.
 
 ## Candidate
 
 - Commit SHA:
-- Build artifact and digest:
+- Build artifact, `release-manifest.json` and aggregate digest:
 - Release window:
 - Release owner:
 - Database owner:
@@ -18,8 +18,9 @@ Copy this template into the private release record for each candidate. Link evid
 - CodeQL run:
 - Fresh database/RLS run:
 - Production release evidence run:
+- Deployed candidate smoke result and URL:
 - Dependency audit results:
-- Native export and signed-build identifiers:
+- Native export/store-preflight results and signed-build identifiers:
 
 ## Environment and providers
 

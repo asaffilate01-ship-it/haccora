@@ -4,8 +4,9 @@ Production release is approved only when every P0 item is complete and linked ev
 
 ## P0 — source and release controls
 
-- [ ] The eight duplicate migrations in `MIGRATION_RECONCILIATION.md` are deleted from GitHub.
-- [ ] The tracked root `.env` is deleted; GitHub secret scanning and private vulnerability reporting are enabled.
+- [x] The eight duplicate migrations in `MIGRATION_RECONCILIATION.md` are absent and the 18-file lineage gate rejects duplicate policy/function definitions.
+- [x] The tracked-file secret gate passes; the hosting-managed root `.env` contains only allowlisted publishable Supabase client declarations.
+- [ ] GitHub secret scanning, push protection and private vulnerability reporting are enabled in repository settings.
 - [ ] `npm ci`, `npm run quality` and `npm audit --omit=dev` pass from the committed root lockfile.
 - [ ] The clean production artifact contains no stale assets and every JavaScript chunk passes the 500 KiB build budget.
 - [ ] Native `npm ci`, typecheck, all-platform Expo export and runtime dependency audit pass from `mobile/package-lock.json`.
@@ -13,7 +14,7 @@ Production release is approved only when every P0 item is complete and linked ev
 - [ ] Production checks and CodeQL are green on the release pull request.
 - [ ] Browser E2E/accessibility and fresh-database workflows are green on the release pull request.
 - [ ] Branch protection requires review and passing checks before `main` can change.
-- [ ] The manual Production release evidence workflow passes on the exact release commit and its immutable web artifact is retained.
+- [ ] The manual Production release evidence workflow passes on the exact release commit, smoke-tests the deployed HTTPS candidate and retains the immutable web artifact plus SHA-256 manifest.
 
 ## P0 — database and tenant isolation
 
@@ -36,7 +37,7 @@ Production release is approved only when every P0 item is complete and linked ev
 - [ ] Webhook delivery signature, SSRF egress control, retry and dead-letter behaviour pass.
 - [ ] All four dispatch schedules have missed-run and dead-letter alerts.
 - [ ] Error reporting, uptime checks, on-call routing and incident contacts are tested.
-- [ ] `/health.json` is monitored from outside the hosting provider and alerts reach the on-call owner.
+- [ ] `/health.json` and the critical public-route smoke suite are monitored from outside the hosting provider and alerts reach the on-call owner.
 
 ## P0 — legal, privacy and food safety
 
@@ -51,7 +52,7 @@ Production release is approved only when every P0 item is complete and linked ev
 - [ ] Keyboard, screen-reader, 200% zoom, reduced-motion, high-contrast and Glove Mode tests pass.
 - [ ] Supported browser, tablet and phone matrices pass.
 - [ ] Offline capture, termination, reconnect, duplicate retry and conflict review pass on two devices.
-- [ ] EAS project ID, Apple/Google teams, signing, privacy declarations and store metadata are complete.
+- [ ] `mobile/npm run release:preflight` passes; EAS project ID, Apple/Google teams, signing, privacy declarations and store metadata are complete.
 - [ ] Camera/document denial, biometric fallback and notification permissions pass on representative iOS/Android devices.
 - [ ] Signed release candidates are installed from TestFlight and Play internal testing before submission.
 

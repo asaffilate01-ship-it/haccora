@@ -20,6 +20,8 @@
     "migrations:check": "node scripts/check-migration-lineage.mjs",
     "secrets:check": "node scripts/check-secrets.mjs",
     "health:check": "node scripts/check-deployment-health.mjs",
+    "deployment:smoke": "node scripts/check-deployment-smoke.mjs",
+    "release:evidence": "node scripts/generate-release-evidence.mjs",
     "smoke:worker": "node scripts/check-built-worker.mjs",
     "launch:preflight": "node --env-file-if-exists=.env scripts/verify-launch-env.mjs",
     "quality": "npm run verify && npm run migrations:check && npm run secrets:check && npm run typecheck && npm test && npm run lint:check && npm run format:check && npm run build"
