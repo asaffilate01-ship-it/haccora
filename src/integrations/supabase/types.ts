@@ -139,6 +139,56 @@ export type Database = {
           },
         ]
       }
+      api_clients: {
+        Row: {
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          last_used_at: string | null
+          name: string
+          organization_id: string
+          public_key: string
+          revoked_at: string | null
+          scopes: string[]
+          secret_hash: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          expires_at?: string | null
+          id?: string
+          last_used_at?: string | null
+          name: string
+          organization_id?: string
+          public_key: string
+          revoked_at?: string | null
+          scopes?: string[]
+          secret_hash: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          expires_at?: string | null
+          id?: string
+          last_used_at?: string | null
+          name?: string
+          organization_id?: string
+          public_key?: string
+          revoked_at?: string | null
+          scopes?: string[]
+          secret_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_clients_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assets: {
         Row: {
           category: string | null
@@ -398,6 +448,62 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "backup_restore_drills_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          livemode: boolean
+          occurred_at: string
+          organization_id: string | null
+          payload: Json
+          payload_sha256: string
+          processed_at: string | null
+          processing_error: string | null
+          processing_status: string
+          provider: string
+          provider_event_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          livemode?: boolean
+          occurred_at: string
+          organization_id?: string | null
+          payload: Json
+          payload_sha256: string
+          processed_at?: string | null
+          processing_error?: string | null
+          processing_status?: string
+          provider?: string
+          provider_event_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          livemode?: boolean
+          occurred_at?: string
+          organization_id?: string | null
+          payload?: Json
+          payload_sha256?: string
+          processed_at?: string | null
+          processing_error?: string | null
+          processing_status?: string
+          provider?: string
+          provider_event_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_events_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -1728,6 +1834,7 @@ export type Database = {
           closed_at: string | null
           created_at: string
           description: string | null
+          evidence: Json
           id: string
           idempotency_key: string | null
           kind: string
@@ -1744,6 +1851,7 @@ export type Database = {
           closed_at?: string | null
           created_at?: string
           description?: string | null
+          evidence?: Json
           id?: string
           idempotency_key?: string | null
           kind: string
@@ -1760,6 +1868,7 @@ export type Database = {
           closed_at?: string | null
           created_at?: string
           description?: string | null
+          evidence?: Json
           id?: string
           idempotency_key?: string | null
           kind?: string
@@ -3692,35 +3801,91 @@ export type Database = {
           },
         ]
       }
+      subscription_entitlements: {
+        Row: {
+          effective_from: string
+          effective_until: string | null
+          enabled: boolean
+          entitlement: string
+          limit_value: number | null
+          organization_id: string
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          effective_from?: string
+          effective_until?: string | null
+          enabled?: boolean
+          entitlement: string
+          limit_value?: number | null
+          organization_id: string
+          source?: string
+          updated_at?: string
+        }
+        Update: {
+          effective_from?: string
+          effective_until?: string | null
+          enabled?: boolean
+          entitlement?: string
+          limit_value?: number | null
+          organization_id?: string
+          source?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_entitlements_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
+          billing_email: string | null
+          cancel_at_period_end: boolean
+          currency: string
           current_period_end: string | null
+          last_event_at: string | null
           organization_id: string
           plan: string
           provider_customer_id: string | null
           provider_subscription_id: string | null
           seats: number
           status: string
+          trial_ends_at: string | null
           updated_at: string
         }
         Insert: {
+          billing_email?: string | null
+          cancel_at_period_end?: boolean
+          currency?: string
           current_period_end?: string | null
+          last_event_at?: string | null
           organization_id: string
           plan?: string
           provider_customer_id?: string | null
           provider_subscription_id?: string | null
           seats?: number
           status?: string
+          trial_ends_at?: string | null
           updated_at?: string
         }
         Update: {
+          billing_email?: string | null
+          cancel_at_period_end?: boolean
+          currency?: string
           current_period_end?: string | null
+          last_event_at?: string | null
           organization_id?: string
           plan?: string
           provider_customer_id?: string | null
           provider_subscription_id?: string | null
           seats?: number
           status?: string
+          trial_ends_at?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -3802,6 +3967,62 @@ export type Database = {
           },
           {
             foreignKeyName: "suppliers_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sync_conflicts: {
+        Row: {
+          client_mutation_id: string
+          client_payload: Json
+          created_at: string
+          entity_id: string | null
+          entity_table: string
+          id: string
+          organization_id: string
+          resolution: Json | null
+          resolved_at: string | null
+          resolved_by: string | null
+          server_payload: Json | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          client_mutation_id: string
+          client_payload: Json
+          created_at?: string
+          entity_id?: string | null
+          entity_table: string
+          id?: string
+          organization_id: string
+          resolution?: Json | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          server_payload?: Json | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          client_mutation_id?: string
+          client_payload?: Json
+          created_at?: string
+          entity_id?: string | null
+          entity_table?: string
+          id?: string
+          organization_id?: string
+          resolution?: Json | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          server_payload?: Json | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sync_conflicts_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -4322,6 +4543,85 @@ export type Database = {
           },
         ]
       }
+      usage_counters: {
+        Row: {
+          metric: string
+          organization_id: string
+          period_end: string
+          period_start: string
+          quantity: number
+          updated_at: string
+        }
+        Insert: {
+          metric: string
+          organization_id: string
+          period_end: string
+          period_start: string
+          quantity?: number
+          updated_at?: string
+        }
+        Update: {
+          metric?: string
+          organization_id?: string
+          period_end?: string
+          period_start?: string
+          quantity?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "usage_counters_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_experience_preferences: {
+        Row: {
+          biometric_lock: boolean
+          default_station: string | null
+          glove_mode: boolean
+          high_contrast: boolean
+          locale: string
+          organization_id: string
+          reduced_motion: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          biometric_lock?: boolean
+          default_station?: string | null
+          glove_mode?: boolean
+          high_contrast?: boolean
+          locale?: string
+          organization_id: string
+          reduced_motion?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          biometric_lock?: boolean
+          default_station?: string | null
+          glove_mode?: boolean
+          high_contrast?: boolean
+          locale?: string
+          organization_id?: string
+          reduced_motion?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_experience_preferences_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -4406,6 +4706,131 @@ export type Database = {
           },
           {
             foreignKeyName: "waste_entries_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_deliveries: {
+        Row: {
+          attempts: number
+          created_at: string
+          delivered_at: string | null
+          endpoint_id: string
+          event_id: string
+          event_type: string
+          id: string
+          last_error: string | null
+          locked_at: string | null
+          next_attempt_at: string
+          organization_id: string
+          payload: Json
+          response_excerpt: string | null
+          response_status: number | null
+          status: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          delivered_at?: string | null
+          endpoint_id: string
+          event_id: string
+          event_type: string
+          id?: string
+          last_error?: string | null
+          locked_at?: string | null
+          next_attempt_at?: string
+          organization_id: string
+          payload: Json
+          response_excerpt?: string | null
+          response_status?: number | null
+          status?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          delivered_at?: string | null
+          endpoint_id?: string
+          event_id?: string
+          event_type?: string
+          id?: string
+          last_error?: string | null
+          locked_at?: string | null
+          next_attempt_at?: string
+          organization_id?: string
+          payload?: Json
+          response_excerpt?: string | null
+          response_status?: number | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_deliveries_endpoint_id_fkey"
+            columns: ["endpoint_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_endpoints"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "webhook_deliveries_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_endpoints: {
+        Row: {
+          created_at: string
+          created_by: string
+          disabled_at: string | null
+          enabled: boolean
+          encrypted_signing_secret: string
+          event_types: string[]
+          failure_count: number
+          id: string
+          name: string
+          organization_id: string
+          signing_secret_hash: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          disabled_at?: string | null
+          enabled?: boolean
+          encrypted_signing_secret: string
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          name: string
+          organization_id?: string
+          signing_secret_hash: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          disabled_at?: string | null
+          enabled?: boolean
+          encrypted_signing_secret?: string
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          name?: string
+          organization_id?: string
+          signing_secret_hash?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_endpoints_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -4820,6 +5245,32 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      claim_webhook_deliveries: {
+        Args: { p_limit?: number }
+        Returns: {
+          attempts: number
+          created_at: string
+          delivered_at: string | null
+          endpoint_id: string
+          event_id: string
+          event_type: string
+          id: string
+          last_error: string | null
+          locked_at: string | null
+          next_attempt_at: string
+          organization_id: string
+          payload: Json
+          response_excerpt: string | null
+          response_status: number | null
+          status: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "webhook_deliveries"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       complete_workflow_run: {
         Args: { p_run_id: string }
         Returns: {
@@ -4893,6 +5344,7 @@ export type Database = {
         Returns: string
       }
       get_my_context: { Args: never; Returns: Json }
+      get_my_entitlements: { Args: never; Returns: Json }
       has_org_role: {
         Args: {
           p_organization_id: string
@@ -4914,6 +5366,14 @@ export type Database = {
           p_scope?: string
         }
         Returns: boolean
+      }
+      increment_usage: {
+        Args: {
+          p_metric: string
+          p_organization_id: string
+          p_quantity?: number
+        }
+        Returns: number
       }
       is_inspector: { Args: { _user_id: string }; Returns: boolean }
       is_manager_or_owner: { Args: { _user_id: string }; Returns: boolean }
