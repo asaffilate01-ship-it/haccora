@@ -4,21 +4,21 @@ Updated: 2026-08-02
 
 ## Implemented in this release
 
-| Area                 | Production change                                                                                                                                                           |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Authorization        | Public sign-up cannot choose a role. New workspaces bootstrap the first authenticated user as owner; team roles are invitation-only.                                        |
-| Multi-tenancy        | Organizations, locations and memberships scope operational records. Legacy users are isolated into separate workspaces for safe migration.                                  |
-| Inspector mode       | Access is explicit, time-limited, scope-limited and location-limited. Health/profile PII is excluded.                                                                       |
-| Data integrity       | Core evidence is append-oriented; corrections are recorded. Audit events are immutable and SHA-256 hash chained per organization.                                           |
-| Storage              | The private `documents` bucket enforces organization/user prefixes, MIME allowlists and 10 MB limits. Signed links last five minutes and are not persisted.                 |
-| Compliance workflows | Corrective actions, versioned HACCP approvals, verified training records, allergen/ingredient links, PO lines, stock movements and sensor records are persisted.            |
-| Server functions     | Contact capture, audited inspector PDF export, Resend/Expo notification dispatch, team/inspector invitations, sensor provisioning and idempotent ingestion are implemented. |
-| Web                  | Hook-order crash, temperature trigger, expiry query, HACCP photo path, status codes, inert contact/PDF actions and password reset are repaired.                             |
-| Clients              | Installable PWA plus Expo/React Native iOS and Android source with offline idempotent writes.                                                                               |
-| Operations           | CI, fresh-database pgTAP, browser accessibility checks, dependency updates, security headers, a non-sensitive health endpoint and cut-over guidance are included.           |
-| Commercial           | Stripe billing, server-owned entitlements, provider-event idempotency and out-of-order protection are implemented.                                                          |
-| Integrations         | Encrypted endpoint secrets, signed HTTPS webhooks, retry/backoff and dead-letter handling are implemented.                                                                  |
-| Accessibility        | Persistent Glove Mode, high contrast, reduced motion and explicit offline state are implemented.                                                                            |
+| Area                 | Production change                                                                                                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Authorization        | Public sign-up cannot choose a role. New workspaces bootstrap the first authenticated user as owner; team roles are invitation-only.                                                                                |
+| Multi-tenancy        | Organizations, locations and memberships scope operational records. Legacy users are isolated into separate workspaces for safe migration.                                                                          |
+| Inspector mode       | Access is explicit, time-limited, scope-limited and location-limited. Health/profile PII is excluded.                                                                                                               |
+| Data integrity       | Core evidence is append-oriented; corrections are recorded. Audit events are immutable and SHA-256 hash chained per organization.                                                                                   |
+| Storage              | The private `documents` bucket enforces organization/user prefixes, MIME allowlists and 10 MB limits. Signed links last five minutes and are not persisted.                                                         |
+| Compliance workflows | Corrective actions, versioned HACCP approvals, verified training records, allergen/ingredient links, PO lines, stock movements and sensor records are persisted.                                                    |
+| Server functions     | Contact capture, audited inspector PDF export, Resend/Expo notification dispatch, team/inspector invitations, sensor provisioning and idempotent ingestion are implemented.                                         |
+| Web                  | Hook-order crash, temperature trigger, expiry query, HACCP photo path, status codes, inert contact/PDF actions and password reset are repaired; the initial client chunk is split and a 500 KiB budget is enforced. |
+| Clients              | Installable PWA plus Expo/React Native iOS and Android source with offline idempotent writes.                                                                                                                       |
+| Operations           | CI, fresh-database pgTAP, desktop/mobile browser accessibility checks, release evidence, uptime verification, security headers, incident/restore runbooks and a non-sensitive health endpoint are included.         |
+| Commercial           | Stripe billing, server-owned entitlements, provider-event idempotency and out-of-order protection are implemented.                                                                                                  |
+| Integrations         | Encrypted endpoint secrets, signed HTTPS webhooks, retry/backoff and dead-letter handling are implemented.                                                                                                          |
+| Accessibility        | Persistent Glove Mode, high contrast, reduced motion and explicit offline state are implemented.                                                                                                                    |
 
 ## Blocking items owned by the launch team
 
@@ -27,13 +27,13 @@ These cannot be safely invented or completed from source code alone:
 - Real legal entity, address, register, VAT, managing director and counsel-approved German/English legal copy
 - Production Supabase project, SMTP, redirect URLs, MFA policy, Auth rate limits and point-in-time recovery/backups
 - Real domain, DNS, TLS, status page, support address and transactional email/push providers
-- Sentry or equivalent DSN, alert routing, on-call owner, uptime checks and incident-response contacts
+- Sentry or equivalent DSN, tested alert routing, named on-call owner and private provider/incident contacts; the repository now supplies the uptime workflow and response procedure
 - Stripe account/prices/tax configuration if self-service billing is enabled
 - Apple/Google developer organizations, signing keys, privacy nutrition labels/data-safety declarations, screenshots and store review
 - Vendor contracts and credentials for Testo/other sensors, OCR, wholesale catalogs or any future AI providers
 - Product-owner approval of public pricing, package names, marketing claims and final German/English content
 - Independent penetration test, GDPR/DPA review and specialist validation of HACCP/regulatory templates
-- Reconciled Supabase migration ledger and successful linked-staging migration run; the repository now also exercises the full migration set on fresh Postgres in CI
+- Reconciled Supabase migration ledger and successful linked-staging migration run; the repository now also exercises the 18-file migration set on fresh Postgres in CI and rejects repeated policy or identical function definitions
 
 ## Release acceptance tests
 

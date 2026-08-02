@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export type Language = "de" | "en";
 
@@ -1750,19 +1751,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         setTimeout(() => document.documentElement.removeAttribute("data-lang-changing"), 400);
       }
       // Persist to profile if signed in — non-blocking.
-      import("@/integrations/supabase/client")
-        .then(({ supabase }) => {
-          supabase.auth.getSession().then(({ data }) => {
-            const uid = data.session?.user?.id;
-            if (uid)
-              supabase
-                .from("profiles")
-                .update({ language: l })
-                .eq("id", uid)
-                .then(() => {});
-          });
-        })
-        .catch(() => {});
+      supabase.auth.getSession().then(({ data }) => {
+        const uid = data.session?.user?.id;
+        if (uid)
+          supabase
+            .from("profiles")
+            .update({ language: l })
+            .eq("id", uid)
+            .then(() => {});
+      });
     };
     const anyDoc =
       typeof document !== "undefined"

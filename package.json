@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "node scripts/clean-build-output.mjs && vite build && node scripts/check-build-budget.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -19,8 +19,9 @@
     "verify": "node scripts/verify-production.mjs",
     "migrations:check": "node scripts/check-migration-lineage.mjs",
     "secrets:check": "node scripts/check-secrets.mjs",
-    "launch:preflight": "node --env-file=.env scripts/verify-launch-env.mjs",
-    "quality": "npm run verify && npm run migrations:check && npm run secrets:check && npm run typecheck && npm test && npm run lint:check && npm run build"
+    "health:check": "node scripts/check-deployment-health.mjs",
+    "launch:preflight": "node --env-file-if-exists=.env scripts/verify-launch-env.mjs",
+    "quality": "npm run verify && npm run migrations:check && npm run secrets:check && npm run typecheck && npm test && npm run lint:check && npm run format:check && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

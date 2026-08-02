@@ -4,14 +4,16 @@ Production release is approved only when every P0 item is complete and linked ev
 
 ## P0 — source and release controls
 
-- [ ] The seven duplicate migrations in `MIGRATION_RECONCILIATION.md` are deleted from GitHub.
+- [ ] The eight duplicate migrations in `MIGRATION_RECONCILIATION.md` are deleted from GitHub.
 - [ ] The tracked root `.env` is deleted; GitHub secret scanning and private vulnerability reporting are enabled.
 - [ ] `npm ci`, `npm run quality` and `npm audit --omit=dev` pass from the committed root lockfile.
-- [ ] Native `npm ci`, typecheck and runtime dependency audit pass from `mobile/package-lock.json`.
+- [ ] The clean production artifact contains no stale assets and every JavaScript chunk passes the 500 KiB build budget.
+- [ ] Native `npm ci`, typecheck, all-platform Expo export and runtime dependency audit pass from `mobile/package-lock.json`.
 - [ ] Deno format, lint and typecheck pass for every Edge Function using the committed import map and pinned CI toolchain.
 - [ ] Production checks and CodeQL are green on the release pull request.
 - [ ] Browser E2E/accessibility and fresh-database workflows are green on the release pull request.
 - [ ] Branch protection requires review and passing checks before `main` can change.
+- [ ] The manual Production release evidence workflow passes on the exact release commit and its immutable web artifact is retained.
 
 ## P0 — database and tenant isolation
 

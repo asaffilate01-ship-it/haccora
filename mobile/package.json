@@ -8,6 +8,7 @@
     "ios": "expo run:ios",
     "android": "expo run:android",
     "typecheck": "tsc --noEmit",
+    "export:check": "expo export --platform all --output-dir dist --clear",
     "build:ios": "eas build --platform ios --profile production",
     "build:android": "eas build --platform android --profile production"
   },
@@ -19,6 +20,7 @@
     "expo-constants": "~57.0.8",
     "expo-crypto": "~57.0.1",
     "expo-document-picker": "~57.0.1",
+    "expo-file-system": "~57.0.1",
     "expo-image-picker": "~57.0.7",
     "expo-linking": "~57.0.4",
     "expo-local-authentication": "~57.0.2",

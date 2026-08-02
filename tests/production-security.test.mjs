@@ -368,7 +368,10 @@ test("CI runs browser accessibility and fresh-database tenant isolation gates", 
   const browser = await readFile("tests/e2e/public-accessibility.spec.ts", "utf8");
   const rls = await readFile("supabase/tests/database/rls_isolation.test.sql", "utf8");
   assert.match(ci, /npm run test:e2e/);
+  assert.match(ci, /npm run export:check/);
   assert.match(browser, /AxeBuilder/);
+  assert.match(browser, /\/legal\/imprint/);
+  assert.match(browser, /browserErrors/);
   assert.match(database, /supabase db start/);
   assert.match(database, /supabase test db/);
   assert.match(rls, /Tenant B owner cannot read Tenant A temperature evidence/);
@@ -379,7 +382,8 @@ test("secret scanning is limited to tracked files and forbids a tracked runtime 
   const verifier = await readFile("scripts/verify-production.mjs", "utf8");
   assert.match(scanner, /git", \["ls-files", "-z"\]/);
   assert.match(scanner, /environment file must not be committed/);
-  assert.doesNotMatch(scanner, /relative === "\.env"/);
+  assert.doesNotMatch(scanner, /platformManagedEnvironmentFiles/);
+  assert.doesNotMatch(verifier, /file !== "\.env"/);
   assert.match(verifier, /Tracked environment file/);
 });
 
@@ -388,6 +392,7 @@ test("native and Edge manifests declare every imported production dependency", a
   const edge = JSON.parse(await readFile("supabase/functions/package.json", "utf8"));
   for (const dependency of [
     "expo-document-picker",
+    "expo-file-system",
     "expo-image-picker",
     "expo-local-authentication",
   ]) {
@@ -404,4 +409,32 @@ test("production preflight blocks placeholders, missing approvals and incomplete
   assert.match(preflight, /STRIPE_LIVE_MODE/);
   assert.match(preflight, /EAS project placeholder/);
   assert.match(preflight, /INTEGRATION_ENCRYPTION_KEY/);
+});
+
+test("release governance requires production preflight, native export and uptime evidence", async () => {
+  const release = await readFile(".github/workflows/release-readiness.yml", "utf8");
+  const uptime = await readFile(".github/workflows/uptime.yml", "utf8");
+  const health = await readFile("scripts/check-deployment-health.mjs", "utf8");
+  const owners = await readFile(".github/CODEOWNERS", "utf8");
+  assert.match(release, /environment: production/);
+  assert.match(release, /npm run launch:preflight/);
+  assert.match(release, /npm run export:check/);
+  assert.match(release, /actions\/upload-artifact@v4/);
+  assert.match(uptime, /schedule:/);
+  assert.match(uptime, /check-deployment-health\.mjs/);
+  assert.match(health, /redirect: "error"/);
+  assert.match(health, /Cache-Control: no-store/);
+  assert.match(owners, /@asaffilate01-ship-it/);
+});
+
+test("production build splits high-cost vendors and enforces a bundle budget", async () => {
+  const vite = await readFile("vite.config.ts", "utf8");
+  const packageJson = JSON.parse(await readFile("package.json", "utf8"));
+  const budget = await readFile("scripts/check-build-budget.mjs", "utf8");
+  assert.match(vite, /codeSplitting/);
+  assert.match(vite, /vendor-tanstack/);
+  assert.match(vite, /vendor-supabase/);
+  assert.match(packageJson.scripts.build, /check-build-budget\.mjs/);
+  assert.match(packageJson.scripts.build, /clean-build-output\.mjs/);
+  assert.match(budget, /500 \* 1024/);
 });

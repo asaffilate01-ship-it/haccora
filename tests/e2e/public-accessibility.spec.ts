@@ -1,10 +1,24 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const publicRoutes = ["/", "/login", "/legal/privacy", "/legal/terms"];
+const publicRoutes = [
+  "/",
+  "/login",
+  "/legal/privacy",
+  "/legal/terms",
+  "/legal/cookies",
+  "/legal/imprint",
+  "/legal/complaints",
+];
 
 for (const route of publicRoutes) {
   test(`${route} responds and has no automated WCAG A/AA violations`, async ({ page }) => {
+    const browserErrors: string[] = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") browserErrors.push(message.text());
+    });
+    page.on("pageerror", (error) => browserErrors.push(error.message));
+
     const response = await page.goto(route);
     expect(response?.status()).toBeLessThan(400);
     await expect(page.locator("body")).toContainText(/Haccora/i);
@@ -14,6 +28,7 @@ for (const route of publicRoutes) {
       .analyze();
 
     expect(results.violations).toEqual([]);
+    expect(browserErrors).toEqual([]);
   });
 }
 

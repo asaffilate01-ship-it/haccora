@@ -55,6 +55,9 @@ jobs:
       - run: npm ci
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run typecheck
+      - run: npm run export:check
+        env:
+          EXPO_NO_TELEMETRY: "1"
 
   edge-functions:
     runs-on: ubuntu-latest
