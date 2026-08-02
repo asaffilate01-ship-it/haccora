@@ -212,6 +212,73 @@ export type Database = {
           },
         ]
       }
+      audit_events: {
+        Row: {
+          action: string
+          actor_id: string | null
+          after_data: Json | null
+          before_data: Json | null
+          entity: string
+          entity_id: string | null
+          id: string
+          location_id: string | null
+          occurred_at: string
+          organization_id: string
+          previous_hash: string | null
+          record_hash: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          entity: string
+          entity_id?: string | null
+          id?: string
+          location_id?: string | null
+          occurred_at?: string
+          organization_id: string
+          previous_hash?: string | null
+          record_hash: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          entity?: string
+          entity_id?: string | null
+          id?: string
+          location_id?: string | null
+          occurred_at?: string
+          organization_id?: string
+          previous_hash?: string | null
+          record_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_events_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_events_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_audit_event_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
+      }
       audits: {
         Row: {
           audit_type: string
@@ -639,6 +706,130 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      corrective_actions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          description: string
+          due_at: string | null
+          id: string
+          location_id: string | null
+          organization_id: string
+          owner_id: string | null
+          source_id: string
+          source_table: string
+          status: string
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          description: string
+          due_at?: string | null
+          id?: string
+          location_id?: string | null
+          organization_id?: string
+          owner_id?: string | null
+          source_id: string
+          source_table: string
+          status?: string
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string
+          due_at?: string | null
+          id?: string
+          location_id?: string | null
+          organization_id?: string
+          owner_id?: string | null
+          source_id?: string
+          source_table?: string
+          status?: string
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corrective_actions_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corrective_actions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_corrective_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+        ]
+      }
+      device_push_tokens: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          organization_id: string
+          platform: string
+          token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          organization_id: string
+          platform: string
+          token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          organization_id?: string
+          platform?: string
+          token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_push_tokens_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_push_token_membership"
+            columns: ["organization_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "organization_memberships"
+            referencedColumns: ["organization_id", "user_id"]
+          },
+        ]
       }
       documents: {
         Row: {
@@ -1068,6 +1259,79 @@ export type Database = {
           },
         ]
       }
+      haccp_plan_versions: {
+        Row: {
+          approval_statement: string | null
+          approved_at: string | null
+          approved_by: string | null
+          content_hash: string | null
+          created_at: string
+          created_by: string
+          id: string
+          location_id: string | null
+          organization_id: string
+          plan: Json
+          status: string
+          submitted_at: string | null
+          submitted_by: string | null
+          version: number
+        }
+        Insert: {
+          approval_statement?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          content_hash?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          location_id?: string | null
+          organization_id?: string
+          plan: Json
+          status?: string
+          submitted_at?: string | null
+          submitted_by?: string | null
+          version: number
+        }
+        Update: {
+          approval_statement?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          content_hash?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          location_id?: string | null
+          organization_id?: string
+          plan?: Json
+          status?: string
+          submitted_at?: string | null
+          submitted_by?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_haccp_version_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "haccp_plan_versions_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "haccp_plan_versions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       health_register: {
         Row: {
           created_at: string
@@ -1213,6 +1477,75 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ingredients: {
+        Row: {
+          allergens: string[]
+          created_at: string
+          id: string
+          name: string
+          organization_id: string
+          specification_document_id: string | null
+          supplier_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          allergens?: string[]
+          created_at?: string
+          id?: string
+          name: string
+          organization_id?: string
+          specification_document_id?: string | null
+          supplier_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          allergens?: string[]
+          created_at?: string
+          id?: string
+          name?: string
+          organization_id?: string
+          specification_document_id?: string | null
+          supplier_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_ingredient_document_organization"
+            columns: ["specification_document_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "fk_ingredient_supplier_organization"
+            columns: ["supplier_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "ingredients_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ingredients_specification_document_id_fkey"
+            columns: ["specification_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ingredients_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
             referencedColumns: ["id"]
           },
         ]
@@ -1421,6 +1754,110 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "locations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_outbox: {
+        Row: {
+          attempts: number
+          channel: string
+          created_at: string
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          next_attempt_at: string
+          organization_id: string
+          payload: Json
+          processing_at: string | null
+          recipient_id: string
+          sent_at: string | null
+          status: string
+          template: string
+        }
+        Insert: {
+          attempts?: number
+          channel: string
+          created_at?: string
+          id?: string
+          idempotency_key: string
+          last_error?: string | null
+          next_attempt_at?: string
+          organization_id: string
+          payload: Json
+          processing_at?: string | null
+          recipient_id: string
+          sent_at?: string | null
+          status?: string
+          template: string
+        }
+        Update: {
+          attempts?: number
+          channel?: string
+          created_at?: string
+          id?: string
+          idempotency_key?: string
+          last_error?: string | null
+          next_attempt_at?: string
+          organization_id?: string
+          payload?: Json
+          processing_at?: string | null
+          recipient_id?: string
+          sent_at?: string | null
+          status?: string
+          template?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_outbox_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_preferences: {
+        Row: {
+          critical_only: boolean
+          email_enabled: boolean
+          organization_id: string
+          push_enabled: boolean
+          updated_at: string
+          user_id: string
+          weekly_digest: boolean
+        }
+        Insert: {
+          critical_only?: boolean
+          email_enabled?: boolean
+          organization_id: string
+          push_enabled?: boolean
+          updated_at?: string
+          user_id: string
+          weekly_digest?: boolean
+        }
+        Update: {
+          critical_only?: boolean
+          email_enabled?: boolean
+          organization_id?: string
+          push_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+          weekly_digest?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_notification_preference_membership"
+            columns: ["organization_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "organization_memberships"
+            referencedColumns: ["organization_id", "user_id"]
+          },
+          {
+            foreignKeyName: "notification_preferences_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -1818,6 +2255,78 @@ export type Database = {
           },
         ]
       }
+      purchase_order_lines: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          ingredient_id: string | null
+          organization_id: string
+          purchase_order_id: string
+          quantity: number
+          unit: string
+          unit_price_eur: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          ingredient_id?: string | null
+          organization_id?: string
+          purchase_order_id: string
+          quantity: number
+          unit: string
+          unit_price_eur?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          ingredient_id?: string | null
+          organization_id?: string
+          purchase_order_id?: string
+          quantity?: number
+          unit?: string
+          unit_price_eur?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_po_line_ingredient_organization"
+            columns: ["ingredient_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "fk_po_line_order_organization"
+            columns: ["purchase_order_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "purchase_order_lines_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_order_lines_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_order_lines_purchase_order_id_fkey"
+            columns: ["purchase_order_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       purchase_orders: {
         Row: {
           created_at: string
@@ -1961,6 +2470,66 @@ export type Database = {
           },
         ]
       }
+      recipe_ingredients: {
+        Row: {
+          ingredient_id: string
+          organization_id: string
+          quantity: number
+          recipe_id: string
+          unit: string
+        }
+        Insert: {
+          ingredient_id: string
+          organization_id?: string
+          quantity: number
+          recipe_id: string
+          unit: string
+        }
+        Update: {
+          ingredient_id?: string
+          organization_id?: string
+          quantity?: number
+          recipe_id?: string
+          unit?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_recipe_ingredient_item_organization"
+            columns: ["ingredient_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "fk_recipe_ingredient_recipe_organization"
+            columns: ["recipe_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "recipe_ingredients_ingredient_id_fkey"
+            columns: ["ingredient_id"]
+            isOneToOne: false
+            referencedRelation: "ingredients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recipe_ingredients_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recipe_ingredients_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       recipes: {
         Row: {
           allergens: string[]
@@ -2027,6 +2596,148 @@ export type Database = {
           },
           {
             foreignKeyName: "recipes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sensor_devices: {
+        Row: {
+          created_at: string
+          created_by: string
+          external_device_id: string
+          id: string
+          is_active: boolean
+          last_seen_at: string | null
+          location_id: string | null
+          name: string
+          organization_id: string
+          secret_hash: string
+          target_max: number
+          target_min: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          external_device_id: string
+          id?: string
+          is_active?: boolean
+          last_seen_at?: string | null
+          location_id?: string | null
+          name: string
+          organization_id: string
+          secret_hash: string
+          target_max: number
+          target_min: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          external_device_id?: string
+          id?: string
+          is_active?: boolean
+          last_seen_at?: string | null
+          location_id?: string | null
+          name?: string
+          organization_id?: string
+          secret_hash?: string
+          target_max?: number
+          target_min?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_sensor_device_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "sensor_devices_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sensor_devices_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sensor_readings: {
+        Row: {
+          captured_at: string
+          device_id: string
+          external_event_id: string
+          id: string
+          location_id: string | null
+          organization_id: string
+          raw_payload: Json
+          reading: number
+          received_at: string
+          unit: string
+        }
+        Insert: {
+          captured_at: string
+          device_id: string
+          external_event_id: string
+          id?: string
+          location_id?: string | null
+          organization_id: string
+          raw_payload?: Json
+          reading: number
+          received_at?: string
+          unit?: string
+        }
+        Update: {
+          captured_at?: string
+          device_id?: string
+          external_event_id?: string
+          id?: string
+          location_id?: string | null
+          organization_id?: string
+          raw_payload?: Json
+          reading?: number
+          received_at?: string
+          unit?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_sensor_reading_device_organization"
+            columns: ["device_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "sensor_devices"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "fk_sensor_reading_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "sensor_readings_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "sensor_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sensor_readings_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sensor_readings_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -2172,6 +2883,125 @@ export type Database = {
             foreignKeyName: "stock_items_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock_movements: {
+        Row: {
+          id: string
+          idempotency_key: string | null
+          location_id: string | null
+          movement_type: string
+          organization_id: string
+          quantity: number
+          recorded_at: string
+          recorded_by: string
+          reference_id: string | null
+          reference_table: string | null
+          stock_item_id: string
+        }
+        Insert: {
+          id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
+          movement_type: string
+          organization_id?: string
+          quantity: number
+          recorded_at?: string
+          recorded_by?: string
+          reference_id?: string | null
+          reference_table?: string | null
+          stock_item_id: string
+        }
+        Update: {
+          id?: string
+          idempotency_key?: string | null
+          location_id?: string | null
+          movement_type?: string
+          organization_id?: string
+          quantity?: number
+          recorded_at?: string
+          recorded_by?: string
+          reference_id?: string | null
+          reference_table?: string | null
+          stock_item_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_stock_movement_item_organization"
+            columns: ["stock_item_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "stock_items"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "fk_stock_movement_location_organization"
+            columns: ["location_id", "organization_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id", "organization_id"]
+          },
+          {
+            foreignKeyName: "stock_movements_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_stock_item_id_fkey"
+            columns: ["stock_item_id"]
+            isOneToOne: false
+            referencedRelation: "stock_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          current_period_end: string | null
+          organization_id: string
+          plan: string
+          provider_customer_id: string | null
+          provider_subscription_id: string | null
+          seats: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          current_period_end?: string | null
+          organization_id: string
+          plan?: string
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          seats?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          current_period_end?: string | null
+          organization_id?: string
+          plan?: string
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          seats?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: true
             referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
@@ -2647,6 +3477,7 @@ export type Database = {
         Args: never
         Returns: Database["public"]["Enums"]["app_role"]
       }
+      disable_my_push_token: { Args: { p_token: string }; Returns: undefined }
       get_my_context: { Args: never; Returns: Json }
       has_org_role: {
         Args: {
@@ -2675,6 +3506,26 @@ export type Database = {
       is_valid_profile_context: {
         Args: { p_location_id: string; p_organization_id: string }
         Returns: boolean
+      }
+      record_evidence_export: {
+        Args: { p_from: string; p_to: string }
+        Returns: undefined
+      }
+      record_haccp_plan: {
+        Args: { p_approve?: boolean; p_plan: Json; p_statement?: string }
+        Returns: Json
+      }
+      register_my_push_token: {
+        Args: { p_platform: string; p_token: string }
+        Returns: undefined
+      }
+      set_my_notification_preferences: {
+        Args: {
+          p_email_enabled?: boolean
+          p_push_enabled?: boolean
+          p_weekly_digest?: boolean
+        }
+        Returns: undefined
       }
       try_uuid: { Args: { p_value: string }; Returns: string }
     }
