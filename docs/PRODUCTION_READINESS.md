@@ -15,7 +15,7 @@ Updated: 2026-08-02
 | Server functions     | Contact capture, audited inspector PDF export, Resend/Expo notification dispatch, team/inspector invitations, sensor provisioning and idempotent ingestion are implemented. |
 | Web                  | Hook-order crash, temperature trigger, expiry query, HACCP photo path, status codes, inert contact/PDF actions and password reset are repaired.                             |
 | Clients              | Installable PWA plus Expo/React Native iOS and Android source with offline idempotent writes.                                                                               |
-| Operations           | CI, dependency updates, security headers, tests, environment template and cut-over guidance are included.                                                                   |
+| Operations           | CI, fresh-database pgTAP, browser accessibility checks, dependency updates, security headers, a non-sensitive health endpoint and cut-over guidance are included.           |
 | Commercial           | Stripe billing, server-owned entitlements, provider-event idempotency and out-of-order protection are implemented.                                                          |
 | Integrations         | Encrypted endpoint secrets, signed HTTPS webhooks, retry/backoff and dead-letter handling are implemented.                                                                  |
 | Accessibility        | Persistent Glove Mode, high contrast, reduced motion and explicit offline state are implemented.                                                                            |
@@ -33,7 +33,7 @@ These cannot be safely invented or completed from source code alone:
 - Vendor contracts and credentials for Testo/other sensors, OCR, wholesale catalogs or any future AI providers
 - Product-owner approval of public pricing, package names, marketing claims and final German/English content
 - Independent penetration test, GDPR/DPA review and specialist validation of HACCP/regulatory templates
-- Reconciled Supabase migration ledger and successful fresh-staging migration run
+- Reconciled Supabase migration ledger and successful linked-staging migration run; the repository now also exercises the full migration set on fresh Postgres in CI
 
 ## Release acceptance tests
 
@@ -45,7 +45,7 @@ These cannot be safely invented or completed from source code alone:
 6. Complete and verify training; confirm an internal quiz is never presented as an official IfSG certificate.
 7. Export evidence and reconcile counts against tenant-scoped source records.
 8. Restore staging from backup and document recovery time and recovery point.
-9. Run web quality checks, native typecheck, accessibility checks, two-device offline sync and browser/device matrix tests.
+9. Run web quality checks, committed Playwright accessibility tests, native typecheck, manual screen-reader/zoom checks, two-device offline sync and browser/device matrix tests.
 10. Obtain product owner, security, privacy/legal and food-safety specialist sign-off.
 11. Run Stripe staging scenarios for checkout, renewal, failed payment, cancellation, duplicates, mode mismatch and out-of-order events.
 12. Test outbound endpoint signatures, private-network rejection, redirects, retry, automatic disable and dead-letter recovery.

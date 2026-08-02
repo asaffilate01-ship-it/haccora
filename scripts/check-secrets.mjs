@@ -1,18 +1,16 @@
-import { readFile, readdir, stat } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { promisify } from "node:util";
 
+const run = promisify(execFile);
 const root = process.cwd();
 const findings = [];
-const ignoredDirectories = new Set([
-  ".git",
-  ".nitro",
-  ".output",
-  ".tanstack",
-  ".vinxi",
-  ".wrangler",
-  "dist",
-  "node_modules",
-]);
+// The root .env is generated and owned by the hosting platform (publishable
+// values only) and cannot be untracked from this environment; it is still
+// scanned for real secret material below.
+const allowedEnvironmentFiles = new Set([".env.example", "mobile/.env.example"]);
+const platformManagedEnvironmentFiles = new Set([".env"]);
 const textExtensions = new Set([
   ".env",
   ".js",
@@ -40,41 +38,36 @@ const secretPatterns = [
   ],
 ];
 
-async function walk(directory) {
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue;
-    const absolute = path.join(directory, entry.name);
-    const relative = path.relative(root, absolute).replaceAll(path.sep, "/");
-    if (entry.isDirectory()) {
-      await walk(absolute);
-      continue;
-    }
-    if (!entry.isFile()) continue;
-    if (
-      (entry.name === ".env" || /^\.env\.(?!example$)/.test(entry.name)) &&
-      relative !== ".env.example" &&
-      relative !== "mobile/.env.example" &&
-      // The hosting platform generates and manages the root .env; it is not committed.
-      relative !== ".env"
-    ) {
-      findings.push(`${relative}: environment file must not be committed`);
-      continue;
-    }
-    if (!textExtensions.has(path.extname(entry.name)) && !entry.name.startsWith(".env")) {
-      continue;
-    }
-    if ((await stat(absolute)).size > 1024 * 1024) continue;
-    const content = await readFile(absolute, "utf8");
-    if (relative.endsWith(".env.example")) continue;
-    for (const [label, pattern] of secretPatterns) {
-      if (pattern.test(content)) findings.push(`${relative}: possible ${label}`);
-    }
+const { stdout } = await run("git", ["ls-files", "-z"], {
+  cwd: root,
+  encoding: "utf8",
+  maxBuffer: 10 * 1024 * 1024,
+});
+const trackedFiles = stdout.split("\0").filter(Boolean);
+
+for (const relative of trackedFiles) {
+  const name = path.basename(relative);
+  if (
+    (name === ".env" || /^\.env\.(?!example$)/.test(name)) &&
+    !allowedEnvironmentFiles.has(relative) &&
+    !platformManagedEnvironmentFiles.has(relative)
+  ) {
+    findings.push(`${relative}: environment file must not be committed`);
+    continue;
+  }
+
+  if (!textExtensions.has(path.extname(name)) && !name.startsWith(".env")) continue;
+  const absolute = path.join(root, relative);
+  if ((await stat(absolute)).size > 1024 * 1024) continue;
+  const content = await readFile(absolute, "utf8");
+  if (allowedEnvironmentFiles.has(relative)) continue;
+  for (const [label, pattern] of secretPatterns) {
+    if (pattern.test(content)) findings.push(`${relative}: possible ${label}`);
   }
 }
 
-await walk(root);
 if (findings.length) {
   console.error(findings.map((finding) => `- ${finding}`).join("\n"));
   process.exit(1);
 }
-console.log("Repository secret-pattern scan passed.");
+console.log(`Tracked-file secret scan passed (${trackedFiles.length} files).`);

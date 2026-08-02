@@ -236,7 +236,7 @@ test("v2 traceability and governed content preserve source and approval evidence
 
 test("v2 billing trusts signed provider events rather than client plan writes", async () => {
   const migration = await readFile(
-    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "supabase/migrations/20260802103319_63102a85-216e-4527-ab82-2f9dc19862bb.sql",
     "utf8",
   );
   const edge = await readFile("supabase/functions/billing/index.ts", "utf8");
@@ -250,7 +250,7 @@ test("v2 billing trusts signed provider events rather than client plan writes", 
 
 test("v2 integration secrets are encrypted and omitted from browser column grants", async () => {
   const migration = await readFile(
-    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "supabase/migrations/20260802103319_63102a85-216e-4527-ab82-2f9dc19862bb.sql",
     "utf8",
   );
   const crypto = await readFile("supabase/functions/_shared/integration-crypto.ts", "utf8");
@@ -267,7 +267,7 @@ test("v2 integration secrets are encrypted and omitted from browser column grant
 
 test("v2 outbound webhooks are signed, idempotent and retry safely", async () => {
   const migration = await readFile(
-    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "supabase/migrations/20260802103319_63102a85-216e-4527-ab82-2f9dc19862bb.sql",
     "utf8",
   );
   const dispatcher = await readFile("supabase/functions/integration-dispatch/index.ts", "utf8");
@@ -284,7 +284,7 @@ test("v2 outbound webhooks are signed, idempotent and retry safely", async () =>
 
 test("v2 accessibility preferences persist and control motion, contrast and glove targets", async () => {
   const migration = await readFile(
-    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "supabase/migrations/20260802103319_63102a85-216e-4527-ab82-2f9dc19862bb.sql",
     "utf8",
   );
   const controller = await readFile("src/components/ExperienceController.tsx", "utf8");
@@ -294,6 +294,16 @@ test("v2 accessibility preferences persist and control motion, contrast and glov
   assert.match(controller, /navigator\.onLine/);
   assert.match(styles, /min-height: 48px/);
   assert.match(styles, /haccora-reduced-motion/);
+});
+
+test("commercial reconciliation applies entitlement effective dates without replaying schema", async () => {
+  const reconciliation = await readFile(
+    "supabase/migrations/20260802120000_v2_commercial_reconciliation.sql",
+    "utf8",
+  );
+  assert.match(reconciliation, /effective_from <= now\(\)/);
+  assert.match(reconciliation, /CREATE OR REPLACE FUNCTION public\.get_my_entitlements/);
+  assert.doesNotMatch(reconciliation, /CREATE TABLE|CREATE POLICY|CREATE TRIGGER/);
 });
 
 test("v2 native app supports secure evidence, corrective actions and privacy requests", async () => {
@@ -350,6 +360,42 @@ test("CI checks every deployable Edge Function and security scanning", async () 
   ])
     assert.match(ci, new RegExp(`${functionName}/index\\.ts`));
   assert.match(codeql, /github\/codeql-action\/analyze@v4/);
+});
+
+test("CI runs browser accessibility and fresh-database tenant isolation gates", async () => {
+  const ci = await readFile(".github/workflows/ci.yml", "utf8");
+  const database = await readFile(".github/workflows/database.yml", "utf8");
+  const browser = await readFile("tests/e2e/public-accessibility.spec.ts", "utf8");
+  const rls = await readFile("supabase/tests/database/rls_isolation.test.sql", "utf8");
+  assert.match(ci, /npm run test:e2e/);
+  assert.match(browser, /AxeBuilder/);
+  assert.match(database, /supabase db start/);
+  assert.match(database, /supabase test db/);
+  assert.match(rls, /Tenant B owner cannot read Tenant A temperature evidence/);
+});
+
+test("secret scanning is limited to tracked files and forbids a tracked runtime env", async () => {
+  const scanner = await readFile("scripts/check-secrets.mjs", "utf8");
+  const verifier = await readFile("scripts/verify-production.mjs", "utf8");
+  assert.match(scanner, /git", \["ls-files", "-z"\]/);
+  assert.match(scanner, /environment file must not be committed/);
+  assert.doesNotMatch(scanner, /relative === "\.env"/);
+  assert.match(verifier, /Tracked environment file/);
+});
+
+test("native and Edge manifests declare every imported production dependency", async () => {
+  const mobile = JSON.parse(await readFile("mobile/package.json", "utf8"));
+  const edge = JSON.parse(await readFile("supabase/functions/package.json", "utf8"));
+  for (const dependency of [
+    "expo-document-picker",
+    "expo-image-picker",
+    "expo-local-authentication",
+  ]) {
+    assert.ok(mobile.dependencies[dependency]);
+  }
+  assert.equal(edge.dependencies["@supabase/supabase-js"], "2.110.7");
+  assert.equal(edge.dependencies["pdf-lib"], "1.17.1");
+  assert.equal(edge.dependencies.zod, "3.24.2");
 });
 
 test("production preflight blocks placeholders, missing approvals and incomplete native setup", async () => {
