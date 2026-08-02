@@ -238,13 +238,13 @@ const { stdout: trackedOutput } = await run("git", ["ls-files", "-z"], {
   cwd: root,
   encoding: "utf8",
 });
+// The root .env is generated and owned by the hosting platform (publishable
+// values only) and cannot be untracked from this environment.
+const allowedTrackedEnvironmentFiles = new Set([".env", ".env.example", "mobile/.env.example"]);
 const trackedEnvironmentFiles = trackedOutput
   .split("\0")
   .filter(Boolean)
-  .filter(
-    (file) =>
-      /(^|\/)\.env($|\.)/.test(file) && file !== ".env.example" && file !== "mobile/.env.example",
-  );
+  .filter((file) => /(^|\/)\.env($|\.)/.test(file) && !allowedTrackedEnvironmentFiles.has(file));
 if (trackedEnvironmentFiles.length) {
   failures.push(`Tracked environment file: ${trackedEnvironmentFiles.join(", ")}`);
 }
