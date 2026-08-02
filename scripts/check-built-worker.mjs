@@ -2,8 +2,23 @@ import { stat } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const workerPath = path.resolve(".output/server/index.mjs");
-await stat(workerPath);
+const candidatePaths = [
+  path.resolve(".output/server/index.mjs"),
+  path.resolve("dist/server/index.mjs"),
+];
+let workerPath = null;
+for (const candidate of candidatePaths) {
+  try {
+    await stat(candidate);
+    workerPath = candidate;
+    break;
+  } catch {
+    // try the next known production output location
+  }
+}
+if (!workerPath) {
+  throw new Error(`No production worker bundle found. Looked in: ${candidatePaths.join(", ")}`);
+}
 
 const workerModule = await import(pathToFileURL(workerPath).href);
 const worker = workerModule.default;
