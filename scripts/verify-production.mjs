@@ -5,6 +5,8 @@ const root = process.cwd();
 const failures = [];
 const required = [
   ".env.example",
+  "package-lock.json",
+  "mobile/package-lock.json",
   "public/manifest.webmanifest",
   "public/sw.js",
   "supabase/migrations/20260801090000_production_tenancy_security.sql",
@@ -24,10 +26,28 @@ const required = [
   "supabase/migrations/20260802100000_v2_operations_control.sql",
   "src/routes/app.control-centre.tsx",
   "src/routes/app.workflows.tsx",
+  "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+  "supabase/functions/billing/index.ts",
+  "supabase/functions/integration-admin/index.ts",
+  "supabase/functions/integration-dispatch/index.ts",
+  "supabase/functions/package-lock.json",
+  "src/routes/app.billing.tsx",
+  "src/routes/app.integrations.tsx",
+  "src/routes/app.preferences.tsx",
+  "mobile/app/actions.tsx",
+  "mobile/app/documents.tsx",
+  "mobile/app/incidents.tsx",
+  "mobile/app/settings.tsx",
   "mobile/app.json",
   "mobile/eas.json",
   ".github/workflows/ci.yml",
+  ".github/workflows/codeql.yml",
+  "scripts/check-migration-lineage.mjs",
+  "scripts/check-secrets.mjs",
+  "scripts/verify-launch-env.mjs",
   "docs/PRODUCTION_READINESS.md",
+  "docs/MIGRATION_RECONCILIATION.md",
+  "docs/V2_FILE_3_COMPLETE.md",
 ];
 
 for (const file of required) {
@@ -59,6 +79,49 @@ for (const marker of [
   "docs_insert_scoped",
 ]) {
   if (!migration.includes(marker)) failures.push(`Security migration is missing: ${marker}`);
+}
+
+const envExample = await readFile(path.join(root, ".env.example"), "utf8");
+for (const key of [
+  "MALWARE_SCAN_URL",
+  "MALWARE_SCAN_TOKEN",
+  "STRIPE_SECRET_KEY",
+  "STRIPE_WEBHOOK_SECRET",
+  "STRIPE_PRICE_PRO",
+  "STRIPE_LIVE_MODE",
+  "INTEGRATION_ENCRYPTION_KEY",
+]) {
+  if (!new RegExp(`^${key}=`, "m").test(envExample)) {
+    failures.push(`Environment template is missing: ${key}`);
+  }
+}
+
+const supabaseConfig = await readFile(path.join(root, "supabase/config.toml"), "utf8");
+for (const functionName of [
+  "file-scan",
+  "operations-dispatch",
+  "billing",
+  "integration-admin",
+  "integration-dispatch",
+]) {
+  if (!supabaseConfig.includes(`[functions.${functionName}]`)) {
+    failures.push(`Supabase config is missing function: ${functionName}`);
+  }
+}
+
+const ci = await readFile(path.join(root, ".github/workflows/ci.yml"), "utf8");
+for (const functionName of [
+  "privacy-requests",
+  "security-center",
+  "file-scan",
+  "operations-dispatch",
+  "billing",
+  "integration-admin",
+  "integration-dispatch",
+]) {
+  if (!ci.includes(`${functionName}/index.ts`)) {
+    failures.push(`CI does not type-check Edge Function: ${functionName}`);
+  }
 }
 
 const operationsMigration = await readFile(
@@ -93,6 +156,24 @@ for (const marker of [
 ]) {
   if (!securityMigration.includes(marker)) {
     failures.push(`V2 security migration is missing: ${marker}`);
+  }
+}
+
+const completeMigration = await readFile(
+  path.join(root, "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql"),
+  "utf8",
+);
+for (const marker of [
+  "subscription_entitlements",
+  "billing_events",
+  "webhook_endpoints",
+  "encrypted_signing_secret",
+  "claim_webhook_deliveries",
+  "user_experience_preferences",
+  "sync_conflicts",
+]) {
+  if (!completeMigration.includes(marker)) {
+    failures.push(`V2 complete migration is missing: ${marker}`);
   }
 }
 

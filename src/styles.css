@@ -67,6 +67,36 @@
   --shadow-elevated: 0 4px 6px oklch(0 0 0 / 0.06), 0 24px 48px -20px oklch(0 0 0 / 0.28);
 }
 
+html.haccora-glove button,
+html.haccora-glove [role="button"],
+html.haccora-glove input,
+html.haccora-glove select,
+html.haccora-glove a {
+  min-height: 48px;
+}
+
+html.haccora-glove .surface {
+  --glove-spacing: 1.25rem;
+}
+
+html.haccora-high-contrast {
+  --border: 0 0% 25%;
+  --muted-foreground: 0 0% 24%;
+}
+
+html.haccora-high-contrast .surface {
+  border-width: 2px;
+}
+
+html.haccora-reduced-motion *,
+html.haccora-reduced-motion *::before,
+html.haccora-reduced-motion *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
 :root {
   --radius: 0.75rem;
   --background: oklch(1 0 0);

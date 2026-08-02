@@ -100,3 +100,12 @@ export function startOfflineSync() {
     if (state.isConnected) void flush();
   });
 }
+
+export async function getQueueStatus() {
+  const jobs = await read();
+  return {
+    pending: jobs.length,
+    failed: jobs.filter((job) => job.lastError).length,
+    oldestQueuedAt: jobs[0]?.queuedAt ?? null,
+  };
+}

@@ -1,7 +1,4 @@
-import {
-  createClient,
-  type SupabaseClient,
-} from "npm:@supabase/supabase-js@2.110.7";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { env } from "./http.ts";
 
 export function serviceClient(): SupabaseClient {

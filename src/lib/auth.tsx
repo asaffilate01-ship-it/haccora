@@ -52,6 +52,9 @@ const NAV_KEYS = [
   "security",
   "control",
   "workflows",
+  "billing",
+  "integrations",
+  "preferences",
 ] as const;
 export type NavKey = (typeof NAV_KEYS)[number];
 
@@ -92,6 +95,9 @@ export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
     "security",
     "control",
     "workflows",
+    "billing",
+    "integrations",
+    "preferences",
   ],
   manager: [
     "dashboard",
@@ -129,6 +135,9 @@ export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
     "security",
     "control",
     "workflows",
+    "billing",
+    "integrations",
+    "preferences",
   ],
   chef: [
     "dashboard",
@@ -160,6 +169,7 @@ export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
     "security",
     "control",
     "workflows",
+    "preferences",
   ],
   staff: [
     "dashboard",
@@ -180,6 +190,7 @@ export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
     "oil",
     "security",
     "control",
+    "preferences",
   ],
   inspector: [
     "haccp",
@@ -202,6 +213,7 @@ export const ROLE_PERMISSIONS: Record<Role, NavKey[]> = {
     "calibration",
     "pest",
     "security",
+    "preferences",
   ],
 };
 
@@ -228,7 +240,8 @@ const INSPECTOR_SCOPE_BY_NAV: Partial<Record<NavKey, string>> = {
 
 export function canAccess(role: Role, key: NavKey, inspectorScopes: string[] = []) {
   if (!ROLE_PERMISSIONS[role].includes(key)) return false;
-  if (role !== "inspector" || key === "audit" || key === "security") return true;
+  if (role !== "inspector" || key === "audit" || key === "security" || key === "preferences")
+    return true;
   const requiredScope = INSPECTOR_SCOPE_BY_NAV[key];
   return !!requiredScope && inspectorScopes.includes(requiredScope);
 }

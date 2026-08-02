@@ -1,6 +1,6 @@
 # Production readiness and launch gate
 
-Updated: 2026-08-01
+Updated: 2026-08-02
 
 ## Implemented in this release
 
@@ -16,6 +16,9 @@ Updated: 2026-08-01
 | Web                  | Hook-order crash, temperature trigger, expiry query, HACCP photo path, status codes, inert contact/PDF actions and password reset are repaired.                             |
 | Clients              | Installable PWA plus Expo/React Native iOS and Android source with offline idempotent writes.                                                                               |
 | Operations           | CI, dependency updates, security headers, tests, environment template and cut-over guidance are included.                                                                   |
+| Commercial           | Stripe billing, server-owned entitlements, provider-event idempotency and out-of-order protection are implemented.                                                          |
+| Integrations         | Encrypted endpoint secrets, signed HTTPS webhooks, retry/backoff and dead-letter handling are implemented.                                                                  |
+| Accessibility        | Persistent Glove Mode, high contrast, reduced motion and explicit offline state are implemented.                                                                            |
 
 ## Blocking items owned by the launch team
 
@@ -30,6 +33,7 @@ These cannot be safely invented or completed from source code alone:
 - Vendor contracts and credentials for Testo/other sensors, OCR, wholesale catalogs or any future AI providers
 - Product-owner approval of public pricing, package names, marketing claims and final German/English content
 - Independent penetration test, GDPR/DPA review and specialist validation of HACCP/regulatory templates
+- Reconciled Supabase migration ledger and successful fresh-staging migration run
 
 ## Release acceptance tests
 
@@ -43,5 +47,10 @@ These cannot be safely invented or completed from source code alone:
 8. Restore staging from backup and document recovery time and recovery point.
 9. Run web quality checks, native typecheck, accessibility checks, two-device offline sync and browser/device matrix tests.
 10. Obtain product owner, security, privacy/legal and food-safety specialist sign-off.
+11. Run Stripe staging scenarios for checkout, renewal, failed payment, cancellation, duplicates, mode mismatch and out-of-order events.
+12. Test outbound endpoint signatures, private-network rejection, redirects, retry, automatic disable and dead-letter recovery.
+13. Test native camera/document denial, biometric fallback, offline termination/reconnect and sync-conflict review on real devices.
+14. Run `npm run launch:preflight` against the production secret set without printing or committing secrets.
+15. Complete every item in `GO_LIVE_CHECKLIST.md` with an owner, date and evidence link.
 
 Go-live remains blocked until every external item above has an accountable owner and the acceptance tests pass in the actual production configuration.
