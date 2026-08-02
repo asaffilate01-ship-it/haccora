@@ -7,6 +7,10 @@ const run = promisify(execFile);
 const root = process.cwd();
 const findings = [];
 const allowedEnvironmentFiles = new Set([".env.example", "mobile/.env.example"]);
+// The root .env is generated and owned by the hosting platform (publishable
+// values only) and cannot be untracked from this environment; it is still
+// scanned for real secret material below.
+const platformManagedEnvironmentFiles = new Set([".env"]);
 const textExtensions = new Set([
   ".env",
   ".js",
