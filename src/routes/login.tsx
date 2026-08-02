@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useAuth, ROLES, homeFor, type Role } from "@/lib/auth";
@@ -343,12 +343,18 @@ function Field({
   type?: string;
   placeholder?: string;
 }) {
+  const inputId = useId();
+
   return (
     <div>
-      <label className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+      <label
+        htmlFor={inputId}
+        className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground"
+      >
         {label}
       </label>
       <input
+        id={inputId}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         type={type}

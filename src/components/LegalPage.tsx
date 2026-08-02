@@ -11,7 +11,7 @@ export function LegalPage({ k }: { k: LegalKey }) {
         {t("legal.title")}
       </div>
       <h1 className="mt-3 display-black text-4xl md:text-5xl">{doc.title}</h1>
-      <p className="mt-2 text-sm text-black/50">
+      <p className="mt-2 text-sm text-black/70">
         {t("legal.updated")}: {doc.updated}
       </p>
       {!legalPublishReady && (
