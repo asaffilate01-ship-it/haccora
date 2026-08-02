@@ -1,4 +1,4 @@
-import { z } from "npm:zod@3.24.2";
+import { z } from "zod";
 import { json, preflight, requirePost, sha256 } from "../_shared/http.ts";
 import { requireUser, serviceClient } from "../_shared/supabase.ts";
 

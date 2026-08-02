@@ -17,14 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run verify
+      - run: npm run migrations:check
+      - run: npm run secrets:check
       - run: npm run typecheck
       - run: npm test
       - run: npm run lint:check
@@ -43,8 +45,8 @@ jobs:
       run:
         working-directory: mobile
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
@@ -60,14 +62,20 @@ jobs:
       run:
         working-directory: supabase/functions
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: supabase/functions/package-lock.json
+      - run: npm ci
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.x
+          deno-version: v2.9.4
       - run: deno fmt --check .
       - run: deno lint .
       - run: >-
-          deno check
+          deno check --node-modules-dir=manual --no-lock
           contact/index.ts
           inspector-invite/index.ts
           inspection-export/index.ts
@@ -75,3 +83,10 @@ jobs:
           sensor-ingest/index.ts
           sensor-provision/index.ts
           team-invite/index.ts
+          privacy-requests/index.ts
+          security-center/index.ts
+          file-scan/index.ts
+          operations-dispatch/index.ts
+          billing/index.ts
+          integration-admin/index.ts
+          integration-dispatch/index.ts

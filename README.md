@@ -8,9 +8,11 @@ Haccora is a bilingual food-safety and restaurant-operations platform for German
 - Tenant-scoped RLS, private evidence storage and restricted health records
 - HACCP, checks, temperature, cleaning, training, documents, audits, incidents, traceability, stock and supplier workflows
 - Corrective actions, HACCP plan versions and tamper-evident audit events
+- Server-owned subscriptions, Stripe billing, encrypted outbound webhooks and delivery retries
+- Persistent security centre, privacy requests, accessibility preferences and sync-conflict review
 - Contact, PDF evidence export, notification queue, team/inspector invitation, sensor provisioning and sensor-ingest Edge Functions
-- Native iOS/Android workflows with idempotent offline temperature and daily-check writes
-- Security headers, PWA support, CI, production structure tests and deployment runbooks
+- Native iOS/Android workflows for checks, temperature, actions, incidents and document evidence with secure offline queues and biometric lock
+- Security headers, PWA support, reproducible lockfiles, CodeQL, CI and production deployment runbooks
 
 ## Local web setup
 
@@ -26,6 +28,7 @@ Use only the Supabase publishable key in `VITE_*` values. This release does not 
 
 ```bash
 npm run quality
+npm run migrations:check
 ```
 
 The Supabase migration must also be applied to a fresh staging project and tested with at least two organizations plus an external inspector account before production data is accepted.
@@ -36,4 +39,4 @@ See [mobile/README.md](mobile/README.md). Apple and Google developer accounts, s
 
 ## Deployment
 
-Follow [UPLOAD_TO_GITHUB.md](UPLOAD_TO_GITHUB.md), [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md), [docs/PRODUCTION_READINESS.md](docs/PRODUCTION_READINESS.md) and [docs/RELEASE_VERIFICATION.md](docs/RELEASE_VERIFICATION.md). Do not market the product as legally guaranteed or use placeholder legal identity details.
+Follow [UPLOAD_TO_GITHUB.md](UPLOAD_TO_GITHUB.md), [docs/MIGRATION_RECONCILIATION.md](docs/MIGRATION_RECONCILIATION.md), [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md), [docs/GO_LIVE_CHECKLIST.md](docs/GO_LIVE_CHECKLIST.md) and [docs/PRODUCTION_READINESS.md](docs/PRODUCTION_READINESS.md). Do not market the product as legally guaranteed or use placeholder legal identity details.

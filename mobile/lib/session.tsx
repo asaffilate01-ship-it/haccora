@@ -10,6 +10,7 @@ type SessionContextValue = {
   workspaceReady: boolean;
   organizationId: string | null;
   locationId: string | null;
+  role: string | null;
   loading: boolean;
   refreshWorkspace: () => Promise<void>;
 };
@@ -18,6 +19,7 @@ const SessionContext = createContext<SessionContextValue>({
   workspaceReady: false,
   organizationId: null,
   locationId: null,
+  role: null,
   loading: true,
   refreshWorkspace: async () => undefined,
 });
@@ -28,6 +30,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [workspaceReady, setWorkspaceReady] = useState(false);
   const [organizationId, setOrganizationId] = useState<string | null>(null);
   const [locationId, setLocationId] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadWorkspace = async (nextSession: Session | null) => {
@@ -35,13 +38,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
       setWorkspaceReady(false);
       setOrganizationId(null);
       setLocationId(null);
+      setRole(null);
       await AsyncStorage.removeItem(WORKSPACE_CACHE_KEY);
       return;
     }
     const { data, error } = await supabase.rpc("get_my_context");
     if (error) {
       const cached = await AsyncStorage.getItem(WORKSPACE_CACHE_KEY);
-      let context: { organizationId?: string; locationId?: string | null } = {};
+      let context: { organizationId?: string; locationId?: string | null; role?: string | null } =
+        {};
       try {
         context = cached ? JSON.parse(cached) : {};
       } catch {
@@ -49,6 +54,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
       }
       setOrganizationId(context.organizationId ?? null);
       setLocationId(context.locationId ?? null);
+      setRole(context.role ?? null);
       setWorkspaceReady(typeof context.organizationId === "string");
       return;
     }
@@ -57,12 +63,18 @@ export function SessionProvider({ children }: PropsWithChildren) {
       typeof context.organization_id === "string" ? context.organization_id : null;
     const nextLocationId = typeof context.location_id === "string" ? context.location_id : null;
     const ready = nextOrganizationId !== null;
+    const nextRole = typeof context.role === "string" ? context.role : null;
     setOrganizationId(nextOrganizationId);
     setLocationId(nextLocationId);
+    setRole(nextRole);
     setWorkspaceReady(ready);
     await AsyncStorage.setItem(
       WORKSPACE_CACHE_KEY,
-      JSON.stringify({ organizationId: nextOrganizationId, locationId: nextLocationId }),
+      JSON.stringify({
+        organizationId: nextOrganizationId,
+        locationId: nextLocationId,
+        role: nextRole,
+      }),
     );
   };
 
@@ -99,6 +111,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
         workspaceReady,
         organizationId,
         locationId,
+        role,
         loading,
         refreshWorkspace,
       }}

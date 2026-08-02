@@ -233,3 +233,129 @@ test("v2 traceability and governed content preserve source and approval evidence
   assert.match(migration, /review_statement text/);
   assert.match(migration, /training_course_versions/);
 });
+
+test("v2 billing trusts signed provider events rather than client plan writes", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "utf8",
+  );
+  const edge = await readFile("supabase/functions/billing/index.ts", "utf8");
+  assert.match(migration, /subscription_entitlements/);
+  assert.match(migration, /REVOKE INSERT, UPDATE, DELETE ON public\.subscription_entitlements/);
+  assert.match(edge, /stripe-signature/);
+  assert.match(edge, /Math\.abs\(Date\.now\(\) \/ 1000 - timestamp\) > 300/);
+  assert.match(edge, /constantTimeEqual/);
+  assert.match(edge, /provider_event_id/);
+});
+
+test("v2 integration secrets are encrypted and omitted from browser column grants", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "utf8",
+  );
+  const crypto = await readFile("supabase/functions/_shared/integration-crypto.ts", "utf8");
+  assert.match(migration, /encrypted_signing_secret text NOT NULL/);
+  assert.match(migration, /REVOKE SELECT ON public\.webhook_endpoints/);
+  assert.doesNotMatch(
+    migration.match(/GRANT SELECT \(id, organization_id, name, url[\s\S]*?authenticated;/)?.[0] ??
+      "",
+    /encrypted_signing_secret/,
+  );
+  assert.match(crypto, /AES-GCM/);
+  assert.match(crypto, /INTEGRATION_ENCRYPTION_KEY/);
+});
+
+test("v2 outbound webhooks are signed, idempotent and retry safely", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "utf8",
+  );
+  const dispatcher = await readFile("supabase/functions/integration-dispatch/index.ts", "utf8");
+  const urlGuard = await readFile("supabase/functions/_shared/webhook-url.ts", "utf8");
+  assert.match(migration, /UNIQUE \(endpoint_id, event_id\)/);
+  assert.match(migration, /FOR UPDATE SKIP LOCKED/);
+  assert.match(dispatcher, /x-haccora-signature/);
+  assert.match(dispatcher, /idempotency-key/);
+  assert.match(dispatcher, /dead_letter/);
+  assert.match(dispatcher, /redirect: "error"/);
+  assert.match(urlGuard, /private webhook IPs are not allowed/);
+  assert.match(urlGuard, /hostname\.endsWith\("\.local"\)/);
+});
+
+test("v2 accessibility preferences persist and control motion, contrast and glove targets", async () => {
+  const migration = await readFile(
+    "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+    "utf8",
+  );
+  const controller = await readFile("src/components/ExperienceController.tsx", "utf8");
+  const styles = await readFile("src/styles.css", "utf8");
+  assert.match(migration, /user_experience_preferences/);
+  assert.match(controller, /haccora-glove/);
+  assert.match(controller, /navigator\.onLine/);
+  assert.match(styles, /min-height: 48px/);
+  assert.match(styles, /haccora-reduced-motion/);
+});
+
+test("v2 native app supports secure evidence, corrective actions and privacy requests", async () => {
+  const actions = await readFile("mobile/app/actions.tsx", "utf8");
+  const documents = await readFile("mobile/app/documents.tsx", "utf8");
+  const settings = await readFile("mobile/app/settings.tsx", "utf8");
+  const app = await readFile("mobile/app.json", "utf8");
+  assert.match(actions, /transition_corrective_action/);
+  assert.match(actions, /requestCameraPermissionsAsync/);
+  assert.match(documents, /uploadEvidence/);
+  assert.match(settings, /privacy-requests/);
+  assert.match(settings, /useAppLock/);
+  assert.doesNotMatch(app, /"CAMERA"/);
+});
+
+test("v2 native offline UX distinguishes queued writes from server confirmation", async () => {
+  const dashboard = await readFile("mobile/app/dashboard.tsx", "utf8");
+  const queue = await readFile("mobile/lib/offline-queue.ts", "utf8");
+  assert.match(dashboard, /securely queued/);
+  assert.match(dashboard, /server confirmed/);
+  assert.match(queue, /getQueueStatus/);
+  assert.match(queue, /Evidence is never discarded/);
+});
+
+test("billing rejects Stripe mode mismatches and accepts rotated v1 signatures", async () => {
+  const billing = await readFile("supabase/functions/billing/index.ts", "utf8");
+  assert.match(billing, /STRIPE_LIVE_MODE/);
+  assert.match(billing, /stripe_mode_mismatch/);
+  assert.match(billing, /signatures\.some/);
+  assert.match(billing, /constantTimeEqual\(value, expected\)/);
+});
+
+test("current Deno toolchain uses a pinned import map instead of inline dependency prefixes", async () => {
+  const deno = await readFile("supabase/functions/deno.json", "utf8");
+  const billing = await readFile("supabase/functions/billing/index.ts", "utf8");
+  const shared = await readFile("supabase/functions/_shared/supabase.ts", "utf8");
+  assert.match(deno, /"zod": "npm:zod@3\.24\.2"/);
+  assert.match(deno, /"@supabase\/supabase-js"/);
+  assert.doesNotMatch(billing, /from "npm:/);
+  assert.doesNotMatch(shared, /from "npm:/);
+});
+
+test("CI checks every deployable Edge Function and security scanning", async () => {
+  const ci = await readFile(".github/workflows/ci.yml", "utf8");
+  const codeql = await readFile(".github/workflows/codeql.yml", "utf8");
+  for (const functionName of [
+    "privacy-requests",
+    "security-center",
+    "file-scan",
+    "operations-dispatch",
+    "billing",
+    "integration-admin",
+    "integration-dispatch",
+  ])
+    assert.match(ci, new RegExp(`${functionName}/index\\.ts`));
+  assert.match(codeql, /github\/codeql-action\/analyze@v4/);
+});
+
+test("production preflight blocks placeholders, missing approvals and incomplete native setup", async () => {
+  const preflight = await readFile("scripts/verify-launch-env.mjs", "utf8");
+  assert.match(preflight, /VITE_LEGAL_CONTENT_APPROVED/);
+  assert.match(preflight, /STRIPE_LIVE_MODE/);
+  assert.match(preflight, /EAS project placeholder/);
+  assert.match(preflight, /INTEGRATION_ENCRYPTION_KEY/);
+});

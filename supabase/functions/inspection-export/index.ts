@@ -1,4 +1,4 @@
-import { PDFDocument, rgb, StandardFonts } from "npm:pdf-lib@1.17.1";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { corsHeaders, json, preflight, requirePost } from "../_shared/http.ts";
 import { requireUser } from "../_shared/supabase.ts";
 
@@ -216,7 +216,8 @@ Deno.serve(async (request) => {
       y -= 14;
     }
     const bytes = await pdf.save();
-    return new Response(bytes, {
+    const body = new Uint8Array(bytes).buffer;
+    return new Response(body, {
       headers: {
         ...corsHeaders(request),
         "Content-Type": "application/pdf",

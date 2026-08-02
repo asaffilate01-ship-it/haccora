@@ -4,6 +4,7 @@ import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { BrandLogoImage } from "@/components/BrandLogo";
+import { ExperienceController } from "@/components/ExperienceController";
 import { useAuth, canAccess, homeFor, type NavKey } from "@/lib/auth";
 import {
   LayoutDashboard,
@@ -48,6 +49,9 @@ import {
   MessageSquareWarning,
   FlaskConical,
   LockKeyhole,
+  CreditCard,
+  PlugZap,
+  Accessibility,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app")({
@@ -149,6 +153,9 @@ const GROUPS: NavGroup[] = [
       { to: "/app/audits", icon: ClipboardList, key: "menu.audits", nav: "audits" },
       { to: "/app/inspection", icon: Gavel, key: "menu.audit", nav: "audit" },
       { to: "/app/security", icon: LockKeyhole, key: "menu.security", nav: "security" },
+      { to: "/app/preferences", icon: Accessibility, key: "menu.preferences", nav: "preferences" },
+      { to: "/app/integrations", icon: PlugZap, key: "menu.integrations", nav: "integrations" },
+      { to: "/app/billing", icon: CreditCard, key: "menu.billing", nav: "billing" },
     ],
   },
 ];
@@ -218,6 +225,9 @@ function AppShell() {
       { prefix: "/app/security", nav: "security" },
       { prefix: "/app/control-centre", nav: "control" },
       { prefix: "/app/workflows", nav: "workflows" },
+      { prefix: "/app/billing", nav: "billing" },
+      { prefix: "/app/integrations", nav: "integrations" },
+      { prefix: "/app/preferences", nav: "preferences" },
     ];
 
     const match = PATH_KEY.find(
@@ -368,6 +378,7 @@ function AppShell() {
           </div>
         </div>
       </div>
+      <ExperienceController />
 
       <div className="flex-1 flex min-h-0">
         <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-card">
