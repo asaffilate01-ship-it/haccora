@@ -1,13 +1,33 @@
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 
-const assetsDirectory = path.resolve(
-  process.env.HACCORA_BUILD_ASSETS_DIR || ".output/public/assets",
-);
+// Vite/nitro writes the browser bundle to dist/client/assets here; other
+// deployment targets emit .output/public/assets.
+const candidateDirectories = process.env.HACCORA_BUILD_ASSETS_DIR
+  ? [process.env.HACCORA_BUILD_ASSETS_DIR]
+  : ["dist/client/assets", ".output/public/assets"];
+
+let assetsDirectory;
+let assetFiles;
+for (const candidate of candidateDirectories) {
+  const resolved = path.resolve(candidate);
+  try {
+    assetFiles = await readdir(resolved);
+    assetsDirectory = resolved;
+    break;
+  } catch {
+    // try the next known output location
+  }
+}
+
+if (!assetsDirectory) {
+  console.error(`No production bundle found in: ${candidateDirectories.join(", ")}`);
+  process.exit(1);
+}
 const maximumJavaScriptBytes = 500 * 1024;
 const failures = [];
 
-for (const file of await readdir(assetsDirectory)) {
+for (const file of assetFiles) {
   if (!/\.(?:js|mjs)$/.test(file)) continue;
   const size = (await stat(path.join(assetsDirectory, file))).size;
   if (size > maximumJavaScriptBytes) {
