@@ -24,3 +24,16 @@ test("production health gate rejects non-HTTPS targets", async () => {
     (error) => /must use HTTPS/.test(error.stderr),
   );
 });
+
+test("production health gate rejects an abbreviated expected release", async () => {
+  await assert.rejects(
+    run(process.execPath, [checker], {
+      env: {
+        ...process.env,
+        PRODUCTION_URL: "https://example.com",
+        EXPECTED_RELEASE_SHA: "0123456789abcdef",
+      },
+    }),
+    (error) => /full 40-character Git commit SHA/.test(error.stderr),
+  );
+});

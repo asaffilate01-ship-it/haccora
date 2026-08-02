@@ -14,7 +14,16 @@ const gateNames = [
   "LAUNCH_PREFLIGHT_PASSED",
   "QUALITY_GATE_PASSED",
   "NATIVE_EXPORT_PASSED",
+  "EDGE_FUNCTIONS_PASSED",
+  "DEPLOYMENT_HEALTH_PASSED",
   "DEPLOYMENT_SMOKE_PASSED",
+  "SBOM_GENERATED",
+];
+const sbomNames = [
+  "sbom-web.cdx.json",
+  "sbom-mobile.cdx.json",
+  "sbom-edge.cdx.json",
+  "sbom-haccora-release.cdx.json",
 ];
 
 async function listFiles(directory, prefix = "") {
@@ -75,8 +84,23 @@ const migrationFiles = (await readdir(path.join(root, "supabase/migrations"))).f
   file.endsWith(".sql"),
 );
 const gates = Object.fromEntries(gateNames.map((name) => [name, process.env[name] === "true"]));
+const sboms = [];
+if (gates.SBOM_GENERATED) {
+  for (const filename of sbomNames) {
+    const absolute = path.join(evidenceDir, filename);
+    const parsed = JSON.parse(await readFile(absolute, "utf8"));
+    if (parsed.bomFormat !== "CycloneDX") throw new Error(`Invalid CycloneDX SBOM: ${filename}`);
+    const metadata = await stat(absolute);
+    sboms.push({
+      path: filename,
+      bytes: metadata.size,
+      sha256: await sha256(absolute),
+      components: Array.isArray(parsed.components) ? parsed.components.length : 0,
+    });
+  }
+}
 const manifest = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   repository: process.env.GITHUB_REPOSITORY ?? null,
   workflowRunId: process.env.GITHUB_RUN_ID ?? null,
@@ -85,6 +109,7 @@ const manifest = {
   application: { webVersion: rootPackage.version ?? null, mobileVersion: mobilePackage.version },
   migrations: migrationFiles.length,
   gates,
+  supplyChain: { sboms },
   artifact: {
     directory: path.relative(root, buildDir) || ".",
     fileCount: artifactFiles.length,
@@ -112,6 +137,11 @@ const markdown = `# Haccora automated release evidence
 - Build bytes: ${manifest.artifact.totalBytes}
 - Build SHA-256: ${manifest.artifact.sha256}
 - Database migrations: ${manifest.migrations}
+- SBOMs: ${manifest.supplyChain.sboms.length}
+
+## Software supply chain
+
+${manifest.supplyChain.sboms.map((sbom) => `- ${sbom.path}: ${sbom.components} components · SHA-256 ${sbom.sha256}`).join("\n")}
 
 ## Gates
 

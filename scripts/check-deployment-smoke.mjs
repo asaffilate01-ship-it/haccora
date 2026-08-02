@@ -1,8 +1,14 @@
 const rawUrl = (process.env.PRODUCTION_URL ?? "").trim();
 const timeoutMs = Number.parseInt(process.env.DEPLOYMENT_SMOKE_TIMEOUT_MS ?? "10000", 10);
+const expectedReleaseSha = (process.env.EXPECTED_RELEASE_SHA ?? "").trim().toLowerCase();
+const fullCommitSha = /^[0-9a-f]{40}$/;
 
 if (!rawUrl) {
   console.error("- PRODUCTION_URL is missing");
+  process.exit(1);
+}
+if (expectedReleaseSha && !fullCommitSha.test(expectedReleaseSha)) {
+  console.error("- EXPECTED_RELEASE_SHA must be a full 40-character Git commit SHA");
   process.exit(1);
 }
 
@@ -67,6 +73,14 @@ for (const check of checks) {
     if (response.headers.get("x-content-type-options")?.toLowerCase() !== "nosniff") {
       failures.push(`${check.path}: missing X-Content-Type-Options: nosniff`);
     }
+    if (expectedReleaseSha) {
+      const deployedRelease = (response.headers.get("x-haccora-release") ?? "").toLowerCase();
+      if (deployedRelease !== expectedReleaseSha) {
+        failures.push(
+          `${check.path}: release identity mismatch (expected ${expectedReleaseSha}, received ${deployedRelease || "missing"})`,
+        );
+      }
+    }
     if (check.contentType === "text/html" && !response.headers.has("content-security-policy")) {
       failures.push(`${check.path}: missing Content-Security-Policy`);
     }
@@ -82,6 +96,12 @@ for (const check of checks) {
         const payload = JSON.parse(body);
         if (payload.status !== "ok" || payload.service !== "haccora-web") {
           failures.push(`${check.path}: health payload has an unexpected status or service`);
+        }
+        if (
+          expectedReleaseSha &&
+          String(payload.release ?? "").toLowerCase() !== expectedReleaseSha
+        ) {
+          failures.push(`${check.path}: health payload has the wrong release identity`);
         }
       } catch {
         failures.push(`${check.path}: health payload is not valid JSON`);

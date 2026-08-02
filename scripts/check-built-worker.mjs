@@ -2,8 +2,23 @@ import { stat } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const workerPath = path.resolve(".output/server/index.mjs");
-await stat(workerPath);
+const candidatePaths = [
+  path.resolve(".output/server/index.mjs"),
+  path.resolve("dist/server/index.mjs"),
+];
+let workerPath = null;
+for (const candidate of candidatePaths) {
+  try {
+    await stat(candidate);
+    workerPath = candidate;
+    break;
+  } catch {
+    // try the next known production output location
+  }
+}
+if (!workerPath) {
+  throw new Error(`No production worker bundle found. Looked in: ${candidatePaths.join(", ")}`);
+}
 
 const workerModule = await import(pathToFileURL(workerPath).href);
 const worker = workerModule.default;
@@ -18,7 +33,9 @@ const env = {
   SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY ?? placeholderKey,
   VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL ?? placeholderUrl,
   VITE_SUPABASE_PUBLISHABLE_KEY: process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? placeholderKey,
+  HACCORA_RELEASE_SHA: process.env.HACCORA_RELEASE_SHA,
 };
+const expectedReleaseSha = process.env.GITHUB_SHA ?? process.env.HACCORA_RELEASE_SHA;
 const context = {
   waitUntil() {},
   passThroughOnException() {},
@@ -55,6 +72,12 @@ for (const [pathname, expectedContentType] of routes) {
   }
   if (response.headers.get("x-content-type-options") !== "nosniff") {
     failures.push(`${pathname}: missing X-Content-Type-Options security header`);
+  }
+  if (
+    expectedReleaseSha &&
+    response.headers.get("x-haccora-release")?.toLowerCase() !== expectedReleaseSha.toLowerCase()
+  ) {
+    failures.push(`${pathname}: release identity header does not match the built commit`);
   }
   if (!response.headers.has("content-security-policy")) {
     failures.push(`${pathname}: missing Content-Security-Policy security header`);
