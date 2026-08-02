@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Facebook, Linkedin, Mail, Link as LinkIcon, Check, Instagram, Youtube } from "lucide-react";
+import {
+  Facebook,
+  Linkedin,
+  Mail,
+  Link as LinkIcon,
+  Check,
+  Instagram,
+  Youtube,
+} from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 /** X (Twitter) logo — lucide doesn't ship a monogram X icon. */
@@ -31,11 +39,36 @@ export function ShareBar({ url, title, compact }: Props) {
   const enc = encodeURIComponent;
 
   const items = [
-    { key: "x", label: "X", href: `https://twitter.com/intent/tweet?text=${enc(title)}&url=${enc(abs)}`, Icon: XIcon },
-    { key: "li", label: "LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${enc(abs)}`, Icon: Linkedin },
-    { key: "fb", label: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${enc(abs)}`, Icon: Facebook },
-    { key: "wa", label: "WhatsApp", href: `https://wa.me/?text=${enc(title + " " + abs)}`, Icon: WhatsAppIcon },
-    { key: "mail", label: "Email", href: `mailto:?subject=${enc(title)}&body=${enc(abs)}`, Icon: Mail },
+    {
+      key: "x",
+      label: "X",
+      href: `https://twitter.com/intent/tweet?text=${enc(title)}&url=${enc(abs)}`,
+      Icon: XIcon,
+    },
+    {
+      key: "li",
+      label: "LinkedIn",
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${enc(abs)}`,
+      Icon: Linkedin,
+    },
+    {
+      key: "fb",
+      label: "Facebook",
+      href: `https://www.facebook.com/sharer/sharer.php?u=${enc(abs)}`,
+      Icon: Facebook,
+    },
+    {
+      key: "wa",
+      label: "WhatsApp",
+      href: `https://wa.me/?text=${enc(title + " " + abs)}`,
+      Icon: WhatsAppIcon,
+    },
+    {
+      key: "mail",
+      label: "Email",
+      href: `mailto:?subject=${enc(title)}&body=${enc(abs)}`,
+      Icon: Mail,
+    },
   ];
 
   async function copy() {
@@ -43,7 +76,9 @@ export function ShareBar({ url, title, compact }: Props) {
       await navigator.clipboard.writeText(abs);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
-    } catch {}
+    } catch {
+      setCopied(false);
+    }
   }
 
   return (
@@ -91,7 +126,14 @@ export function FollowBar({ dark = false }: { dark?: boolean }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       {items.map(({ label, href, Icon }) => (
-        <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className={cls}>
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={label}
+          className={cls}
+        >
           <Icon size={16} />
         </a>
       ))}

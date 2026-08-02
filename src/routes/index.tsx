@@ -1,17 +1,46 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import {
-  Search, Phone, ArrowRight, ChevronRight,
-  FileText, Clock, AlertTriangle, ShieldCheck, ClipboardCheck,
-  Thermometer, Wheat, Users, Scale, CheckCircle2, Building2,
-  TrendingUp, Zap, Recycle, CalendarCheck, Utensils, Hotel, Coffee, Beer, Truck as TruckIcon, ChefHat,
-  Plus, Minus, Smartphone, MessageCircle, Server, Plug,
+  Search,
+  Phone,
+  ArrowRight,
+  ChevronRight,
+  FileText,
+  Clock,
+  AlertTriangle,
+  ShieldCheck,
+  ClipboardCheck,
+  Thermometer,
+  Wheat,
+  Users,
+  Scale,
+  CheckCircle2,
+  Building2,
+  TrendingUp,
+  Zap,
+  Recycle,
+  CalendarCheck,
+  Utensils,
+  Hotel,
+  Coffee,
+  Beer,
+  Truck as TruckIcon,
+  ChefHat,
+  Plus,
+  Minus,
+  Smartphone,
+  Bell,
+  Server,
+  Plug,
 } from "lucide-react";
 
 import heroChef from "@/assets/hero-chef.jpg";
 import { FollowBar } from "@/components/SocialIcons";
 import { BrandLogo } from "@/components/BrandLogo";
+import { PUBLIC_CONFIG } from "@/lib/public-config";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +52,10 @@ export const Route = createFileRoute("/")({
           "Simplify HACCP, temperature, cleaning, allergens, staff compliance and inspection prep — one bilingual platform built for German food businesses.",
       },
       { property: "og:title", content: "Haccora — Food safety software for Germany" },
-      { property: "og:description", content: "HACCP, IfSG, LMHV and inspector-ready evidence in one platform." },
+      {
+        property: "og:description",
+        content: "HACCP, IfSG, LMHV workflows and structured inspection evidence in one platform.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -66,7 +98,10 @@ function ChefsMarquee() {
     </span>
   ));
   return (
-    <section aria-hidden="true" className="bg-black text-white overflow-hidden border-y border-white/10">
+    <section
+      aria-hidden="true"
+      className="bg-black text-white overflow-hidden border-y border-white/10"
+    >
       <div className="marquee-track py-6 md:py-8">
         {line}
         {line}
@@ -81,9 +116,14 @@ function StickyMobileCTA() {
   return (
     <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-black/95 backdrop-blur border-t border-white/10 pb-safe">
       <div className="px-4 py-3 flex items-center gap-2">
-        <a href="tel:+49301234567" className="btn-red-outline flex-1 !py-2.5 !text-xs">
-          <Phone size={14} /> 030 1234 567
-        </a>
+        {PUBLIC_CONFIG.legal.phone && (
+          <a
+            href={`tel:${PUBLIC_CONFIG.legal.phone.replace(/\s/g, "")}`}
+            className="btn-red-outline flex-1 !py-2.5 !text-xs"
+          >
+            <Phone size={14} /> {PUBLIC_CONFIG.legal.phone}
+          </a>
+        )}
         <a href="#contact" className="btn-red flex-[1.4] !py-2.5 !text-xs">
           {t("nav.contact") ?? "Contact us"} <ArrowRight size={14} />
         </a>
@@ -91,7 +131,6 @@ function StickyMobileCTA() {
     </div>
   );
 }
-
 
 /* ────────────────────────────────────────────── top bar (black) */
 function TopBar() {
@@ -139,20 +178,30 @@ function SubNav() {
           style={{ scrollbarWidth: "none" }}
         >
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-[color:var(--color-alert-red)] transition shrink-0">
+            <a
+              key={l.href}
+              href={l.href}
+              className="hover:text-[color:var(--color-alert-red)] transition shrink-0"
+            >
               {l.label}
             </a>
           ))}
-          <Link to="/blog" className="hover:text-[color:var(--color-alert-red)] transition shrink-0">
+          <Link
+            to="/blog"
+            className="hover:text-[color:var(--color-alert-red)] transition shrink-0"
+          >
             {t("nav.blog") ?? "Blog"}
           </Link>
         </nav>
-        <a
-          href="tel:+49301234567"
-          className="hidden md:inline-flex items-center gap-2 text-black font-black text-lg shrink-0"
-        >
-          <Phone size={16} className="text-[color:var(--color-alert-red)]" /> 030 1234 567
-        </a>
+        {PUBLIC_CONFIG.legal.phone && (
+          <a
+            href={`tel:${PUBLIC_CONFIG.legal.phone.replace(/\s/g, "")}`}
+            className="hidden md:inline-flex items-center gap-2 text-black font-black text-lg shrink-0"
+          >
+            <Phone size={16} className="text-[color:var(--color-alert-red)]" />{" "}
+            {PUBLIC_CONFIG.legal.phone}
+          </a>
+        )}
       </div>
     </div>
   );
@@ -195,7 +244,10 @@ function Hero() {
             <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-alert-red)]/40 bg-[color:var(--color-alert-red)]/15 px-3 py-1 text-[10px] md:text-[11px] font-black tracking-[0.18em] text-[color:var(--color-alert-red)] uppercase">
               {t("brand.tagline")}
             </div>
-            <h1 lang="de" className="mt-4 display-black text-[2rem] leading-[1.02] xs:text-4xl sm:text-5xl md:text-7xl lg:text-[5.4rem] [overflow-wrap:anywhere] [hyphens:auto]">
+            <h1
+              lang="de"
+              className="mt-4 display-black text-[2rem] leading-[1.02] xs:text-4xl sm:text-5xl md:text-7xl lg:text-[5.4rem] [overflow-wrap:anywhere] [hyphens:auto]"
+            >
               {t("hero.title")}
             </h1>
             <p className="mt-5 md:mt-7 max-w-xl text-sm md:text-lg text-white/90 leading-relaxed [text-wrap:pretty]">
@@ -208,20 +260,24 @@ function Hero() {
                   ▶
                 </span>
                 <span className="leading-tight">
-                  <span className="block font-bold text-xs md:text-sm">{t("hero.video.title")}</span>
+                  <span className="block font-bold text-xs md:text-sm">
+                    {t("hero.video.title")}
+                  </span>
                   <span className="block text-[color:var(--color-alert-green)] text-[10px] md:text-xs font-bold tracking-widest mt-0.5">
                     {t("hero.play")}
                   </span>
                 </span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-3 py-2.5 md:px-4 md:py-3 text-black text-[11px] md:text-xs font-bold">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-black text-white text-[10px]">★</span>
-                REVIEWS<span className="text-[color:var(--color-alert-red)]">.io</span>
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-black text-white text-[10px]">
+                  <ShieldCheck size={13} />
+                </span>
+                <span>{t("hero.review.readOur")}</span>
                 <span className="mx-1.5 md:mx-2 h-4 w-px bg-black/15" />
-                <span className="hidden sm:inline">{t("hero.review.readOur")}&nbsp;</span>
-                <span className="text-[color:var(--color-alert-red)]">{t("hero.review.stars")}</span>
+                <span className="text-[color:var(--color-alert-red)]">
+                  {t("hero.review.stars")}
+                </span>
               </div>
-
             </div>
           </div>
 
@@ -233,31 +289,129 @@ function Hero() {
 }
 
 function ContactCard() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
+
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formElement = event.currentTarget;
+    setState("sending");
+    setError("");
+    const form = new FormData(formElement);
+    const { error: invokeError } = await supabase.functions.invoke("contact", {
+      body: {
+        firstName: form.get("firstName"),
+        lastName: form.get("lastName"),
+        email: form.get("email"),
+        phone: form.get("phone"),
+        businessName: form.get("businessName"),
+        website: form.get("website"),
+        locale: lang,
+        consent: form.get("consent") === "on",
+      },
+    });
+    if (invokeError) {
+      setState("error");
+      setError(
+        lang === "de"
+          ? "Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+          : "Your request could not be sent. Please try again.",
+      );
+      return;
+    }
+    formElement.reset();
+    setState("sent");
+  };
   return (
     <form
       id="contact"
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={submit}
       className="rounded-2xl md:rounded-3xl bg-white p-5 md:p-8 shadow-2xl border border-black/5"
     >
       <h3 className="display-black text-xl md:text-3xl text-black text-center">
         {t("contact.title") ?? "Get More Information"}
       </h3>
       <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <input placeholder={t("contact.first") ?? "First Name"} className="fld" />
-        <input placeholder={t("contact.last") ?? "Last Name"} className="fld" />
+        <input
+          name="firstName"
+          required
+          autoComplete="given-name"
+          maxLength={80}
+          placeholder={t("contact.first") ?? "First Name"}
+          className="fld"
+        />
+        <input
+          name="lastName"
+          required
+          autoComplete="family-name"
+          maxLength={80}
+          placeholder={t("contact.last") ?? "Last Name"}
+          className="fld"
+        />
       </div>
       <div className="mt-3 grid gap-3">
-        <input type="email" placeholder={t("contact.email") ?? "Email Address"} className="fld" />
-        <input placeholder={t("contact.phone") ?? "Phone Number"} className="fld" />
-        <input placeholder={t("contact.business") ?? "Business Name"} className="fld" />
+        <input
+          name="email"
+          required
+          type="email"
+          autoComplete="email"
+          maxLength={254}
+          placeholder={t("contact.email") ?? "Email Address"}
+          className="fld"
+        />
+        <input
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          maxLength={40}
+          placeholder={t("contact.phone") ?? "Phone Number"}
+          className="fld"
+        />
+        <input
+          name="businessName"
+          autoComplete="organization"
+          maxLength={160}
+          placeholder={t("contact.business") ?? "Business Name"}
+          className="fld"
+        />
+        <input
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+        />
       </div>
-      <button type="submit" className="btn-primary w-full mt-5 uppercase tracking-widest text-xs md:text-sm">
-        {t("contact.cta") ?? "Get In Touch"}
+      <label className="mt-4 flex items-start gap-2 text-[11px] text-black/60">
+        <input name="consent" type="checkbox" required className="mt-0.5" />
+        <span>
+          {t("contact.legal") ?? "By submitting this form, you agree to our privacy policy."}
+        </span>
+      </label>
+      <button
+        disabled={state === "sending"}
+        type="submit"
+        className="btn-primary w-full mt-5 uppercase tracking-widest text-xs md:text-sm disabled:opacity-60"
+      >
+        {state === "sending"
+          ? lang === "de"
+            ? "Wird gesendet…"
+            : "Sending…"
+          : (t("contact.cta") ?? "Get In Touch")}
       </button>
-      <p className="mt-3 text-[11px] text-black/50 text-center">
-        {t("contact.legal") ?? "By submitting this form, you agree to our privacy policy."}
-      </p>
+      {state === "sent" && (
+        <p role="status" className="mt-3 text-sm text-success text-center">
+          {lang === "de"
+            ? "Vielen Dank. Wir melden uns in Kürze."
+            : "Thank you. We will be in touch shortly."}
+        </p>
+      )}
+      {state === "error" && (
+        <p role="alert" className="mt-3 text-sm text-destructive text-center">
+          {error}
+        </p>
+      )}
     </form>
   );
 }
@@ -266,15 +420,31 @@ function ContactCard() {
 function Support360() {
   const { t } = useI18n();
   const items = [
-    { icon: FileText, k: "docs", title: t("s360.docs.t") ?? "Digital records", body: t("s360.docs.b") ?? "HACCP, checklists and evidence — all in one place." },
-    { icon: Clock, k: "realtime", title: t("s360.time.t") ?? "24/7 monitoring", body: t("s360.time.b") ?? "Temperature and task alerts around the clock." },
-    { icon: AlertTriangle, k: "alerts", title: t("s360.alert.t") ?? "Incident response", body: t("s360.alert.b") ?? "Corrective actions with photo evidence and sign-off." },
+    {
+      icon: FileText,
+      k: "docs",
+      title: t("s360.docs.t") ?? "Digital records",
+      body: t("s360.docs.b") ?? "HACCP, checklists and evidence — all in one place.",
+    },
+    {
+      icon: Clock,
+      k: "realtime",
+      title: t("s360.time.t") ?? "Sensor and temperature notices",
+      body: t("s360.time.b") ?? "Capture configured deviations and notify responsible users.",
+    },
+    {
+      icon: AlertTriangle,
+      k: "alerts",
+      title: t("s360.alert.t") ?? "Incident response",
+      body: t("s360.alert.b") ?? "Record incidents and corrections with a clear history.",
+    },
   ];
   return (
     <section className="relative alert-gradient text-white">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 pt-16 pb-24 md:pt-20 md:pb-32">
         <h2 className="display-black text-3xl md:text-6xl text-center text-black">
-          360° <span className="text-white">{t("s360.title") ?? "food health & safety support"}</span>
+          360°{" "}
+          <span className="text-white">{t("s360.title") ?? "food-safety workflow support"}</span>
         </h2>
         <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-6">
           {items.map(({ icon: Icon, k, title, body }) => (
@@ -284,7 +454,10 @@ function Support360() {
               </span>
               <h3 className="display-black text-2xl md:text-3xl mt-6">{title}</h3>
               <p className="mt-3 text-black/70 text-sm leading-relaxed">{body}</p>
-              <a href="#pillars" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[color:var(--color-alert-red)]">
+              <a
+                href="#pillars"
+                className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[color:var(--color-alert-red)]"
+              >
                 {t("s360.more") ?? "Learn more"} <ArrowRight size={14} />
               </a>
             </div>
@@ -312,9 +485,7 @@ function ModulePillars() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="max-w-3xl">
           <div className="eyebrow">{t("pillars.eyebrow") ?? "The Platform"}</div>
-          <h2 className="mt-4 display-black text-3xl md:text-6xl">
-            {t("pillars.title")}
-          </h2>
+          <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("pillars.title")}</h2>
           <p className="mt-5 text-black/60 max-w-2xl">{t("pillars.subtitle")}</p>
         </div>
         <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -324,7 +495,10 @@ function ModulePillars() {
                 <span className="icon-3d">
                   <Icon size={28} strokeWidth={2.4} />
                 </span>
-                <ChevronRight size={18} className="text-black/25 group-hover:text-[color:var(--color-alert-red)] group-hover:translate-x-1 transition" />
+                <ChevronRight
+                  size={18}
+                  className="text-black/25 group-hover:text-[color:var(--color-alert-red)] group-hover:translate-x-1 transition"
+                />
               </div>
               <h3 className="mt-7 display-black text-xl md:text-2xl">
                 {t(`pillar.${k}.title`) ?? k}
@@ -352,14 +526,15 @@ function InspectorBand() {
             <div className="text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
               {t("inspector.eyebrow") ?? "Inspector Mode"}
             </div>
-            <h2 className="mt-4 display-black text-3xl md:text-6xl">
-              {t("inspector.title")}
-            </h2>
+            <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("inspector.title")}</h2>
             <p className="mt-5 text-white/70 max-w-xl">{t("inspector.body")}</p>
             <ul className="mt-8 grid sm:grid-cols-2 gap-3">
               {items.map((k) => (
                 <li key={k} className="flex items-start gap-2 text-sm">
-                  <CheckCircle2 size={18} className="text-[color:var(--color-alert-green)] shrink-0 mt-0.5" />
+                  <CheckCircle2
+                    size={18}
+                    className="text-[color:var(--color-alert-green)] shrink-0 mt-0.5"
+                  />
                   <span>{t(`inspector.item.${k}`)}</span>
                 </li>
               ))}
@@ -376,26 +551,26 @@ function InspectorBand() {
               </div>
               <span className="text-xs font-bold text-black/60">DE</span>
             </div>
-            <h3 className="mt-3 display-black text-2xl md:text-3xl">
-              {t("inspector.demo.title")}
-            </h3>
-            <p className="mt-1 text-sm text-black/60">
-              {t("inspector.demo.sub")}
-            </p>
+            <h3 className="mt-3 display-black text-2xl md:text-3xl">{t("inspector.demo.title")}</h3>
+            <p className="mt-1 text-sm text-black/60">{t("inspector.demo.sub")}</p>
 
             <div className="mt-6 divide-y divide-black/10">
-              {(["plan","temp","clean","allerg","ifsg","trace"] as const).map((k) => (
+              {(["plan", "temp", "clean", "allerg", "ifsg", "trace"] as const).map((k) => (
                 <div key={k} className="flex items-center justify-between py-3">
                   <div className="min-w-0">
                     <div className="text-sm font-bold truncate">{t(`inspector.demo.${k}.t`)}</div>
-                    <div className="text-xs text-black/55 truncate">{t(`inspector.demo.${k}.b`)}</div>
+                    <div className="text-xs text-black/55 truncate">
+                      {t(`inspector.demo.${k}.b`)}
+                    </div>
                   </div>
-                  <CheckCircle2 size={18} className="text-[color:var(--color-alert-green)] shrink-0" />
+                  <CheckCircle2
+                    size={18}
+                    className="text-[color:var(--color-alert-green)] shrink-0"
+                  />
                 </div>
               ))}
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -405,7 +580,7 @@ function InspectorBand() {
 /* ────────────────────────────────────────────── regulation */
 function Regulation() {
   const { t } = useI18n();
-  const cards = (["berlin","nrw","eu852","eu1169","ifsg","lmhv"] as const).map((k) => ({
+  const cards = (["berlin", "nrw", "eu852", "eu1169", "ifsg", "lmhv"] as const).map((k) => ({
     k,
     title: t(`reg.card.${k}.t`),
     body: t(`reg.card.${k}.b`),
@@ -416,20 +591,25 @@ function Regulation() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32 grid md:grid-cols-3 gap-10 md:gap-16">
         <div className="md:col-span-1">
           <div className="eyebrow">{t("reg.eyebrow") ?? "German regulatory layer"}</div>
-          <h2 lang="de" className="mt-4 display-black text-3xl md:text-4xl lg:text-[2.75rem] leading-[1.05] [overflow-wrap:anywhere] [hyphens:auto]">
-            {t("reg.title") ?? "Built for the German inspector."}
+          <h2
+            lang="de"
+            className="mt-4 display-black text-3xl md:text-4xl lg:text-[2.75rem] leading-[1.05] [overflow-wrap:anywhere] [hyphens:auto]"
+          >
+            {t("reg.title") ?? "Structured for food businesses in Germany."}
           </h2>
           <p className="mt-5 text-black/60">
             {t("reg.body") ??
-              "Behördenfinder für Berlin und NRW, EU 852/2004, 178/2002, 1169/2011, IfSG-Tracker, LMHV-Matrix, LFGB-Bezug — versioniert und mit Handlungscheckliste bei Rechtsänderungen."}
+              "Referenzübersicht für Berlin, NRW und zentrale EU-Regeln. Prüfen Sie vor Maßnahmen stets die verlinkten offiziellen Quellen und fachliche Beratung."}
           </p>
         </div>
         <div className="md:col-span-2 grid sm:grid-cols-2 gap-5">
           {cards.map((c) => (
             <div key={c.k} className="card-polished p-6">
-
               <div className="flex items-center gap-3">
-                <span className="icon-3d" style={{ height: "2.75rem", width: "2.75rem", borderRadius: "0.85rem" }}>
+                <span
+                  className="icon-3d"
+                  style={{ height: "2.75rem", width: "2.75rem", borderRadius: "0.85rem" }}
+                >
                   <Building2 size={18} strokeWidth={2.4} />
                 </span>
                 <h4 className="font-black text-base">{c.title}</h4>
@@ -487,8 +667,8 @@ function Pricing() {
                   {t("pricing.perMonth")}
                 </span>
               </div>
-              <Link
-                to="/app"
+              <a
+                href="#contact"
                 className={`mt-7 inline-flex w-full items-center justify-center rounded-full py-3 text-sm font-black tracking-wider uppercase transition ${
                   p.featured
                     ? "bg-[color:var(--color-alert-green)] text-white hover:brightness-110"
@@ -496,7 +676,7 @@ function Pricing() {
                 }`}
               >
                 {t("pricing.cta")}
-              </Link>
+              </a>
             </div>
           ))}
         </div>
@@ -529,10 +709,10 @@ function CtaFooter() {
 function OutcomesBand() {
   const { t } = useI18n();
   const stats = [
-    { icon: Clock,         v: t("outcomes.hours.value"),   l: t("outcomes.hours.label") },
-    { icon: Zap,           v: t("outcomes.faster.value"),  l: t("outcomes.faster.label") },
-    { icon: Recycle,       v: t("outcomes.waste.value"),   l: t("outcomes.waste.label") },
-    { icon: CalendarCheck, v: t("outcomes.audit.value"),   l: t("outcomes.audit.label") },
+    { icon: Clock, v: t("outcomes.hours.value"), l: t("outcomes.hours.label") },
+    { icon: Zap, v: t("outcomes.faster.value"), l: t("outcomes.faster.label") },
+    { icon: Recycle, v: t("outcomes.waste.value"), l: t("outcomes.waste.label") },
+    { icon: CalendarCheck, v: t("outcomes.audit.value"), l: t("outcomes.audit.label") },
   ];
   return (
     <section className="bg-black text-white">
@@ -564,12 +744,12 @@ function OutcomesBand() {
 function IndustriesStrip() {
   const { t } = useI18n();
   const items = [
-    { icon: Utensils,  k: "restaurant" },
-    { icon: Hotel,     k: "hotel" },
-    { icon: Coffee,    k: "cafe" },
-    { icon: Beer,      k: "pub" },
+    { icon: Utensils, k: "restaurant" },
+    { icon: Hotel, k: "hotel" },
+    { icon: Coffee, k: "cafe" },
+    { icon: Beer, k: "pub" },
     { icon: TruckIcon, k: "takeaway" },
-    { icon: ChefHat,   k: "canteen" },
+    { icon: ChefHat, k: "canteen" },
   ];
   return (
     <section className="bg-[color:var(--color-cream)]">
@@ -581,7 +761,10 @@ function IndustriesStrip() {
         </div>
         <div className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {items.map(({ icon: Icon, k }) => (
-            <div key={k} className="rounded-2xl bg-white border border-black/5 p-5 flex flex-col items-center text-center hover:shadow-lg transition">
+            <div
+              key={k}
+              className="rounded-2xl bg-white border border-black/5 p-5 flex flex-col items-center text-center hover:shadow-lg transition"
+            >
               <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-alert-red)]/10 text-[color:var(--color-alert-red)]">
                 <Icon size={22} strokeWidth={2.2} />
               </span>
@@ -594,16 +777,15 @@ function IndustriesStrip() {
   );
 }
 
-/* ────────────────────────────────────────────── platform pillars: mobile / whatsapp / hosting / pos */
+/* ────────────────────────────────────────────── platform pillars */
 function PlatformPillars() {
   const { t } = useI18n();
   const pillars = [
-    { icon: Smartphone,    k: "mobile",   tone: "from-[color:var(--color-alert-red)] to-orange-500" },
-    { icon: MessageCircle, k: "whatsapp", tone: "from-emerald-500 to-emerald-600" },
-    { icon: Server,        k: "hosting",  tone: "from-slate-800 to-black" },
-    { icon: Plug,          k: "pos",      tone: "from-blue-600 to-indigo-600" },
+    { icon: Smartphone, k: "mobile", tone: "from-[color:var(--color-alert-red)] to-orange-500" },
+    { icon: Bell, k: "alerts", tone: "from-emerald-500 to-emerald-600" },
+    { icon: Server, k: "hosting", tone: "from-slate-800 to-black" },
+    { icon: Plug, k: "integrations", tone: "from-blue-600 to-indigo-600" },
   ];
-  const posBrands = ["Vectron", "Gastronovi", "Lightspeed"];
   return (
     <section className="bg-white border-t border-black/5">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-28">
@@ -631,18 +813,6 @@ function PlatformPillars() {
               <p className="mt-2 text-sm text-black/60 leading-relaxed">
                 {t(`platform.${k}.desc`)}
               </p>
-              {k === "pos" && (
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {posBrands.map((b) => (
-                    <span
-                      key={b}
-                      className="inline-flex items-center rounded-full border border-black/10 bg-black/5 px-2.5 py-1 text-[11px] font-bold tracking-wide"
-                    >
-                      {b}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
         </div>
@@ -650,8 +820,6 @@ function PlatformPillars() {
     </section>
   );
 }
-
-
 
 /* ────────────────────────────────────────────── FAQ */
 function FaqSection() {
@@ -696,33 +864,88 @@ function SiteFooter() {
           </div>
         </div>
         <div>
-          <div className="text-white text-xs font-black uppercase tracking-widest">{t("footer.section.platform")}</div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">
+            {t("footer.section.platform")}
+          </div>
           <ul className="mt-3 space-y-2">
-            <li><a href="#pillars" className="hover:text-white">{t("nav.modules")}</a></li>
-            <li><a href="#inspector" className="hover:text-white">Inspector Mode</a></li>
-            <li><a href="#regulation" className="hover:text-white">{t("nav.regulation")}</a></li>
-            <li><a href="#pricing" className="hover:text-white">{t("nav.pricing")}</a></li>
-            <li><Link to="/blog" className="hover:text-white">{t("nav.blog") ?? "Blog"}</Link></li>
+            <li>
+              <a href="#pillars" className="hover:text-white">
+                {t("nav.modules")}
+              </a>
+            </li>
+            <li>
+              <a href="#inspector" className="hover:text-white">
+                Inspector Mode
+              </a>
+            </li>
+            <li>
+              <a href="#regulation" className="hover:text-white">
+                {t("nav.regulation")}
+              </a>
+            </li>
+            <li>
+              <a href="#pricing" className="hover:text-white">
+                {t("nav.pricing")}
+              </a>
+            </li>
+            <li>
+              <Link to="/blog" className="hover:text-white">
+                {t("nav.blog") ?? "Blog"}
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
-          <div className="text-white text-xs font-black uppercase tracking-widest">{t("footer.section.support")}</div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">
+            {t("footer.section.support")}
+          </div>
           <ul className="mt-3 space-y-2">
-            <li><Link to="/legal/complaints" className="hover:text-white">{t("footer.complaints")}</Link></li>
-            <li><a href="#" className="hover:text-white">{t("footer.help")}</a></li>
-            <li><a href="#" className="hover:text-white">{t("footer.status")}</a></li>
+            <li>
+              <Link to="/legal/complaints" className="hover:text-white">
+                {t("footer.complaints")}
+              </Link>
+            </li>
+            <li>
+              <a href={PUBLIC_CONFIG.supportUrl ?? "#contact"} className="hover:text-white">
+                {t("footer.help")}
+              </a>
+            </li>
+            {PUBLIC_CONFIG.statusUrl && (
+              <li>
+                <a href={PUBLIC_CONFIG.statusUrl} className="hover:text-white">
+                  {t("footer.status")}
+                </a>
+              </li>
+            )}
           </ul>
         </div>
         <div>
-          <div className="text-white text-xs font-black uppercase tracking-widest">{t("footer.section.legal")}</div>
+          <div className="text-white text-xs font-black uppercase tracking-widest">
+            {t("footer.section.legal")}
+          </div>
           <ul className="mt-3 space-y-2">
-            <li><Link to="/legal/imprint" className="hover:text-white">{t("footer.imprint")}</Link></li>
-            <li><Link to="/legal/privacy" className="hover:text-white">{t("footer.privacy")}</Link></li>
-            <li><Link to="/legal/terms" className="hover:text-white">{t("footer.terms")}</Link></li>
-            <li><Link to="/legal/cookies" className="hover:text-white">{t("footer.cookies")}</Link></li>
+            <li>
+              <Link to="/legal/imprint" className="hover:text-white">
+                {t("footer.imprint")}
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal/privacy" className="hover:text-white">
+                {t("footer.privacy")}
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal/terms" className="hover:text-white">
+                {t("footer.terms")}
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal/cookies" className="hover:text-white">
+                {t("footer.cookies")}
+              </Link>
+            </li>
           </ul>
         </div>
-
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-5 text-xs text-white/40">

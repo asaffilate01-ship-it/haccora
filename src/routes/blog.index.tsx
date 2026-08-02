@@ -10,9 +10,17 @@ export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title: "Blog — Haccora" },
-      { name: "description", content: "HACCP, IfSG, LMHV and daily operations — practical guides for German food businesses." },
+      {
+        name: "description",
+        content:
+          "HACCP, IfSG, LMHV and daily operations — practical guides for German food businesses.",
+      },
       { property: "og:title", content: "Haccora Blog — Food safety insights for Germany" },
-      { property: "og:description", content: "HACCP, IfSG, LMHV and daily operations — practical guides for German food businesses." },
+      {
+        property: "og:description",
+        content:
+          "HACCP, IfSG, LMHV and daily operations — practical guides for German food businesses.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/blog" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -45,11 +53,18 @@ function BlogIndex() {
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-24 grid md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-10 items-end">
           <div>
             <div className="eyebrow">{t("blog.eyebrow") ?? "Insights"}</div>
-            <h1 className="mt-4 display-black text-5xl md:text-7xl">{t("blog.title") ?? "Haccora Blog"}</h1>
-            <p className="mt-5 max-w-2xl text-black/60 text-lg">{t("blog.subtitle") ?? "Practical guides on HACCP, inspections and daily operations — written for German kitchens."}</p>
+            <h1 className="mt-4 display-black text-5xl md:text-7xl">
+              {t("blog.title") ?? "Haccora Blog"}
+            </h1>
+            <p className="mt-5 max-w-2xl text-black/60 text-lg">
+              {t("blog.subtitle") ??
+                "Practical guides on HACCP, inspections and daily operations — written for German kitchens."}
+            </p>
           </div>
           <nav className="text-sm">
-            <Link to="/" className="text-black/60 hover:text-black">← {t("blog.backHome") ?? "Back to home"}</Link>
+            <Link to="/" className="text-black/60 hover:text-black">
+              ← {t("blog.backHome") ?? "Back to home"}
+            </Link>
           </nav>
         </div>
       </section>
@@ -84,7 +99,9 @@ function BlogIndex() {
               <p className="mt-4 text-black/60">{featured.excerpt[lang]}</p>
               <div className="mt-6 flex items-center gap-4 text-xs text-black/50">
                 <span>{formatDate(featured.date, lang)}</span>
-                <span className="inline-flex items-center gap-1"><Clock size={12} /> {featured.readMinutes} {t("blog.min") ?? "min"}</span>
+                <span className="inline-flex items-center gap-1">
+                  <Clock size={12} /> {featured.readMinutes} {t("blog.min") ?? "min"}
+                </span>
                 <span>{featured.author}</span>
               </div>
               <span className="mt-6 inline-flex items-center gap-2 font-black text-sm uppercase tracking-widest text-black">
@@ -126,7 +143,9 @@ function BlogIndex() {
                   <p className="mt-3 text-sm text-black/60 line-clamp-3">{p.excerpt[lang]}</p>
                   <div className="mt-5 flex items-center justify-between text-xs text-black/50">
                     <span>{formatDate(p.date, lang)}</span>
-                    <span className="inline-flex items-center gap-1"><Clock size={12} /> {p.readMinutes} {t("blog.min") ?? "min"}</span>
+                    <span className="inline-flex items-center gap-1">
+                      <Clock size={12} /> {p.readMinutes} {t("blog.min") ?? "min"}
+                    </span>
                   </div>
                 </div>
               </Link>

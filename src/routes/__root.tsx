@@ -15,7 +15,6 @@ import { LanguageProvider } from "@/lib/i18n";
 import { AuthProvider } from "@/lib/auth";
 import { CookieBanner } from "@/components/CookieBanner";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -56,12 +55,18 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Try again
           </button>
-          <a href="/" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent">
+          <a
+            href="/"
+            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
             Go home
           </a>
         </div>
@@ -80,10 +85,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "Haccora" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { title: "Haccora — Digital food safety, built for Germany" },
-      { name: "description", content: "Haccora unifies HACCP, daily checks, temperature, allergens, training and inspection prep for restaurants in Germany. Multilingual, inspector-ready, transparently priced." },
+      {
+        name: "description",
+        content:
+          "Haccora unifies HACCP, daily checks, temperature, allergens, training and inspection preparation for food businesses in Germany.",
+      },
       { name: "author", content: "Haccora" },
       { property: "og:title", content: "Haccora — Digital food safety for Germany" },
-      { property: "og:description", content: "HACCP, temperature, cleaning, allergens, training and inspection prep — one multilingual platform, built for German food businesses." },
+      {
+        property: "og:description",
+        content:
+          "HACCP, temperature, cleaning, allergens, training and inspection prep — one multilingual platform, built for German food businesses.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -91,10 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/favicon.ico" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" },
+      { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -119,6 +129,13 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => {
+    if ("serviceWorker" in navigator && import.meta.env.PROD) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .catch((error) => console.error("Service worker registration failed", error));
+    }
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
@@ -127,7 +144,6 @@ function RootComponent() {
           <CookieBanner />
         </AuthProvider>
       </LanguageProvider>
-
     </QueryClientProvider>
   );
 }

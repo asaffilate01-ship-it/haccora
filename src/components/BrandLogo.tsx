@@ -12,15 +12,14 @@ interface BrandLogoProps {
  * Haccora brand logo (shield + wordmark + slogan baked into the image).
  * Wrapped in a link by default; pass to={""} or use <BrandLogoImage/> to skip the link.
  */
-export function BrandLogo({ className = "", imgClassName = "h-10 md:h-12 w-auto", to = "/", ariaLabel = "Haccora" }: BrandLogoProps) {
+export function BrandLogo({
+  className = "",
+  imgClassName = "h-10 md:h-12 w-auto",
+  to = "/",
+  ariaLabel = "Haccora",
+}: BrandLogoProps) {
   const img = (
-    <img
-      src={logo.url}
-      alt={ariaLabel}
-      className={imgClassName}
-      loading="eager"
-      decoding="async"
-    />
+    <img src={logo.url} alt={ariaLabel} className={imgClassName} loading="eager" decoding="async" />
   );
   if (!to) return <span className={className}>{img}</span>;
   return (
@@ -30,6 +29,12 @@ export function BrandLogo({ className = "", imgClassName = "h-10 md:h-12 w-auto"
   );
 }
 
-export function BrandLogoImage({ className = "h-10 w-auto", alt = "Haccora" }: { className?: string; alt?: string }) {
+export function BrandLogoImage({
+  className = "h-10 w-auto",
+  alt = "Haccora",
+}: {
+  className?: string;
+  alt?: string;
+}) {
   return <img src={logo.url} alt={alt} className={className} loading="eager" decoding="async" />;
 }

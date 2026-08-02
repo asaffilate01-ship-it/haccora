@@ -1,15 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "";
+const BASE_URL = process.env.PUBLIC_APP_URL || "https://haccora.de";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const entries = [{ path: "/", changefreq: "weekly", priority: "1.0" }];
+        const entries = [
+          { path: "/", changefreq: "weekly", priority: "1.0" },
+          { path: "/blog", changefreq: "weekly", priority: "0.8" },
+          { path: "/legal/privacy", changefreq: "monthly", priority: "0.3" },
+          { path: "/legal/terms", changefreq: "monthly", priority: "0.3" },
+          { path: "/legal/imprint", changefreq: "monthly", priority: "0.3" },
+        ];
         const urls = entries.map((e) =>
-          [`  <url>`, `    <loc>${BASE_URL}${e.path}</loc>`, `    <changefreq>${e.changefreq}</changefreq>`, `    <priority>${e.priority}</priority>`, `  </url>`].join("\n"),
+          [
+            `  <url>`,
+            `    <loc>${BASE_URL}${e.path}</loc>`,
+            `    <changefreq>${e.changefreq}</changefreq>`,
+            `    <priority>${e.priority}</priority>`,
+            `  </url>`,
+          ].join("\n"),
         );
         const xml = [
           `<?xml version="1.0" encoding="UTF-8"?>`,
@@ -17,7 +29,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...urls,
           `</urlset>`,
         ].join("\n");
-        return new Response(xml, { headers: { "Content-Type": "application/xml", "Cache-Control": "public, max-age=3600" } });
+        return new Response(xml, {
+          headers: { "Content-Type": "application/xml", "Cache-Control": "public, max-age=3600" },
+        });
       },
     },
   },
