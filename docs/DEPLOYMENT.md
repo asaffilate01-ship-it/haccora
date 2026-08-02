@@ -6,7 +6,7 @@ Deploy to a separate Supabase staging project first. A successful local build do
 
 1. Back up the target database and storage.
 2. Follow `MIGRATION_RECONCILIATION.md` and record the remote migration ledger.
-3. Run `npm run migrations:check`, then apply migrations in timestamp order with the Supabase CLI.
+3. Run `npm run migrations:check`, `supabase db start` and `supabase test db` before applying migrations to linked staging in timestamp order.
 4. Reconcile legacy ownership using `DATA_MIGRATION.md`.
 5. Correct any historical temperature rows outside the documented range, then run:
 
@@ -30,7 +30,9 @@ Sensor secrets are returned once by `sensor-provision`. Deliver each secret thro
 ## Release verification
 
 - Run `npm run quality`, `npm audit --omit=dev`, the native typecheck/audit and the Edge Function Deno checks.
+- Run `npm run test:e2e` and retain the browser-accessibility report as release evidence.
 - Populate a production `.env` outside Git, then run `npm run launch:preflight`; placeholders and missing legal, Stripe, scanner or EAS configuration must block release.
 - Exercise the ten acceptance tests in `PRODUCTION_READINESS.md` against staging.
 - Verify real redirect URLs, CORS origins, email delivery, push receipts, signed-document expiry and scheduler alerts.
+- Configure an external uptime monitor for `/health.json`; the endpoint intentionally reports only service identity and readiness state.
 - Obtain legal/privacy, food-safety, security and product-owner sign-off before production traffic.

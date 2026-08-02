@@ -1,8 +1,11 @@
-import { readFile, readdir, stat } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { promisify } from "node:util";
 
 const root = process.cwd();
 const failures = [];
+const run = promisify(execFile);
 const required = [
   ".env.example",
   "package-lock.json",
@@ -26,11 +29,13 @@ const required = [
   "supabase/migrations/20260802100000_v2_operations_control.sql",
   "src/routes/app.control-centre.tsx",
   "src/routes/app.workflows.tsx",
-  "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql",
+  "supabase/migrations/20260802103319_63102a85-216e-4527-ab82-2f9dc19862bb.sql",
+  "supabase/migrations/20260802120000_v2_commercial_reconciliation.sql",
   "supabase/functions/billing/index.ts",
   "supabase/functions/integration-admin/index.ts",
   "supabase/functions/integration-dispatch/index.ts",
   "supabase/functions/package-lock.json",
+  "supabase/functions/package.json",
   "src/routes/app.billing.tsx",
   "src/routes/app.integrations.tsx",
   "src/routes/app.preferences.tsx",
@@ -45,6 +50,11 @@ const required = [
   "scripts/check-migration-lineage.mjs",
   "scripts/check-secrets.mjs",
   "scripts/verify-launch-env.mjs",
+  "playwright.config.ts",
+  "tests/e2e/public-accessibility.spec.ts",
+  "src/routes/health[.]json.ts",
+  ".github/workflows/database.yml",
+  "supabase/tests/database/rls_isolation.test.sql",
   "docs/PRODUCTION_READINESS.md",
   "docs/MIGRATION_RECONCILIATION.md",
   "docs/V2_FILE_3_COMPLETE.md",
@@ -160,7 +170,7 @@ for (const marker of [
 }
 
 const completeMigration = await readFile(
-  path.join(root, "supabase/migrations/20260802110000_v2_commercial_native_integrations.sql"),
+  path.join(root, "supabase/migrations/20260802103319_63102a85-216e-4527-ab82-2f9dc19862bb.sql"),
   "utf8",
 );
 for (const marker of [
@@ -177,14 +187,20 @@ for (const marker of [
   }
 }
 
-// The hosting platform generates and manages the root `.env`; it is never committed.
-const trackedEnvCandidates = (await readdir(root)).filter((name) =>
-  /^\.env\.(?!example$)/.test(name),
-);
-if (trackedEnvCandidates.length)
-  failures.push(
-    `Local environment file present in project root: ${trackedEnvCandidates.join(", ")}`,
+const { stdout: trackedOutput } = await run("git", ["ls-files", "-z"], {
+  cwd: root,
+  encoding: "utf8",
+});
+const trackedEnvironmentFiles = trackedOutput
+  .split("\0")
+  .filter(Boolean)
+  .filter(
+    (file) =>
+      /(^|\/)\.env($|\.)/.test(file) && file !== ".env.example" && file !== "mobile/.env.example",
   );
+if (trackedEnvironmentFiles.length) {
+  failures.push(`Tracked environment file: ${trackedEnvironmentFiles.join(", ")}`);
+}
 
 if (failures.length) {
   console.error(failures.map((failure) => `- ${failure}`).join("\n"));

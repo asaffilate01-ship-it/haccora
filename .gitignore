@@ -24,6 +24,11 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Test output
+blob-report/
+playwright-report/
+test-results/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

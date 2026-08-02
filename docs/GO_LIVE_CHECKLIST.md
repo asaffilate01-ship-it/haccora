@@ -4,18 +4,20 @@ Production release is approved only when every P0 item is complete and linked ev
 
 ## P0 — source and release controls
 
-- [ ] The six duplicate migrations in `MIGRATION_RECONCILIATION.md` are deleted from GitHub.
+- [ ] The seven duplicate migrations in `MIGRATION_RECONCILIATION.md` are deleted from GitHub.
 - [ ] The tracked root `.env` is deleted; GitHub secret scanning and private vulnerability reporting are enabled.
 - [ ] `npm ci`, `npm run quality` and `npm audit --omit=dev` pass from the committed root lockfile.
 - [ ] Native `npm ci`, typecheck and runtime dependency audit pass from `mobile/package-lock.json`.
 - [ ] Deno format, lint and typecheck pass for every Edge Function using the committed import map and pinned CI toolchain.
 - [ ] Production checks and CodeQL are green on the release pull request.
+- [ ] Browser E2E/accessibility and fresh-database workflows are green on the release pull request.
 - [ ] Branch protection requires review and passing checks before `main` can change.
 
 ## P0 — database and tenant isolation
 
 - [ ] The remote Supabase migration ledger is archived and reconciled.
 - [ ] All migrations apply to a new empty staging project.
+- [ ] `supabase test db` passes the committed tenant-isolation and privilege checks.
 - [ ] Generated TypeScript types match the staging schema.
 - [ ] Owner A cannot access Owner B through PostgREST, RPC, realtime, storage, exports or signed URLs.
 - [ ] Staff, manager, owner and inspector role/transition matrices pass.
@@ -32,6 +34,7 @@ Production release is approved only when every P0 item is complete and linked ev
 - [ ] Webhook delivery signature, SSRF egress control, retry and dead-letter behaviour pass.
 - [ ] All four dispatch schedules have missed-run and dead-letter alerts.
 - [ ] Error reporting, uptime checks, on-call routing and incident contacts are tested.
+- [ ] `/health.json` is monitored from outside the hosting provider and alerts reach the on-call owner.
 
 ## P0 — legal, privacy and food safety
 

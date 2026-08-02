@@ -1,0 +1,45 @@
+name: Fresh database and RLS checks
+
+on:
+  pull_request:
+    paths:
+      - "supabase/**"
+      - "scripts/check-migration-lineage.mjs"
+      - "tests/migration-lineage-runtime.test.mjs"
+      - ".github/workflows/database.yml"
+  push:
+    branches: [main]
+    paths:
+      - "supabase/**"
+      - "scripts/check-migration-lineage.mjs"
+      - "tests/migration-lineage-runtime.test.mjs"
+      - ".github/workflows/database.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: database-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fresh-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - uses: supabase/setup-cli@v2
+        with:
+          version: 2.111.0
+          github-token: ${{ github.token }}
+      - run: npm run migrations:check
+      - name: Apply every migration to a fresh local database
+        run: supabase db start
+      - name: Run pgTAP tenant-isolation and privilege checks
+        run: supabase test db
+      - name: Stop local services
+        if: always()
+        run: supabase stop --no-backup || true
