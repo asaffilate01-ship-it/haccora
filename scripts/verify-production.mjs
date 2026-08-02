@@ -238,13 +238,28 @@ const { stdout: trackedOutput } = await run("git", ["ls-files", "-z"], {
   cwd: root,
   encoding: "utf8",
 });
-// The root .env is generated and owned by the hosting platform (publishable
-// values only) and cannot be untracked from this environment.
-const allowedTrackedEnvironmentFiles = new Set([".env", ".env.example", "mobile/.env.example"]);
-const trackedEnvironmentFiles = trackedOutput
+// The hosting platform generates a root .env holding only publishable client
+// configuration; it cannot be untracked there, so it is tolerated while every
+// declaration stays publishable. Anything else still fails the gate.
+const exampleEnvironmentFiles = new Set([".env.example", "mobile/.env.example"]);
+const publishableEnvironmentDeclaration =
+  /^(?:VITE_)?SUPABASE_(?:URL|PROJECT_ID|PUBLISHABLE_KEY|ANON_KEY)\s*=/;
+const trackedEnvironmentCandidates = trackedOutput
   .split("\0")
   .filter(Boolean)
-  .filter((file) => /(^|\/)\.env($|\.)/.test(file) && !allowedTrackedEnvironmentFiles.has(file));
+  .filter((file) => /(^|\/)\.env($|\.)/.test(file) && !exampleEnvironmentFiles.has(file));
+const trackedEnvironmentFiles = [];
+for (const file of trackedEnvironmentCandidates) {
+  const content = await readFile(path.join(root, file), "utf8");
+  const publishableOnly =
+    file === ".env" &&
+    content
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith("#"))
+      .every((line) => publishableEnvironmentDeclaration.test(line));
+  if (!publishableOnly) trackedEnvironmentFiles.push(file);
+}
 if (trackedEnvironmentFiles.length) {
   failures.push(`Tracked environment file: ${trackedEnvironmentFiles.join(", ")}`);
 }
