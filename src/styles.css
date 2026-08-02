@@ -108,10 +108,13 @@ html.haccora-reduced-motion *::after {
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.14 0.01 30);
 
-  /* FoodAlert-style alert palette */
-  --alert-red: oklch(0.62 0.24 27); /* #ff2a1c-ish */
+  /*
+   * Accessible brand palette. Both alert colours maintain WCAG AA contrast
+   * with white text and remain readable as foreground colours on white/cream.
+   */
+  --alert-red: #c8102e;
   --alert-orange: oklch(0.72 0.22 45); /* #ff6a2b-ish */
-  --alert-green: oklch(0.62 0.19 145); /* #22a745-ish */
+  --alert-green: #087a2a;
 
   --primary: oklch(0.09 0.005 30); /* black */
   --primary-foreground: oklch(1 0 0);
@@ -119,20 +122,20 @@ html.haccora-reduced-motion *::after {
   --secondary-foreground: oklch(0.14 0.01 30);
   --muted: oklch(0.965 0.003 30);
   --muted-foreground: oklch(0.42 0.01 30);
-  --accent: oklch(0.62 0.24 27); /* red accent */
+  --accent: var(--alert-red);
   --accent-foreground: oklch(1 0 0);
   --forest: oklch(0.55 0.18 145);
   --forest-deep: oklch(0.34 0.12 145);
   --amber: oklch(0.72 0.22 45);
-  --success: oklch(0.62 0.19 145);
+  --success: var(--alert-green);
   --success-foreground: oklch(1 0 0);
   --warning: oklch(0.78 0.16 70);
   --warning-foreground: oklch(0.14 0.01 30);
-  --destructive: oklch(0.62 0.24 27);
+  --destructive: var(--alert-red);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.9 0.005 30);
   --input: oklch(0.92 0.005 30);
-  --ring: oklch(0.62 0.24 27);
+  --ring: var(--alert-red);
 }
 
 .dark {
@@ -140,7 +143,7 @@ html.haccora-reduced-motion *::after {
   --foreground: oklch(0.98 0 0);
   --card: oklch(0.18 0.01 30);
   --card-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.62 0.24 27);
+  --primary: var(--alert-red);
   --primary-foreground: oklch(1 0 0);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);

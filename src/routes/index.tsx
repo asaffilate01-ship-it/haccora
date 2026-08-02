@@ -948,7 +948,7 @@ function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-5 text-xs text-white/40">
+        <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-5 text-xs text-white/70">
           {t("footer.rights")}
         </div>
       </div>
