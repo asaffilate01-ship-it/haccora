@@ -2,18 +2,9 @@ name: Fresh database and RLS checks
 
 on:
   pull_request:
-    paths:
-      - "supabase/**"
-      - "scripts/check-migration-lineage.mjs"
-      - "tests/migration-lineage-runtime.test.mjs"
-      - ".github/workflows/database.yml"
   push:
     branches: [main]
-    paths:
-      - "supabase/**"
-      - "scripts/check-migration-lineage.mjs"
-      - "tests/migration-lineage-runtime.test.mjs"
-      - ".github/workflows/database.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
