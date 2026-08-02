@@ -59,20 +59,22 @@ const trackedFiles = stdout.split("\0").filter(Boolean);
 
 for (const relative of trackedFiles) {
   const name = path.basename(relative);
-  if (
-    (name === ".env" || /^\.env\.(?!example$)/.test(name)) &&
-    !allowedEnvironmentFiles.has(relative) &&
-    !platformManagedEnvironmentFiles.has(relative)
-  ) {
-
-    findings.push(`${relative}: environment file must not be committed`);
-    continue;
-  }
+  const isEnvironmentFile = name === ".env" || /^\.env\.(?!example$)/.test(name);
 
   if (!textExtensions.has(path.extname(name)) && !name.startsWith(".env")) continue;
   const absolute = path.join(root, relative);
   if ((await stat(absolute)).size > 1024 * 1024) continue;
   const content = await readFile(absolute, "utf8");
+
+  if (
+    isEnvironmentFile &&
+    !allowedEnvironmentFiles.has(relative) &&
+    !isGeneratedPublishableEnvironment(relative, content)
+  ) {
+    findings.push(`${relative}: environment file must not be committed`);
+    continue;
+  }
+
   if (allowedEnvironmentFiles.has(relative)) continue;
   for (const [label, pattern] of secretPatterns) {
     if (pattern.test(content)) findings.push(`${relative}: possible ${label}`);
