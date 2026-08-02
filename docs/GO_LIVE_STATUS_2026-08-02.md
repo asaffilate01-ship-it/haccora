@@ -1,10 +1,10 @@
 # Go-live status — 2026-08-02
 
-Baseline: GitHub `main` at `be8ecf8cec8cb474cfc401d4f1aa5912f26e39b6`, plus the HTTP 500 repair in this change set.
+Baseline: GitHub `main` at `42087170f7013cee165fc3a87f543280a96b2f28`, plus the release-verification phase in this change set.
 
 ## Decision
 
-The repaired source is deployable to a controlled staging environment, but the product is not yet approved for a public production launch. Repository/code readiness is approximately **93/100**. End-to-end launch readiness is approximately **71/100** because production provider configuration, legal approval, data recovery evidence, monitoring/on-call proof and signed mobile-store releases are still external blockers.
+The repaired source is deployable to a controlled staging environment, but the product is not yet approved for a public production launch. Repository/code readiness is approximately **95/100**. End-to-end launch readiness is approximately **73/100** because production provider configuration, legal approval, data recovery evidence, monitoring/on-call proof and signed mobile-store releases are still external blockers.
 
 Scores are evidence-based release gates, not a claim that all product behavior has been independently certified.
 
@@ -14,11 +14,11 @@ Scores are evidence-based release gates, not a claim that all product behavior h
 | Code quality and automated testing  |      14/15 | Full quality gate and 48 tests pass. GitHub Actions must run green on the uploaded commit.                                                                                                       |
 | Security and privacy implementation |      16/20 | Tenant/RLS, private storage, immutable audit, secret scanning and zero high production dependency findings are present. Independent penetration test and production configuration review remain. |
 | Database and backend                |      11/15 | 18 migrations, 195 policy declarations and 56 function definitions pass repository checks. Linked-project ledger reconciliation, staging migration, backup and restore evidence remain.          |
-| Operations and monitoring           |       6/10 | Health endpoint, uptime workflow, rollback and incident runbooks exist. Production URL, alert routing, Sentry/equivalent, named on-call and an exercised rollback remain.                        |
+| Operations and monitoring           |       7/10 | Health plus critical-route HTTPS monitoring, artifact hashes, rollback and incident runbooks exist. Alert routing, Sentry/equivalent, named on-call and exercised rollback remain.               |
 | Legal and public content            |       3/10 | Legal routes and fail-closed launch checks exist. Real entity fields, final bilingual copy and documented counsel approval remain.                                                               |
-| Native iOS and Android              |       5/10 | Typecheck and Expo export pass for web, iOS and Android. EAS project, signing, real-device QA, store declarations and TestFlight/Play evidence remain.                                           |
+| Native iOS and Android              |       6/10 | Typecheck/export pass; fail-closed store config, privacy map and release checklist exist. EAS UUID, signing, device QA, declarations and TestFlight/Play evidence remain.                        |
 | Providers and commercial flows      |        2/5 | Billing, notification, malware and integration paths exist. Live provider credentials and end-to-end production-mode verification remain.                                                        |
-| **Total**                           | **71/100** | Public go-live remains blocked.                                                                                                                                                                  |
+| **Total**                           | **73/100** | Public go-live remains blocked.                                                                                                                                                                  |
 
 ## HTTP 500 incident and repair
 
@@ -32,10 +32,10 @@ Manual Rolldown vendor splitting created a circular SSR chunk dependency. `legal
 
 The repair defers configured legal-value reads until React renders the legal content. The production build now also executes `scripts/check-built-worker.mjs`, which imports the generated Cloudflare worker and verifies `/`, `/login`, `/blog`, `/legal/privacy`, `/health.json` and `/app`. It rejects non-200 responses, the generic `HTTPError` payload, wrong content types, or missing CSP/nosniff headers. `npm run preview` now starts Nitro's generated worker instead of looking for the nonexistent TanStack `dist/server/server.js` output.
 
-## Automated evidence after the repair
+## Automated evidence after this phase
 
 - Root quality gate: passed
-- Unit/security tests: 48 passed, 0 failed
+- Unit/security/release tests: 53 passed, 0 failed
 - Production worker smoke routes: 6 passed, 0 failed
 - Browser bundle gate: passed, maximum 500 KiB per chunk
 - Migration lineage: 18 migrations, 195 policy declarations, 56 function definitions
@@ -43,6 +43,9 @@ The repair defers configured legal-value reads until React renders the legal con
 - Native TypeScript check: passed
 - Expo export: web, iOS and Android passed
 - Tracked-file secret scan: passed
+- Deployed-candidate smoke gate: implemented for five HTTPS routes; real-domain execution still required
+- Release evidence: aggregate and per-file SHA-256 manifest generated by the protected workflow
+- Native store configuration: fail-closed preflight implemented; correctly blocked by the placeholder EAS project ID
 
 ## Current launch-preflight blockers
 
@@ -77,7 +80,7 @@ These values belong in managed production secrets/configuration, not in GitHub.
 
 ## Ordered path to 100/100
 
-1. Upload this repair, require a green GitHub Actions run, deploy to staging and run `npm run health:check` against the real HTTPS URL.
+1. Upload this phase, require a green GitHub Actions run, deploy the exact commit to staging and run the manual release workflow against its real HTTPS URL; retain the web artifact and SHA-256 manifest.
 2. Configure all 24 preflight items in the hosting/Supabase/EAS environments and obtain a passing `npm run launch:preflight` without exposing values.
 3. Reconcile the production Supabase migration ledger, apply to staging, run the fresh-database/RLS suite, back up database and storage, and complete a timed restore drill.
 4. Exercise real Resend/push, malware scanning, Stripe live-mode test products/webhooks, cron dispatch and outbound integrations; capture provider evidence and alert delivery.

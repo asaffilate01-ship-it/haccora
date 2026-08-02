@@ -24,3 +24,4 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/check-deployment-health.mjs
+      - run: node scripts/check-deployment-smoke.mjs

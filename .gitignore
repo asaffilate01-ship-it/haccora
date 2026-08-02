@@ -28,6 +28,7 @@ dist-ssr
 blob-report/
 playwright-report/
 test-results/
+release-evidence/
 
 # Editor directories and files
 .vscode/*
