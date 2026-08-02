@@ -1,8 +1,8 @@
-# Required tracked-file removals
+# Tracked-file removal status
 
-Apply these removals in the same pull request as the go-live phase files:
+No tracked file needs to be deleted for the HTTP 500 repair.
 
-- `.env` — runtime environment files must never be tracked. Keep production values in the hosting and Supabase secret stores.
-- `supabase/migrations/20260802110000_v2_commercial_native_integrations.sql` — this near-duplicate repeats the earlier Lovable-generated commercial migration.
+- The earlier duplicate commercial migration is already absent. Preserve the canonical 18-file migration set and reconcile it against the linked Supabase ledger before deployment.
+- Lovable currently recreates a root `.env`. The repository gates tolerate it only when every declaration is a publishable Supabase client value. Never add service-role, Stripe, email, signing, encryption or other server secrets.
 
-Do not delete live database objects merely because a migration file was removed. Before deployment, archive `supabase migration list`, follow `docs/MIGRATION_RECONCILIATION.md`, and reconcile the linked project's ledger with the database owner.
+If the hosting platform later supports untracked environment injection, remove the tracked `.env` in a dedicated reviewed change. Do not delete live database objects or migration files to perform that cleanup.

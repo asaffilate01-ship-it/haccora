@@ -6,11 +6,12 @@ The distributed ZIP contains the repository contents but intentionally excludes 
 
 1. Create an empty GitHub repository or open the existing Haccora repository.
 2. Extract the ZIP into the repository root.
-3. Review `git diff`, especially the new production migration. Do not squash or rewrite existing Lovable history.
-4. Delete the tracked root `.env` and the six duplicate migration files listed in `docs/MIGRATION_RECONCILIATION.md`; uploading a ZIP alone does not delete files already in GitHub.
-5. Run `npm ci`, `npm run quality`, the native checks and the Edge Function checks locally.
-6. Commit on a branch and open a pull request.
-7. Require all three `Production checks` jobs to pass before merging.
+3. Review `git diff`. Do not squash or rewrite existing Lovable history.
+4. Do not delete any of the 18 canonical migration files. The earlier duplicate migration has already been removed.
+5. Preserve Lovable's platform-generated root `.env` if the platform recreates it. It may contain only publishable Supabase client declarations; never add server secrets or other production configuration to it.
+6. Run `npm ci`, `npm run quality`, the native checks and the Edge Function checks locally.
+7. Commit on a branch and open a pull request.
+8. Require every configured GitHub check to pass before merging, then deploy the exact merge commit to staging and verify `/health.json`.
 
 ## Required deployment order
 
@@ -22,4 +23,4 @@ The distributed ZIP contains the repository contents but intentionally excludes 
 6. Back up production, schedule the cut-over, apply the migration and verify audit/storage policies.
 7. Run `eas init` in `mobile`, complete native signing/store metadata, and build iOS/Android release candidates.
 
-Never upload `.env`, service-role keys, device secrets, signing certificates or store credentials to GitHub. The previous tracked `.env` contained Supabase project identifiers and publishable client keys rather than a service-role key, but it must still be removed so production configuration cannot drift into source control.
+Never put service-role keys, provider secrets, device secrets, signing certificates or store credentials in GitHub. Lovable currently recreates a tracked root `.env` containing only publishable Supabase client declarations; `npm run secrets:check` and `npm run verify` reject non-publishable declarations in that platform exception. Keep every other environment value in managed production configuration.

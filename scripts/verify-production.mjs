@@ -61,6 +61,7 @@ const required = [
   "SECURITY.md",
   "scripts/check-deployment-health.mjs",
   "scripts/check-build-budget.mjs",
+  "scripts/check-built-worker.mjs",
   "scripts/clean-build-output.mjs",
   "supabase/tests/database/rls_isolation.test.sql",
   "docs/PRODUCTION_READINESS.md",
@@ -69,6 +70,7 @@ const required = [
   "docs/INCIDENT_RESPONSE.md",
   "docs/RESTORE_DRILL.md",
   "docs/RELEASE_EVIDENCE.md",
+  "docs/GO_LIVE_STATUS_2026-08-02.md",
   "docs/V2_FILE_3_COMPLETE.md",
 ];
 
@@ -156,8 +158,14 @@ if (!rootPackage.scripts?.quality?.includes("npm run format:check")) {
 if (!rootPackage.scripts?.build?.includes("check-build-budget.mjs")) {
   failures.push("The production build does not enforce a JavaScript bundle budget");
 }
+if (!rootPackage.scripts?.build?.includes("check-built-worker.mjs")) {
+  failures.push("The production build does not smoke-test the generated worker");
+}
 if (!rootPackage.scripts?.build?.startsWith("node scripts/clean-build-output.mjs")) {
   failures.push("The production build does not remove stale output before bundling");
+}
+if (rootPackage.scripts?.preview !== "nitro preview") {
+  failures.push("Production preview does not run the generated Nitro worker");
 }
 
 const releaseWorkflow = await readFile(
