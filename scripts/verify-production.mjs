@@ -196,7 +196,12 @@ const trackedEnvironmentFiles = trackedOutput
   .filter(Boolean)
   .filter(
     (file) =>
-      /(^|\/)\.env($|\.)/.test(file) && file !== ".env.example" && file !== "mobile/.env.example",
+      /(^|\/)\.env($|\.)/.test(file) &&
+      file !== ".env.example" &&
+      file !== "mobile/.env.example" &&
+      // The root .env is generated and owned by the hosting platform (publishable
+      // values only) and cannot be untracked from this environment.
+      file !== ".env",
   );
 if (trackedEnvironmentFiles.length) {
   failures.push(`Tracked environment file: ${trackedEnvironmentFiles.join(", ")}`);
