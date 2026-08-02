@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { RELEASE_SHA, RELEASE_VERIFIED } from "./lib/release";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -56,6 +57,7 @@ function withSecurityHeaders(response: Response, request: Request): Response {
   );
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
   headers.set("Cross-Origin-Resource-Policy", "same-site");
+  if (RELEASE_VERIFIED) headers.set("X-Haccora-Release", RELEASE_SHA);
   headers.set(
     "Content-Security-Policy",
     [

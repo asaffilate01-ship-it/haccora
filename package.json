@@ -1,5 +1,6 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "haccora-web",
+  "version": "1.0.0",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -22,6 +23,8 @@
     "health:check": "node scripts/check-deployment-health.mjs",
     "deployment:smoke": "node scripts/check-deployment-smoke.mjs",
     "release:evidence": "node scripts/generate-release-evidence.mjs",
+    "release:sbom": "node scripts/generate-sboms.mjs",
+    "release:record-deployment": "node scripts/report-github-deployment.mjs",
     "smoke:worker": "node scripts/check-built-worker.mjs",
     "launch:preflight": "node --env-file-if-exists=.env scripts/verify-launch-env.mjs",
     "quality": "npm run verify && npm run migrations:check && npm run secrets:check && npm run typecheck && npm test && npm run lint:check && npm run format:check && npm run build"

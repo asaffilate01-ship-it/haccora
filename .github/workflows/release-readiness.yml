@@ -10,6 +10,9 @@ on:
 
 permissions:
   contents: read
+  deployments: write
+  id-token: write
+  attestations: write
 
 concurrency:
   group: production-release-readiness
@@ -19,12 +22,13 @@ jobs:
   release-readiness:
     environment: production
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     env:
       VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
       PRODUCTION_URL: ${{ inputs.deployment_url }}
+      EXPECTED_RELEASE_SHA: ${{ github.sha }}
       VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
       SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
       MALWARE_SCAN_URL: ${{ vars.MALWARE_SCAN_URL }}
@@ -55,6 +59,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.4
       - run: npm ci
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run launch:preflight
@@ -69,22 +76,57 @@ jobs:
           npm run typecheck
           npm run export:check
           npm run release:preflight
+      - name: Verify Edge Functions release bundle
+        working-directory: supabase/functions
+        run: |
+          npm ci
+          npm audit --omit=dev --audit-level=high
+          deno fmt --check .
+          deno lint .
+          deno check --node-modules-dir=manual --no-lock \
+            contact/index.ts inspector-invite/index.ts inspection-export/index.ts \
+            notification-dispatch/index.ts sensor-ingest/index.ts sensor-provision/index.ts \
+            team-invite/index.ts privacy-requests/index.ts security-center/index.ts \
+            file-scan/index.ts operations-dispatch/index.ts billing/index.ts \
+            integration-admin/index.ts integration-dispatch/index.ts
+      - name: Verify deployed commit identity and health
+        run: npm run health:check
       - name: Smoke-test the deployed release candidate
         run: npm run deployment:smoke
+      - name: Generate web, native and Edge SBOMs
+        run: npm run release:sbom
       - name: Generate tamper-evident release manifest
         env:
           DEPENDENCY_AUDIT_PASSED: "true"
           LAUNCH_PREFLIGHT_PASSED: "true"
           QUALITY_GATE_PASSED: "true"
           NATIVE_EXPORT_PASSED: "true"
+          EDGE_FUNCTIONS_PASSED: "true"
+          DEPLOYMENT_HEALTH_PASSED: "true"
           DEPLOYMENT_SMOKE_PASSED: "true"
+          SBOM_GENERATED: "true"
         run: npm run release:evidence
-      - name: Upload immutable web build evidence
+      - name: Package the verified release artifact
+        run: tar -czf "haccora-production-${GITHUB_SHA}.tar.gz" .output release-evidence
+      - name: Attest release build provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: haccora-production-${{ github.sha }}.tar.gz
+      - name: Attest aggregate release SBOM
+        uses: actions/attest@v4
+        with:
+          subject-path: haccora-production-${{ github.sha }}.tar.gz
+          sbom-path: release-evidence/sbom-haccora-release.cdx.json
+      - name: Upload immutable release evidence
         uses: actions/upload-artifact@v4
         with:
           name: haccora-production-${{ github.sha }}
           path: |
-            .output
+            haccora-production-${{ github.sha }}.tar.gz
             release-evidence
           if-no-files-found: error
           retention-days: 30
+      - name: Record verified GitHub production deployment
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run release:record-deployment

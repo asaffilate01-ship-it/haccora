@@ -424,15 +424,25 @@ test("release governance requires preflight, deployment smoke and tamper-evident
   assert.match(release, /npm run release:preflight/);
   assert.match(release, /npm run deployment:smoke/);
   assert.match(release, /npm run release:evidence/);
+  assert.match(release, /npm run health:check/);
+  assert.match(release, /EXPECTED_RELEASE_SHA/);
+  assert.match(release, /npm run release:sbom/);
+  assert.match(release, /deno check/);
+  assert.match(release, /deployments: write/);
+  assert.match(release, /attestations: write/);
+  assert.match(release, /actions\/attest@v4/);
+  assert.match(release, /npm run release:record-deployment/);
   assert.match(release, /actions\/upload-artifact@v4/);
   assert.match(uptime, /schedule:/);
   assert.match(uptime, /check-deployment-health\.mjs/);
   assert.match(uptime, /check-deployment-smoke\.mjs/);
   assert.match(health, /redirect: "error"/);
   assert.match(health, /Cache-Control: no-store/);
+  assert.match(health, /release identity mismatch/);
   assert.match(smoke, /generic HTTPError payload/);
   assert.match(smoke, /content-security-policy/);
   assert.match(evidence, /createHash\("sha256"\)/);
+  assert.match(evidence, /sbom-haccora-release\.cdx\.json/);
   assert.match(owners, /@asaffilate01-ship-it/);
 });
 

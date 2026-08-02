@@ -50,5 +50,9 @@ test("health endpoint exposes only non-sensitive readiness metadata", async ({ r
   const response = await request.get("/health.json");
   expect(response.ok()).toBeTruthy();
   expect(response.headers()["cache-control"]).toContain("no-store");
-  expect(await response.json()).toEqual({ status: "ok", service: "haccora-web" });
+  expect(await response.json()).toMatchObject({
+    status: "ok",
+    service: "haccora-web",
+    release: expect.stringMatching(/^(?:[0-9a-f]{40}|unverified)$/),
+  });
 });

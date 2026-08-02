@@ -31,3 +31,16 @@ test("deployment smoke gate rejects unsafe URL components before requesting", as
     (error) => /must not contain credentials/.test(error.stderr),
   );
 });
+
+test("deployment smoke gate rejects an abbreviated expected release", async () => {
+  await assert.rejects(
+    run(process.execPath, [checker], {
+      env: {
+        ...process.env,
+        PRODUCTION_URL: "https://example.com",
+        EXPECTED_RELEASE_SHA: "0123456789abcdef",
+      },
+    }),
+    (error) => /full 40-character Git commit SHA/.test(error.stderr),
+  );
+});

@@ -18,7 +18,9 @@ const env = {
   SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY ?? placeholderKey,
   VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL ?? placeholderUrl,
   VITE_SUPABASE_PUBLISHABLE_KEY: process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? placeholderKey,
+  HACCORA_RELEASE_SHA: process.env.HACCORA_RELEASE_SHA,
 };
+const expectedReleaseSha = process.env.GITHUB_SHA ?? process.env.HACCORA_RELEASE_SHA;
 const context = {
   waitUntil() {},
   passThroughOnException() {},
@@ -55,6 +57,12 @@ for (const [pathname, expectedContentType] of routes) {
   }
   if (response.headers.get("x-content-type-options") !== "nosniff") {
     failures.push(`${pathname}: missing X-Content-Type-Options security header`);
+  }
+  if (
+    expectedReleaseSha &&
+    response.headers.get("x-haccora-release")?.toLowerCase() !== expectedReleaseSha.toLowerCase()
+  ) {
+    failures.push(`${pathname}: release identity header does not match the built commit`);
   }
   if (!response.headers.has("content-security-policy")) {
     failures.push(`${pathname}: missing Content-Security-Policy security header`);

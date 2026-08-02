@@ -1,24 +1,24 @@
 # Go-live status — 2026-08-02
 
-Baseline: GitHub `main` at `42087170f7013cee165fc3a87f543280a96b2f28`, plus the release-verification phase in this change set.
+Baseline: GitHub `main` at `eae7611ad1c8a23aca87b495145c8598895ace0b`, plus the release-integrity phase in this change set.
 
 ## Decision
 
-The repaired source is deployable to a controlled staging environment, but the product is not yet approved for a public production launch. Repository/code readiness is approximately **95/100**. End-to-end launch readiness is approximately **73/100** because production provider configuration, legal approval, data recovery evidence, monitoring/on-call proof and signed mobile-store releases are still external blockers.
+The source is deployable to a controlled staging environment, but the product is not yet approved for a public production launch. Repository/code readiness is approximately **98/100**. End-to-end launch readiness is approximately **77/100** because production provider configuration, legal approval, data recovery evidence, monitoring/on-call proof and signed mobile-store releases are still external blockers.
 
 Scores are evidence-based release gates, not a claim that all product behavior has been independently certified.
 
 | Gate                                |      Score | Evidence and remaining gap                                                                                                                                                                       |
 | ----------------------------------- | ---------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Web runtime and performance         |      14/15 | Production Cloudflare worker returns 200 for six critical routes; CSP/security headers are present; largest browser chunk is below 500 KiB. A real-domain post-deploy check remains.             |
-| Code quality and automated testing  |      14/15 | Full quality gate and 48 tests pass. GitHub Actions must run green on the uploaded commit.                                                                                                       |
-| Security and privacy implementation |      16/20 | Tenant/RLS, private storage, immutable audit, secret scanning and zero high production dependency findings are present. Independent penetration test and production configuration review remain. |
-| Database and backend                |      11/15 | 18 migrations, 195 policy declarations and 56 function definitions pass repository checks. Linked-project ledger reconciliation, staging migration, backup and restore evidence remain.          |
-| Operations and monitoring           |       7/10 | Health plus critical-route HTTPS monitoring, artifact hashes, rollback and incident runbooks exist. Alert routing, Sentry/equivalent, named on-call and exercised rollback remain.               |
+| Code quality and automated testing  |      15/15 | The full quality gate, 56 unit/security/runtime tests, mobile typecheck/export and three production dependency audits pass. GitHub Actions must run green on the uploaded commit.                |
+| Security and privacy implementation |      17/20 | Tenant/RLS, private storage, immutable audit, secret scanning, CycloneDX SBOMs, signed build provenance and zero production dependency findings are present. Penetration testing remains.        |
+| Database and backend                |      12/15 | 18 migrations, 195 policy declarations, 56 function definitions and the fresh-database/pgTAP workflow pass. Linked-project ledger reconciliation, staging migration and restore evidence remain. |
+| Operations and monitoring           |       8/10 | Release identity, external smoke checks, immutable manifests, GitHub deployment recording, rollback and incident runbooks exist. Alert routing, named on-call and exercised rollback remain.     |
 | Legal and public content            |       3/10 | Legal routes and fail-closed launch checks exist. Real entity fields, final bilingual copy and documented counsel approval remain.                                                               |
 | Native iOS and Android              |       6/10 | Typecheck/export pass; fail-closed store config, privacy map and release checklist exist. EAS UUID, signing, device QA, declarations and TestFlight/Play evidence remain.                        |
 | Providers and commercial flows      |        2/5 | Billing, notification, malware and integration paths exist. Live provider credentials and end-to-end production-mode verification remain.                                                        |
-| **Total**                           | **73/100** | Public go-live remains blocked.                                                                                                                                                                  |
+| **Total**                           | **77/100** | Public go-live remains blocked by launch-team configuration, evidence and approvals.                                                                                                             |
 
 ## HTTP 500 incident and repair
 
@@ -35,7 +35,7 @@ The repair defers configured legal-value reads until React renders the legal con
 ## Automated evidence after this phase
 
 - Root quality gate: passed
-- Unit/security/release tests: 53 passed, 0 failed
+- Unit/security/release tests: 56 passed, 0 failed
 - Production worker smoke routes: 6 passed, 0 failed
 - Browser bundle gate: passed, maximum 500 KiB per chunk
 - Migration lineage: 18 migrations, 195 policy declarations, 56 function definitions
@@ -45,6 +45,9 @@ The repair defers configured legal-value reads until React renders the legal con
 - Tracked-file secret scan: passed
 - Deployed-candidate smoke gate: implemented for five HTTPS routes; real-domain execution still required
 - Release evidence: aggregate and per-file SHA-256 manifest generated by the protected workflow
+- Release identity: the worker embeds its full Git commit; health and route probes reject a candidate serving a different commit
+- Supply chain: web, native, Edge and aggregate CycloneDX SBOMs plus GitHub build/SBOM attestations are generated for an approved release
+- Deployment evidence: a GitHub production deployment record is created only after the exact deployed candidate passes every release gate
 - Native store configuration: fail-closed preflight implemented; correctly blocked by the placeholder EAS project ID
 
 ## Current launch-preflight blockers
