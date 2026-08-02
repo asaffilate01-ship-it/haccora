@@ -47,6 +47,7 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-ink: var(--ink);
   --color-alert-red: var(--alert-red);
+  --color-alert-red-on-dark: var(--alert-red-on-dark);
   --color-alert-orange: var(--alert-orange);
   --color-alert-green: var(--alert-green);
   --color-cream: var(--cream);
@@ -113,6 +114,7 @@ html.haccora-reduced-motion *::after {
    * with white text and remain readable as foreground colours on white/cream.
    */
   --alert-red: #c8102e;
+  --alert-red-on-dark: #ff6670;
   --alert-orange: oklch(0.72 0.22 45); /* #ff6a2b-ish */
   --alert-green: #087a2a;
 

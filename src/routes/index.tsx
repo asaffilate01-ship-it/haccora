@@ -523,7 +523,7 @@ function InspectorBand() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-16 md:py-32">
         <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-start">
           <div>
-            <div className="text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
+            <div className="text-[color:var(--color-alert-red-on-dark)] uppercase tracking-widest text-xs font-black">
               {t("inspector.eyebrow") ?? "Inspector Mode"}
             </div>
             <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("inspector.title")}</h2>
@@ -718,7 +718,7 @@ function OutcomesBand() {
     <section className="bg-black text-white">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-14 md:py-28">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 text-[color:var(--color-alert-red)] uppercase tracking-widest text-xs font-black">
+          <div className="inline-flex items-center gap-2 text-[color:var(--color-alert-red-on-dark)] uppercase tracking-widest text-xs font-black">
             <TrendingUp size={14} /> {t("outcomes.title").split(".")[0]}.
           </div>
           <h2 className="mt-4 display-black text-3xl md:text-6xl">{t("outcomes.title")}</h2>
