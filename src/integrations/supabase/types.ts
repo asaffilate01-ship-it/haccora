@@ -349,6 +349,62 @@ export type Database = {
           },
         ]
       }
+      backup_restore_drills: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          environment: string
+          evidence_storage_path: string | null
+          id: string
+          notes: string | null
+          organization_id: string
+          performed_by: string
+          recovery_point_minutes: number | null
+          recovery_time_minutes: number | null
+          started_at: string
+          status: string
+          verified_by: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          environment: string
+          evidence_storage_path?: string | null
+          id?: string
+          notes?: string | null
+          organization_id: string
+          performed_by: string
+          recovery_point_minutes?: number | null
+          recovery_time_minutes?: number | null
+          started_at: string
+          status?: string
+          verified_by?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          environment?: string
+          evidence_storage_path?: string | null
+          id?: string
+          notes?: string | null
+          organization_id?: string
+          performed_by?: string
+          recovery_point_minutes?: number | null
+          recovery_time_minutes?: number | null
+          started_at?: string
+          status?: string
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "backup_restore_drills_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       calibration_logs: {
         Row: {
           created_at: string
@@ -831,6 +887,59 @@ export type Database = {
           },
         ]
       }
+      device_sessions: {
+        Row: {
+          assurance_level: string
+          device_label: string
+          first_seen_at: string
+          id: string
+          ip_hash: string | null
+          last_seen_at: string
+          organization_id: string
+          platform: string
+          revoked_at: string | null
+          session_fingerprint: string
+          user_agent_hash: string | null
+          user_id: string
+        }
+        Insert: {
+          assurance_level?: string
+          device_label: string
+          first_seen_at?: string
+          id?: string
+          ip_hash?: string | null
+          last_seen_at?: string
+          organization_id: string
+          platform?: string
+          revoked_at?: string | null
+          session_fingerprint: string
+          user_agent_hash?: string | null
+          user_id: string
+        }
+        Update: {
+          assurance_level?: string
+          device_label?: string
+          first_seen_at?: string
+          id?: string
+          ip_hash?: string | null
+          last_seen_at?: string
+          organization_id?: string
+          platform?: string
+          revoked_at?: string | null
+          session_fingerprint?: string
+          user_agent_hash?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_sessions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           archived_at: string | null
@@ -983,6 +1092,72 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "locations"
             referencedColumns: ["id", "organization_id"]
+          },
+        ]
+      }
+      file_scan_jobs: {
+        Row: {
+          attempts: number
+          completed_at: string | null
+          created_at: string
+          document_id: string
+          id: string
+          last_error: string | null
+          locked_at: string | null
+          next_attempt_at: string
+          organization_id: string
+          provider_reference: string | null
+          result: Json
+          status: string
+          storage_path: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          completed_at?: string | null
+          created_at?: string
+          document_id: string
+          id?: string
+          last_error?: string | null
+          locked_at?: string | null
+          next_attempt_at?: string
+          organization_id: string
+          provider_reference?: string | null
+          result?: Json
+          status?: string
+          storage_path: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          completed_at?: string | null
+          created_at?: string
+          document_id?: string
+          id?: string
+          last_error?: string | null
+          locked_at?: string | null
+          next_attempt_at?: string
+          organization_id?: string
+          provider_reference?: string | null
+          result?: Json
+          status?: string
+          storage_path?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_scan_jobs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: true
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_scan_jobs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1408,6 +1583,71 @@ export type Database = {
           },
         ]
       }
+      high_risk_action_requests: {
+        Row: {
+          action: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_reason: string | null
+          executed_at: string | null
+          expires_at: string
+          id: string
+          organization_id: string
+          payload: Json
+          reason: string
+          requested_by: string
+          resource_id: string | null
+          resource_type: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          executed_at?: string | null
+          expires_at?: string
+          id?: string
+          organization_id: string
+          payload?: Json
+          reason: string
+          requested_by: string
+          resource_id?: string | null
+          resource_type?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          executed_at?: string | null
+          expires_at?: string
+          id?: string
+          organization_id?: string
+          payload?: Json
+          reason?: string
+          requested_by?: string
+          resource_id?: string | null
+          resource_type?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "high_risk_action_requests_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incidents: {
         Row: {
           closed_at: string | null
@@ -1710,6 +1950,53 @@ export type Database = {
           },
           {
             foreignKeyName: "label_prints_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      legal_holds: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          organization_id: string
+          reason: string
+          released_at: string | null
+          released_by: string | null
+          scope: Json
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          organization_id: string
+          reason: string
+          released_at?: string | null
+          released_by?: string | null
+          scope?: Json
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          organization_id?: string
+          reason?: string
+          released_at?: string | null
+          released_by?: string | null
+          scope?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "legal_holds_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -2164,6 +2451,68 @@ export type Database = {
           },
         ]
       }
+      privacy_requests: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_notes: string | null
+          details: string | null
+          due_at: string
+          export_storage_path: string | null
+          id: string
+          organization_id: string
+          request_type: string
+          requested_by: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_notes?: string | null
+          details?: string | null
+          due_at?: string
+          export_storage_path?: string | null
+          id?: string
+          organization_id: string
+          request_type: string
+          requested_by: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_notes?: string | null
+          details?: string | null
+          due_at?: string
+          export_storage_path?: string | null
+          id?: string
+          organization_id?: string
+          request_type?: string
+          requested_by?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "privacy_requests_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -2400,6 +2749,27 @@ export type Database = {
           },
         ]
       }
+      rate_limit_buckets: {
+        Row: {
+          bucket_key: string
+          request_count: number
+          updated_at: string
+          window_started_at: string
+        }
+        Insert: {
+          bucket_key: string
+          request_count?: number
+          updated_at?: string
+          window_started_at?: string
+        }
+        Update: {
+          bucket_key?: string
+          request_count?: number
+          updated_at?: string
+          window_started_at?: string
+        }
+        Relationships: []
+      }
       recalls: {
         Row: {
           batch: string | null
@@ -2596,6 +2966,110 @@ export type Database = {
           },
           {
             foreignKeyName: "recipes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      retention_policies: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          data_class: string
+          deletion_mode: string
+          id: string
+          organization_id: string
+          retain_days: number
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          data_class: string
+          deletion_mode?: string
+          id?: string
+          organization_id: string
+          retain_days: number
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          data_class?: string
+          deletion_mode?: string
+          id?: string
+          organization_id?: string
+          retain_days?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retention_policies_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      security_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          ip_hash: string | null
+          location_id: string | null
+          metadata: Json
+          occurred_at: string
+          organization_id: string
+          severity: string
+          source: string
+          user_agent_hash: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          ip_hash?: string | null
+          location_id?: string | null
+          metadata?: Json
+          occurred_at?: string
+          organization_id: string
+          severity?: string
+          source?: string
+          user_agent_hash?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          ip_hash?: string | null
+          location_id?: string | null
+          metadata?: Json
+          occurred_at?: string
+          organization_id?: string
+          severity?: string
+          source?: string
+          user_agent_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_events_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "security_events_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -3432,6 +3906,30 @@ export type Database = {
           },
         ]
       }
+      webhook_replay_nonces: {
+        Row: {
+          expires_at: string
+          id: string
+          integration: string
+          nonce_hash: string
+          received_at: string
+        }
+        Insert: {
+          expires_at: string
+          id?: string
+          integration: string
+          nonce_hash: string
+          received_at?: string
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          integration?: string
+          nonce_hash?: string
+          received_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -3471,13 +3969,77 @@ export type Database = {
         Args: { p_organization_id: string }
         Returns: boolean
       }
+      claim_file_scan_jobs: {
+        Args: { p_limit?: number }
+        Returns: {
+          attempts: number
+          completed_at: string | null
+          created_at: string
+          document_id: string
+          id: string
+          last_error: string | null
+          locked_at: string | null
+          next_attempt_at: string
+          organization_id: string
+          provider_reference: string | null
+          result: Json
+          status: string
+          storage_path: string
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "file_scan_jobs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      consume_rate_limit: {
+        Args: {
+          p_bucket_key: string
+          p_limit: number
+          p_window_seconds: number
+        }
+        Returns: boolean
+      }
       current_location_id: { Args: never; Returns: string }
       current_organization_id: { Args: never; Returns: string }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["app_role"]
       }
+      decide_high_risk_action: {
+        Args: { p_approve: boolean; p_reason: string; p_request_id: string }
+        Returns: {
+          action: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_reason: string | null
+          executed_at: string | null
+          expires_at: string
+          id: string
+          organization_id: string
+          payload: Json
+          reason: string
+          requested_by: string
+          resource_id: string | null
+          resource_type: string | null
+          status: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "high_risk_action_requests"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       disable_my_push_token: { Args: { p_token: string }; Returns: undefined }
+      get_document_scan_status: {
+        Args: { p_document_id: string }
+        Returns: string
+      }
       get_my_context: { Args: never; Returns: Json }
       has_org_role: {
         Args: {
@@ -3514,6 +4076,28 @@ export type Database = {
       record_haccp_plan: {
         Args: { p_approve?: boolean; p_plan: Json; p_statement?: string }
         Returns: Json
+      }
+      record_security_event: {
+        Args: {
+          p_event_type: string
+          p_ip_hash?: string
+          p_metadata?: Json
+          p_severity?: string
+          p_source?: string
+          p_user_agent_hash?: string
+        }
+        Returns: string
+      }
+      register_device_session: {
+        Args: {
+          p_assurance_level?: string
+          p_device_label: string
+          p_ip_hash?: string
+          p_platform: string
+          p_session_fingerprint: string
+          p_user_agent_hash?: string
+        }
+        Returns: string
       }
       register_my_push_token: {
         Args: { p_platform: string; p_token: string }
