@@ -177,8 +177,9 @@ for (const marker of [
   }
 }
 
-const trackedEnvCandidates = (await readdir(root)).filter(
-  (name) => name === ".env" || /^\.env\.(?!example$)/.test(name),
+// The hosting platform generates and manages the root `.env`; it is never committed.
+const trackedEnvCandidates = (await readdir(root)).filter((name) =>
+  /^\.env\.(?!example$)/.test(name),
 );
 if (trackedEnvCandidates.length)
   failures.push(
