@@ -5345,6 +5345,14 @@ export type Database = {
       }
       get_my_context: { Args: never; Returns: Json }
       get_my_entitlements: { Args: never; Returns: Json }
+      get_org_directory: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          full_name: string
+          id: string
+        }[]
+      }
       has_org_role: {
         Args: {
           p_organization_id: string
@@ -5399,6 +5407,10 @@ export type Database = {
           p_user_agent_hash?: string
         }
         Returns: string
+      }
+      reference_in_current_org: {
+        Args: { _id: string; _table: string }
+        Returns: boolean
       }
       register_device_session: {
         Args: {
