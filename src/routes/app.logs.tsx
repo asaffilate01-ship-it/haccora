@@ -34,7 +34,7 @@ function LogsPage() {
     setRows(list);
     const ids = Array.from(new Set(list.map((r) => r.user_id).filter(Boolean)));
     if (ids.length) {
-      const { data: profs } = await supabase.from("profiles").select("id, full_name").in("id", ids);
+      const { data: profs } = await supabase.rpc("get_org_directory");
       const map: Record<string, string> = {};
       (profs ?? []).forEach((p: { id: string; full_name: string | null }) => {
         map[p.id] = p.full_name ?? "—";

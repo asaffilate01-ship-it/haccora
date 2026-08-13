@@ -84,7 +84,7 @@ function RotaPage() {
     const ids = Array.from(new Set((c ?? []).map((x) => x.user_id)));
     const nameMap: Record<string, string> = {};
     if (ids.length) {
-      const { data: profs } = await supabase.from("profiles").select("id, full_name").in("id", ids);
+      const { data: profs } = await supabase.rpc("get_org_directory");
       (profs ?? []).forEach((p) => {
         nameMap[p.id] = p.full_name || "—";
       });

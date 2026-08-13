@@ -98,7 +98,7 @@ function TrainingPage() {
     const [{ data: c }, { data: r }, { data: p }] = await Promise.all([
       supabase.from("training_courses").select("*").order("required", { ascending: false }),
       supabase.from("training_records").select("*"),
-      supabase.from("profiles").select("id,full_name"),
+      supabase.rpc("get_org_directory"),
     ]);
     setCourses((c ?? []) as Course[]);
     setRecords((r ?? []) as Record_[]);

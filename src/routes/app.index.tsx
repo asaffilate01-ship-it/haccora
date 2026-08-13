@@ -94,7 +94,7 @@ function Dashboard() {
     const now = Date.now();
     const userIds = Array.from(new Set((data ?? []).map((r: any) => r.user_id).filter(Boolean)));
     const { data: profs } = userIds.length
-      ? await supabase.from("profiles").select("id, full_name").in("id", userIds)
+      ? await supabase.rpc("get_org_directory")
       : { data: [] as { id: string; full_name: string | null }[] };
     const nameById = new Map((profs ?? []).map((p: any) => [p.id, p.full_name]));
     const rows: Task[] = (data ?? []).map((r: any) => {
