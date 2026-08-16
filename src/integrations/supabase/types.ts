@@ -5385,6 +5385,10 @@ export type Database = {
       }
       is_inspector: { Args: { _user_id: string }; Returns: boolean }
       is_manager_or_owner: { Args: { _user_id: string }; Returns: boolean }
+      is_org_member: {
+        Args: { p_organization_id: string; p_user_id: string }
+        Returns: boolean
+      }
       is_valid_profile_context: {
         Args: { p_location_id: string; p_organization_id: string }
         Returns: boolean
