@@ -40,17 +40,19 @@ const context = {
   waitUntil() {},
   passThroughOnException() {},
 };
+// Gated routes redirect to /unlock until the promo password gate is passed.
 const routes = [
-  ["/", "text/html"],
-  ["/login", "text/html"],
-  ["/blog", "text/html"],
-  ["/legal/privacy", "text/html"],
-  ["/health.json", "application/json"],
-  ["/app", "text/html"],
+  ["/", "text/html", 200],
+  ["/unlock", "text/html", 200],
+  ["/login", null, 307],
+  ["/blog", null, 307],
+  ["/legal/privacy", "text/html", 200],
+  ["/health.json", "application/json", 200],
+  ["/app", null, 307],
 ];
 const failures = [];
 
-for (const [pathname, expectedContentType] of routes) {
+for (const [pathname, expectedContentType, expectedStatus] of routes) {
   const response = await worker.fetch(
     new Request(`https://worker-smoke.haccora.invalid${pathname}`),
     env,
@@ -59,10 +61,10 @@ for (const [pathname, expectedContentType] of routes) {
   const body = await response.text();
   const contentType = response.headers.get("content-type") ?? "";
 
-  if (response.status !== 200) {
-    failures.push(`${pathname}: expected 200, received ${response.status}`);
+  if (response.status !== expectedStatus) {
+    failures.push(`${pathname}: expected ${expectedStatus}, received ${response.status}`);
   }
-  if (!contentType.startsWith(expectedContentType)) {
+  if (expectedContentType && !contentType.startsWith(expectedContentType)) {
     failures.push(
       `${pathname}: expected ${expectedContentType}, received ${contentType || "none"}`,
     );
