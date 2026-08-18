@@ -1727,10 +1727,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
+      // German is the default language; only an explicit choice overrides it.
       const stored = localStorage.getItem("gs-lang");
       if (stored === "de" || stored === "en") setLangState(stored);
-      else if (typeof navigator !== "undefined" && navigator.language?.startsWith("en"))
-        setLangState("en");
     } catch {
       /* noop */
     }
