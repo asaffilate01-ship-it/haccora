@@ -37,8 +37,9 @@ baseUrl.pathname = `${baseUrl.pathname.replace(/\/$/, "")}/`;
 
 const checks = [
   { path: "/", contentType: "text/html" },
-  { path: "/login", contentType: "text/html", privateCache: true },
-  { path: "/blog", contentType: "text/html" },
+  { path: "/unlock", contentType: "text/html" },
+  { path: "/login", status: 307, privateCache: true },
+  { path: "/blog", status: 307 },
   { path: "/legal/privacy", contentType: "text/html" },
   { path: "/health.json", contentType: "application/json", health: true },
 ];
@@ -50,8 +51,9 @@ for (const check of checks) {
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    const expectedStatus = check.status ?? 200;
     const response = await fetch(target, {
-      redirect: "error",
+      redirect: "manual",
       signal: controller.signal,
       headers: { "User-Agent": "Haccora-Deployment-Smoke/1.0" },
     });
@@ -59,10 +61,10 @@ for (const check of checks) {
     const contentType = response.headers.get("content-type") ?? "";
     const cacheControl = response.headers.get("cache-control") ?? "";
 
-    if (response.status !== 200) {
-      failures.push(`${check.path}: expected 200, received ${response.status}`);
+    if (response.status !== expectedStatus) {
+      failures.push(`${check.path}: expected ${expectedStatus}, received ${response.status}`);
     }
-    if (!contentType.toLowerCase().startsWith(check.contentType)) {
+    if (check.contentType && !contentType.toLowerCase().startsWith(check.contentType)) {
       failures.push(
         `${check.path}: expected ${check.contentType}, received ${contentType || "none"}`,
       );
