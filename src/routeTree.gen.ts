@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnlockRouteImport } from './routes/unlock'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -65,6 +66,11 @@ import { Route as AppAuditsRouteImport } from './routes/app.audits'
 import { Route as AppAssetsRouteImport } from './routes/app.assets'
 import { Route as AppAlertsRouteImport } from './routes/app.alerts'
 
+const UnlockRoute = UnlockRouteImport.update({
+  id: '/unlock',
+  path: '/unlock',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -351,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/unlock': typeof UnlockRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
@@ -406,6 +413,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/unlock': typeof UnlockRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
@@ -464,6 +472,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/unlock': typeof UnlockRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
@@ -523,6 +532,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/platform'
     | '/sitemap.xml'
+    | '/unlock'
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
@@ -578,6 +588,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/platform'
     | '/sitemap.xml'
+    | '/unlock'
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
@@ -635,6 +646,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/platform'
     | '/sitemap.xml'
+    | '/unlock'
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
@@ -693,10 +705,18 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PlatformRoute: typeof PlatformRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  UnlockRoute: typeof UnlockRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unlock': {
+      id: '/unlock'
+      path: '/unlock'
+      fullPath: '/unlock'
+      preLoaderRoute: typeof UnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -1211,6 +1231,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PlatformRoute: PlatformRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  UnlockRoute: UnlockRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
