@@ -37,8 +37,9 @@ baseUrl.pathname = `${baseUrl.pathname.replace(/\/$/, "")}/`;
 
 const checks = [
   { path: "/", contentType: "text/html" },
-  { path: "/login", contentType: "text/html", privateCache: true },
-  { path: "/blog", contentType: "text/html" },
+  { path: "/unlock", contentType: "text/html" },
+  { path: "/login", status: 307, privateCache: true },
+  { path: "/blog", status: 307 },
   { path: "/legal/privacy", contentType: "text/html" },
   { path: "/health.json", contentType: "application/json", health: true },
 ];
