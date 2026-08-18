@@ -75,8 +75,21 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const PUBLIC_PREFIXES = ["/", "/unlock", "/legal", "/health.json", "/sitemap.xml", "/robots.txt"];
+
+function isPublicPath(pathname: string) {
+  if (pathname === "/") return true;
+  return PUBLIC_PREFIXES.some((prefix) => prefix !== "/" && pathname.startsWith(prefix));
+}
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  beforeLoad: async ({ location }) => {
+    if (isPublicPath(location.pathname)) return;
+    const { unlocked } = await getGateState();
+    if (!unlocked) throw redirect({ to: "/unlock" });
+  },
   head: () => ({
+
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
