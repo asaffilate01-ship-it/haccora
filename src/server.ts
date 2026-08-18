@@ -93,21 +93,36 @@ function withSecurityHeaders(response: Response, request: Request): Response {
   });
 }
 
-export default {
-  async fetch(request: Request, env: unknown, ctx: unknown) {
-    try {
-      const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
-      return withSecurityHeaders(await normalizeCatastrophicSsrResponse(response), request);
-    } catch (error) {
-      console.error(error);
-      return withSecurityHeaders(
-        new Response(renderErrorPage(), {
-          status: 500,
-          headers: { "content-type": "text/html; charset=utf-8" },
-        }),
-        request,
-      );
-    }
+async function handleFetch(request: Request, env: unknown, ctx: unknown): Promise<Response> {
+  try {
+    const handler = await getServerEntry();
+    const response = await handler.fetch(request, env, ctx);
+    return withSecurityHeaders(await normalizeCatastrophicSsrResponse(response), request);
+  } catch (error) {
+    console.error(error);
+    return withSecurityHeaders(
+      new Response(renderErrorPage(), {
+        status: 500,
+        headers: { "content-type": "text/html; charset=utf-8" },
+      }),
+      request,
+    );
+  }
+}
+
+// Some hosts (and h3) invoke the server entry as a plain function rather than
+// reading `.fetch`, so the default export must be callable AND expose `fetch`.
+const serverEntry = Object.assign(
+  async function serverHandler(...args: unknown[]): Promise<unknown> {
+    const [first, second, third] = args;
+    if (first instanceof Request) return handleFetch(first, second, third);
+
+    const entry = (await getServerEntry()) as unknown;
+    if (typeof entry === "function") return (entry as (...a: unknown[]) => unknown)(...args);
+    return (entry as ServerEntry).fetch(first as Request, second, third);
   },
-};
+  { fetch: handleFetch },
+);
+
+export default serverEntry;
+
