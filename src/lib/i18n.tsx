@@ -119,6 +119,7 @@ const de: Dict = {
   "cta.primary": "Jetzt starten",
   "cta.secondary": "Vertrieb kontaktieren",
   "footer.rights": "© 2026 Haccora. Alle Rechte vorbehalten.",
+  "footer.trading": "Haccora ist ein Handelsname der iTechLounge GmbH.",
   "footer.imprint": "Impressum",
   "footer.privacy": "Datenschutz",
   "footer.terms": "AGB",
@@ -978,6 +979,7 @@ const en: Dict = {
   "cta.primary": "Get started",
   "cta.secondary": "Talk to sales",
   "footer.rights": "© 2026 Haccora. All rights reserved.",
+  "footer.trading": "Haccora is a trading name of iTechLounge GmbH.",
   "footer.imprint": "Imprint",
   "footer.privacy": "Privacy",
   "footer.terms": "Terms",
@@ -1727,10 +1729,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
+      // German is the default language; only an explicit choice overrides it.
       const stored = localStorage.getItem("gs-lang");
       if (stored === "de" || stored === "en") setLangState(stored);
-      else if (typeof navigator !== "undefined" && navigator.language?.startsWith("en"))
-        setLangState("en");
     } catch {
       /* noop */
     }
