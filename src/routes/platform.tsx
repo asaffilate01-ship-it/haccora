@@ -42,7 +42,7 @@ import { FollowBar } from "@/components/SocialIcons";
 import { BrandLogo } from "@/components/BrandLogo";
 import { PUBLIC_CONFIG } from "@/lib/public-config";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/platform")({
   head: () => ({
     meta: [
       { title: "Haccora — Food safety software for German gastronomy" },
@@ -138,7 +138,7 @@ function TopBar() {
   return (
     <div className="bg-black text-white">
       <div className="mx-auto max-w-[1400px] px-3 md:px-8 h-14 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-4">
-        <BrandLogo imgClassName="h-8 md:h-14 w-auto" />
+        <BrandLogo to="/platform" onDark imgClassName="h-14 md:h-24 w-auto" />
 
         <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
           <div className="hidden md:flex items-center h-10 rounded-full bg-white/8 border border-white/12 px-4 min-w-[220px]">
@@ -856,7 +856,7 @@ function SiteFooter() {
     <footer className="bg-black text-white/70">
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-12 grid md:grid-cols-4 gap-8 text-sm">
         <div>
-          <BrandLogo to="" imgClassName="h-12 w-auto" />
+          <BrandLogo to="" onDark imgClassName="h-16 w-auto" />
 
           <p className="mt-2 text-white/50 text-xs leading-relaxed max-w-xs">{t("brand.tag")}</p>
           <div className="mt-5">
@@ -949,7 +949,10 @@ function SiteFooter() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-5 text-xs text-white/70">
-          {t("footer.rights")}
+          <>
+            {t("footer.rights")}
+            <span className="block mt-1 text-white/50">{t("footer.trading")}</span>
+          </>
         </div>
       </div>
     </footer>

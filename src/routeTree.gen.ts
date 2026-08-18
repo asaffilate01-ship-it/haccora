@@ -10,13 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as HealthDotjsonRouteImport } from './routes/health[.]json'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AppRouteImport } from './routes/app'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as LegalTermsRouteImport } from './routes/legal.terms'
@@ -69,6 +69,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlatformRoute = PlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -97,11 +102,6 @@ const BlogRoute = BlogRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -336,13 +336,13 @@ const AppAlertsRoute = AppAlertsRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/health.json': typeof HealthDotjsonRoute
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
@@ -392,11 +392,11 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/health.json': typeof HealthDotjsonRoute
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
@@ -447,13 +447,13 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/health.json': typeof HealthDotjsonRoute
   '/legal': typeof LegalRouteWithChildren
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
@@ -505,13 +505,13 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/app'
     | '/blog'
     | '/health.json'
     | '/legal'
     | '/login'
     | '/onboarding'
+    | '/platform'
     | '/sitemap.xml'
     | '/app/alerts'
     | '/app/assets'
@@ -561,11 +561,11 @@ export interface FileRouteTypes {
     | '/blog/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/health.json'
     | '/legal'
     | '/login'
     | '/onboarding'
+    | '/platform'
     | '/sitemap.xml'
     | '/app/alerts'
     | '/app/assets'
@@ -615,13 +615,13 @@ export interface FileRouteTypes {
     | '/blog'
   id:
     | '__root__'
-    | '/'
     | '/app'
     | '/blog'
     | '/health.json'
     | '/legal'
     | '/login'
     | '/onboarding'
+    | '/platform'
     | '/sitemap.xml'
     | '/app/alerts'
     | '/app/assets'
@@ -672,13 +672,13 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   HealthDotjsonRoute: typeof HealthDotjsonRoute
   LegalRoute: typeof LegalRouteWithChildren
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
+  PlatformRoute: typeof PlatformRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -689,6 +689,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform': {
+      id: '/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof PlatformRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -731,13 +738,6 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -1182,13 +1182,13 @@ const LegalRouteChildren: LegalRouteChildren = {
 const LegalRouteWithChildren = LegalRoute._addFileChildren(LegalRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   HealthDotjsonRoute: HealthDotjsonRoute,
   LegalRoute: LegalRouteWithChildren,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
+  PlatformRoute: PlatformRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
