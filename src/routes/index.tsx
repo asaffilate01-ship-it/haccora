@@ -625,6 +625,20 @@ function PromoFooter({ c }: { c: Copy }) {
                 {t("footer.cookies")}
               </Link>
             </li>
+            <li>
+              <Link to="/legal/complaints" className="hover:text-white">
+                {t("footer.complaints")}
+              </Link>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={openCookieSettings}
+                className="hover:text-white underline-offset-2 hover:underline"
+              >
+                {t("cookie.settings")}
+              </button>
+            </li>
           </ul>
         </div>
         <div className="md:justify-self-end">
