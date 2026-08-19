@@ -38,34 +38,34 @@ export default defineConfig({
       client: {
         build: {
           rolldownOptions: {
-        output: {
-          codeSplitting: {
-            maxSize: 400_000,
-            minSize: 20_000,
-            groups: [
-              {
-                name: "vendor-react",
-                test: /node_modules[\\/](?:react|react-dom|scheduler)(?:[\\/]|$)/,
-                priority: 50,
+            output: {
+              codeSplitting: {
+                maxSize: 400_000,
+                minSize: 20_000,
+                groups: [
+                  {
+                    name: "vendor-react",
+                    test: /node_modules[\\/](?:react|react-dom|scheduler)(?:[\\/]|$)/,
+                    priority: 50,
+                  },
+                  {
+                    name: "vendor-tanstack",
+                    test: /node_modules[\\/]@tanstack[\\/]/,
+                    priority: 40,
+                  },
+                  {
+                    name: "vendor-supabase",
+                    test: /node_modules[\\/]@supabase[\\/]/,
+                    priority: 30,
+                  },
+                  {
+                    name: "vendor-ui",
+                    test: /node_modules[\\/](?:@radix-ui|cmdk|embla-carousel-react|lucide-react|recharts|sonner|vaul)(?:[\\/]|$)/,
+                    priority: 20,
+                  },
+                  { name: "vendor", test: /node_modules[\\/]/, priority: 10 },
+                ],
               },
-              {
-                name: "vendor-tanstack",
-                test: /node_modules[\\/]@tanstack[\\/]/,
-                priority: 40,
-              },
-              {
-                name: "vendor-supabase",
-                test: /node_modules[\\/]@supabase[\\/]/,
-                priority: 30,
-              },
-              {
-                name: "vendor-ui",
-                test: /node_modules[\\/](?:@radix-ui|cmdk|embla-carousel-react|lucide-react|recharts|sonner|vaul)(?:[\\/]|$)/,
-                priority: 20,
-              },
-              { name: "vendor", test: /node_modules[\\/]/, priority: 10 },
-            ],
-          },
             },
           },
         },
