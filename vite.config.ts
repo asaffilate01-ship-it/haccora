@@ -34,8 +34,10 @@ export default defineConfig({
     define: {
       __HACCORA_RELEASE_SHA__: JSON.stringify(resolveReleaseSha()),
     },
-    build: {
-      rolldownOptions: {
+    environments: {
+      client: {
+        build: {
+          rolldownOptions: {
         output: {
           codeSplitting: {
             maxSize: 400_000,
@@ -63,6 +65,8 @@ export default defineConfig({
               },
               { name: "vendor", test: /node_modules[\\/]/, priority: 10 },
             ],
+          },
+            },
           },
         },
       },
