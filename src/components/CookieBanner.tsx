@@ -1,38 +1,71 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
-
-const KEY = "gs-cookie-consent";
-
-type Consent = { necessary: true; ts: number };
+import {
+  ACCEPT_ALL,
+  NECESSARY_ONLY,
+  applyConsent,
+  readConsent,
+  writeConsent,
+  type ConsentCategories,
+} from "@/lib/cookie-consent";
 
 export function CookieBanner() {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [choice, setChoice] = useState<ConsentCategories>(NECESSARY_ONLY);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (!raw) setOpen(true);
-    } catch {
+    const stored = readConsent();
+    if (stored) {
+      applyConsent(stored);
+      setChoice({
+        necessary: true,
+        preferences: stored.preferences,
+        statistics: stored.statistics,
+      });
+    } else {
       setOpen(true);
     }
+
+    const reopen = () => {
+      const current = readConsent();
+      if (current)
+        setChoice({
+          necessary: true,
+          preferences: current.preferences,
+          statistics: current.statistics,
+        });
+      setShowDetails(true);
+      setOpen(true);
+    };
+    window.addEventListener("haccora-cookie-settings", reopen);
+    return () => window.removeEventListener("haccora-cookie-settings", reopen);
   }, []);
 
-  const save = (c: Consent) => {
-    try {
-      localStorage.setItem(KEY, JSON.stringify(c));
-    } catch {
-      /* noop */
-    }
+  const commit = (categories: ConsentCategories) => {
+    writeConsent(categories);
+    setChoice(categories);
     setOpen(false);
+    setShowDetails(false);
   };
-  const acknowledge = () => save({ necessary: true, ts: Date.now() });
 
   if (!open) return null;
+
+  const categories = [
+    ["necessary", "cookie.cat.necessary", "cookie.cat.necessary.desc", true],
+    ["preferences", "cookie.cat.prefs", "cookie.cat.prefs.desc", false],
+    ["statistics", "cookie.cat.stats", "cookie.cat.stats.desc", false],
+  ] as const;
+
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[60] px-3 pb-3 md:px-6 md:pb-6">
+    <div
+      role="dialog"
+      aria-modal="false"
+      aria-label={t("cookie.title")}
+      className="fixed inset-x-0 bottom-0 z-[60] px-3 pb-3 md:px-6 md:pb-6"
+    >
       <div className="mx-auto max-w-[1200px] rounded-2xl border border-black/10 bg-white shadow-2xl p-5 md:p-6">
         <div className="grid md:grid-cols-[minmax(0,1fr)_auto] gap-4 items-start">
           <div>
@@ -46,15 +79,33 @@ export function CookieBanner() {
               <Link to="/legal/privacy" className="underline">
                 {t("footer.privacy")}
               </Link>
+              {" · "}
+              <Link to="/legal/imprint" className="underline">
+                {t("footer.imprint")}
+              </Link>
             </p>
             {showDetails && (
-              <div className="mt-4 grid gap-2 text-sm">
-                <label className="flex items-start gap-2 opacity-60">
-                  <input type="checkbox" checked readOnly className="mt-1" />
-                  <span>
-                    <strong>{t("cookie.cat.necessary")}</strong> — {t("cookie.cat.necessary.desc")}
-                  </span>
-                </label>
+              <div className="mt-4 grid gap-3 text-sm">
+                {categories.map(([key, title, desc, locked]) => (
+                  <label
+                    key={key}
+                    className={`flex items-start gap-2 ${locked ? "opacity-60" : ""}`}
+                  >
+                    <input
+                      type="checkbox"
+                      className="mt-1"
+                      checked={locked ? true : choice[key]}
+                      readOnly={locked}
+                      disabled={locked}
+                      onChange={(event) =>
+                        !locked && setChoice((c) => ({ ...c, [key]: event.target.checked }))
+                      }
+                    />
+                    <span>
+                      <strong>{t(title)}</strong> — {t(desc)}
+                    </span>
+                  </label>
+                ))}
               </div>
             )}
           </div>
@@ -66,7 +117,21 @@ export function CookieBanner() {
               {t("cookie.customize")}
             </button>
             <button
-              onClick={acknowledge}
+              onClick={() => commit(NECESSARY_ONLY)}
+              className="text-xs font-bold px-3 py-2 rounded-full border border-black/15 hover:bg-black/5"
+            >
+              {t("cookie.reject")}
+            </button>
+            {showDetails && (
+              <button
+                onClick={() => commit(choice)}
+                className="text-xs font-bold px-4 py-2 rounded-full border border-black/60 hover:bg-black/5"
+              >
+                {t("cookie.save")}
+              </button>
+            )}
+            <button
+              onClick={() => commit(ACCEPT_ALL)}
               className="text-xs font-black px-4 py-2 rounded-full bg-[color:var(--color-alert-green)] text-white hover:brightness-110"
             >
               {t("cookie.accept")}
