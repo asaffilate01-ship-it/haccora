@@ -53,7 +53,7 @@ jobs:
           cache: npm
           cache-dependency-path: mobile/package-lock.json
       - run: npm ci
-      - run: npm audit --omit=dev --audit-level=high
+      - run: npm run audit:production
       - run: npm run typecheck
       - run: npm run export:check
         env:
