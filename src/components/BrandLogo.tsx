@@ -1,7 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
-import logoDe from "@/assets/haccora-logo-de.png.asset.json";
-import logoEn from "@/assets/haccora-logo-en.png.asset.json";
 
 interface BrandLogoProps {
   className?: string;
@@ -25,8 +23,46 @@ export function BrandLogoImage({
   alt?: string;
 }) {
   const { lang } = useI18n();
-  const asset = lang === "en" ? logoEn : logoDe;
-  return <img src={asset.url} alt={alt} className={className} decoding="async" />;
+  const tagline = lang === "en" ? "Safe. Clean. Traceable." : "Sicher. Sauber. Nachweisbar.";
+
+  return (
+    <svg
+      viewBox="0 0 440 112"
+      role="img"
+      aria-label={alt}
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <title>{alt}</title>
+      <g transform="translate(5 5)">
+        <path d="M46 0 86 23v46L46 96 6 69V23L46 0Z" fill="#c8102e" />
+        <path d="M46 0v96l40-27V23L46 0Z" fill="#16375b" />
+        <path d="M24 24h15v20h14V24h15v48H53V56H39v16H24V24Z" fill="white" />
+      </g>
+      <text
+        x="104"
+        y="65"
+        fill="#c8102e"
+        fontFamily="Arial, Helvetica, sans-serif"
+        fontSize="54"
+        fontWeight="800"
+        letterSpacing="-2"
+      >
+        Haccora
+      </text>
+      <text
+        x="108"
+        y="91"
+        fill="#16375b"
+        fontFamily="Arial, Helvetica, sans-serif"
+        fontSize="15"
+        fontWeight="700"
+        letterSpacing="0.4"
+      >
+        {tagline}
+      </text>
+    </svg>
+  );
 }
 
 export function BrandLogo({

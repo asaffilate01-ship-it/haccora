@@ -7,6 +7,7 @@ const home = await readFile("src/routes/index.tsx", "utf8");
 const platform = await readFile("src/routes/platform.tsx", "utf8");
 const unlock = await readFile("src/routes/unlock.tsx", "utf8");
 const login = await readFile("src/routes/login.tsx", "utf8");
+const logo = await readFile("src/components/BrandLogo.tsx", "utf8");
 
 test("the full platform landing page is the canonical homepage", () => {
   assert.match(home, /component: PlatformLanding/);
@@ -39,4 +40,11 @@ test("the only remaining sign-in is the real account login", () => {
   assert.match(platform, /to="\/login"/);
   assert.match(login, /signInWithEmail\(email, password\)/);
   assert.doesNotMatch(login, /demo@|test@|password\s*[:=]\s*["'][^"']+["']/i);
+});
+
+test("the public wordmark does not depend on Lovable-only asset URLs", () => {
+  assert.match(logo, /<svg/);
+  assert.match(logo, /Sicher\. Sauber\. Nachweisbar\./);
+  assert.match(logo, /Safe\. Clean\. Traceable\./);
+  assert.doesNotMatch(logo, /__l5e|asset\.json/);
 });
