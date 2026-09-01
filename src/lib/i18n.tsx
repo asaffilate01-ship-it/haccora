@@ -29,7 +29,6 @@ const de: Dict = {
   "blog.cta.title": "Haccora in Ihrer Küche erleben",
   "blog.cta.button": "Jetzt starten",
   "nav.login": "Anmelden",
-  "nav.demo": "Jetzt starten",
   "nav.tryFree": "Kostenlos starten",
   "brand.tag": "Digitale Lebensmittelsicherheit für Deutschland",
   "brand.slogan": "Sicher. Sauber. Nachweisbar.",
@@ -350,7 +349,6 @@ const de: Dict = {
   "auth.signout": "Abmelden",
   "auth.signedInAs": "Angemeldet als",
   "auth.switch": "Konto wechseln",
-  "auth.demo": "Geschützter Zugriff · Anmeldung erforderlich",
   "auth.back": "Zurück zur Startseite",
   "role.owner": "Inhaberin / Geschäftsführung",
   "role.owner.desc": "Voller Zugriff: Compliance, Finanzen, Standorte, Team, Regulatorik.",
@@ -370,12 +368,6 @@ const de: Dict = {
   "dash.role.chef": "Küche heute – HACCP, Temperaturen, Freigaben.",
   "dash.role.staff": "Ihre offenen Aufgaben für heute.",
   "dash.role.inspector": "Nachweisansicht – schreibgeschützt für die Aufsicht.",
-
-  // Legacy preview keys retained for translation compatibility
-  "demo.tag": "Vorschau",
-  "demo.body": "Beispieldaten für die Rolle {role}.",
-  "demo.exit": "Vorschau verlassen",
-  "demo.switch": "Ansicht wechseln",
 
   // Role-specific dashboard hero
   "dash.owner.hero.eye": "Geschäftsführung · Portfolio",
@@ -896,7 +888,6 @@ const en: Dict = {
   "blog.cta.title": "See Haccora in your kitchen",
   "blog.cta.button": "Get started",
   "nav.login": "Sign in",
-  "nav.demo": "Get started",
   "nav.tryFree": "Get started",
   "brand.tag": "Digital food safety, built for Germany",
   "brand.slogan": "Safe. Clean. Traceable.",
@@ -1198,7 +1189,6 @@ const en: Dict = {
   "auth.signout": "Sign out",
   "auth.signedInAs": "Signed in as",
   "auth.switch": "Switch account",
-  "auth.demo": "Protected access · sign-in required",
   "auth.back": "Back to homepage",
   "role.owner": "Owner / Executive",
   "role.owner.desc": "Full access: compliance, finance, locations, team, regulation.",
@@ -1217,12 +1207,6 @@ const en: Dict = {
   "dash.role.chef": "Kitchen today — HACCP, temperatures, sign-offs.",
   "dash.role.staff": "Your open tasks for today.",
   "dash.role.inspector": "Evidence view — read-only for the authority.",
-
-  // Legacy preview keys retained for translation compatibility
-  "demo.tag": "Preview",
-  "demo.body": "Sample data for the {role} view.",
-  "demo.exit": "Exit preview",
-  "demo.switch": "Switch view",
 
   // Role-specific dashboard hero
   "dash.owner.hero.eye": "Executive · portfolio",

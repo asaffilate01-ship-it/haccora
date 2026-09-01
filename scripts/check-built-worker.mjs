@@ -40,15 +40,16 @@ const context = {
   waitUntil() {},
   passThroughOnException() {},
 };
-// Gated routes redirect to /unlock until the promo password gate is passed.
+// The homepage, real sign-in, blog and legal content are public. Legacy promo
+// routes redirect to the canonical homepage.
 const routes = [
   ["/", "text/html", 200],
-  ["/unlock", "text/html", 200],
-  ["/login", null, 307],
-  ["/blog", null, 307],
+  ["/unlock", null, 307],
+  ["/platform", null, 307],
+  ["/login", "text/html", 200],
+  ["/blog", "text/html", 200],
   ["/legal/privacy", "text/html", 200],
   ["/health.json", "application/json", 200],
-  ["/app", null, 307],
 ];
 const failures = [];
 

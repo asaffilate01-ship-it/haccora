@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,32 +43,19 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { PUBLIC_CONFIG } from "@/lib/public-config";
 
 export const Route = createFileRoute("/platform")({
-  head: () => ({
-    meta: [
-      { title: "Haccora — Food safety software for German gastronomy" },
-      {
-        name: "description",
-        content:
-          "Simplify HACCP, temperature, cleaning, allergens, staff compliance and inspection prep — one bilingual platform built for German food businesses.",
-      },
-      { property: "og:title", content: "Haccora — Food safety software for Germany" },
-      {
-        property: "og:description",
-        content: "HACCP, IfSG, LMHV workflows and structured inspection evidence in one platform.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Landing,
+  beforeLoad: () => {
+    throw redirect({ to: "/" });
+  },
+  component: () => null,
 });
 
-function Landing() {
+export function PlatformLanding() {
   return (
     <div className="min-h-screen bg-white text-foreground pb-20 md:pb-0">
       <TopBar />
       <SubNav />
       <Hero />
+      <VideoStory />
       <ChefsMarquee />
       <OutcomesBand />
       <Support360 />
@@ -84,6 +71,56 @@ function Landing() {
       <SiteFooter />
       <StickyMobileCTA />
     </div>
+  );
+}
+
+/* ────────────────────────────────────────────── German homepage video */
+function VideoStory() {
+  const { lang } = useI18n();
+  const copy =
+    lang === "de"
+      ? {
+          eyebrow: "Haccora in 10 Sekunden",
+          title: "Lebensmittelsicherheit, organisiert.",
+          body: "Öffnungschecks, HACCP-Nachweise, Teamaufgaben und geordnete Unterlagen — alles an einem Ort.",
+          label: "Deutsches Haccora Produktvideo",
+        }
+      : {
+          eyebrow: "Haccora in 10 seconds",
+          title: "Food safety, organised.",
+          body: "Opening checks, HACCP records, team tasks and organised documentation — all in one place.",
+          label: "German Haccora product video",
+        };
+
+  return (
+    <section id="video" className="scroll-mt-24 border-b border-black/10 bg-white">
+      <div className="mx-auto grid max-w-[1400px] items-center gap-8 px-4 py-14 md:grid-cols-[0.72fr_1.28fr] md:px-8 md:py-24">
+        <div className="max-w-xl">
+          <div className="eyebrow">{copy.eyebrow}</div>
+          <h2 className="mt-4 display-black text-3xl leading-tight md:text-5xl">{copy.title}</h2>
+          <p className="mt-4 text-base leading-relaxed text-black/65 md:text-lg">{copy.body}</p>
+        </div>
+        <div className="overflow-hidden rounded-3xl border border-black/10 bg-black shadow-[0_40px_80px_-45px_rgba(0,0,0,0.75)]">
+          <video
+            className="aspect-video w-full bg-black object-cover"
+            controls
+            playsInline
+            preload="metadata"
+            poster="/media/haccora-teaser-de-poster.jpg"
+            aria-label={copy.label}
+          >
+            <source src="/media/haccora-teaser-de.mp4" type="video/mp4" />
+            <track
+              default
+              kind="captions"
+              src="/media/haccora-teaser-de.vtt"
+              srcLang="de"
+              label="Deutsch"
+            />
+          </video>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -138,7 +175,7 @@ function TopBar() {
   return (
     <div className="bg-black text-white">
       <div className="mx-auto max-w-[1400px] px-3 md:px-8 h-14 md:h-20 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-4">
-        <BrandLogo to="/platform" onDark imgClassName="h-14 md:h-24 w-auto" />
+        <BrandLogo to="/" onDark imgClassName="h-14 md:h-24 w-auto" />
 
         <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
           <div className="hidden md:flex items-center h-10 rounded-full bg-white/8 border border-white/12 px-4 min-w-[220px]">
@@ -149,7 +186,7 @@ function TopBar() {
             />
           </div>
           <LanguageToggle variant="dark" />
-          <Link to="/app" className="btn-red-outline hidden sm:inline-flex">
+          <Link to="/login" className="btn-red-outline hidden sm:inline-flex">
             {t("nav.login") ?? "Login"}
           </Link>
           <a href="#contact" className="btn-red !px-3 !py-2 !text-xs md:!px-5 md:!py-3 md:!text-sm">
@@ -165,6 +202,7 @@ function TopBar() {
 function SubNav() {
   const { t } = useI18n();
   const links = [
+    { href: "#video", label: "Video" },
     { href: "#pillars", label: t("nav.modules") ?? "Food Safety Software" },
     { href: "#regulation", label: t("nav.regulation") ?? "Regulation" },
     { href: "#inspector", label: "Inspector Mode" },
@@ -539,7 +577,7 @@ function InspectorBand() {
                 </li>
               ))}
             </ul>
-            <Link to="/app/inspection" className="btn-red mt-9">
+            <Link to="/login" className="btn-red mt-9">
               {t("inspector.cta")} <ArrowRight size={16} />
             </Link>
           </div>
@@ -693,7 +731,7 @@ function CtaFooter() {
       <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-14 md:py-28 grid md:grid-cols-[minmax(0,1fr)_auto] gap-8 items-center">
         <h2 className="display-black text-3xl md:text-6xl">{t("cta.title")}</h2>
         <div className="flex flex-wrap gap-3">
-          <Link to="/app" className="btn-primary">
+          <Link to="/login" className="btn-primary">
             {t("cta.primary")} <ArrowRight size={16} />
           </Link>
           <a href="#contact" className="btn-red-outline">
