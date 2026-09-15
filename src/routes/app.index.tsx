@@ -1,3 +1,4 @@
+import { PortfolioServices } from "@/components/PortfolioServices";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
@@ -877,6 +878,7 @@ function ReadinessCard() {
           </Link>
         </div>
       </div>
+      {user?.role === "owner" && <PortfolioServices source="haccora" country="DE" locale={lang === "de" ? "de" : "en"} />}
     </div>
   );
 }
@@ -920,3 +922,4 @@ function SeverityBadge({ sev }: { sev: "high" | "medium" | "low" }) {
     </span>
   );
 }
+
