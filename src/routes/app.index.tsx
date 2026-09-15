@@ -1,3 +1,4 @@
+import { PortfolioServices } from "@/components/PortfolioServices";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
@@ -279,6 +280,9 @@ function Dashboard() {
       )}
       {user.role === "staff" && <StaffView tasks={visibleTasks} done={done} />}
       {user.role === "inspector" && <InspectorView />}
+      {user?.role === "owner" && (
+        <PortfolioServices source="haccora" country="DE" locale={lang === "de" ? "de" : "en"} />
+      )}
     </div>
   );
 }
@@ -405,8 +409,17 @@ function OwnerView({
             icon: ShieldCheck,
           },
           { l: t("owner.locations"), v: 1, icon: MapPin },
-          { l: t("dash.metric.actions"), v: counts.alerts, icon: AlertTriangle },
-          { l: t("owner.revenue"), v: spendFmt, hint: t("owner.revenue.hint"), icon: DollarSign },
+          {
+            l: t("dash.metric.actions"),
+            v: counts.alerts,
+            icon: AlertTriangle,
+          },
+          {
+            l: t("owner.revenue"),
+            v: spendFmt,
+            hint: t("owner.revenue.hint"),
+            icon: DollarSign,
+          },
           { l: t("dash.metric.training"), v: counts.trainingDue, icon: Users },
         ]}
       />
@@ -492,10 +505,19 @@ function ManagerView({
       </div>
       <MetricRow
         items={[
-          { l: t("dash.metric.score"), v: `${score}%`, hint: t("time.trend"), icon: ShieldCheck },
+          {
+            l: t("dash.metric.score"),
+            v: `${score}%`,
+            hint: t("time.trend"),
+            icon: ShieldCheck,
+          },
           { l: t("dash.metric.pending"), v: pending, icon: Clock },
           { l: t("dash.metric.overdue"), v: overdue, icon: AlertTriangle },
-          { l: t("dash.metric.actions"), v: counts.alerts, icon: AlertTriangle },
+          {
+            l: t("dash.metric.actions"),
+            v: counts.alerts,
+            icon: AlertTriangle,
+          },
           { l: t("dash.metric.failed"), v: counts.tempOut, icon: Thermometer },
           { l: t("dash.metric.training"), v: counts.trainingDue, icon: Users },
         ]}
@@ -539,8 +561,18 @@ function ChefView({
       to: "/app/haccp",
       icon: ShieldCheck,
     },
-    { l: t("chef.recipes"), v: String(counts.recipes), to: "/app/recipes", icon: Wheat },
-    { l: t("chef.brigade"), v: String(counts.brigade), to: "/app/training", icon: ChefHat },
+    {
+      l: t("chef.recipes"),
+      v: String(counts.recipes),
+      to: "/app/recipes",
+      icon: Wheat,
+    },
+    {
+      l: t("chef.brigade"),
+      v: String(counts.brigade),
+      to: "/app/training",
+      icon: ChefHat,
+    },
   ];
   return (
     <>
@@ -683,7 +715,12 @@ function InspectorView() {
 function MetricRow({
   items,
 }: {
-  items: Array<{ l: string; v: string | number; hint?: string; icon: typeof ShieldCheck }>;
+  items: Array<{
+    l: string;
+    v: string | number;
+    hint?: string;
+    icon: typeof ShieldCheck;
+  }>;
 }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -904,7 +941,10 @@ function StatusPill({ status }: { status: Task["status"] }) {
 function SeverityBadge({ sev }: { sev: "high" | "medium" | "low" }) {
   const { t } = useI18n();
   const map = {
-    high: { c: "bg-destructive/10 text-destructive", l: t("dash.severity.high") },
+    high: {
+      c: "bg-destructive/10 text-destructive",
+      l: t("dash.severity.high"),
+    },
     medium: {
       c: "bg-warning/15 text-warning-foreground border border-warning/40",
       l: t("dash.severity.medium"),
