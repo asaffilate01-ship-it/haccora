@@ -1,12 +1,5 @@
 // Shared portfolio catalogue. Keep product scope explicit; this is not a live availability list.
-const rows: readonly (readonly [
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-])[] = [
+const rows: readonly (readonly [string, string, string, string, string, string])[] = [
   [
     "haccora",
     "Haccora",

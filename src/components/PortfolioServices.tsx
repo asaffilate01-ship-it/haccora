@@ -43,9 +43,7 @@ export function PortfolioServices({
     limit: expanded ? 12 : 3,
   });
   const contact =
-    contactPath?.startsWith("/") &&
-    !contactPath.startsWith("//") &&
-    !/[\\\r\n]/.test(contactPath)
+    contactPath?.startsWith("/") && !contactPath.startsWith("//") && !/[\\\r\n]/.test(contactPath)
       ? contactPath
       : undefined;
   if (!offers.length && !dismissed.length) return null;
@@ -67,9 +65,7 @@ export function PortfolioServices({
         .join("\n\n")
     : "";
   function download() {
-    const url = URL.createObjectURL(
-      new Blob([brief], { type: "text/plain;charset=utf-8" }),
-    );
+    const url = URL.createObjectURL(new Blob([brief], { type: "text/plain;charset=utf-8" }));
     const a = document.createElement("a");
     a.href = url;
     a.download = source + "-" + selected!.id + "-enquiry.txt";
@@ -108,13 +104,7 @@ export function PortfolioServices({
           aria-expanded={expanded}
           onClick={() => setExpanded((v) => !v)}
         >
-          {expanded
-            ? de
-              ? "Weniger"
-              : "Show less"
-            : de
-              ? "Alle Services"
-              : "More services"}
+          {expanded ? (de ? "Weniger" : "Show less") : de ? "Alle Services" : "More services"}
         </button>
       </div>
       <div className="mt-4 grid gap-4 md:grid-cols-3">
@@ -148,9 +138,7 @@ export function PortfolioServices({
               <p className="text-sm text-muted-foreground">
                 {de ? offer.descriptionDe : offer.description}
               </p>
-              <p className="text-xs text-muted-foreground">
-                {de ? offer.reasonDe : offer.reason}
-              </p>
+              <p className="text-xs text-muted-foreground">{de ? offer.reasonDe : offer.reason}</p>
               <div className="mt-auto pt-2">
                 {href ? (
                   <a
@@ -180,14 +168,8 @@ export function PortfolioServices({
         })}
       </div>
       {dismissed.length > 0 && (
-        <button
-          type="button"
-          className="mt-3 text-xs underline"
-          onClick={() => setDismissed([])}
-        >
-          {de
-            ? "Ausgeblendete Services wiederherstellen"
-            : "Restore dismissed services"}
+        <button type="button" className="mt-3 text-xs underline" onClick={() => setDismissed([])}>
+          {de ? "Ausgeblendete Services wiederherstellen" : "Restore dismissed services"}
         </button>
       )}
       {selected && (
@@ -197,11 +179,7 @@ export function PortfolioServices({
         >
           <div className="flex justify-between gap-3">
             <h3 className="font-semibold">{selected.name}</h3>
-            <button
-              type="button"
-              className="text-sm underline"
-              onClick={() => setSelected(null)}
-            >
+            <button type="button" className="text-sm underline" onClick={() => setSelected(null)}>
               {de ? "Schließen" : "Close"}
             </button>
           </div>
@@ -212,9 +190,7 @@ export function PortfolioServices({
           </p>
           {selected.insuranceTypes && (
             <>
-              <p className="mt-3 text-sm">
-                {selected.insuranceTypes.join(" · ")}
-              </p>
+              <p className="mt-3 text-sm">{selected.insuranceTypes.join(" · ")}</p>
               <p className="mt-2 text-xs text-muted-foreground">
                 {de
                   ? "Dies ist eine Anfrage, kein Angebot und keine Versicherungsbestätigung."
@@ -246,10 +222,7 @@ export function PortfolioServices({
               {de ? "Entwurf herunterladen" : "Download enquiry brief"}
             </button>
             {contact && (
-              <a
-                className="rounded-lg border px-3 py-2 text-sm font-medium"
-                href={contact}
-              >
+              <a className="rounded-lg border px-3 py-2 text-sm font-medium" href={contact}>
                 {de ? "Team kontaktieren" : "Contact the team"}
               </a>
             )}

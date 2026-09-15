@@ -35,8 +35,7 @@ export const portfolioOffers: Offer[] = [
     category: "Finance",
     description:
       "Prepare a brief for bookkeeping, payroll, VAT or annual accounts and find an accountant.",
-    descriptionDe:
-      "Buchhaltung und Steuerberatung für Ihr britisches Unternehmen anfragen.",
+    descriptionDe: "Buchhaltung und Steuerberatung für Ihr britisches Unternehmen anfragen.",
     placements: [...allBusiness, "renewal"],
     countries: ["GB"],
     audiences: ["business"],
@@ -66,10 +65,8 @@ export const portfolioOffers: Offer[] = [
     id: "veyumo",
     name: "Veyumo",
     category: "Connectivity",
-    description:
-      "Explore mobile connectivity for your team, business devices or personal use.",
-    descriptionDe:
-      "Mobilfunk für Ihr Team, geschäftliche Geräte oder privat entdecken.",
+    description: "Explore mobile connectivity for your team, business devices or personal use.",
+    descriptionDe: "Mobilfunk für Ihr Team, geschäftliche Geräte oder privat entdecken.",
     placements: [...allBusiness, "people", "assets", "renewal"],
     audiences: ["business", "consumer"],
     stage: "Pilot",
@@ -80,8 +77,7 @@ export const portfolioOffers: Offer[] = [
     category: "Intelligence",
     description:
       "Explore sales analysis, document review and approval-based assistants for your workflows.",
-    descriptionDe:
-      "Umsatzanalysen, Dokumentenprüfung und Assistenz mit Freigaben erkunden.",
+    descriptionDe: "Umsatzanalysen, Dokumentenprüfung und Assistenz mit Freigaben erkunden.",
     placements: [...allBusiness, "sales", "documents", "purchasing"],
     audiences: ["business"],
     stage: "Pilot",
@@ -90,10 +86,8 @@ export const portfolioOffers: Offer[] = [
     id: "xpertjobs",
     name: "XpertJobs",
     category: "People",
-    description:
-      "Explore recruitment tools for your next hire and manage employer enquiries.",
-    descriptionDe:
-      "Recruiting und Arbeitgeberanfragen für Ihre nächste Einstellung organisieren.",
+    description: "Explore recruitment tools for your next hire and manage employer enquiries.",
+    descriptionDe: "Recruiting und Arbeitgeberanfragen für Ihre nächste Einstellung organisieren.",
     placements: ["dashboard", "people", "completed"],
     audiences: ["business"],
     url: "https://xpertjobs.lovable.app",
@@ -129,10 +123,8 @@ export const portfolioOffers: Offer[] = [
     id: "craftvaro",
     name: "Craftvaro",
     category: "Property",
-    description:
-      "Explore trade services, maintenance jobs and project coordination.",
-    descriptionDe:
-      "Handwerksleistungen, Wartungsaufträge und Bauprojekte koordinieren.",
+    description: "Explore trade services, maintenance jobs and project coordination.",
+    descriptionDe: "Handwerksleistungen, Wartungsaufträge und Bauprojekte koordinieren.",
     placements: ["dashboard", "assets", "purchasing", "completed"],
     countries: ["GB"],
     audiences: ["business", "consumer"],
@@ -143,10 +135,8 @@ export const portfolioOffers: Offer[] = [
     id: "eventplanr",
     name: "EventPlanr",
     category: "Events",
-    description:
-      "Prepare an event brief and explore venues, catering and supplier coordination.",
-    descriptionDe:
-      "Veranstaltungen, Locations, Catering und Dienstleister planen.",
+    description: "Prepare an event brief and explore venues, catering and supplier coordination.",
+    descriptionDe: "Veranstaltungen, Locations, Catering und Dienstleister planen.",
     placements: ["dashboard", "sales", "completed"],
     audiences: ["business", "consumer"],
     stage: "Enquiry only",
@@ -156,8 +146,7 @@ export const portfolioOffers: Offer[] = [
     name: "Dishbee",
     category: "Commerce",
     description: "Explore EPOS, online ordering and restaurant operations.",
-    descriptionDe:
-      "Kassensysteme, Onlinebestellungen und Restaurantabläufe erkunden.",
+    descriptionDe: "Kassensysteme, Onlinebestellungen und Restaurantabläufe erkunden.",
     placements: ["dashboard", "sales", "purchasing", "completed"],
     audiences: ["business"],
     stage: "Enquiry only",
@@ -166,10 +155,8 @@ export const portfolioOffers: Offer[] = [
     id: "omniqora",
     name: "Omniqora",
     category: "Communications",
-    description:
-      "Explore a shared customer inbox, support cases and follow-up workflows.",
-    descriptionDe:
-      "Kundengespräche, Supportfälle und Nachfassprozesse gemeinsam bearbeiten.",
+    description: "Explore a shared customer inbox, support cases and follow-up workflows.",
+    descriptionDe: "Kundengespräche, Supportfälle und Nachfassprozesse gemeinsam bearbeiten.",
     placements: ["dashboard", "sales", "people", "completed"],
     audiences: ["business"],
     url: "https://omniqora.itechlounge.co.uk",
@@ -179,10 +166,8 @@ export const portfolioOffers: Offer[] = [
     id: "zoryn-pay",
     name: "Zoryn Pay",
     category: "Payments",
-    description:
-      "Explore payment onboarding and reconciliation for your business.",
-    descriptionDe:
-      "Zahlungsabwicklung und Abstimmung für Ihr Unternehmen erkunden.",
+    description: "Explore payment onboarding and reconciliation for your business.",
+    descriptionDe: "Zahlungsabwicklung und Abstimmung für Ihr Unternehmen erkunden.",
     placements: [...allBusiness, "sales"],
     audiences: ["business"],
     stage: "Enquiry only",
@@ -191,10 +176,8 @@ export const portfolioOffers: Offer[] = [
     id: "zoryn-rewards",
     name: "Zoryn Rewards",
     category: "Retention",
-    description:
-      "Explore a loyalty programme to encourage repeat customer visits.",
-    descriptionDe:
-      "Kunden mit einem Treueprogramm zu weiteren Besuchen einladen.",
+    description: "Explore a loyalty programme to encourage repeat customer visits.",
+    descriptionDe: "Kunden mit einem Treueprogramm zu weiteren Besuchen einladen.",
     placements: ["dashboard", "sales", "completed"],
     audiences: ["business"],
     stage: "Enquiry only",
@@ -203,10 +186,8 @@ export const portfolioOffers: Offer[] = [
     id: "traindirekt",
     name: "TrainDirekt",
     category: "Learning",
-    description:
-      "Prepare a training brief for staff development, attendance and evidence.",
-    descriptionDe:
-      "Weiterbildung, Teilnahme und Schulungsnachweise für Ihr Team planen.",
+    description: "Prepare a training brief for staff development, attendance and evidence.",
+    descriptionDe: "Weiterbildung, Teilnahme und Schulungsnachweise für Ihr Team planen.",
     placements: ["dashboard", "people", "documents", "completed"],
     audiences: ["business"],
     stage: "Enquiry only",
@@ -216,8 +197,7 @@ export const portfolioOffers: Offer[] = [
     name: "Orvilo",
     category: "Websites",
     description: "Explore a website or booking page for your business.",
-    descriptionDe:
-      "Eine Website oder Buchungsseite für Ihr Unternehmen erkunden.",
+    descriptionDe: "Eine Website oder Buchungsseite für Ihr Unternehmen erkunden.",
     placements: ["dashboard", "sales", "completed"],
     audiences: ["business"],
     stage: "Enquiry only",
@@ -226,10 +206,8 @@ export const portfolioOffers: Offer[] = [
     id: "voxentri",
     name: "Voxentri",
     category: "Marketing",
-    description:
-      "Prepare multilingual campaign content for your products and services.",
-    descriptionDe:
-      "Mehrsprachige Werbeinhalte für Ihre Produkte und Leistungen vorbereiten.",
+    description: "Prepare multilingual campaign content for your products and services.",
+    descriptionDe: "Mehrsprachige Werbeinhalte für Ihre Produkte und Leistungen vorbereiten.",
     placements: ["dashboard", "sales", "completed"],
     audiences: ["business"],
     stage: "Enquiry only",
@@ -238,10 +216,8 @@ export const portfolioOffers: Offer[] = [
     id: "dokuvera",
     name: "Dokuvera",
     category: "Documents",
-    description:
-      "Explore controlled documents, revisions and project evidence packs.",
-    descriptionDe:
-      "Dokumente, Versionen und Projektnachweise strukturiert verwalten.",
+    description: "Explore controlled documents, revisions and project evidence packs.",
+    descriptionDe: "Dokumente, Versionen und Projektnachweise strukturiert verwalten.",
     placements: ["dashboard", "documents", "assets", "completed"],
     audiences: ["business"],
     stage: "Enquiry only",
@@ -250,8 +226,7 @@ export const portfolioOffers: Offer[] = [
     id: "cirqiva",
     name: "Cirqiva",
     category: "Waste",
-    description:
-      "Prepare a waste collection brief and compare collection requirements.",
+    description: "Prepare a waste collection brief and compare collection requirements.",
     descriptionDe: "Abfallentsorgung und Anforderungen an die Abholung planen.",
     placements: ["dashboard", "purchasing", "assets", "completed"],
     audiences: ["business"],
@@ -271,10 +246,8 @@ export const portfolioOffers: Offer[] = [
     id: "regulos",
     name: "RegulaOS",
     category: "Governance",
-    description:
-      "Explore regulatory change monitoring and assigned review tasks.",
-    descriptionDe:
-      "Regulatorische Änderungen verfolgen und Prüfaufgaben zuweisen.",
+    description: "Explore regulatory change monitoring and assigned review tasks.",
+    descriptionDe: "Regulatorische Änderungen verfolgen und Prüfaufgaben zuweisen.",
     placements: ["dashboard", "documents", "renewal", "completed"],
     audiences: ["business"],
     stage: "Pilot",
@@ -283,8 +256,7 @@ export const portfolioOffers: Offer[] = [
     id: "fleetsora",
     name: "Fleetsora",
     category: "Fleet",
-    description:
-      "Explore fleet records, rider coordination and vehicle operations.",
+    description: "Explore fleet records, rider coordination and vehicle operations.",
     descriptionDe: "Fuhrpark, Fahrer und Fahrzeugabläufe koordinieren.",
     placements: ["dashboard", "assets", "people", "completed"],
     audiences: ["business"],
@@ -340,14 +312,7 @@ const sectorOffers: Record<string, string[]> = {
     "zoryn-rewards",
     "veyumo",
   ],
-  "Family & care": [
-    "taxnuvia",
-    "insure360",
-    "traindirekt",
-    "xpertjobs",
-    "omniqora",
-    "veyumo",
-  ],
+  "Family & care": ["taxnuvia", "insure360", "traindirekt", "xpertjobs", "omniqora", "veyumo"],
   Commerce: [
     "suppliers",
     "taxnuvia",
@@ -357,14 +322,7 @@ const sectorOffers: Record<string, string[]> = {
     "voxentri",
     "omniqora-intelligence",
   ],
-  "Education & careers": [
-    "taxnuvia",
-    "insure360",
-    "veyumo",
-    "traindirekt",
-    "omniqora",
-    "orvilo",
-  ],
+  "Education & careers": ["taxnuvia", "insure360", "veyumo", "traindirekt", "omniqora", "orvilo"],
   "Creative & websites": [
     "voxentri",
     "orvilo",
@@ -401,69 +359,16 @@ const relationships: Record<string, string[]> = {
     "veyumo",
   ],
   dishbee: ["haccora", "suppliers", "zoryn-rewards", "taxnuvia", "insure360"],
-  taxnuvia: [
-    "omniqora-intelligence",
-    "insure360",
-    "xpertjobs",
-    "omniqora",
-    "veyumo",
-    "regulos",
-  ],
-  craftvaro: [
-    "insure360",
-    "taxnuvia",
-    "suppliers",
-    "dokuvera",
-    "cirqiva",
-    "veyumo",
-    "xpertjobs",
-  ],
-  eventplanr: [
-    "insure360",
-    "suppliers",
-    "taxnuvia",
-    "haccora",
-    "xpertjobs",
-    "veyumo",
-    "zoryn-pay",
-  ],
+  taxnuvia: ["omniqora-intelligence", "insure360", "xpertjobs", "omniqora", "veyumo", "regulos"],
+  craftvaro: ["insure360", "taxnuvia", "suppliers", "dokuvera", "cirqiva", "veyumo", "xpertjobs"],
+  eventplanr: ["insure360", "suppliers", "taxnuvia", "haccora", "xpertjobs", "veyumo", "zoryn-pay"],
   kinderstars: ["taxnuvia", "insure360", "traindirekt", "veyumo", "orvilo"],
   lessonahead: ["insure360", "veyumo", "taxnuvia", "orvilo", "omniqora"],
-  xpertjobs: [
-    "veyumo",
-    "taxnuvia",
-    "insure360",
-    "traindirekt",
-    "omniqora-intelligence",
-  ],
-  insure360: [
-    "taxnuvia",
-    "omniqora",
-    "omniqora-intelligence",
-    "veyumo",
-    "xpertjobs",
-    "regulos",
-  ],
-  veyumo: [
-    "insure360",
-    "omniqora",
-    "taxnuvia",
-    "omniqora-intelligence",
-    "zoryn-rewards",
-  ],
-  "zoryn-pay": [
-    "taxnuvia",
-    "zoryn-rewards",
-    "insure360",
-    "omniqora-intelligence",
-  ],
-  "zoryn-rewards": [
-    "zoryn-pay",
-    "omniqora-intelligence",
-    "voxentri",
-    "taxnuvia",
-    "insure360",
-  ],
+  xpertjobs: ["veyumo", "taxnuvia", "insure360", "traindirekt", "omniqora-intelligence"],
+  insure360: ["taxnuvia", "omniqora", "omniqora-intelligence", "veyumo", "xpertjobs", "regulos"],
+  veyumo: ["insure360", "omniqora", "taxnuvia", "omniqora-intelligence", "zoryn-rewards"],
+  "zoryn-pay": ["taxnuvia", "zoryn-rewards", "insure360", "omniqora-intelligence"],
+  "zoryn-rewards": ["zoryn-pay", "omniqora-intelligence", "voxentri", "taxnuvia", "insure360"],
   premisora: ["dokuvera", "insure360", "craftvaro", "taxnuvia", "cirqiva"],
   cirqiva: ["insure360", "fleetsora", "taxnuvia", "veyumo", "dokuvera"],
   ahlnikkah: ["eventplanr", "veyumo"],
@@ -484,13 +389,7 @@ const intent: Record<Placement, string[]> = {
     "eventplanr",
     "orvilo",
   ],
-  documents: [
-    "dokuvera",
-    "regulos",
-    "insure360",
-    "omniqora-intelligence",
-    "haccora",
-  ],
+  documents: ["dokuvera", "regulos", "insure360", "omniqora-intelligence", "haccora"],
   completed: [],
   renewal: ["insure360", "veyumo", "taxnuvia"],
 };
@@ -508,9 +407,7 @@ export type Recommendation = Offer & {
   reason: string;
   reasonDe: string;
 };
-export function recommendations(
-  context: RecommendationContext,
-): Recommendation[] {
+export function recommendations(context: RecommendationContext): Recommendation[] {
   const source = portfolioProducts.find((p) => p.slug === context.source);
   if (
     !source ||
@@ -526,20 +423,8 @@ export function recommendations(
   const candidates =
     context.audience === "consumer"
       ? direct
-      : [
-          ...new Set([
-            ...direct,
-            ...sector,
-            "omniqora-intelligence",
-            "veyumo",
-            "orvilo",
-          ]),
-        ];
-  const blocked = new Set([
-    context.source,
-    ...(context.owned || []),
-    ...(context.dismissed || []),
-  ]);
+      : [...new Set([...direct, ...sector, "omniqora-intelligence", "veyumo", "orvilo"])];
+  const blocked = new Set([context.source, ...(context.owned || []), ...(context.dismissed || [])]);
   const ranked = portfolioOffers
     .filter(
       (o) =>
@@ -575,9 +460,7 @@ export function recommendations(
     })
     .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
   const rawLimit = context.limit ?? 3;
-  const limit = Number.isFinite(rawLimit)
-    ? Math.min(12, Math.max(0, Math.floor(rawLimit)))
-    : 3;
+  const limit = Number.isFinite(rawLimit) ? Math.min(12, Math.max(0, Math.floor(rawLimit))) : 3;
   const categories = new Set<string>();
   return ranked
     .filter((o) => {
@@ -603,12 +486,7 @@ export function insuranceTopics(source: string, sector: string): string[] {
       "Business contents",
     ];
   if (source === "eventplanr")
-    return [
-      "Event liability",
-      "Cancellation enquiry",
-      "Hired equipment",
-      "Employers’ liability",
-    ];
+    return ["Event liability", "Cancellation enquiry", "Hired equipment", "Employers’ liability"];
   if (sector === "Food & hospitality")
     return [
       "Public and product liability",
@@ -632,18 +510,8 @@ export function insuranceTopics(source: string, sector: string): string[] {
       "Public liability",
     ];
   if (sector === "Professional services" || sector === "Creative & websites")
-    return [
-      "Professional indemnity",
-      "Cyber",
-      "Office contents",
-      "Employers’ liability",
-    ];
-  return [
-    "Public liability",
-    "Employers’ liability",
-    "Cyber",
-    "Property and contents",
-  ];
+    return ["Professional indemnity", "Cyber", "Office contents", "Employers’ liability"];
+  return ["Public liability", "Employers’ liability", "Cyber", "Property and contents"];
 }
 export function offerDestination(
   offer: Offer,
@@ -651,9 +519,7 @@ export function offerDestination(
   placement: Placement,
 ): string | null {
   if (
-    !portfolioProducts.some(
-      (p) => p.slug === source && p.scope === "confirmed",
-    ) ||
+    !portfolioProducts.some((p) => p.slug === source && p.scope === "confirmed") ||
     !placements.includes(placement) ||
     !offer.url
   )
