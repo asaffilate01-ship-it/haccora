@@ -93,11 +93,15 @@ function Dashboard() {
     if (user.role === "staff") q = q.eq("user_id", user.id);
     const { data } = await q;
     const now = Date.now();
-    const userIds = Array.from(new Set((data ?? []).map((r: any) => r.user_id).filter(Boolean)));
+    const userIds = Array.from(
+      new Set((data ?? []).map((r: any) => r.user_id).filter(Boolean)),
+    );
     const { data: profs } = userIds.length
       ? await supabase.rpc("get_org_directory")
       : { data: [] as { id: string; full_name: string | null }[] };
-    const nameById = new Map((profs ?? []).map((p: any) => [p.id, p.full_name]));
+    const nameById = new Map(
+      (profs ?? []).map((p: any) => [p.id, p.full_name]),
+    );
     const rows: Task[] = (data ?? []).map((r: any) => {
       const created = new Date(r.created_at);
       const status: Task["status"] =
@@ -134,7 +138,10 @@ function Dashboard() {
       trainingDueQ,
       poRecent,
     ] = await Promise.all([
-      supabase.from("alerts").select("id", { count: "exact", head: true }).is("read_at", null),
+      supabase
+        .from("alerts")
+        .select("id", { count: "exact", head: true })
+        .is("read_at", null),
       supabase
         .from("incidents")
         .select("id", { count: "exact", head: true })
@@ -175,10 +182,9 @@ function Dashboard() {
         .select("total_eur")
         .gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
     ]);
-    const spend = ((poRecent.data ?? []) as Array<{ total_eur: number | null }>).reduce(
-      (s, r) => s + Number(r.total_eur ?? 0),
-      0,
-    );
+    const spend = (
+      (poRecent.data ?? []) as Array<{ total_eur: number | null }>
+    ).reduce((s, r) => s + Number(r.total_eur ?? 0), 0);
     const tempOk = tempOkQ.count ?? 0;
     const tempOut = tempOutQ.count ?? 0;
     setCounts({
@@ -202,10 +208,26 @@ function Dashboard() {
     load();
     const ch = supabase
       .channel("dash-checks")
-      .on("postgres_changes", { event: "*", schema: "public", table: "checks" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "incidents" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "temperature_logs" }, load)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "checks" },
+        load,
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "alerts" },
+        load,
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "incidents" },
+        load,
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "temperature_logs" },
+        load,
+      )
       .subscribe();
     return () => {
       supabase.removeChannel(ch);
@@ -223,11 +245,14 @@ function Dashboard() {
   if (!user) return null;
 
   const firstName = user.name.split(" ")[0];
-  const dateStr = new Date().toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
+  const dateStr = new Date().toLocaleDateString(
+    lang === "de" ? "de-DE" : "en-GB",
+    {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    },
+  );
 
   const visibleTasks = tasks;
   const pending = visibleTasks.filter((x) => x.status === "pending").length;
@@ -247,7 +272,8 @@ function Dashboard() {
 
       {loading && (
         <div className="text-xs text-muted-foreground inline-flex items-center gap-2">
-          <Loader2 size={12} className="animate-spin" /> {t("common.loading") || "…"}
+          <Loader2 size={12} className="animate-spin" />{" "}
+          {t("common.loading") || "…"}
         </div>
       )}
 
@@ -280,6 +306,13 @@ function Dashboard() {
       )}
       {user.role === "staff" && <StaffView tasks={visibleTasks} done={done} />}
       {user.role === "inspector" && <InspectorView />}
+      {user?.role === "owner" && (
+        <PortfolioServices
+          source="haccora"
+          country="DE"
+          locale={lang === "de" ? "de" : "en"}
+        />
+      )}
     </div>
   );
 }
@@ -355,7 +388,9 @@ function RoleHero({
           <h1 className="mt-1.5 font-display text-2xl md:text-4xl leading-tight">
             {t("dash.hello.role")}, {firstName}
           </h1>
-          <p className="mt-1.5 text-sm md:text-base opacity-85 max-w-2xl">{t(theme.bo)}</p>
+          <p className="mt-1.5 text-sm md:text-base opacity-85 max-w-2xl">
+            {t(theme.bo)}
+          </p>
           <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] md:text-xs uppercase tracking-wider opacity-70">
             <span>{location}</span>
             <span>·</span>
@@ -383,10 +418,15 @@ function OwnerView({
 }) {
   const { t, lang } = useI18n();
   const tempScore =
-    counts.tempTotal > 0 ? Math.round((counts.tempOk / counts.tempTotal) * 100) : 100;
+    counts.tempTotal > 0
+      ? Math.round((counts.tempOk / counts.tempTotal) * 100)
+      : 100;
   const checksScore =
     tasks.length > 0
-      ? Math.round((tasks.filter((x) => x.status === "done").length / tasks.length) * 100)
+      ? Math.round(
+          (tasks.filter((x) => x.status === "done").length / tasks.length) *
+            100,
+        )
       : 100;
   const complianceScore = Math.round(tempScore * 0.5 + checksScore * 0.5);
   const spendFmt = new Intl.NumberFormat(lang === "de" ? "de-DE" : "en-GB", {
@@ -406,8 +446,17 @@ function OwnerView({
             icon: ShieldCheck,
           },
           { l: t("owner.locations"), v: 1, icon: MapPin },
-          { l: t("dash.metric.actions"), v: counts.alerts, icon: AlertTriangle },
-          { l: t("owner.revenue"), v: spendFmt, hint: t("owner.revenue.hint"), icon: DollarSign },
+          {
+            l: t("dash.metric.actions"),
+            v: counts.alerts,
+            icon: AlertTriangle,
+          },
+          {
+            l: t("owner.revenue"),
+            v: spendFmt,
+            hint: t("owner.revenue.hint"),
+            icon: DollarSign,
+          },
           { l: t("dash.metric.training"), v: counts.trainingDue, icon: Users },
         ]}
       />
@@ -416,7 +465,9 @@ function OwnerView({
         <div className="lg:col-span-2 surface p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-xl">{t("owner.byLocation")}</h2>
-            <span className="text-xs text-muted-foreground">{t("owner.last30")}</span>
+            <span className="text-xs text-muted-foreground">
+              {t("owner.last30")}
+            </span>
           </div>
           <div className="divide-y divide-border">
             <div className="py-3 flex items-center gap-4">
@@ -428,8 +479,8 @@ function OwnerView({
                   {t("dash.thisLocation") || "This location"}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {counts.suppliers} {t("suppliers.title") || "Suppliers"} · {counts.recipes}{" "}
-                  {t("recipes.title") || "Recipes"}
+                  {counts.suppliers} {t("suppliers.title") || "Suppliers"} ·{" "}
+                  {counts.recipes} {t("recipes.title") || "Recipes"}
                 </div>
               </div>
               <div className="text-right">
@@ -449,7 +500,12 @@ function OwnerView({
         <ReadinessCard />
       </div>
 
-      <TasksAndActions tasks={tasks} done={done} pending={pending} overdue={overdue} />
+      <TasksAndActions
+        tasks={tasks}
+        done={done}
+        pending={pending}
+        overdue={overdue}
+      />
     </>
   );
 }
@@ -470,10 +526,15 @@ function ManagerView({
 }) {
   const { t } = useI18n();
   const tempScore =
-    counts.tempTotal > 0 ? Math.round((counts.tempOk / counts.tempTotal) * 100) : 100;
+    counts.tempTotal > 0
+      ? Math.round((counts.tempOk / counts.tempTotal) * 100)
+      : 100;
   const checksScore =
     tasks.length > 0
-      ? Math.round((tasks.filter((x) => x.status === "done").length / tasks.length) * 100)
+      ? Math.round(
+          (tasks.filter((x) => x.status === "done").length / tasks.length) *
+            100,
+        )
       : 100;
   const score = Math.round(tempScore * 0.5 + checksScore * 0.5);
   return (
@@ -488,15 +549,26 @@ function ManagerView({
           <div className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-alert-red)]">
             {t("dash.manager.shift")}
           </div>
-          <div className="text-sm font-semibold truncate">{t("dash.manager.shiftBody")}</div>
+          <div className="text-sm font-semibold truncate">
+            {t("dash.manager.shiftBody")}
+          </div>
         </div>
       </div>
       <MetricRow
         items={[
-          { l: t("dash.metric.score"), v: `${score}%`, hint: t("time.trend"), icon: ShieldCheck },
+          {
+            l: t("dash.metric.score"),
+            v: `${score}%`,
+            hint: t("time.trend"),
+            icon: ShieldCheck,
+          },
           { l: t("dash.metric.pending"), v: pending, icon: Clock },
           { l: t("dash.metric.overdue"), v: overdue, icon: AlertTriangle },
-          { l: t("dash.metric.actions"), v: counts.alerts, icon: AlertTriangle },
+          {
+            l: t("dash.metric.actions"),
+            v: counts.alerts,
+            icon: AlertTriangle,
+          },
           { l: t("dash.metric.failed"), v: counts.tempOut, icon: Thermometer },
           { l: t("dash.metric.training"), v: counts.trainingDue, icon: Users },
         ]}
@@ -540,8 +612,18 @@ function ChefView({
       to: "/app/haccp",
       icon: ShieldCheck,
     },
-    { l: t("chef.recipes"), v: String(counts.recipes), to: "/app/recipes", icon: Wheat },
-    { l: t("chef.brigade"), v: String(counts.brigade), to: "/app/training", icon: ChefHat },
+    {
+      l: t("chef.recipes"),
+      v: String(counts.recipes),
+      to: "/app/recipes",
+      icon: Wheat,
+    },
+    {
+      l: t("chef.brigade"),
+      v: String(counts.brigade),
+      to: "/app/training",
+      icon: ChefHat,
+    },
   ];
   return (
     <>
@@ -591,7 +673,13 @@ function ChefView({
 }
 
 /* ---------------- Staff (focus view) ---------------- */
-function StaffView({ tasks, done }: { tasks: Task[]; done: (id: string) => void }) {
+function StaffView({
+  tasks,
+  done,
+}: {
+  tasks: Task[];
+  done: (id: string) => void;
+}) {
   const { t } = useI18n();
   const total = tasks.length;
   const completed = tasks.filter((x) => x.status === "done").length;
@@ -633,7 +721,9 @@ function StaffView({ tasks, done }: { tasks: Task[]; done: (id: string) => void 
       {total === completed ? (
         <div className="surface p-6 md:p-8 text-center">
           <CheckCircle2 size={40} className="mx-auto text-success" />
-          <div className="mt-3 font-display text-xl">{t("dash.staff.allDone")}</div>
+          <div className="mt-3 font-display text-xl">
+            {t("dash.staff.allDone")}
+          </div>
         </div>
       ) : (
         <TasksCard tasks={tasks} done={done} big />
@@ -646,8 +736,12 @@ function StaffView({ tasks, done }: { tasks: Task[]; done: (id: string) => void 
           <BookOpen size={20} />
         </span>
         <div className="flex-1 min-w-0">
-          <div className="font-display text-lg truncate">{t("staff.training.t")}</div>
-          <div className="text-sm text-muted-foreground truncate">{t("staff.training.b")}</div>
+          <div className="font-display text-lg truncate">
+            {t("staff.training.t")}
+          </div>
+          <div className="text-sm text-muted-foreground truncate">
+            {t("staff.training.b")}
+          </div>
         </div>
         <ArrowRight size={18} className="text-muted-foreground shrink-0" />
       </Link>
@@ -684,7 +778,12 @@ function InspectorView() {
 function MetricRow({
   items,
 }: {
-  items: Array<{ l: string; v: string | number; hint?: string; icon: typeof ShieldCheck }>;
+  items: Array<{
+    l: string;
+    v: string | number;
+    hint?: string;
+    icon: typeof ShieldCheck;
+  }>;
 }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -747,7 +846,10 @@ function TasksCard({
       </div>
       <div className="mt-4 divide-y divide-border">
         {tasks.map((task) => (
-          <div key={task.id} className={`${big ? "py-4" : "py-3"} flex items-center gap-3`}>
+          <div
+            key={task.id}
+            className={`${big ? "py-4" : "py-3"} flex items-center gap-3`}
+          >
             <StatusPill status={task.status} />
             <div className="flex-1 min-w-0">
               <div
@@ -808,7 +910,11 @@ function ActionsCard() {
     load();
     const ch = supabase
       .channel("dash-alerts")
-      .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "alerts" },
+        load,
+      )
       .subscribe();
     return () => {
       supabase.removeChannel(ch);
@@ -878,7 +984,6 @@ function ReadinessCard() {
           </Link>
         </div>
       </div>
-      {user?.role === "owner" && <PortfolioServices source="haccora" country="DE" locale={lang === "de" ? "de" : "en"} />}
     </div>
   );
 }
@@ -906,7 +1011,10 @@ function StatusPill({ status }: { status: Task["status"] }) {
 function SeverityBadge({ sev }: { sev: "high" | "medium" | "low" }) {
   const { t } = useI18n();
   const map = {
-    high: { c: "bg-destructive/10 text-destructive", l: t("dash.severity.high") },
+    high: {
+      c: "bg-destructive/10 text-destructive",
+      l: t("dash.severity.high"),
+    },
     medium: {
       c: "bg-warning/15 text-warning-foreground border border-warning/40",
       l: t("dash.severity.medium"),
@@ -922,4 +1030,3 @@ function SeverityBadge({ sev }: { sev: "high" | "medium" | "low" }) {
     </span>
   );
 }
-
