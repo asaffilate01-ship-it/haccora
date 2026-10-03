@@ -20,6 +20,7 @@ import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as UnlockRouteImport } from './routes/unlock'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAiAssistantRouteImport } from './routes/app.ai-assistant'
 import { Route as AppAlertsRouteImport } from './routes/app.alerts'
 import { Route as AppAssetsRouteImport } from './routes/app.assets'
 import { Route as AppAuditsRouteImport } from './routes/app.audits'
@@ -119,6 +120,11 @@ const UnlockRoute = UnlockRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAiAssistantRoute = AppAiAssistantRouteImport.update({
+  id: '/ai-assistant',
+  path: '/ai-assistant',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAlertsRoute = AppAlertsRouteImport.update({
@@ -358,6 +364,7 @@ export interface FileRoutesByFullPath {
   '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unlock': typeof UnlockRoute
+  '/app/ai-assistant': typeof AppAiAssistantRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
@@ -414,6 +421,7 @@ export interface FileRoutesByTo {
   '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unlock': typeof UnlockRoute
+  '/app/ai-assistant': typeof AppAiAssistantRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
@@ -473,6 +481,7 @@ export interface FileRoutesById {
   '/platform': typeof PlatformRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unlock': typeof UnlockRoute
+  '/app/ai-assistant': typeof AppAiAssistantRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/audits': typeof AppAuditsRoute
@@ -533,6 +542,7 @@ export interface FileRouteTypes {
     | '/platform'
     | '/sitemap.xml'
     | '/unlock'
+    | '/app/ai-assistant'
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
@@ -589,6 +599,7 @@ export interface FileRouteTypes {
     | '/platform'
     | '/sitemap.xml'
     | '/unlock'
+    | '/app/ai-assistant'
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
@@ -647,6 +658,7 @@ export interface FileRouteTypes {
     | '/platform'
     | '/sitemap.xml'
     | '/unlock'
+    | '/app/ai-assistant'
     | '/app/alerts'
     | '/app/assets'
     | '/app/audits'
@@ -785,6 +797,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/ai-assistant': {
+      id: '/app/ai-assistant'
+      path: '/ai-assistant'
+      fullPath: '/app/ai-assistant'
+      preLoaderRoute: typeof AppAiAssistantRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/alerts': {
@@ -1106,6 +1125,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAiAssistantRoute: typeof AppAiAssistantRoute
   AppAlertsRoute: typeof AppAlertsRoute
   AppAssetsRoute: typeof AppAssetsRoute
   AppAuditsRoute: typeof AppAuditsRoute
@@ -1148,6 +1168,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAiAssistantRoute: AppAiAssistantRoute,
   AppAlertsRoute: AppAlertsRoute,
   AppAssetsRoute: AppAssetsRoute,
   AppAuditsRoute: AppAuditsRoute,
