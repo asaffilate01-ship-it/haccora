@@ -41,3 +41,5 @@ verify_jwt = true
 
 [functions.integration-dispatch]
 verify_jwt = false
+[functions.omniqora-platform]
+verify_jwt = false
