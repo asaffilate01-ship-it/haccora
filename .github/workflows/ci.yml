@@ -94,6 +94,7 @@ jobs:
           billing/index.ts
           integration-admin/index.ts
           integration-dispatch/index.ts
+          omniqora-platform/index.ts
 
   browser-e2e:
     needs: web
