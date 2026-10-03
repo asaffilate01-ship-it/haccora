@@ -10,7 +10,8 @@ import {
   Network,
   Sparkles,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";\nimport { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/ai-assistant")({
   component: AiEvidenceAssistant,
@@ -124,7 +125,9 @@ function AiEvidenceAssistant() {
       setRun({ run: { id, status }, reviewRequired: true });
     } catch {
       setError(
-        de\n          ? "Die AI-Anfrage wurde nicht gestartet. Prüfen Sie Berechtigung und Provider-Konfiguration."\n          : "The AI request was not started. Check the Haccora AI entitlement and Omniqora provider configuration.",
+        de
+          ? "Die AI-Anfrage wurde nicht gestartet. Prüfen Sie Berechtigung und Provider-Konfiguration."
+          : "The AI request was not started. Check the Haccora AI entitlement and Omniqora provider configuration.",
       );
     } finally {
       setBusy(false);
@@ -233,7 +236,11 @@ function AiEvidenceAssistant() {
             className="mt-1 min-h-32 w-full rounded-lg border border-border bg-background p-3 font-normal"
             value={question}
             onChange={(event) => setQuestion(event.target.value)}
-            placeholder={\n              de\n                ? "Zum Beispiel: Welche Nachweislücken sollte ich vor einer Kontrolle prüfen?"\n                : "For example: What evidence gaps should I review before an inspection?"\n            }
+            placeholder={
+              de
+                ? "Zum Beispiel: Welche Nachweislücken sollte ich vor einer Kontrolle prüfen?"
+                : "For example: What evidence gaps should I review before an inspection?"
+            }
           />
         </label>
 
@@ -278,7 +285,9 @@ function AiEvidenceAssistant() {
 
           {sources.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold">\n                {de ? "Nachweisreferenzen" : "Evidence references"}\n              </h3>
+              <h3 className="text-sm font-semibold">
+                {de ? "Nachweisreferenzen" : "Evidence references"}
+              </h3>
               <div className="mt-2 flex flex-wrap gap-2">
                 {sources.map((source) => (
                   <span
@@ -294,7 +303,11 @@ function AiEvidenceAssistant() {
 
           {(run?.proposals?.length ?? 0) > 0 && (
             <div>
-              <h3 className="text-sm font-semibold">\n                {de\n                  ? "Vorgeschlagene Maßnahmen — Freigabe erforderlich"\n                  : "Proposed actions — approval required"}\n              </h3>
+              <h3 className="text-sm font-semibold">
+                {de
+                  ? "Vorgeschlagene Maßnahmen — Freigabe erforderlich"
+                  : "Proposed actions — approval required"}
+              </h3>
               <div className="mt-2 space-y-2">
                 {run!.proposals!.map((proposal) => (
                   <div key={proposal.id} className="rounded-lg border border-border p-3 text-sm">
@@ -337,7 +350,13 @@ function StatusCard({
         {icon}
         {label}
       </div>
-      <div className="mt-2 text-sm font-bold">{active\n          ? lang === "de"\n            ? "Aktiv"\n            : "Enabled"\n          : lang === "de"\n            ? "Nicht aktiv"\n            : "Not enabled"}</div>
+      <div className="mt-2 text-sm font-bold">{active
+          ? lang === "de"
+            ? "Aktiv"
+            : "Enabled"
+          : lang === "de"
+            ? "Nicht aktiv"
+            : "Not enabled"}</div>
     </article>
   );
 }
