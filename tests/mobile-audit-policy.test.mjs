@@ -5,20 +5,20 @@ import { evaluateAudit } from "../mobile/scripts/audit-production.mjs";
 
 const beforeExpiry = new Date("2026-10-04T00:00:00Z");
 const policy = {
-  "exceptions": [
+  exceptions: [
     {
-      "package": "image-size",
-      "advisory": "GHSA-W3RX-R6R6-PGPR",
-      "severity": "high",
-      "expiresOn": "2026-10-18"
+      package: "image-size",
+      advisory: "GHSA-W3RX-R6R6-PGPR",
+      severity: "high",
+      expiresOn: "2026-10-18",
     },
     {
-      "package": "image-size",
-      "advisory": "GHSA-5P2G-FCMC-QVQQ",
-      "severity": "high",
-      "expiresOn": "2026-10-18"
-    }
-  ]
+      package: "image-size",
+      advisory: "GHSA-5P2G-FCMC-QVQQ",
+      severity: "high",
+      expiresOn: "2026-10-18",
+    },
+  ],
 };
 
 const allowedImageSize = {
@@ -56,11 +56,21 @@ test("mobile audit temporarily accepts only exact documented Metro advisories", 
   assert.deepEqual(result.expired, []);
 });
 
-test("mobile audit fails closed for another high or any critical finding", () => {
+test("mobile audit ignores moderate findings but fails closed for unknown high or critical", () => {
   const result = evaluateAudit(
     {
       vulnerabilities: {
         "image-size": allowedImageSize,
+        moderatePackage: {
+          severity: "moderate",
+          via: [
+            {
+              name: "moderatePackage",
+              severity: "moderate",
+              url: "https://github.com/advisories/GHSA-MMMM-NNNN-OOOO",
+            },
+          ],
+        },
         unexpected: {
           severity: "high",
           via: [
@@ -91,6 +101,7 @@ test("mobile audit fails closed for another high or any critical finding", () =>
   assert.equal(result.uncoveredDirect.length, 2);
   assert(result.uncoveredDirect.some((entry) => entry.package === "unexpected"));
   assert(result.uncoveredDirect.some((entry) => entry.severity === "critical"));
+  assert.equal(result.uncoveredDirect.some((entry) => entry.severity === "moderate"), false);
 });
 
 test("mobile audit exceptions expire automatically", () => {
