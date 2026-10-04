@@ -103,8 +103,7 @@ export function evaluateAudit(report, policy, today = new Date()) {
   const directKeys = new Set(direct.map((item) => `${item.package}:${item.advisory}`));
   const expired = (policy.exceptions ?? []).filter(
     (item) =>
-      item.expiresOn < date &&
-      directKeys.has(`${item.package}:${item.advisory.toUpperCase()}`),
+      item.expiresOn < date && directKeys.has(`${item.package}:${item.advisory.toUpperCase()}`),
   );
 
   return {
