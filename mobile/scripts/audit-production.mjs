@@ -75,6 +75,7 @@ export function evaluateAudit(report, policy, today = new Date()) {
 
   const direct = directAdvisories(report);
   const uncoveredDirect = direct.filter((item) => {
+    if (!["high", "critical"].includes(item.severity)) return false;
     if (item.severity === "critical") return true;
     const exception = active.get(`${item.package}:${item.advisory}`);
     return !exception || exception.severity !== item.severity;
