@@ -92,7 +92,10 @@ test("mobile audit ignores moderate findings but fails closed for unknown high o
   assert.equal(result.uncoveredDirect.length, 2);
   assert(result.uncoveredDirect.some((entry) => entry.package === "unexpected"));
   assert(result.uncoveredDirect.some((entry) => entry.severity === "critical"));
-  assert.equal(result.uncoveredDirect.some((entry) => entry.severity === "moderate"), false);
+  assert.equal(
+    result.uncoveredDirect.some((entry) => entry.severity === "moderate"),
+    false,
+  );
 });
 
 test("mobile audit exceptions expire automatically", () => {
