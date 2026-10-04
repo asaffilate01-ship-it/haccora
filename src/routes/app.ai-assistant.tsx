@@ -43,14 +43,21 @@ type RunPayload = {
   reviewRequired?: boolean;
 };
 
-const kinds = [
-  ["compliance_question", "Compliance question"],
-  ["inspection_readiness", "Inspection readiness"],
-  ["allergen_review", "Allergen review"],
-  ["corrective_action_review", "Corrective action review"],
-  ["haccp_review", "HACCP review"],
-  ["regulatory_question", "Regulatory question"],
+type StartPayload = {
+  runId?: unknown;
+  status?: unknown;
+};
+
+const reviewKinds = [
+  ["compliance_question", "Compliance question", "Compliance-Frage"],
+  ["inspection_readiness", "Inspection readiness", "Prüfungsvorbereitung"],
+  ["allergen_review", "Allergen review", "Allergen-Prüfung"],
+  ["corrective_action_review", "Corrective action review", "Korrekturmaßnahmen prüfen"],
+  ["haccp_review", "HACCP review", "HACCP prüfen"],
+  ["regulatory_question", "Regulatory question", "Regulatorische Frage"],
 ] as const;
+
+type ReviewKind = (typeof reviewKinds)[number][0];
 
 function answerText(payload: RunPayload | null) {
   const value = payload?.run?.result;
@@ -59,12 +66,15 @@ function answerText(payload: RunPayload | null) {
   if (value && typeof value === "object") {
     const result = value as Record<string, unknown>;
     for (const key of ["answer", "summary", "text", "final"]) {
-      if (typeof result[key] === "string") return result[key] as string;
+      if (typeof result[key] === "string") return result[key];
     }
     if (Object.keys(result).length) return JSON.stringify(result, null, 2);
   }
 
-  const final = [...(payload?.steps ?? [])].reverse().find((step) => step.step_type === "final");
+  const final = [...(payload?.steps ?? [])]
+    .reverse()
+    .find((step) => step.step_type === "final");
+
   if (typeof final?.response === "string") return final.response;
   if (final?.response && typeof final.response === "object") {
     const response = final.response as Record<string, unknown>;
@@ -78,7 +88,7 @@ function AiEvidenceAssistant() {
   const { lang } = useI18n();
   const de = lang === "de";
   const [bridge, setBridge] = useState<BridgeStatus | null>(null);
-  const [kind, setKind] = useState<(typeof kinds)[number][0]>("compliance_question");
+  const [kind, setKind] = useState<ReviewKind>("compliance_question");
   const [question, setQuestion] = useState("");
   const [runId, setRunId] = useState("");
   const [run, setRun] = useState<RunPayload | null>(null);
@@ -92,37 +102,50 @@ function AiEvidenceAssistant() {
     });
     if (result.error) {
       setBridge({ connected: false, countryCode: "DE", entitlements: {} });
-      setError(de ? "Omniqora-Status ist nicht verfügbar." : "Omniqora status is unavailable.");
+      setError(
+        de ? "Omniqora-Status ist nicht verfügbar." : "Omniqora status is unavailable.",
+      );
       return;
     }
     setBridge(result.data as BridgeStatus);
   }, [de]);
 
-  const readRun = useCallback(async (id: string) => {
-    if (!id) return;
-    const result = await supabase.functions.invoke("omniqora-platform", {
-      body: { action: "ai_status", runId: id },
-    });
-    if (result.error) {
-      setError(de ? "Der AI-Lauf konnte nicht aktualisiert werden." : "The AI run could not be refreshed.");
-      return;
-    }
-    setRun(result.data as RunPayload);
-  }, [de]);
+  const readRun = useCallback(
+    async (id: string) => {
+      if (!id) return;
+      const result = await supabase.functions.invoke("omniqora-platform", {
+        body: { action: "ai_status", runId: id },
+      });
+      if (result.error) {
+        setError(
+          de
+            ? "Der AI-Lauf konnte nicht aktualisiert werden."
+            : "The AI run could not be refreshed.",
+        );
+        return;
+      }
+      setRun(result.data as RunPayload);
+    },
+    [de],
+  );
 
   async function start() {
     if (question.trim().length < 10 || busy) return;
     setBusy(true);
     setError("");
     setRun(null);
+
     try {
       const result = await supabase.functions.invoke("omniqora-platform", {
         body: { action: "ai_start", kind, question: question.trim() },
       });
       if (result.error) throw result.error;
-      const id = String((result.data as { runId?: unknown } | null)?.runId ?? "");
+
+      const payload = result.data as StartPayload | null;
+      const id = String(payload?.runId ?? "");
       if (!id) throw new Error("No run id");
-      const status = String((result.data as { status?: unknown } | null)?.status ?? "queued");
+
+      const status = String(payload?.status ?? "queued");
       setRunId(id);
       setRun({ run: { id, status }, reviewRequired: true });
     } catch {
@@ -160,9 +183,9 @@ function AiEvidenceAssistant() {
         <div className="eyebrow">HACCORA × OMNIQORA</div>
         <h1 className="mt-1">{de ? "AI-Nachweisassistent" : "AI evidence assistant"}</h1>
         <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
-          Evidence-grounded help using your Haccora workspace and enabled Omniqora services. Outputs
-          are drafts for competent human review; they do not certify compliance or issue a hygiene
-          rating.
+          {de
+            ? "Nachweisgestützte Unterstützung mit Ihrem Haccora-Betrieb und aktivierten Omniqora-Diensten. Ergebnisse sind Entwürfe zur fachlichen Prüfung und keine Compliance-Zertifizierung."
+            : "Evidence-grounded help using your Haccora workspace and enabled Omniqora services. Outputs are drafts for competent human review and do not certify compliance."}
         </p>
       </header>
 
@@ -172,11 +195,7 @@ function AiEvidenceAssistant() {
           label="AI Copilot"
           active={enabled("haccora.ai-copilot")}
         />
-        <StatusCard
-          icon={<FileSearch2 size={16} />}
-          label="RAG"
-          active={enabled("haccora.rag")}
-        />
+        <StatusCard icon={<FileSearch2 size={16} />} label="RAG" active={enabled("haccora.rag")} />
         <StatusCard
           icon={<Network size={16} />}
           label="GraphRAG"
@@ -184,7 +203,7 @@ function AiEvidenceAssistant() {
         />
         <StatusCard
           icon={<BookOpenCheck size={16} />}
-          label="Regulatory intelligence"
+          label={de ? "Regulatorische Intelligenz" : "Regulatory intelligence"}
           active={enabled("haccora.regulatory-intelligence")}
         />
       </section>
@@ -192,8 +211,9 @@ function AiEvidenceAssistant() {
       {!bridge?.connected && (
         <div className="rounded-xl border border-warning/40 bg-warning/10 p-4 text-sm flex gap-2">
           <AlertTriangle size={17} className="shrink-0" />
-          This workspace is not currently connected to Omniqora. Core Haccora remains available, but
-          central AI is fail-closed.
+          {de
+            ? "Dieser Betrieb ist derzeit nicht mit Omniqora verbunden. Haccora Core bleibt verfügbar; zentrale AI-Funktionen bleiben gesperrt."
+            : "This workspace is not currently connected to Omniqora. Haccora Core remains available, but central AI is fail-closed."}
         </div>
       )}
 
@@ -206,10 +226,13 @@ function AiEvidenceAssistant() {
       <section className="surface p-5 space-y-4">
         <div className="flex flex-wrap justify-between gap-3">
           <div>
-            <h2 className="text-lg">{de ? "Fragen aus Ihren Nachweisen" : "Ask from your evidence"}</h2>
+            <h2 className="text-lg">
+              {de ? "Fragen aus Ihren Nachweisen" : "Ask from your evidence"}
+            </h2>
             <p className="text-xs text-muted-foreground">
-              Only a scoped evidence summary is sent by default; raw Haccora tables are not copied
-              into the prompt.
+              {de
+                ? "Standardmäßig wird nur eine begrenzte Nachweiszusammenfassung übermittelt, keine Rohdatenbanktabellen."
+                : "Only a scoped evidence summary is sent by default; raw Haccora tables are not copied into the prompt."}
             </p>
           </div>
           <span className="text-xs rounded-full border border-border px-3 py-1">
@@ -218,22 +241,22 @@ function AiEvidenceAssistant() {
         </div>
 
         <label className="block text-sm font-semibold">
-          Review type
+          {de ? "Prüfart" : "Review type"}
           <select
             className="mt-1 block w-full rounded-lg border border-border bg-background px-3 py-2"
             value={kind}
-            onChange={(event) => setKind(event.target.value as (typeof kinds)[number][0])}
+            onChange={(event) => setKind(event.target.value as ReviewKind)}
           >
-            {kinds.map(([value, label]) => (
+            {reviewKinds.map(([value, enLabel, deLabel]) => (
               <option key={value} value={value}>
-                {label}
+                {de ? deLabel : enLabel}
               </option>
             ))}
           </select>
         </label>
 
         <label className="block text-sm font-semibold">
-          Question
+          {de ? "Frage" : "Question"}
           <textarea
             className="mt-1 min-h-32 w-full rounded-lg border border-border bg-background p-3 font-normal"
             value={question}
@@ -256,8 +279,8 @@ function AiEvidenceAssistant() {
           }
           onClick={() => void start()}
         >
-          {busy ? <Loader2 size={15} className="animate-spin" /> : <Sparkles size={15} />} Start
-          governed review
+          {busy ? <Loader2 size={15} className="animate-spin" /> : <Sparkles size={15} />}
+          {de ? "Governed Review starten" : "Start governed review"}
         </button>
       </section>
 
@@ -265,16 +288,14 @@ function AiEvidenceAssistant() {
         <section className="surface p-5 space-y-4">
           <div className="flex justify-between gap-3">
             <div>
-              <div className="text-xs uppercase text-muted-foreground">
-                Run {runId.slice(0, 8)}
-              </div>
+              <div className="text-xs uppercase text-muted-foreground">Run {runId.slice(0, 8)}</div>
               <h2 className="text-lg">Status: {runStatus || "queued"}</h2>
             </div>
             <button
               className="btn-secondary px-3 py-2 text-sm"
               onClick={() => void readRun(runId)}
             >
-              Refresh
+              {de ? "Aktualisieren" : "Refresh"}
             </button>
           </div>
 
@@ -327,8 +348,9 @@ function AiEvidenceAssistant() {
           {runStatus === "completed" && (
             <p className="flex gap-2 text-xs text-muted-foreground">
               <CheckCircle2 size={14} />
-              Completed by the governed Omniqora runtime. Review the evidence and any proposed action
-              before changing an approved compliance control.
+              {de
+                ? "Vom kontrollierten Omniqora-Runtime abgeschlossen. Vor Änderungen an freigegebenen Kontrollen fachlich prüfen."
+                : "Completed by the governed Omniqora runtime. Review before changing approved controls."}
             </p>
           )}
         </section>
@@ -347,19 +369,16 @@ function StatusCard({
   active: boolean;
 }) {
   const { lang } = useI18n();
+  const enabled = lang === "de" ? "Aktiv" : "Enabled";
+  const disabled = lang === "de" ? "Nicht aktiv" : "Not enabled";
+
   return (
     <article className="surface p-4">
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         {icon}
         {label}
       </div>
-      <div className="mt-2 text-sm font-bold">{active
-          ? lang === "de"
-            ? "Aktiv"
-            : "Enabled"
-          : lang === "de"
-            ? "Nicht aktiv"
-            : "Not enabled"}</div>
+      <div className="mt-2 text-sm font-bold">{active ? enabled : disabled}</div>
     </article>
   );
 }
