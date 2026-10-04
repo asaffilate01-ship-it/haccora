@@ -75,6 +75,8 @@ function answerText(payload: RunPayload | null) {
 }
 
 function AiEvidenceAssistant() {
+  const { lang } = useI18n();
+  const de = lang === "de";
   const [bridge, setBridge] = useState<BridgeStatus | null>(null);
   const [kind, setKind] = useState<(typeof kinds)[number][0]>("compliance_question");
   const [question, setQuestion] = useState("");
@@ -89,12 +91,12 @@ function AiEvidenceAssistant() {
       body: { action: "status" },
     });
     if (result.error) {
-      setBridge({ connected: false, countryCode: "GB", entitlements: {} });
-      setError("Omniqora status is unavailable.");
+      setBridge({ connected: false, countryCode: "DE", entitlements: {} });
+      setError(de ? "Omniqora-Status ist nicht verfügbar." : "Omniqora status is unavailable.");
       return;
     }
     setBridge(result.data as BridgeStatus);
-  }, []);
+  }, [de]);
 
   const readRun = useCallback(async (id: string) => {
     if (!id) return;
@@ -106,7 +108,7 @@ function AiEvidenceAssistant() {
       return;
     }
     setRun(result.data as RunPayload);
-  }, []);
+  }, [de]);
 
   async function start() {
     if (question.trim().length < 10 || busy) return;
@@ -211,7 +213,7 @@ function AiEvidenceAssistant() {
             </p>
           </div>
           <span className="text-xs rounded-full border border-border px-3 py-1">
-            {bridge?.mode === "dishbee-addon" ? "Dishbee add-on" : "Standalone Haccora"} · UK
+            {bridge?.mode === "dishbee-addon" ? "Dishbee add-on" : "Standalone Haccora"} · DE
           </span>
         </div>
 
@@ -344,6 +346,7 @@ function StatusCard({
   label: string;
   active: boolean;
 }) {
+  const { lang } = useI18n();
   return (
     <article className="surface p-4">
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
