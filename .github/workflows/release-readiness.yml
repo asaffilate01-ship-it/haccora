@@ -54,7 +54,7 @@ jobs:
       VITE_LEGAL_MANAGING_DIRECTOR: ${{ vars.VITE_LEGAL_MANAGING_DIRECTOR }}
       VITE_LEGAL_CONTENT_APPROVED: ${{ vars.VITE_LEGAL_CONTENT_APPROVED }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: 22
