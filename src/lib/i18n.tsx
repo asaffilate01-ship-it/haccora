@@ -209,6 +209,7 @@ const de: Dict = {
   // App shell
   "app.tag": "Kreuzberg Kitchen · Berlin",
   "menu.dashboard": "Übersicht",
+  "menu.aiAssistant": "AI-Nachweisassistent",
   "menu.haccp": "HACCP-Plan",
   "menu.haccpFlows": "HACCP-Flows",
   "menu.checks": "Kontrollen",
@@ -1060,6 +1061,7 @@ const en: Dict = {
 
   "app.tag": "Kreuzberg Kitchen · Berlin",
   "menu.dashboard": "Overview",
+  "menu.aiAssistant": "AI evidence assistant",
   "menu.haccp": "HACCP plan",
   "menu.checks": "Daily checks",
   "menu.temperature": "Temperature",

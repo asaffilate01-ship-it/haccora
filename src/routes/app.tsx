@@ -72,6 +72,7 @@ const GROUPS: NavGroup[] = [
     labelKey: "nav.group.overview",
     items: [
       { to: "/app", icon: LayoutDashboard, key: "menu.dashboard", nav: "dashboard", exact: true },
+      { to: "/app/ai-assistant", icon: Sparkles, key: "menu.aiAssistant", nav: "dashboard" },
       { to: "/app/control-centre", icon: Command, key: "menu.control", nav: "control" },
     ],
   },
@@ -191,6 +192,7 @@ function AppShell() {
   useEffect(() => {
     if (!user) return;
     const PATH_KEY: Array<{ prefix: string; nav: NavKey }> = [
+      { prefix: "/app/ai-assistant", nav: "dashboard" },
       { prefix: "/app/haccp", nav: "haccp" },
       { prefix: "/app/checks", nav: "checks" },
       { prefix: "/app/temperature", nav: "temperature" },

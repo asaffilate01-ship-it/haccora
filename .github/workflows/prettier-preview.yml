@@ -1,0 +1,23 @@
+name: Prettier preview
+
+on:
+  pull_request:
+    paths:
+      - "mobile/scripts/audit-production.mjs"
+      - ".github/workflows/prettier-preview.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Print canonical Prettier output
+        run: npx prettier mobile/scripts/audit-production.mjs

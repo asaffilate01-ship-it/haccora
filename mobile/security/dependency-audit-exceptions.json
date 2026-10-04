@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "exceptions": [
+    {
+      "package": "image-size",
+      "advisory": "GHSA-W3RX-R6R6-PGPR",
+      "severity": "high",
+      "expiresOn": "2026-10-18",
+      "rationale": "Metro 0.84.4 requires image-size ^1.0.2; patched image-size 2.x is outside Metro's supported range. Build-time only."
+    },
+    {
+      "package": "image-size",
+      "advisory": "GHSA-5P2G-FCMC-QVQQ",
+      "severity": "high",
+      "expiresOn": "2026-10-18",
+      "rationale": "Metro 0.84.4 requires image-size ^1.0.2; patched image-size 2.x is outside Metro's supported range. Build-time only."
+    },
+    {
+      "package": "braces",
+      "advisory": "GHSA-VFJ7-8CJW-P6XM",
+      "severity": "high",
+      "expiresOn": "2026-10-18",
+      "rationale": "Expo/Metro build-time dependency via micromatch. No patched braces npm release is available as of 2026-10-04."
+    },
+    {
+      "package": "node-forge",
+      "advisory": "GHSA-86W9-CPQP-85RV",
+      "severity": "high",
+      "expiresOn": "2026-10-18",
+      "rationale": "Expo CLI/code-signing build-time dependency. node-forge 1.4.0 remains the latest npm release as of 2026-10-04."
+    }
+  ]
+}
