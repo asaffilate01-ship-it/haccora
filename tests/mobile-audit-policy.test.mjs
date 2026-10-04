@@ -1,25 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 
 import { evaluateAudit } from "../mobile/scripts/audit-production.mjs";
 
 const beforeExpiry = new Date("2026-10-04T00:00:00Z");
-const policy = {
-  exceptions: [
-    {
-      package: "image-size",
-      advisory: "GHSA-W3RX-R6R6-PGPR",
-      severity: "high",
-      expiresOn: "2026-10-18",
-    },
-    {
-      package: "image-size",
-      advisory: "GHSA-5P2G-FCMC-QVQQ",
-      severity: "high",
-      expiresOn: "2026-10-18",
-    },
-  ],
-};
+const policy = JSON.parse(
+  await readFile(
+    new URL("../mobile/security/dependency-audit-exceptions.json", import.meta.url),
+    "utf8",
+  ),
+);
 
 const allowedImageSize = {
   severity: "high",
