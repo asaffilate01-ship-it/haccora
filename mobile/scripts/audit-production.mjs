@@ -30,11 +30,7 @@ function directAdvisories(report) {
       }
     }
   }
-  return [
-    ...new Map(
-      found.map((item) => [`${item.package}:${item.advisory}`, item]),
-    ).values(),
-  ];
+  return [...new Map(found.map((item) => [`${item.package}:${item.advisory}`, item])).values()];
 }
 
 function leafAdvisories(report, packageName, seen = new Set()) {
@@ -87,10 +83,7 @@ export function evaluateAudit(report, policy, today = new Date()) {
   const active = new Map(
     (policy.exceptions ?? [])
       .filter((item) => item.expiresOn >= date)
-      .map((item) => [
-        `${item.package}:${item.advisory.toUpperCase()}`,
-        item,
-      ]),
+      .map((item) => [`${item.package}:${item.advisory.toUpperCase()}`, item]),
   );
 
   const direct = directAdvisories(report);
@@ -107,9 +100,7 @@ export function evaluateAudit(report, policy, today = new Date()) {
     return !leaves.size || [...leaves].some((advisory) => !directIds.has(advisory));
   });
 
-  const directKeys = new Set(
-    direct.map((item) => `${item.package}:${item.advisory}`),
-  );
+  const directKeys = new Set(direct.map((item) => `${item.package}:${item.advisory}`));
   const expired = (policy.exceptions ?? []).filter(
     (item) =>
       item.expiresOn < date &&
@@ -117,13 +108,8 @@ export function evaluateAudit(report, policy, today = new Date()) {
   );
 
   return {
-    passed:
-      uncoveredDirect.length === 0 &&
-      unexplainedChains.length === 0 &&
-      expired.length === 0,
-    exceptions: direct.filter((item) =>
-      active.has(`${item.package}:${item.advisory}`),
-    ),
+    passed: uncoveredDirect.length === 0 && unexplainedChains.length === 0 && expired.length === 0,
+    exceptions: direct.filter((item) => active.has(`${item.package}:${item.advisory}`)),
     uncoveredDirect,
     unexplainedChains,
     expired,
@@ -156,9 +142,7 @@ function main() {
           vulnerabilities: report.metadata?.vulnerabilities,
           uncoveredDirect: result.uncoveredDirect,
           unexplainedChains: result.unexplainedChains,
-          expired: result.expired.map(
-            (item) => `${item.package}:${item.advisory}`,
-          ),
+          expired: result.expired.map((item) => `${item.package}:${item.advisory}`),
         },
         null,
         2,
@@ -172,11 +156,7 @@ function main() {
       `::warning::Mobile audit passed with ${result.exceptions.length} exact temporary build-tool exception(s); all expire by 2026-10-18.`,
     );
   }
-  console.log(
-    "Mobile production dependency audit passed; no unapproved high/critical findings.",
-  );
+  console.log("Mobile production dependency audit passed; no unapproved high/critical findings.");
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main();
-}
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
