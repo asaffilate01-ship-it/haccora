@@ -71,9 +71,7 @@ function answerText(payload: RunPayload | null) {
     if (Object.keys(result).length) return JSON.stringify(result, null, 2);
   }
 
-  const final = [...(payload?.steps ?? [])]
-    .reverse()
-    .find((step) => step.step_type === "final");
+  const final = [...(payload?.steps ?? [])].reverse().find((step) => step.step_type === "final");
 
   if (typeof final?.response === "string") return final.response;
   if (final?.response && typeof final.response === "object") {
@@ -102,9 +100,7 @@ function AiEvidenceAssistant() {
     });
     if (result.error) {
       setBridge({ connected: false, countryCode: "DE", entitlements: {} });
-      setError(
-        de ? "Omniqora-Status ist nicht verfügbar." : "Omniqora status is unavailable.",
-      );
+      setError(de ? "Omniqora-Status ist nicht verfügbar." : "Omniqora status is unavailable.");
       return;
     }
     setBridge(result.data as BridgeStatus);
@@ -291,10 +287,7 @@ function AiEvidenceAssistant() {
               <div className="text-xs uppercase text-muted-foreground">Run {runId.slice(0, 8)}</div>
               <h2 className="text-lg">Status: {runStatus || "queued"}</h2>
             </div>
-            <button
-              className="btn-secondary px-3 py-2 text-sm"
-              onClick={() => void readRun(runId)}
-            >
+            <button className="btn-secondary px-3 py-2 text-sm" onClick={() => void readRun(runId)}>
               {de ? "Aktualisieren" : "Refresh"}
             </button>
           </div>
