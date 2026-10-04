@@ -72,7 +72,7 @@ jobs:
           EXPO_NO_TELEMETRY: "1"
         run: |
           npm ci
-          npm audit --omit=dev --audit-level=high
+          npm run audit:production
           npm run typecheck
           npm run export:check
           npm run release:preflight
@@ -88,7 +88,8 @@ jobs:
             notification-dispatch/index.ts sensor-ingest/index.ts sensor-provision/index.ts \
             team-invite/index.ts privacy-requests/index.ts security-center/index.ts \
             file-scan/index.ts operations-dispatch/index.ts billing/index.ts \
-            integration-admin/index.ts integration-dispatch/index.ts
+            integration-admin/index.ts integration-dispatch/index.ts \
+            omniqora-platform/index.ts
       - name: Verify deployed commit identity and health
         run: npm run health:check
       - name: Smoke-test the deployed release candidate
