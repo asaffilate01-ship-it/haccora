@@ -1,0 +1,67 @@
+name: Repair German transitive dependency audit
+on:
+  push:
+    branches: [fix/haccora-de-lockfile-20261006]
+    paths: [.github/workflows/repair-de-audit-once.yml]
+permissions:
+  contents: read
+jobs:
+  repair:
+    if: github.repository == 'asaffilate01-ship-it/haccora' && github.ref == 'refs/heads/fix/haccora-de-lockfile-20261006'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '22'
+      - name: Update only the reviewed transitive packages within declared ranges
+        run: |
+          set -euo pipefail
+          cp package-lock.json "$RUNNER_TEMP/previous-lock.json"
+          npx --yes --package=npm@10.9.9 npm update seroval source-map-js --package-lock-only --ignore-scripts --no-audit --no-fund
+          git diff --exit-code -- package.json
+          test "$(git diff --name-only)" = 'package-lock.json'
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFileSync } from 'node:fs';
+          const old=JSON.parse(readFileSync(process.env.RUNNER_TEMP+'/previous-lock.json','utf8'));
+          const next=JSON.parse(readFileSync('package-lock.json','utf8'));
+          const manifest=JSON.parse(readFileSync('package.json','utf8'));
+          for (const group of ['dependencies','devDependencies']) assert.deepEqual(next.packages[''][group],manifest[group]);
+          for(const path of new Set([...Object.keys(old.packages),...Object.keys(next.packages)])) {
+            if(JSON.stringify(old.packages[path])!==JSON.stringify(next.packages[path])) {
+              assert(/(?:^|\/)node_modules\/(?:seroval|source-map-js)$/.test(path),'Unexpected dependency change: '+path);
+              console.log(path+': '+old.packages[path]?.version+' -> '+next.packages[path]?.version);
+            }
+          }
+          for(const [name,minimum] of [['seroval',[1,6,3]],['source-map-js',[1,2,2]]]) {
+            const entries=Object.entries(next.packages).filter(([path])=>path==='node_modules/'+name||path.endsWith('/node_modules/'+name));
+            assert(entries.length>0);
+            for(const [,pkg] of entries) {
+              assert(/^\d+\.\d+\.\d+$/.test(pkg.version));
+              const parts=pkg.version.split('.').map(Number);
+              assert(parts[0]===minimum[0] && (parts[1]>minimum[1] || parts[1]===minimum[1] && parts[2]>=minimum[2]));
+            }
+          }
+          NODE
+          npx --yes --package=npm@10.9.9 npm ci --ignore-scripts --no-audit --no-fund
+          npx --yes --package=npm@10.9.9 npm audit --omit=dev --audit-level=high
+      - name: Commit only the reviewed lockfile to the same branch
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          branch='fix/haccora-de-lockfile-20261006'
+          test "$(git ls-remote origin "refs/heads/$branch" | cut -f1)" = "$EXPECTED_SHA"
+          test "$(git diff --name-only)" = 'package-lock.json'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- package-lock.json
+          git commit -m 'fix(deps): patch seroval and source-map-js without changing dependency ranges'
+          git push origin "HEAD:refs/heads/$branch"
+          git rev-parse HEAD
