@@ -1,5 +1,29 @@
 export const nativeCopy = {
   de: {
+    formRequired: "Bitte Formular ergänzen",
+    namesRequired: "Betriebsname und Standort sind erforderlich.",
+    setupFailed: "Einrichtung fehlgeschlagen",
+    setupError:
+      "Bitte Verbindung prüfen und erneut versuchen. Der Arbeitsbereich konnte nicht bestätigt werden.",
+    workspaceUnavailable:
+      "Der Arbeitsbereich konnte nicht geladen werden. Bitte Verbindung prüfen und erneut versuchen.",
+    retry: "Erneut versuchen",
+    checkingAccess: "Zugriff wird geprüft…",
+    createTitle: "Geschützten Arbeitsbereich erstellen",
+    createBody:
+      "Das erste Konto wird zum Inhaber. Weitere Rollen werden nur per Einladung vergeben.",
+    businessName: "Betriebsname",
+    locationName: "Hauptstandort",
+    creating: "Wird erstellt…",
+    createWorkspace: "Arbeitsbereich erstellen",
+
+    loginTitle: "Sicher. Sauber. Nachvollziehbar.",
+    email: "E-Mail",
+    password: "Passwort",
+    signIn: "Anmelden",
+    signingIn: "Anmeldung läuft…",
+    loginError:
+      "Anmeldung fehlgeschlagen. Bitte Zugangsdaten und Verbindung prüfen und erneut versuchen.",
     today: "Heute",
     title: "Lebensmittelsicherheit",
     setup: "Betrieb einrichten",
@@ -28,6 +52,26 @@ export const nativeCopy = {
     signingOut: "Abmeldung läuft…",
   },
   en: {
+    formRequired: "Complete the form",
+    namesRequired: "Business and location names are required.",
+    setupFailed: "Setup failed",
+    setupError: "Check your connection and try again. Your workspace could not be confirmed.",
+    workspaceUnavailable: "Workspace unavailable. Reconnect and retry.",
+    retry: "Retry",
+    checkingAccess: "Checking workspace access…",
+    createTitle: "Create your protected workspace",
+    createBody: "The first account becomes the owner. Additional roles are invitation-only.",
+    businessName: "Business name",
+    locationName: "Main location",
+    creating: "Creating…",
+    createWorkspace: "Create workspace",
+
+    loginTitle: "Safe. Clean. Traceable.",
+    email: "Email",
+    password: "Password",
+    signIn: "Sign in",
+    signingIn: "Signing in…",
+    loginError: "Sign in failed. Check your details and connection, then try again.",
     today: "Today",
     title: "Food safety checks",
     setup: "Set up workspace",
