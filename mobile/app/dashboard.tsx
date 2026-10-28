@@ -14,16 +14,25 @@ export default function Dashboard() {
   const [signingOut, setSigningOut] = useState(false);
   const { session, workspaceReady, loading } = useSession();
   const network = useNetInfo();
+  const [failedUploads, setFailedUploads] = useState(0);
   const [pending, setPending] = useState<number | null>(null);
   useEffect(() => {
     let active = true;
+    setPending(null);
+    setFailedUploads(0);
     const refresh = () =>
       getQueueStatus()
         .then((status) => {
-          if (active) setPending(status.pending);
+          if (active) {
+            setPending(status.pending);
+            setFailedUploads(status.failed);
+          }
         })
         .catch(() => {
-          if (active) setPending(null);
+          if (active) {
+            setPending(null);
+            setFailedUploads(0);
+          }
         });
     void refresh();
     const timer = setInterval(() => void refresh(), 5000);
@@ -31,7 +40,7 @@ export default function Dashboard() {
       active = false;
       clearInterval(timer);
     };
-  }, [network.isConnected]);
+  }, [network.isConnected, session?.user.id]);
   if (loading) return null;
   if (!session) return <Redirect href="/login" />;
   if (!workspaceReady) return <Redirect href="/onboarding" />;
@@ -83,6 +92,11 @@ export default function Dashboard() {
                   : copy.queueEmpty}
         </Text>
       </View>
+      {failedUploads > 0 && (
+        <Text accessibilityRole="alert">
+          {copy.queueReview}: {failedUploads}
+        </Text>
+      )}
       <Pressable
         accessibilityRole="button"
         style={styles.card}
