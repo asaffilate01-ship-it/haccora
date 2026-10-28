@@ -26,6 +26,7 @@ function Navigator() {
             name="dashboard"
             options={{ title: copy.today, headerBackVisible: false }}
           />
+          <Stack.Screen name="sync" options={{ title: copy.syncRecovery }} />
           <Stack.Screen name="temperature" options={{ title: copy.temperature }} />
           <Stack.Screen name="checks" options={{ title: copy.checks }} />
           <Stack.Screen name="actions" options={{ title: copy.actions }} />
