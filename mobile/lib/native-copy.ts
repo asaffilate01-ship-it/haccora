@@ -1,5 +1,6 @@
 export const nativeCopy = {
   de: {
+    syncRecovery: "Übertragung prüfen",
     evidenceCheck: "PRÜFUNG",
     evidenceNote: "NOTIZ",
     checkTitle: "Prüfungstitel",
@@ -84,6 +85,7 @@ export const nativeCopy = {
     signingOut: "Abmeldung läuft…",
   },
   en: {
+    syncRecovery: "Sync recovery",
     evidenceCheck: "CHECK",
     evidenceNote: "NOTE",
     checkTitle: "Check title",

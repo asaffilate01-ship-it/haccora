@@ -92,6 +92,13 @@ export default function Dashboard() {
                   : copy.queueEmpty}
         </Text>
       </View>
+      <Pressable
+        accessibilityRole="button"
+        style={styles.card}
+        onPress={() => router.push("/sync")}
+      >
+        <Text style={styles.cardTitle}>{copy.syncRecovery}</Text>
+      </Pressable>
       {failedUploads > 0 && (
         <Text accessibilityRole="alert">
           {copy.queueReview}: {failedUploads}
