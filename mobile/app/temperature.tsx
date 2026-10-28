@@ -1,46 +1,45 @@
-import { useState } from "react";
+import { useNativeLanguage } from "@/lib/native-language";
+import { decimalInput } from "@/lib/evidence-input";
+import { useRef, useState } from "react";
 import { Redirect } from "expo-router";
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { enqueue } from "@/lib/offline-queue";
-import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 
 export default function Temperature() {
+  const { copy } = useNativeLanguage();
   const [location, setLocation] = useState("");
   const [reading, setReading] = useState("");
   const [targetMin, setTargetMin] = useState("0");
   const [targetMax, setTargetMax] = useState("7");
   const [busy, setBusy] = useState(false);
-  const { session, workspaceReady, organizationId, locationId, loading } = useSession();
+  const { session, workspaceReady, organizationId, locationId, role, loading } = useSession();
+  const pending = useRef(false);
   const save = async () => {
-    const value = Number(reading.replace(",", "."));
-    const min = Number(targetMin.replace(",", "."));
-    const max = Number(targetMax.replace(",", "."));
+    if (pending.current || role === "inspector") return;
+    const value = decimalInput(reading);
+    const min = decimalInput(targetMin);
+    const max = decimalInput(targetMax);
     if (
+      !session ||
+      !workspaceReady ||
       !organizationId ||
       !location.trim() ||
-      !Number.isFinite(value) ||
-      !Number.isFinite(min) ||
-      !Number.isFinite(max) ||
+      value === null ||
+      min === null ||
+      max === null ||
       value < -100 ||
       value > 300 ||
       min < -100 ||
       max > 300 ||
       min >= max
     )
-      return Alert.alert(
-        "Check the values",
-        "Location, reading and valid minimum/maximum limits are required.",
-      );
+      return Alert.alert(copy.checkValues, copy.valuesRequired);
+    pending.current = true;
     setBusy(true);
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
-      setBusy(false);
-      return;
-    }
     try {
       await enqueue("temperature_logs", {
-        user_id: data.user.id,
+        user_id: session.user.id,
         organization_id: organizationId,
         location_id: locationId,
         location: location.trim(),
@@ -50,30 +49,36 @@ export default function Temperature() {
         logged_at: new Date().toISOString(),
       });
       setReading("");
-      Alert.alert("Saved", "The reading is stored or safely queued for sync.");
+      Alert.alert(copy.queuedEvidence, copy.queuedReadingBody);
     } catch {
-      Alert.alert("Not saved", "The encrypted app storage was unavailable. Please try again.");
+      Alert.alert(copy.evidenceNotSaved, copy.evidenceError);
     } finally {
+      pending.current = false;
       setBusy(false);
     }
   };
   if (loading) return null;
   if (!session) return <Redirect href="/login" />;
   if (!workspaceReady) return <Redirect href="/onboarding" />;
+  if (role === "inspector") return <Redirect href="/dashboard" />;
   return (
     <View style={styles.page}>
-      <Text style={styles.label}>UNIT / LOCATION</Text>
+      <Text style={styles.label}>{copy.unitLabel}</Text>
       <TextInput
+        editable={!busy}
+        accessibilityLabel={copy.unitInput}
         value={location}
         onChangeText={setLocation}
         maxLength={160}
-        placeholder="Walk-in fridge"
+        placeholder={copy.fridgeExample}
         style={styles.input}
       />
       <View style={styles.limits}>
         <View style={styles.limit}>
-          <Text style={styles.label}>MINIMUM °C</Text>
+          <Text style={styles.label}>{copy.minLabel}</Text>
           <TextInput
+            editable={!busy}
+            accessibilityLabel={copy.minInput}
             value={targetMin}
             onChangeText={setTargetMin}
             keyboardType="decimal-pad"
@@ -82,8 +87,10 @@ export default function Temperature() {
           />
         </View>
         <View style={styles.limit}>
-          <Text style={styles.label}>MAXIMUM °C</Text>
+          <Text style={styles.label}>{copy.maxLabel}</Text>
           <TextInput
+            editable={!busy}
+            accessibilityLabel={copy.maxInput}
             value={targetMax}
             onChangeText={setTargetMax}
             keyboardType="decimal-pad"
@@ -92,16 +99,24 @@ export default function Temperature() {
           />
         </View>
       </View>
-      <Text style={styles.label}>READING °C</Text>
+      <Text style={styles.label}>{copy.readingLabel}</Text>
       <TextInput
+        editable={!busy}
+        accessibilityLabel={copy.readingInput}
         value={reading}
         onChangeText={setReading}
         keyboardType="decimal-pad"
         placeholder="4.2"
         style={styles.input}
       />
-      <Pressable disabled={busy} onPress={save} style={styles.button}>
-        <Text style={styles.buttonText}>{busy ? "Saving…" : "Save reading"}</Text>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ disabled: busy, busy }}
+        disabled={busy}
+        onPress={save}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>{busy ? copy.savingEvidence : copy.saveReading}</Text>
       </Pressable>
     </View>
   );
@@ -119,7 +134,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 18,
-    backgroundColor: "#e43f2c",
+    backgroundColor: "#bd2b1b",
+    minHeight: 48,
     borderRadius: 24,
     padding: 15,
     alignItems: "center",

@@ -1,20 +1,25 @@
-import { useState } from "react";
+import { useNativeLanguage } from "@/lib/native-language";
+import { useRef, useState } from "react";
 import { Redirect } from "expo-router";
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { enqueue } from "@/lib/offline-queue";
-import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 
 export default function Checks() {
+  const { copy } = useNativeLanguage();
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
-  const { session, workspaceReady, organizationId, locationId, loading } = useSession();
+  const [busy, setBusy] = useState(false);
+  const { session, workspaceReady, organizationId, locationId, role, loading } = useSession();
+  const pending = useRef(false);
   const save = async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user || !organizationId || !title.trim()) return;
+    if (pending.current || role === "inspector") return;
+    if (!session || !workspaceReady || !organizationId || !title.trim()) return;
+    pending.current = true;
+    setBusy(true);
     try {
       await enqueue("checks", {
-        user_id: data.user.id,
+        user_id: session.user.id,
         organization_id: organizationId,
         location_id: locationId,
         kind: "daily",
@@ -25,35 +30,49 @@ export default function Checks() {
       });
       setTitle("");
       setNote("");
-      Alert.alert("Saved", "The check is stored or queued for sync.");
+      Alert.alert(copy.queuedEvidence, copy.queuedCheckBody);
     } catch {
-      Alert.alert("Not saved", "The encrypted app storage was unavailable. Please try again.");
+      Alert.alert(copy.evidenceNotSaved, copy.evidenceError);
+    } finally {
+      pending.current = false;
+      setBusy(false);
     }
   };
   if (loading) return null;
   if (!session) return <Redirect href="/login" />;
   if (!workspaceReady) return <Redirect href="/onboarding" />;
+  if (role === "inspector") return <Redirect href="/dashboard" />;
   return (
     <View style={styles.page}>
-      <Text style={styles.label}>CHECK</Text>
+      <Text style={styles.label}>{copy.evidenceCheck}</Text>
       <TextInput
+        editable={!busy}
+        accessibilityLabel={copy.checkTitle}
         value={title}
         onChangeText={setTitle}
         maxLength={160}
-        placeholder="Opening inspection"
+        placeholder={copy.openingCheck}
         style={styles.input}
       />
-      <Text style={styles.label}>NOTE</Text>
+      <Text style={styles.label}>{copy.evidenceNote}</Text>
       <TextInput
+        editable={!busy}
+        accessibilityLabel={copy.noteLabel}
         value={note}
         onChangeText={setNote}
         maxLength={500}
         multiline
-        placeholder="Optional evidence note"
+        placeholder={copy.optionalNote}
         style={[styles.input, { minHeight: 100 }]}
       />
-      <Pressable onPress={save} style={styles.button}>
-        <Text style={styles.buttonText}>Complete check</Text>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ disabled: busy || !title.trim(), busy }}
+        disabled={busy || !title.trim()}
+        onPress={save}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>{busy ? copy.savingEvidence : copy.completeCheck}</Text>
       </Pressable>
     </View>
   );
@@ -71,7 +90,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 18,
-    backgroundColor: "#e43f2c",
+    backgroundColor: "#bd2b1b",
+    minHeight: 48,
     borderRadius: 24,
     padding: 15,
     alignItems: "center",
