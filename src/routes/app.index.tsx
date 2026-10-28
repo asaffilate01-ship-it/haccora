@@ -22,7 +22,7 @@ import {
   ClipboardList,
   Loader2,
 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/app/")({
   component: Dashboard,
@@ -63,6 +63,7 @@ function Dashboard() {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [counts, setCounts] = useState<DashCounts>({
     alerts: 0,
     incidentsHigh: 0,
@@ -78,127 +79,162 @@ function Dashboard() {
     poSpend: 0,
   });
 
+  const requestVersion = useRef(0);
   const load = useCallback(async () => {
     if (!user) return;
-    setLoading(true);
-    const since = new Date();
-    since.setHours(0, 0, 0, 0);
-    const in7 = new Date(Date.now() + 7 * 86400000).toISOString();
-    let q = supabase
-      .from("checks")
-      .select("id, title, kind, status, completed_at, created_at, user_id")
-      .gte("created_at", since.toISOString())
-      .order("created_at", { ascending: true })
-      .limit(20);
-    if (user.role === "staff") q = q.eq("user_id", user.id);
-    const { data } = await q;
-    const now = Date.now();
-    const userIds = Array.from(new Set((data ?? []).map((r: any) => r.user_id).filter(Boolean)));
-    const { data: profs } = userIds.length
-      ? await supabase.rpc("get_org_directory")
-      : { data: [] as { id: string; full_name: string | null }[] };
-    const nameById = new Map((profs ?? []).map((p: any) => [p.id, p.full_name]));
-    const rows: Task[] = (data ?? []).map((r: any) => {
-      const created = new Date(r.created_at);
-      const status: Task["status"] =
-        r.status === "completed"
-          ? "done"
-          : now - created.getTime() > 6 * 3600_000
-            ? "overdue"
-            : "pending";
-      return {
-        id: r.id,
-        title: r.title,
-        kind: r.kind,
-        time: created.toLocaleTimeString(lang === "de" ? "de-DE" : "en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        status,
-        who: (nameById.get(r.user_id) ?? "").split(" ")[0] || "—",
-      };
-    });
-    setTasks(rows);
+    const version = ++requestVersion.current;
+    try {
+      setLoading(true);
+      const since = new Date();
+      since.setHours(0, 0, 0, 0);
+      const in7 = new Date(Date.now() + 7 * 86400000).toISOString();
+      let q = supabase
+        .from("checks")
+        .select("id, title, kind, status, completed_at, created_at, user_id")
+        .gte("created_at", since.toISOString())
+        .order("created_at", { ascending: true })
+        .limit(20);
+      if (user.role === "staff") q = q.eq("user_id", user.id);
+      const { data, error: taskError } = await q;
+      const now = Date.now();
+      const userIds = Array.from(new Set((data ?? []).map((r: any) => r.user_id).filter(Boolean)));
+      const { data: profs } = userIds.length
+        ? await supabase.rpc("get_org_directory")
+        : { data: [] as { id: string; full_name: string | null }[] };
+      const nameById = new Map((profs ?? []).map((p: any) => [p.id, p.full_name]));
+      const rows: Task[] = (data ?? []).map((r: any) => {
+        const created = new Date(r.created_at);
+        const status: Task["status"] =
+          r.status === "completed"
+            ? "done"
+            : now - created.getTime() > 6 * 3600_000
+              ? "overdue"
+              : "pending";
+        return {
+          id: r.id,
+          title: r.title,
+          kind: r.kind,
+          time: created.toLocaleTimeString(lang === "de" ? "de-DE" : "en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          status,
+          who: (nameById.get(r.user_id) ?? "").split(" ")[0] || "—",
+        };
+      });
+      if (version !== requestVersion.current) return;
+      setTasks(rows);
 
-    // Live aggregate counts for role dashboards
-    const [
-      alertsQ,
-      incHighQ,
-      tempOutQ,
-      tempOkQ,
-      recipesQ,
-      brigadeQ,
-      expiringQ,
-      supQ,
-      poOpenQ,
-      trainingDueQ,
-      poRecent,
-    ] = await Promise.all([
-      supabase.from("alerts").select("id", { count: "exact", head: true }).is("read_at", null),
-      supabase
-        .from("incidents")
-        .select("id", { count: "exact", head: true })
-        .eq("severity", "high")
-        .neq("status", "closed"),
-      supabase
-        .from("temperature_logs")
-        .select("id", { count: "exact", head: true })
-        .eq("status", "out_of_range")
-        .gte("logged_at", since.toISOString()),
-      supabase
-        .from("temperature_logs")
-        .select("id", { count: "exact", head: true })
-        .eq("status", "in_range")
-        .gte("logged_at", since.toISOString()),
-      supabase.from("recipes").select("id", { count: "exact", head: true }),
-      supabase
-        .from("organization_memberships" as any)
-        .select("user_id", { count: "exact", head: true })
-        .eq("status", "active")
-        .in("role", ["chef", "staff"]),
-      supabase
-        .from("expiry_items")
-        .select("id", { count: "exact", head: true })
-        .eq("status", "active")
-        .lte("expires_on", in7),
-      supabase.from("suppliers").select("id", { count: "exact", head: true }),
-      supabase
-        .from("purchase_orders")
-        .select("id", { count: "exact", head: true })
-        .in("status", ["draft", "sent"]),
-      supabase
-        .from("training_records")
-        .select("id", { count: "exact", head: true })
-        .is("completed_at", null),
-      supabase
-        .from("purchase_orders")
-        .select("total_eur")
-        .gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
-    ]);
-    const spend = ((poRecent.data ?? []) as Array<{ total_eur: number | null }>).reduce(
-      (s, r) => s + Number(r.total_eur ?? 0),
-      0,
-    );
-    const tempOk = tempOkQ.count ?? 0;
-    const tempOut = tempOutQ.count ?? 0;
-    setCounts({
-      alerts: alertsQ.count ?? 0,
-      incidentsHigh: incHighQ.count ?? 0,
-      tempOut,
-      tempOk,
-      tempTotal: tempOk + tempOut,
-      trainingDue: trainingDueQ.count ?? 0,
-      recipes: recipesQ.count ?? 0,
-      brigade: brigadeQ.count ?? 0,
-      expiring: expiringQ.count ?? 0,
-      suppliers: supQ.count ?? 0,
-      poOpen: poOpenQ.count ?? 0,
-      poSpend: Math.round(spend),
-    });
-    setLoading(false);
+      // Live aggregate counts for role dashboards
+      const [
+        alertsQ,
+        incHighQ,
+        tempOutQ,
+        tempOkQ,
+        recipesQ,
+        brigadeQ,
+        expiringQ,
+        supQ,
+        poOpenQ,
+        trainingDueQ,
+        poRecent,
+      ] = await Promise.all([
+        supabase.from("alerts").select("id", { count: "exact", head: true }).is("read_at", null),
+        supabase
+          .from("incidents")
+          .select("id", { count: "exact", head: true })
+          .eq("severity", "high")
+          .neq("status", "closed"),
+        supabase
+          .from("temperature_logs")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "out_of_range")
+          .gte("logged_at", since.toISOString()),
+        supabase
+          .from("temperature_logs")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "in_range")
+          .gte("logged_at", since.toISOString()),
+        supabase.from("recipes").select("id", { count: "exact", head: true }),
+        supabase
+          .from("organization_memberships" as any)
+          .select("user_id", { count: "exact", head: true })
+          .eq("status", "active")
+          .in("role", ["chef", "staff"]),
+        supabase
+          .from("expiry_items")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "active")
+          .lte("expires_on", in7),
+        supabase.from("suppliers").select("id", { count: "exact", head: true }),
+        supabase
+          .from("purchase_orders")
+          .select("id", { count: "exact", head: true })
+          .in("status", ["draft", "sent"]),
+        supabase
+          .from("training_records")
+          .select("id", { count: "exact", head: true })
+          .is("completed_at", null),
+        supabase
+          .from("purchase_orders")
+          .select("total_eur")
+          .gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
+      ]);
+      if (version !== requestVersion.current) return;
+      if (
+        taskError ||
+        [
+          alertsQ,
+          incHighQ,
+          tempOutQ,
+          tempOkQ,
+          recipesQ,
+          brigadeQ,
+          expiringQ,
+          supQ,
+          poOpenQ,
+          trainingDueQ,
+          poRecent,
+        ].some((result) => result.error)
+      ) {
+        throw new Error("Dashboard unavailable");
+      }
+      setLoadError("");
+      const spend = ((poRecent.data ?? []) as Array<{ total_eur: number | null }>).reduce(
+        (s, r) => s + Number(r.total_eur ?? 0),
+        0,
+      );
+      const tempOk = tempOkQ.count ?? 0;
+      const tempOut = tempOutQ.count ?? 0;
+      setCounts({
+        alerts: alertsQ.count ?? 0,
+        incidentsHigh: incHighQ.count ?? 0,
+        tempOut,
+        tempOk,
+        tempTotal: tempOk + tempOut,
+        trainingDue: trainingDueQ.count ?? 0,
+        recipes: recipesQ.count ?? 0,
+        brigade: brigadeQ.count ?? 0,
+        expiring: expiringQ.count ?? 0,
+        suppliers: supQ.count ?? 0,
+        poOpen: poOpenQ.count ?? 0,
+        poSpend: Math.round(spend),
+      });
+      setLoading(false);
+    } catch {
+      if (version === requestVersion.current)
+        setLoadError(
+          lang === "de"
+            ? "Dashboard-Daten sind nicht verfügbar. Bitte erneut versuchen; fehlende Daten bedeuten keine Entwarnung."
+            : "Dashboard data is unavailable. Please retry; missing records do not mean everything is clear.",
+        );
+    } finally {
+      if (version === requestVersion.current) setLoading(false);
+    }
   }, [user, lang]);
 
   useEffect(() => {
+    const requests = requestVersion;
     load();
     const ch = supabase
       .channel("dash-checks")
@@ -208,16 +244,33 @@ function Dashboard() {
       .on("postgres_changes", { event: "*", schema: "public", table: "temperature_logs" }, load)
       .subscribe();
     return () => {
+      requests.current++;
       supabase.removeChannel(ch);
     };
   }, [load]);
 
+  const saving = useRef(new Set<string>());
   const done = async (id: string) => {
-    await supabase
-      .from("checks")
-      .update({ status: "completed", completed_at: new Date().toISOString() })
-      .eq("id", id);
-    load();
+    if (saving.current.has(id)) return;
+    saving.current.add(id);
+    try {
+      const { data, error } = await supabase
+        .from("checks")
+        .update({ status: "completed", completed_at: new Date().toISOString() })
+        .eq("id", id)
+        .select("id")
+        .single();
+      if (error || !data) throw new Error("Check not saved");
+      await load();
+    } catch {
+      setLoadError(
+        lang === "de"
+          ? "Die Prüfung konnte nicht gespeichert werden. Bitte erneut versuchen."
+          : "The check could not be saved. Please try again.",
+      );
+    } finally {
+      saving.current.delete(id);
+    }
   };
 
   if (!user) return null;
@@ -246,12 +299,25 @@ function Dashboard() {
       <LiveMetrics />
 
       {loading && (
-        <div className="text-xs text-muted-foreground inline-flex items-center gap-2">
+        <div role="status" className="text-sm text-muted-foreground inline-flex items-center gap-2">
           <Loader2 size={12} className="animate-spin" /> {t("common.loading") || "…"}
         </div>
       )}
 
-      {user.role === "owner" && (
+      {loadError && (
+        <div role="alert" className="surface p-5 text-sm text-destructive">
+          <p>{loadError}</p>
+          <button
+            type="button"
+            onClick={() => void load()}
+            disabled={loading}
+            className="mt-3 min-h-11 rounded-lg border px-4 font-semibold disabled:opacity-50"
+          >
+            {lang === "de" ? "Erneut versuchen" : "Try again"}
+          </button>
+        </div>
+      )}
+      {!loading && !loadError && user.role === "owner" && (
         <OwnerView
           pending={pending}
           overdue={overdue}
@@ -260,7 +326,7 @@ function Dashboard() {
           counts={counts}
         />
       )}
-      {user.role === "manager" && (
+      {!loading && !loadError && user.role === "manager" && (
         <ManagerView
           pending={pending}
           overdue={overdue}
@@ -269,7 +335,7 @@ function Dashboard() {
           counts={counts}
         />
       )}
-      {user.role === "chef" && (
+      {!loading && !loadError && user.role === "chef" && (
         <ChefView
           pending={pending}
           overdue={overdue}
@@ -278,7 +344,9 @@ function Dashboard() {
           counts={counts}
         />
       )}
-      {user.role === "staff" && <StaffView tasks={visibleTasks} done={done} />}
+      {!loading && !loadError && user.role === "staff" && (
+        <StaffView tasks={visibleTasks} done={done} />
+      )}
       {user.role === "inspector" && <InspectorView />}
       {user?.role === "owner" && (
         <PortfolioServices source="haccora" country="DE" locale={lang === "de" ? "de" : "en"} />
@@ -385,13 +453,9 @@ function OwnerView({
   counts: DashCounts;
 }) {
   const { t, lang } = useI18n();
-  const tempScore =
-    counts.tempTotal > 0 ? Math.round((counts.tempOk / counts.tempTotal) * 100) : 100;
-  const checksScore =
-    tasks.length > 0
-      ? Math.round((tasks.filter((x) => x.status === "done").length / tasks.length) * 100)
-      : 100;
-  const complianceScore = Math.round(tempScore * 0.5 + checksScore * 0.5);
+  const complianceScore = tasks.length
+    ? Math.round((tasks.filter((task) => task.status === "done").length / tasks.length) * 100)
+    : null;
   const spendFmt = new Intl.NumberFormat(lang === "de" ? "de-DE" : "en-GB", {
     style: "currency",
     currency: "EUR",
@@ -403,12 +467,18 @@ function OwnerView({
       <MetricRow
         items={[
           {
-            l: t("dash.metric.score"),
-            v: `${complianceScore}%`,
-            hint: t("time.trend"),
+            l: lang === "de" ? "Erfasste Prüfungen erledigt" : "Recorded checks completed",
+            v:
+              complianceScore === null
+                ? "—"
+                : `${complianceScore === null ? "—" : `${complianceScore}%`}`,
+            hint:
+              lang === "de"
+                ? "Bis zu 20 Prüfungen · keine Zertifizierung"
+                : "Up to 20 checks · not certification",
             icon: ShieldCheck,
           },
-          { l: t("owner.locations"), v: 1, icon: MapPin },
+          { l: t("suppliers.title"), v: counts.suppliers, icon: MapPin },
           {
             l: t("dash.metric.actions"),
             v: counts.alerts,
@@ -427,7 +497,9 @@ function OwnerView({
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 surface p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display text-xl">{t("owner.byLocation")}</h2>
+            <h2 className="font-display text-xl">
+              {lang === "de" ? "Arbeitsbereich" : "Workspace records"}
+            </h2>
             <span className="text-xs text-muted-foreground">{t("owner.last30")}</span>
           </div>
           <div className="divide-y divide-border">
@@ -437,7 +509,7 @@ function OwnerView({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-semibold truncate">
-                  {t("dash.thisLocation") || "This location"}
+                  {lang === "de" ? "Sichtbare Betriebsdaten" : "Visible workspace records"}
                 </div>
                 <div className="text-xs text-muted-foreground">
                   {counts.suppliers} {t("suppliers.title") || "Suppliers"} · {counts.recipes}{" "}
@@ -446,9 +518,9 @@ function OwnerView({
               </div>
               <div className="text-right">
                 <div
-                  className={`font-display text-2xl ${complianceScore >= 95 ? "text-success" : complianceScore >= 90 ? "text-foreground" : "text-warning-foreground"}`}
+                  className={`font-display text-2xl ${(complianceScore ?? 0) >= 95 ? "text-success" : (complianceScore ?? 0) >= 90 ? "text-foreground" : "text-warning-foreground"}`}
                 >
-                  {complianceScore}%
+                  {complianceScore === null ? "—" : `${complianceScore}%`}
                 </div>
                 <div className="text-[10px] text-muted-foreground uppercase tracking-widest">
                   {counts.alerts} {t("owner.alerts")}
@@ -480,14 +552,10 @@ function ManagerView({
   done: (id: string) => void;
   counts: DashCounts;
 }) {
-  const { t } = useI18n();
-  const tempScore =
-    counts.tempTotal > 0 ? Math.round((counts.tempOk / counts.tempTotal) * 100) : 100;
-  const checksScore =
-    tasks.length > 0
-      ? Math.round((tasks.filter((x) => x.status === "done").length / tasks.length) * 100)
-      : 100;
-  const score = Math.round(tempScore * 0.5 + checksScore * 0.5);
+  const { t, lang } = useI18n();
+  const score = tasks.length
+    ? Math.round((tasks.filter((task) => task.status === "done").length / tasks.length) * 100)
+    : null;
   return (
     <>
       {/* Live shift strip — unique to manager */}
@@ -500,15 +568,22 @@ function ManagerView({
           <div className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-alert-red)]">
             {t("dash.manager.shift")}
           </div>
-          <div className="text-sm font-semibold truncate">{t("dash.manager.shiftBody")}</div>
+          <div className="text-sm font-semibold truncate">
+            {lang === "de"
+              ? "Dienstplan und Aufgaben für die aktuelle Schicht prüfen."
+              : "Review the rota and tasks for the current shift."}
+          </div>
         </div>
       </div>
       <MetricRow
         items={[
           {
-            l: t("dash.metric.score"),
-            v: `${score}%`,
-            hint: t("time.trend"),
+            l: lang === "de" ? "Erfasste Prüfungen erledigt" : "Recorded checks completed",
+            v: score === null ? "—" : `${score}%`,
+            hint:
+              lang === "de"
+                ? "Bis zu 20 Prüfungen · keine Zertifizierung"
+                : "Up to 20 checks · not certification",
             icon: ShieldCheck,
           },
           { l: t("dash.metric.pending"), v: pending, icon: Clock },
@@ -547,7 +622,7 @@ function ChefView({
   done: (id: string) => void;
   counts: DashCounts;
 }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const kitchen = [
     {
       l: t("chef.temps"),
@@ -557,7 +632,7 @@ function ChefView({
     },
     {
       l: t("chef.haccp"),
-      v: counts.tempOut === 0 ? t("chef.approved") : `${counts.tempOut} ⚠`,
+      v: lang === "de" ? "Plan prüfen" : "Review plan",
       to: "/app/haccp",
       icon: ShieldCheck,
     },
@@ -586,7 +661,13 @@ function ChefView({
             {t("dash.chef.line")}
           </div>
           <div className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
-            {t("dash.chef.lineBody")}
+            {counts.tempTotal === 0
+              ? lang === "de"
+                ? "Heute noch keine Temperaturmessungen erfasst."
+                : "No temperature readings recorded today."
+              : lang === "de"
+                ? `${counts.tempOut} von ${counts.tempTotal} Messungen außerhalb des Bereichs.`
+                : `${counts.tempOut} of ${counts.tempTotal} readings out of range.`}
           </div>
         </div>
       </div>
@@ -623,7 +704,7 @@ function ChefView({
 
 /* ---------------- Staff (focus view) ---------------- */
 function StaffView({ tasks, done }: { tasks: Task[]; done: (id: string) => void }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const total = tasks.length;
   const completed = tasks.filter((x) => x.status === "done").length;
   const pending = total - completed;
@@ -661,7 +742,18 @@ function StaffView({ tasks, done }: { tasks: Task[]; done: (id: string) => void 
           )}
         </div>
       </div>
-      {total === completed ? (
+      {total === 0 ? (
+        <div className="surface p-6">
+          <h2 className="font-display text-xl">
+            {lang === "de" ? "Noch keine Aufgaben erfasst" : "No tasks recorded yet"}
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {lang === "de"
+              ? "Tagesroutinen oder Schichtleitung prüfen, bevor die Schicht als erledigt gilt."
+              : "Check daily routines or ask the shift manager before treating the shift as complete."}
+          </p>
+        </div>
+      ) : total === completed ? (
         <div className="surface p-6 md:p-8 text-center">
           <CheckCircle2 size={40} className="mx-auto text-success" />
           <div className="mt-3 font-display text-xl">{t("dash.staff.allDone")}</div>
@@ -777,13 +869,19 @@ function TasksCard({
     <div className="surface p-6">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-xl">{t("dash.today")}</h2>
-        <Link to="/app/checks" className="text-xs text-primary hover:underline">
+        <Link
+          to="/app/checks"
+          className="inline-flex min-h-11 items-center text-sm text-primary hover:underline"
+        >
           {t("dash.allTasks")} →
         </Link>
       </div>
       <div className="mt-4 divide-y divide-border">
         {tasks.map((task) => (
-          <div key={task.id} className={`${big ? "py-4" : "py-3"} flex items-center gap-3`}>
+          <div
+            key={task.id}
+            className={`${big ? "py-4" : "py-3"} flex flex-wrap sm:flex-nowrap items-center gap-3`}
+          >
             <StatusPill status={task.status} />
             <div className="flex-1 min-w-0">
               <div
@@ -798,7 +896,7 @@ function TasksCard({
             {task.status !== "done" ? (
               <button
                 onClick={() => done(task.id)}
-                className="text-xs font-semibold px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:brightness-110"
+                className="min-h-11 shrink-0 text-sm font-semibold px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:brightness-110"
               >
                 {t("dash.complete")}
               </button>
@@ -819,34 +917,51 @@ function ActionsCard() {
   const [items, setItems] = useState<LiveAction[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [failed, setFailed] = useState(false);
+  const requestVersion = useRef(0);
   const load = useCallback(async () => {
-    const { data } = await supabase
-      .from("alerts")
-      .select("id, title, kind, severity, created_at")
-      .is("read_at", null)
-      .order("created_at", { ascending: false })
-      .limit(5);
-    setItems(
-      (data ?? []).map((r: any) => ({
-        id: r.id,
-        title: r.title,
-        source: r.kind || "system",
-        severity: (["high", "medium", "low"].includes(r.severity)
-          ? r.severity
-          : "medium") as LiveAction["severity"],
-        created_at: r.created_at,
-      })),
-    );
-    setLoading(false);
+    const version = ++requestVersion.current;
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("alerts")
+        .select("id, title, kind, severity, created_at")
+        .is("read_at", null)
+        .order("created_at", { ascending: false })
+        .limit(5);
+      if (version !== requestVersion.current) return;
+      if (error) throw error;
+      setFailed(false);
+      setItems(
+        (data ?? []).map((r: any) => ({
+          id: r.id,
+          title: r.title,
+          source: r.kind || "system",
+          severity: (["high", "medium", "low"].includes(r.severity)
+            ? r.severity
+            : "medium") as LiveAction["severity"],
+          created_at: r.created_at,
+        })),
+      );
+    } catch {
+      if (version === requestVersion.current) {
+        setFailed(true);
+        setItems([]);
+      }
+    } finally {
+      if (version === requestVersion.current) setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
+    const requests = requestVersion;
     load();
     const ch = supabase
       .channel("dash-alerts")
       .on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, load)
       .subscribe();
     return () => {
+      requests.current++;
       supabase.removeChannel(ch);
     };
   }, [load]);
@@ -865,13 +980,37 @@ function ActionsCard() {
     <div className="surface p-6">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-xl">{t("dash.actions")}</h2>
-        <Link to="/app/alerts" className="text-xs text-primary hover:underline">
+        <Link
+          to="/app/alerts"
+          className="inline-flex min-h-11 items-center text-sm text-primary hover:underline"
+        >
           {t("dash.allTasks")} →
         </Link>
       </div>
       <div className="mt-3 space-y-2">
-        {loading && <div className="text-xs text-muted-foreground">…</div>}
-        {!loading && items.length === 0 && (
+        {failed && (
+          <div role="alert" className="rounded-lg border border-destructive/30 p-3 text-sm">
+            <p>
+              {lang === "de"
+                ? "Hinweise konnten nicht geladen werden. Bitte die Quelldaten prüfen."
+                : "Alerts could not be loaded. Check the source records."}
+            </p>
+            <button
+              type="button"
+              onClick={() => void load()}
+              disabled={loading}
+              className="mt-2 min-h-11 rounded-lg border px-4 font-semibold disabled:opacity-50"
+            >
+              {lang === "de" ? "Erneut versuchen" : "Try again"}
+            </button>
+          </div>
+        )}
+        {loading && (
+          <div role="status" className="text-sm text-muted-foreground">
+            {t("common.loading")}
+          </div>
+        )}
+        {!loading && !failed && items.length === 0 && (
           <div className="text-xs text-muted-foreground py-6 text-center inline-flex items-center gap-2 w-full justify-center">
             <CheckCircle2 size={14} className="text-success" />
             {lang === "de" ? "Keine offenen Alerts" : "No open alerts"}

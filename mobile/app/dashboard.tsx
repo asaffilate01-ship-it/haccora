@@ -10,9 +10,23 @@ import { useEffect, useState } from "react";
 export default function Dashboard() {
   const { session, workspaceReady, loading } = useSession();
   const network = useNetInfo();
-  const [pending, setPending] = useState(0);
+  const [pending, setPending] = useState<number | null>(null);
   useEffect(() => {
-    void getQueueStatus().then((status) => setPending(status.pending));
+    let active = true;
+    const refresh = () =>
+      getQueueStatus()
+        .then((status) => {
+          if (active) setPending(status.pending);
+        })
+        .catch(() => {
+          if (active) setPending(null);
+        });
+    void refresh();
+    const timer = setInterval(() => void refresh(), 5000);
+    return () => {
+      active = false;
+      clearInterval(timer);
+    };
   }, [network.isConnected]);
   if (loading) return null;
   if (!session) return <Redirect href="/login" />;
@@ -27,55 +41,83 @@ export default function Dashboard() {
       <Text style={styles.title}>Food safety checks</Text>
       <View style={[styles.sync, network.isConnected === false && styles.offline]}>
         <Text style={styles.syncText}>
-          {network.isConnected === false
-            ? `Offline · ${pending} change(s) securely queued`
-            : pending
-              ? `Online · syncing ${pending} change(s)`
-              : "Online · server confirmed"}
+          {pending === null
+            ? "Sync status unavailable · open records to verify"
+            : network.isConnected === null
+              ? "Checking connection…"
+              : network.isConnected === false
+                ? `Offline · ${pending} change(s) securely queued`
+                : pending
+                  ? `Online · ${pending} change(s) awaiting sync`
+                  : "Online · no changes queued on this device"}
         </Text>
       </View>
-      <Pressable style={styles.card} onPress={() => router.push("/temperature")}>
+      <Pressable
+        accessibilityRole="button"
+        style={styles.card}
+        onPress={() => router.push("/temperature")}
+      >
         <Text style={styles.cardTitle}>Temperature</Text>
         <Text style={styles.cardBody}>Log a reading with offline retry and critical limits.</Text>
       </Pressable>
-      <Pressable style={styles.card} onPress={() => router.push("/checks")}>
+      <Pressable
+        accessibilityRole="button"
+        style={styles.card}
+        onPress={() => router.push("/checks")}
+      >
         <Text style={styles.cardTitle}>Daily checks</Text>
         <Text style={styles.cardBody}>
           Complete traceable opening, cleaning and closing checks.
         </Text>
       </Pressable>
-      <Pressable style={styles.card} onPress={() => router.push("/actions")}>
+      <Pressable
+        accessibilityRole="button"
+        style={styles.card}
+        onPress={() => router.push("/actions")}
+      >
         <Text style={styles.cardTitle}>Corrective actions</Text>
         <Text style={styles.cardBody}>
           Claim exceptions, attach camera evidence and verify closures.
         </Text>
       </Pressable>
-      <Pressable style={styles.card} onPress={() => router.push("/incidents")}>
+      <Pressable
+        accessibilityRole="button"
+        style={styles.card}
+        onPress={() => router.push("/incidents")}
+      >
         <Text style={styles.cardTitle}>Report incident</Text>
         <Text style={styles.cardBody}>
           Create a persistent incident with severity and optional photo.
         </Text>
       </Pressable>
-      <Pressable style={styles.card} onPress={() => router.push("/documents")}>
+      <Pressable
+        accessibilityRole="button"
+        style={styles.card}
+        onPress={() => router.push("/documents")}
+      >
         <Text style={styles.cardTitle}>Evidence library</Text>
         <Text style={styles.cardBody}>
           Upload private documents and camera evidence for malware scanning.
         </Text>
       </Pressable>
-      <Pressable style={styles.card} onPress={() => router.push("/settings")}>
+      <Pressable
+        accessibilityRole="button"
+        style={styles.card}
+        onPress={() => router.push("/settings")}
+      >
         <Text style={styles.cardTitle}>Security & privacy</Text>
         <Text style={styles.cardBody}>
           Biometric lock, data export and reviewed deletion requests.
         </Text>
       </Pressable>
-      <Pressable onPress={signOut} style={styles.signOut}>
+      <Pressable accessibilityRole="button" onPress={signOut} style={styles.signOut}>
         <Text>Sign out</Text>
       </Pressable>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  page: { padding: 20, gap: 14 },
+  page: { padding: 20, paddingBottom: 40, gap: 14 },
   eyebrow: { color: "#e43f2c", fontWeight: "900", letterSpacing: 2 },
   title: { fontSize: 30, fontWeight: "800", marginBottom: 8 },
   sync: { backgroundColor: "#dff4e7", borderRadius: 12, padding: 12 },
