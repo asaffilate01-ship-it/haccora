@@ -322,8 +322,9 @@ test("v2 native app supports secure evidence, corrective actions and privacy req
 test("v2 native offline UX distinguishes queued writes from server confirmation", async () => {
   const dashboard = await readFile("mobile/app/dashboard.tsx", "utf8");
   const queue = await readFile("mobile/lib/offline-queue.ts", "utf8");
-  assert.match(dashboard, /securely queued/);
-  assert.match(dashboard, /no changes queued on this device/i);
+  const copy = await readFile("mobile/lib/native-copy.ts", "utf8");
+  assert.match(copy, /securely queued/);
+  assert.match(copy, /no changes queued on this device/i);
   assert.doesNotMatch(dashboard, /server confirmed/i);
   assert.match(queue, /getQueueStatus/);
   assert.match(queue, /Evidence is never discarded/);

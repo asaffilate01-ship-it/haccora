@@ -1,3 +1,4 @@
+import { operationalDay } from "@/lib/operational-day";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
@@ -26,6 +27,7 @@ export function LiveMetrics() {
     const load = async () => {
       const current = ++version;
       try {
+        const day = operationalDay(new Date(), "Europe/Berlin");
         const [inc, incH, temp, tempA, alerts, checks] = await Promise.all([
           supabase
             .from("incidents")
@@ -50,7 +52,8 @@ export function LiveMetrics() {
             .from("checks")
             .select("id", { count: "exact", head: true })
             .eq("status", "completed")
-            .gte("completed_at", new Date(new Date().setHours(0, 0, 0, 0)).toISOString()),
+            .gte("completed_at", day.start)
+            .lt("completed_at", day.end),
         ]);
         if (!mounted || current !== version) return;
         if (

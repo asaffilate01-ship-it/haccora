@@ -1,3 +1,4 @@
+import { operationalDay, operationalDate } from "@/lib/operational-day";
 import { PortfolioServices } from "@/components/PortfolioServices";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
@@ -62,6 +63,7 @@ function Dashboard() {
   const { t, lang } = useI18n();
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [taskCount, setTaskCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [counts, setCounts] = useState<DashCounts>({
@@ -85,17 +87,18 @@ function Dashboard() {
     const version = ++requestVersion.current;
     try {
       setLoading(true);
-      const since = new Date();
-      since.setHours(0, 0, 0, 0);
-      const in7 = new Date(Date.now() + 7 * 86400000).toISOString();
+      const nowDate = new Date();
+      const day = operationalDay(nowDate, "Europe/Berlin");
+      const in7 = operationalDate(nowDate, "Europe/Berlin", 7);
       let q = supabase
         .from("checks")
-        .select("id, title, kind, status, completed_at, created_at, user_id")
-        .gte("created_at", since.toISOString())
+        .select("id, title, kind, status, completed_at, created_at, user_id", { count: "exact" })
+        .gte("created_at", day.start)
+        .lt("created_at", day.end)
         .order("created_at", { ascending: true })
         .limit(20);
       if (user.role === "staff") q = q.eq("user_id", user.id);
-      const { data, error: taskError } = await q;
+      const { data, count: totalTasks, error: taskError } = await q;
       const now = Date.now();
       const userIds = Array.from(new Set((data ?? []).map((r: any) => r.user_id).filter(Boolean)));
       const { data: profs } = userIds.length
@@ -115,6 +118,7 @@ function Dashboard() {
           title: r.title,
           kind: r.kind,
           time: created.toLocaleTimeString(lang === "de" ? "de-DE" : "en-GB", {
+            timeZone: "Europe/Berlin",
             hour: "2-digit",
             minute: "2-digit",
           }),
@@ -124,6 +128,7 @@ function Dashboard() {
       });
       if (version !== requestVersion.current) return;
       setTasks(rows);
+      setTaskCount(totalTasks);
 
       // Live aggregate counts for role dashboards
       const [
@@ -149,12 +154,14 @@ function Dashboard() {
           .from("temperature_logs")
           .select("id", { count: "exact", head: true })
           .eq("status", "out_of_range")
-          .gte("logged_at", since.toISOString()),
+          .gte("logged_at", day.start)
+          .lt("logged_at", day.end),
         supabase
           .from("temperature_logs")
           .select("id", { count: "exact", head: true })
           .eq("status", "in_range")
-          .gte("logged_at", since.toISOString()),
+          .gte("logged_at", day.start)
+          .lt("logged_at", day.end),
         supabase.from("recipes").select("id", { count: "exact", head: true }),
         supabase
           .from("organization_memberships" as any)
@@ -243,8 +250,17 @@ function Dashboard() {
       .on("postgres_changes", { event: "*", schema: "public", table: "incidents" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "temperature_logs" }, load)
       .subscribe();
+    let activeDay = operationalDate(new Date(), "Europe/Berlin");
+    const dayTimer = setInterval(() => {
+      const nextDay = operationalDate(new Date(), "Europe/Berlin");
+      if (nextDay !== activeDay) {
+        activeDay = nextDay;
+        void load();
+      }
+    }, 60000);
     return () => {
       requests.current++;
+      clearInterval(dayTimer);
       supabase.removeChannel(ch);
     };
   }, [load]);
@@ -277,6 +293,7 @@ function Dashboard() {
 
   const firstName = user.name.split(" ")[0];
   const dateStr = new Date().toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", {
+    timeZone: "Europe/Berlin",
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -317,6 +334,25 @@ function Dashboard() {
           </button>
         </div>
       )}
+      {!loading && !loadError && user.role !== "inspector" && (
+        <div
+          className="surface flex flex-wrap items-center justify-between gap-3 p-4 text-sm"
+          role="status"
+        >
+          <p>
+            {lang === "de"
+              ? `Angezeigt: ${tasks.length} von ${taskCount ?? "unbekannt"} heute erfassten Prüfungen (Europe/Berlin). Der Prüfungsfortschritt bezieht sich auf diese Auswahl.`
+              : `Showing ${tasks.length} of ${taskCount ?? "unknown"} checks created today (Europe/Berlin). Dashboard completion uses this sample.`}
+          </p>
+          <Link
+            to="/app/checks"
+            className="inline-flex min-h-11 items-center rounded-lg border px-4 font-semibold"
+          >
+            {lang === "de" ? "Alle Prüfungen öffnen" : "Open all checks"}
+          </Link>
+        </div>
+      )}
+
       {!loading && !loadError && user.role === "owner" && (
         <OwnerView
           pending={pending}
