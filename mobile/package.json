@@ -45,6 +45,10 @@
   },
   "overrides": {
     "uuid": "11.1.1",
-    "brace-expansion": "5.0.12"
+    "brace-expansion": "5.0.12",
+    "zod": "4.6.7",
+    "metro": "0.84.5",
+    "metro-config": "0.84.5",
+    "metro-transform-worker": "0.84.5"
   }
 }
