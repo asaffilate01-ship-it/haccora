@@ -1,3 +1,4 @@
+import { OperationalAttention } from "@/components/OperationalAttention";
 import { operationalDay, operationalDate } from "@/lib/operational-day";
 import { PortfolioServices } from "@/components/PortfolioServices";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -314,6 +315,9 @@ function Dashboard() {
         />
       )}
       <LiveMetrics />
+      {user.role !== "inspector" && (
+        <OperationalAttention key={`${user.id}:${user.organizationId}:${user.locationId}`} />
+      )}
 
       {loading && (
         <div role="status" className="text-sm text-muted-foreground inline-flex items-center gap-2">
