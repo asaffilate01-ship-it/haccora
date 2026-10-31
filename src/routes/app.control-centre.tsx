@@ -1,13 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  AlertTriangle,
-  Clock3,
-  Loader2,
-  RefreshCw,
-  ShieldAlert,
-  WifiOff,
-} from "lucide-react";
+import { AlertTriangle, Clock3, Loader2, RefreshCw, ShieldAlert, WifiOff } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
@@ -80,10 +73,12 @@ function ControlCentrePage() {
       if (inbox.error || corrective.error) {
         setItems([]);
         setActions([]);
-        setLoadError(tr(
-          "Daten konnten nicht geladen werden. Bitte erneut versuchen.",
-          "Live operational data could not be loaded. Please retry.",
-        ));
+        setLoadError(
+          tr(
+            "Daten konnten nicht geladen werden. Bitte erneut versuchen.",
+            "Live operational data could not be loaded. Please retry.",
+          ),
+        );
         return;
       }
       setItems((inbox.data ?? []) as InboxItem[]);
@@ -92,10 +87,12 @@ function ControlCentrePage() {
       if (request !== requestId.current) return;
       setItems([]);
       setActions([]);
-      setLoadError(tr(
+      setLoadError(
+        tr(
           "Daten konnten nicht geladen werden. Bitte erneut versuchen.",
           "Live operational data could not be loaded. Please retry.",
-        ));
+        ),
+      );
     } finally {
       if (request === requestId.current) setLoading(false);
     }
@@ -200,9 +197,14 @@ function ControlCentrePage() {
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[
-          [ShieldAlert, filter === "open"
-            ? tr("Offene Punkte", "Open items")
-            : tr("Angezeigte Punkte", "Items shown"), items.length, "text-red-700"],
+          [
+            ShieldAlert,
+            filter === "open"
+              ? tr("Offene Punkte", "Open items")
+              : tr("Angezeigte Punkte", "Items shown"),
+            items.length,
+            "text-red-700",
+          ],
           [AlertTriangle, tr("Kritisch", "Critical"), critical, "text-orange-700"],
           [Clock3, tr("Überfällig", "Overdue"), overdue, "text-amber-700"],
           [WifiOff, tr("Sensor offline", "Sensors offline"), offline, "text-slate-700"],
@@ -237,9 +239,12 @@ function ControlCentrePage() {
         ) : loadError ? (
           <div role="alert" className="p-8 md:p-12">
             <AlertTriangle className="text-destructive" size={28} aria-hidden="true" />
-            <h2 className="mt-3 font-display text-xl">{tr("Betriebsdaten nicht verfügbar", "Operational data unavailable")}</h2>
+            <h2 className="mt-3 font-display text-xl">
+              {tr("Betriebsdaten nicht verfügbar", "Operational data unavailable")}
+            </h2>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-              {loadError} {tr(
+              {loadError}{" "}
+              {tr(
                 "Aus dieser Ansicht kann derzeit keine Entwarnung abgeleitet werden.",
                 "Exceptions cannot be assumed cleared until this view loads.",
               )}
@@ -256,7 +261,9 @@ function ControlCentrePage() {
         ) : items.length === 0 ? (
           <div className="p-12 text-center">
             <ShieldAlert className="mx-auto text-muted-foreground" size={28} aria-hidden="true" />
-            <div className="mt-3 font-display text-xl">{tr("Keine Einträge in dieser Ansicht", "No items in this view")}</div>
+            <div className="mt-3 font-display text-xl">
+              {tr("Keine Einträge in dieser Ansicht", "No items in this view")}
+            </div>
             <p className="mt-1 text-sm text-muted-foreground">
               {tr(
                 "Für diesen Filter wurden keine Einträge gefunden. Das ist keine Bestätigung der Lebensmittelsicherheit.",
