@@ -1,0 +1,24 @@
+name: Temporary DESIGN.md format diagnostic
+on:
+  push:
+    branches:
+      - design/taste-impeccable-2026-10-31
+    paths:
+      - .github/workflows/design-format-diagnostic.yml
+permissions:
+  contents: read
+jobs:
+  print-prettier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Print exact expected Markdown to job log
+        run: |
+          echo '<<<FORMATTED_DESIGN_BEGIN>>>'
+          npx --no-install prettier DESIGN.md
+          echo '<<<FORMATTED_DESIGN_END>>>'
