@@ -49,6 +49,8 @@
     "zod": "4.6.7",
     "metro": "0.84.5",
     "metro-config": "0.84.5",
-    "metro-transform-worker": "0.84.5"
+    "metro-transform-worker": "0.84.5",
+    "query-string": "9.5.0",
+    "decode-uri-component": "0.5.1"
   }
 }
