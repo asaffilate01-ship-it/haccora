@@ -1,6 +1,7 @@
 # Haccora design authority
 
 ## Core identity
+
 Existing src/styles.css uses near-white/near-black OKLCH surfaces, high-contrast charcoal and alert-red semantic accent; current TanStack Start and mobile components remain authoritative. Avoid red for ornamental emphasis because it carries warning meaning.
 
 ## Intent and information hierarchy
@@ -24,4 +25,5 @@ Existing src/styles.css uses near-white/near-black OKLCH surfaces, high-contrast
 - [Awesome DESIGN.md](https://github.com/VoltAgent/awesome-design-md): design-document structure and tokens as reference; no third-party visual identity or trademark copying.
 
 ## Release quality gate
+
 Existing lint/build/test jobs remain required; detector results are non-blocking until reviewed. On affected pages, verify accessible labels, keyboard and screen reader operation, long text, empty/failed/loading/offline/unauthorised states, print/PDF output where applicable, and responsive navigation. Record what was inspected and what could not be tested.
