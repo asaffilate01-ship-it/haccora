@@ -136,7 +136,8 @@ function ControlCentrePage() {
         acknowledged_at: new Date().toISOString(),
       })
       .eq("id", item.id)
-      .in("status", ["open", "acknowledged"])
+      .eq("status", "open")
+      .is("owner_id", null)
       .select("id")
       .maybeSingle();
     return !error && Boolean(data?.id);
@@ -166,8 +167,7 @@ function ControlCentrePage() {
       !user?.id ||
       user.role === "inspector" ||
       mutating.current ||
-      item.status === "resolved" ||
-      item.status === "dismissed"
+      item.status !== "open"
     ) return;
     const action = byId.get(item.source_id);
     if (!action) {
@@ -341,8 +341,7 @@ function ControlCentrePage() {
                     </div>
                   </div>
                   {user?.role !== "inspector" &&
-                    item.status !== "resolved" &&
-                    item.status !== "dismissed" ? (
+                    item.status === "open" ? (
                     <button
                       disabled={Boolean(busy)}
                       onClick={() => void progressAction(item)}
