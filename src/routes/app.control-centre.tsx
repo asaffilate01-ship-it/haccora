@@ -150,12 +150,16 @@ function ControlCentrePage() {
     try {
       const saved = await saveAcknowledgement(item);
       if (!saved) {
-        toast.error(tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."));
+        toast.error(
+          tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."),
+        );
       } else {
         await load();
       }
     } catch {
-      toast.error(tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."));
+      toast.error(
+        tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."),
+      );
     } finally {
       mutating.current = false;
       setBusy(null);
@@ -163,19 +167,17 @@ function ControlCentrePage() {
   };
 
   const progressAction = async (item: InboxItem) => {
-    if (
-      !user?.id ||
-      user.role === "inspector" ||
-      mutating.current ||
-      item.status !== "open"
-    ) return;
+    if (!user?.id || user.role === "inspector" || mutating.current || item.status !== "open")
+      return;
     const action = byId.get(item.source_id);
     if (!action) {
       await acknowledge(item);
       return;
     }
     if (action.status !== "open" && action.status !== "in_progress") {
-      toast.error(tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."));
+      toast.error(
+        tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."),
+      );
       return;
     }
     mutating.current = true;
@@ -190,17 +192,31 @@ function ControlCentrePage() {
           p_evidence: [],
         });
         if (error) {
-          toast.error(tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."));
+          toast.error(
+            tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."),
+          );
           return;
         }
         progressed = true;
       }
       const saved = await saveAcknowledgement(item);
       if (!saved) {
-        toast.error(tr("Korrekturmaßnahme geändert, aber Posteingang nicht bestätigt. Bitte Status prüfen.", "Corrective action may have advanced, but inbox acknowledgement failed. Review the state."));
+        toast.error(
+          tr(
+            "Korrekturmaßnahme geändert, aber Posteingang nicht bestätigt. Bitte Status prüfen.",
+            "Corrective action may have advanced, but inbox acknowledgement failed. Review the state.",
+          ),
+        );
       }
     } catch {
-      toast.error(progressed ? tr("Korrekturmaßnahme geändert, aber Posteingang nicht bestätigt. Bitte Status prüfen.", "Corrective action may have advanced, but inbox acknowledgement failed. Review the state.") : tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."));
+      toast.error(
+        progressed
+          ? tr(
+              "Korrekturmaßnahme geändert, aber Posteingang nicht bestätigt. Bitte Status prüfen.",
+              "Corrective action may have advanced, but inbox acknowledgement failed. Review the state.",
+            )
+          : tr("Übernahme konnte nicht bestätigt werden.", "Ownership could not be confirmed."),
+      );
     } finally {
       mutating.current = false;
       setBusy(null);
@@ -340,18 +356,17 @@ function ControlCentrePage() {
                       {action ? ` · ${action.status.replace("_", " ")}` : ""}
                     </div>
                   </div>
-                  {user?.role !== "inspector" &&
-                    item.status === "open" ? (
+                  {user?.role !== "inspector" && item.status === "open" ? (
                     <button
                       disabled={Boolean(busy)}
                       onClick={() => void progressAction(item)}
                       className="min-h-11 rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground disabled:opacity-50"
                     >
-                    {busy === item.id ? (
-                      <Loader2 className="inline animate-spin" size={15} />
-                    ) : (
-                      tr("Übernehmen", "Take ownership")
-                    )}
+                      {busy === item.id ? (
+                        <Loader2 className="inline animate-spin" size={15} />
+                      ) : (
+                        tr("Übernehmen", "Take ownership")
+                      )}
                     </button>
                   ) : (
                     <span className="text-xs text-muted-foreground">
