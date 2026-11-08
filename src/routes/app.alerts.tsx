@@ -84,7 +84,10 @@ function AlertsPage() {
       void load();
     } catch {
       setWriteError(
-        t("Lesestatus nicht bestätigt. Bitte erneut versuchen.", "Read status not confirmed. Retry."),
+        t(
+          "Lesestatus nicht bestätigt. Bitte erneut versuchen.",
+          "Read status not confirmed. Retry.",
+        ),
       );
     }
   };
