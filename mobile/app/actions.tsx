@@ -242,56 +242,56 @@ export default function Actions() {
       )}
       {readState === "ready" &&
         rows.map((action) => (
-        <View key={action.id} style={styles.card}>
-          <View style={styles.row}>
-            <Text style={[styles.badge, action.severity === "critical" && styles.critical]}>
-              {action.severity.toUpperCase()}
-            </Text>
-            <Text style={styles.status}>{action.status.replace("_", " ")}</Text>
-          </View>
-          <Text style={styles.cardTitle}>{action.description}</Text>
-          {action.due_at && (
-            <Text style={styles.meta}>
-              {copy.due}{" "}
-              {new Date(action.due_at).toLocaleString(language === "de" ? "de-DE" : "en-GB")}
-            </Text>
-          )}
-          <Text style={styles.meta}>
-            {action.evidence?.length ?? 0} {copy.evidence}
-          </Text>
-          {canEdit && (
-            <View style={styles.actions}>
-            {action.status === "open" && (
-              <Pressable
-                disabled={busy !== null}
-                style={styles.secondary}
-                onPress={() => void transition(action, "in_progress")}
-              >
-                <Text style={styles.secondaryText}>{copy.start}</Text>
-              </Pressable>
-            )}
-            <Pressable
-              disabled={busy !== null}
-              style={styles.primary}
-              onPress={() => void addPhoto(action)}
-            >
-              <Text style={styles.primaryText}>
-                {busy === action.id ? copy.working : copy.photo}
+          <View key={action.id} style={styles.card}>
+            <View style={styles.row}>
+              <Text style={[styles.badge, action.severity === "critical" && styles.critical]}>
+                {action.severity.toUpperCase()}
               </Text>
-            </Pressable>
-            {canVerify && action.evidence?.length > 0 && action.status === "in_progress" && (
-              <Pressable
-                disabled={busy !== null}
-                style={styles.verify}
-                onPress={() => void transition(action, "verified")}
-              >
-                <Text style={styles.verifyText}>{copy.verify}</Text>
-              </Pressable>
-            )}
+              <Text style={styles.status}>{action.status.replace("_", " ")}</Text>
             </View>
-          )}
-        </View>
-      ))}
+            <Text style={styles.cardTitle}>{action.description}</Text>
+            {action.due_at && (
+              <Text style={styles.meta}>
+                {copy.due}{" "}
+                {new Date(action.due_at).toLocaleString(language === "de" ? "de-DE" : "en-GB")}
+              </Text>
+            )}
+            <Text style={styles.meta}>
+              {action.evidence?.length ?? 0} {copy.evidence}
+            </Text>
+            {canEdit && (
+              <View style={styles.actions}>
+                {action.status === "open" && (
+                  <Pressable
+                    disabled={busy !== null}
+                    style={styles.secondary}
+                    onPress={() => void transition(action, "in_progress")}
+                  >
+                    <Text style={styles.secondaryText}>{copy.start}</Text>
+                  </Pressable>
+                )}
+                <Pressable
+                  disabled={busy !== null}
+                  style={styles.primary}
+                  onPress={() => void addPhoto(action)}
+                >
+                  <Text style={styles.primaryText}>
+                    {busy === action.id ? copy.working : copy.photo}
+                  </Text>
+                </Pressable>
+                {canVerify && action.evidence?.length > 0 && action.status === "in_progress" && (
+                  <Pressable
+                    disabled={busy !== null}
+                    style={styles.verify}
+                    onPress={() => void transition(action, "verified")}
+                  >
+                    <Text style={styles.verifyText}>{copy.verify}</Text>
+                  </Pressable>
+                )}
+              </View>
+            )}
+          </View>
+        ))}
     </ScrollView>
   );
 }
