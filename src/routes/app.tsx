@@ -881,10 +881,11 @@ function MobileBottomNav({
             <div className="flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-card">
               <div className="font-display text-lg">{t("nav.more")}</div>
               <button
+                type="button"
                 onClick={() => setMoreOpen(false)}
-                className="text-xs font-bold uppercase tracking-widest text-muted-foreground"
+                className="min-h-12 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-widest text-muted-foreground"
               >
-                ESC
+                {t("nav.more") === "Mehr" ? "Schließen" : "Close"}
               </button>
             </div>
             <div className="p-4 space-y-5">
