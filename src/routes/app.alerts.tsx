@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -38,30 +38,68 @@ function AlertsPage() {
   const t = (de: string, en: string) => (lang === "de" ? de : en);
 
   const [rows, setRows] = useState<Row[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [readState, setReadState] = useState<"loading" | "ready" | "unavailable">("loading");
+  const [writeError, setWriteError] = useState("");
+  const requestVersion = useRef(0);
   const [filter, setFilter] = useState<"all" | "unread" | "critical">("all");
 
   const load = useCallback(async () => {
-    setLoading(true);
-    const { data } = await supabase
-      .from("alerts")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(100);
-    setRows((data ?? []) as Row[]);
-    setLoading(false);
+    const version = ++requestVersion.current;
+    setReadState("loading");
+    try {
+      const { data, error } = await supabase
+        .from("alerts")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(100);
+      if (version !== requestVersion.current) return;
+      if (error || !Array.isArray(data)) throw new Error("Alert evidence unavailable");
+      setRows(data as Row[]);
+      setReadState("ready");
+    } catch {
+      if (version === requestVersion.current) {
+        setRows([]);
+        setReadState("unavailable");
+      }
+    }
   }, []);
+
   useEffect(() => {
-    load();
+    void load();
+    return () => {
+      requestVersion.current += 1;
+    };
   }, [load]);
 
   const markRead = async (id: string) => {
-    await supabase.from("alerts").update({ read_at: new Date().toISOString() }).eq("id", id);
-    load();
+    setWriteError("");
+    try {
+      const { data, error } = await supabase
+        .from("alerts")
+        .update({ read_at: new Date().toISOString() })
+        .eq("id", id)
+        .select("id")
+        .maybeSingle();
+      if (error || !data?.id) throw new Error("Unconfirmed read");
+      void load();
+    } catch {
+      setWriteError(t("Lesestatus nicht bestätigt. Bitte erneut versuchen.", "Read status not confirmed. Retry."));
+    }
   };
   const markAllRead = async () => {
-    await supabase.from("alerts").update({ read_at: new Date().toISOString() }).is("read_at", null);
-    load();
+    setWriteError("");
+    try {
+      const { error } = await supabase
+        .from("alerts")
+        .update({ read_at: new Date().toISOString() })
+        .is("read_at", null);
+      if (error) throw error;
+      void load();
+    } catch {
+      setWriteError(
+        t("Lesestatus nicht bestätigt. Bitte aktualisieren.", "Read status not confirmed. Refresh to verify."),
+      );
+    }
   };
 
   const filtered = rows.filter((r) =>
@@ -77,8 +115,16 @@ function AlertsPage() {
           <h1 className="mt-1 text-3xl md:text-4xl">{t("Alerts", "Alerts")}</h1>
           <p className="text-muted-foreground mt-1">
             {t(
-              `${unread} ungelesen · Live-Verbindung aktiv.`,
-              `${unread} unread · live connection active.`,
+              readState === "ready"
+                ? `${unread} ungelesen · letzte 100 Einträge.`
+                : readState === "loading"
+                  ? "Einträge werden geprüft…"
+                  : "Benachrichtigungen nicht verfügbar.",
+              readState === "ready"
+                ? `${unread} unread · latest 100 records.`
+                : readState === "loading"
+                  ? "Checking alert records…"
+                  : "Alert records unavailable.",
             )}
           </p>
         </div>
@@ -96,7 +142,7 @@ function AlertsPage() {
                   : t("Kritisch", "Critical")}
             </button>
           ))}
-          {unread > 0 && (
+          {readState === "ready" && unread > 0 && (
             <button
               onClick={markAllRead}
               className="text-xs font-semibold px-3 py-1.5 rounded-full bg-success text-success-foreground"
@@ -107,16 +153,25 @@ function AlertsPage() {
         </div>
       </div>
 
+      {writeError && <div role="alert" className="surface p-4 text-sm text-destructive">{writeError}</div>}
+
       <div className="surface overflow-hidden">
-        {loading ? (
+        {readState === "loading" ? (
           <div className="p-10 text-center text-sm text-muted-foreground">
             <Loader2 size={16} className="inline animate-spin mr-2" />
             {t("Lade…", "Loading…")}
           </div>
+        ) : readState === "unavailable" ? (
+          <div role="alert" className="p-10 space-y-3 text-sm">
+            <p>{t("Benachrichtigungen konnten nicht geladen werden. Keine Entwarnung möglich.", "Alert records are unavailable. No safety clearance can be inferred.")}</p>
+            <button type="button" onClick={() => void load()} className="rounded-lg border border-border px-4 py-3 font-semibold">
+              {t("Erneut laden", "Retry alerts")}
+            </button>
+          </div>
         ) : filtered.length === 0 ? (
           <div className="p-10 text-center text-sm text-muted-foreground">
             <Bell size={20} className="inline mr-2 opacity-40" />
-            {t("Keine Alerts. Perfekt.", "No alerts. All clear.")}
+            {t("Keine Benachrichtigungen in dieser Ansicht erfasst. Keine Sicherheitsfreigabe.", "No alerts recorded in this view. This is not safety clearance.")}
           </div>
         ) : (
           <ul className="divide-y divide-border">
