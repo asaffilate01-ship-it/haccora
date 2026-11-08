@@ -6,7 +6,10 @@ import { uploadEvidence } from "@/lib/evidence-upload";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { useNativeLanguage } from "@/lib/native-language";
-import { canChangeCorrectiveAction, classifyCorrectiveActionRead } from "@/lib/corrective-action-read";
+import {
+  canChangeCorrectiveAction,
+  classifyCorrectiveActionRead,
+} from "@/lib/corrective-action-read";
 
 type Action = {
   id: string;
@@ -25,7 +28,8 @@ const ACTION_COPY = {
     readOnly: "Prüfzugriff ist schreibgeschützt. Sie können Nachweise einsehen, aber nicht ändern.",
     loading: "Korrekturmaßnahmen werden geladen…",
     unavailable: "Maßnahmen nicht verfügbar",
-    unavailableBody: "Die Datensätze konnten nicht überprüft werden. Eine Entwarnung ist nicht möglich.",
+    unavailableBody:
+      "Die Datensätze konnten nicht überprüft werden. Eine Entwarnung ist nicht möglich.",
     retry: "Erneut laden",
     empty: "Keine offenen Maßnahmen dokumentiert",
     emptyNote: "Nur die zurückgegebenen Datensätze; keine Lebensmittelsicherheits-Freigabe.",
@@ -59,8 +63,14 @@ const ACTION_COPY = {
 export default function Actions() {
   const { language } = useNativeLanguage();
   const copy = ACTION_COPY[language];
-  const { session, workspaceReady, organizationId, locationId, role, loading: sessionLoading } =
-    useSession();
+  const {
+    session,
+    workspaceReady,
+    organizationId,
+    locationId,
+    role,
+    loading: sessionLoading,
+  } = useSession();
   const userId = session?.user.id ?? null;
   const canEdit = canChangeCorrectiveAction(role);
   const [rows, setRows] = useState<Action[]>([]);
@@ -132,7 +142,10 @@ export default function Actions() {
       return true;
     } catch {
       if (showFailure) {
-        Alert.alert("Update not confirmed", "The action was not confirmed as updated. Retry or ask your manager.");
+        Alert.alert(
+          "Update not confirmed",
+          "The action was not confirmed as updated. Retry or ask your manager.",
+        );
       }
       return false;
     } finally {
@@ -176,7 +189,10 @@ export default function Actions() {
         );
       }
     } catch {
-      Alert.alert("Evidence upload failed", "Check connectivity and try again. Verify existing uploads first.");
+      Alert.alert(
+        "Evidence upload failed",
+        "Check connectivity and try again. Verify existing uploads first.",
+      );
     } finally {
       setBusy(null);
     }
@@ -209,7 +225,11 @@ export default function Actions() {
         <View style={styles.empty}>
           <Text accessibilityRole="alert" style={styles.emptyTitle}>{copy.unavailable}</Text>
           <Text>{copy.unavailableBody}</Text>
-          <Pressable accessibilityRole="button" style={styles.secondary} onPress={() => void load()}>
+          <Pressable
+            accessibilityRole="button"
+            style={styles.secondary}
+            onPress={() => void load()}
+          >
             <Text style={styles.secondaryText}>{copy.retry}</Text>
           </Pressable>
         </View>
@@ -220,7 +240,8 @@ export default function Actions() {
           <Text>{copy.emptyNote}</Text>
         </View>
       )}
-      {readState === "ready" && rows.map((action) => (
+      {readState === "ready" &&
+        rows.map((action) => (
         <View key={action.id} style={styles.card}>
           <View style={styles.row}>
             <Text style={[styles.badge, action.severity === "critical" && styles.critical]}>
@@ -231,13 +252,15 @@ export default function Actions() {
           <Text style={styles.cardTitle}>{action.description}</Text>
           {action.due_at && (
             <Text style={styles.meta}>
-              {copy.due} {new Date(action.due_at).toLocaleString(language === "de" ? "de-DE" : "en-GB")}
+              {copy.due}{" "}
+              {new Date(action.due_at).toLocaleString(language === "de" ? "de-DE" : "en-GB")}
             </Text>
           )}
           <Text style={styles.meta}>
             {action.evidence?.length ?? 0} {copy.evidence}
           </Text>
-          {canEdit && <View style={styles.actions}>
+          {canEdit && (
+            <View style={styles.actions}>
             {action.status === "open" && (
               <Pressable
                 disabled={busy !== null}
@@ -265,7 +288,8 @@ export default function Actions() {
                 <Text style={styles.verifyText}>{copy.verify}</Text>
               </Pressable>
             )}
-          </View>}
+            </View>
+          )}
         </View>
       ))}
     </ScrollView>
