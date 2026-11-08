@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { BrandLogoImage } from "@/components/BrandLogo";
 import { ExperienceController } from "@/components/ExperienceController";
-import { useAuth, canAccess, homeFor, type NavKey } from "@/lib/auth";
+import { useAuth, canAccess, homeFor, type NavKey, type Role } from "@/lib/auth";
 import {
   LayoutDashboard,
   ShieldCheck,
@@ -163,6 +163,15 @@ const GROUPS: NavGroup[] = [
 
 const ALL_ITEMS: NavItem[] = GROUPS.flatMap((g) => g.items);
 
+// Task-first shortcuts. Existing role permissions and inspector scopes remain authoritative.
+const ROLE_QUICK_PATHS: Record<Role, string[]> = {
+  owner: ["/app", "/app/control-centre", "/app/inspection", "/app/alerts"],
+  manager: ["/app/control-centre", "/app/inspection", "/app/routines", "/app/alerts"],
+  chef: ["/app/checks", "/app/temperature", "/app/cleaning", "/app/routines"],
+  staff: ["/app/checks", "/app/temperature", "/app/routines", "/app/incidents"],
+  inspector: ["/app/inspection", "/app/documents", "/app/audits", "/app/assets"],
+};
+
 function AppShell() {
   const { t, lang } = useI18n();
   const { user, signOut, hydrated } = useAuth();
@@ -172,6 +181,15 @@ function AppShell() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [paletteQ, setPaletteQ] = useState("");
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = JSON.parse(window.localStorage.getItem("haccora-de-nav-groups-v1") ?? "[]");
+      return Array.isArray(raw) ? raw.filter((key): key is string => typeof key === "string") : [];
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     if (hydrated && !user) {
@@ -269,6 +287,32 @@ function AppShell() {
     () => (user ? ALL_ITEMS.filter((i) => canAccess(user.role, i.nav, user.inspectorScopes)) : []),
     [user],
   );
+
+  const quickItems = useMemo(() => {
+    if (!user) return [];
+    return ROLE_QUICK_PATHS[user.role]
+      .map((path) => visibleFlat.find((item) => item.to === path))
+      .filter((item): item is NavItem => Boolean(item));
+  }, [user, visibleFlat]);
+
+  const secondaryGroups = useMemo(() => {
+    const quickPaths = new Set(quickItems.map((item) => item.to));
+    return visibleGroups
+      .map((group) => ({ ...group, items: group.items.filter((item) => !quickPaths.has(item.to)) }))
+      .filter((group) => group.items.length > 0);
+  }, [quickItems, visibleGroups]);
+
+  const toggleGroup = (key: string) => {
+    const next = expandedGroups.includes(key)
+      ? expandedGroups.filter((group) => group !== key)
+      : [...expandedGroups, key];
+    setExpandedGroups(next);
+    try {
+      window.localStorage.setItem("haccora-de-nav-groups-v1", JSON.stringify(next));
+    } catch {
+      // Disclosure still works when browser storage is unavailable.
+    }
+  };
 
   const doSignOut = () => {
     signOut();
@@ -393,37 +437,76 @@ function AppShell() {
             </div>
           </div>
 
-          <nav className="p-3 flex-1 overflow-y-auto space-y-4">
-            {visibleGroups.map((group) => (
-              <div key={group.labelKey}>
-                <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t(group.labelKey)}
-                </div>
-                {group.items.map(({ to, icon: Icon, key, exact }) => {
-                  const active = exact ? pathname === to : pathname.startsWith(to);
-                  return (
-                    <Link
-                      key={to}
-                      to={to as never}
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm mb-0.5 transition group relative ${
-                        active
-                          ? "bg-primary text-primary-foreground shadow-sm"
-                          : "text-foreground/80 hover:bg-secondary hover:text-foreground"
-                      }`}
-                    >
-                      <Icon
-                        size={16}
-                        className={active ? "" : "opacity-70 group-hover:opacity-100"}
-                      />
-                      <span className="flex-1 truncate">{t(key)}</span>
-                      {active && (
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/80" />
-                      )}
-                    </Link>
-                  );
-                })}
+          <nav
+            className="p-3 flex-1 overflow-y-auto space-y-3"
+            aria-label={lang === "de" ? "Hauptnavigation" : "Main navigation"}
+          >
+            <div>
+              <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                {lang === "de" ? "Schnellzugriff" : "Quick access"}
               </div>
-            ))}
+              {quickItems.map(({ to, icon: Icon, key, exact }) => {
+                const active = exact ? pathname === to : pathname.startsWith(to);
+                return (
+                  <Link
+                    key={to}
+                    to={to as never}
+                    aria-current={active ? "page" : undefined}
+                    className={`mb-0.5 flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring ${active ? "bg-primary text-primary-foreground shadow-sm" : "text-foreground/80 hover:bg-secondary hover:text-foreground"}`}
+                  >
+                    <Icon size={18} aria-hidden="true" />
+                    <span className="min-w-0 flex-1 truncate">{t(key)}</span>
+                  </Link>
+                );
+              })}
+            </div>
+            <div className="border-t border-border pt-2">
+              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                {lang === "de" ? "Weitere Funktionen" : "More tools"}
+              </div>
+              {secondaryGroups.map((group) => {
+                const groupActive = group.items.some((item) =>
+                  item.exact ? pathname === item.to : pathname.startsWith(item.to),
+                );
+                const expanded = expandedGroups.includes(group.labelKey) || groupActive;
+                const groupId = `haccora-de-${group.labelKey.replaceAll(".", "-")}`;
+                return (
+                  <div key={group.labelKey}>
+                    <button
+                      type="button"
+                      aria-expanded={expanded}
+                      aria-controls={groupId}
+                      onClick={() => toggleGroup(group.labelKey)}
+                      className="flex min-h-11 w-full items-center gap-2 rounded-lg px-2 py-2 text-xs font-bold text-muted-foreground hover:bg-secondary hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+                    >
+                      <ChevronRight
+                        size={16}
+                        aria-hidden="true"
+                        className={`transition-transform ${expanded ? "rotate-90" : ""}`}
+                      />
+                      <span className="min-w-0 flex-1 truncate text-left">{t(group.labelKey)}</span>
+                      <span className="text-[10px] font-normal">{group.items.length}</span>
+                    </button>
+                    <div id={groupId} hidden={!expanded} className="pl-2">
+                      {group.items.map(({ to, icon: Icon, key, exact }) => {
+                        const active = exact ? pathname === to : pathname.startsWith(to);
+                        return (
+                          <Link
+                            key={to}
+                            to={to as never}
+                            aria-current={active ? "page" : undefined}
+                            className={`mb-0.5 flex min-h-10 items-center gap-3 rounded-lg px-3 py-2 text-xs transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring ${active ? "bg-primary text-primary-foreground shadow-sm" : "text-foreground/80 hover:bg-secondary hover:text-foreground"}`}
+                          >
+                            <Icon size={16} aria-hidden="true" />
+                            <span className="min-w-0 flex-1 truncate">{t(key)}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </nav>
 
           <div className="p-3 border-t border-border space-y-1">
@@ -641,11 +724,12 @@ function AppShell() {
             </div>
           </header>
 
-          <main className="flex-1 min-w-0">
+          <main className="flex-1 min-w-0 pb-20 md:pb-0">
             <Outlet />
           </main>
 
           <MobileBottomNav
+            role={user.role}
             visibleFlat={visibleFlat}
             visibleGroups={visibleGroups}
             pathname={pathname}
@@ -707,11 +791,13 @@ function AppShell() {
 }
 
 function MobileBottomNav({
+  role,
   visibleFlat,
   visibleGroups,
   pathname,
   t,
 }: {
+  role: Role;
   visibleFlat: NavItem[];
   visibleGroups: NavGroup[];
   pathname: string;
@@ -720,7 +806,16 @@ function MobileBottomNav({
   const [moreOpen, setMoreOpen] = useState(false);
 
   // Preferred order for the 4 pinned tabs; fall back to whatever the role has.
-  const PREFERRED = ["/app", "/app/routines", "/app/checks", "/app/alerts", "/app/inspection"];
+  const PREFERRED = ROLE_QUICK_PATHS[role];
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMoreOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [moreOpen]);
+
   const pinned: NavItem[] = [];
   for (const p of PREFERRED) {
     const item = visibleFlat.find((i) => i.to === p);
@@ -734,14 +829,19 @@ function MobileBottomNav({
 
   return (
     <>
-      <nav className="md:hidden sticky bottom-0 z-30 grid grid-cols-5 border-t border-border bg-card pb-safe">
+      <nav
+        aria-label="Mobile navigation"
+        className="md:hidden fixed inset-x-0 bottom-0 z-40 grid border-t border-border bg-card pb-safe shadow-lg"
+        style={{ gridTemplateColumns: `repeat(${pinned.length + 1}, minmax(0, 1fr))` }}
+      >
         {pinned.map(({ to, icon: Icon, key, exact }) => {
           const active = exact ? pathname === to : pathname.startsWith(to);
           return (
             <Link
               key={to}
               to={to as never}
-              className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
+              aria-current={active ? "page" : undefined}
+              className={`min-h-12 py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
                 active ? "text-primary" : "text-muted-foreground"
               }`}
             >
@@ -751,8 +851,10 @@ function MobileBottomNav({
           );
         })}
         <button
+          type="button"
           onClick={() => setMoreOpen(true)}
-          className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
+          aria-expanded={moreOpen}
+          className={`min-h-12 py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
             moreOpen ? "text-primary" : "text-muted-foreground"
           }`}
           aria-label={t("nav.more")}
@@ -770,14 +872,18 @@ function MobileBottomNav({
           <div
             className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-card border-t border-border pb-safe"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("nav.more")}
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-card">
               <div className="font-display text-lg">{t("nav.more")}</div>
               <button
+                type="button"
                 onClick={() => setMoreOpen(false)}
-                className="text-xs font-bold uppercase tracking-widest text-muted-foreground"
+                className="min-h-12 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-widest text-muted-foreground"
               >
-                ESC
+                {t("nav.more") === "Mehr" ? "Schließen" : "Close"}
               </button>
             </div>
             <div className="p-4 space-y-5">
