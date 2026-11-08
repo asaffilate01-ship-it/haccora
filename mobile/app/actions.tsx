@@ -175,13 +175,18 @@ export default function Actions() {
         title: `Corrective action ${action.id}`,
         category: "corrective_action",
       });
-      const linked = await transition(action, "in_progress", [
-        {
-          document_id: document.id,
-          storage_path: document.storage_path,
-          captured_at: new Date().toISOString(),
-        },
-      ], false);
+      const linked = await transition(
+        action,
+        "in_progress",
+        [
+          {
+            document_id: document.id,
+            storage_path: document.storage_path,
+            captured_at: new Date().toISOString(),
+          },
+        ],
+        false,
+      );
       if (!linked) {
         Alert.alert(
           "Photo uploaded; action not updated",
@@ -213,9 +218,7 @@ export default function Actions() {
     >
       <Text style={styles.eyebrow}>{copy.eyebrow}</Text>
       <Text style={styles.title}>{copy.title}</Text>
-      <Text style={styles.intro}>
-        {canEdit ? copy.intro : copy.readOnly}
-      </Text>
+      <Text style={styles.intro}>{canEdit ? copy.intro : copy.readOnly}</Text>
       {readState === "loading" && (
         <View style={styles.empty} accessibilityLiveRegion="polite">
           <Text style={styles.emptyTitle}>{copy.loading}</Text>
