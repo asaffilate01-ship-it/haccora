@@ -488,20 +488,20 @@ function AppShell() {
                       <span className="text-[10px] font-normal">{group.items.length}</span>
                     </button>
                     <div id={groupId} hidden={!expanded} className="pl-2">
-                        {group.items.map(({ to, icon: Icon, key, exact }) => {
-                          const active = exact ? pathname === to : pathname.startsWith(to);
-                          return (
-                            <Link
-                              key={to}
-                              to={to as never}
-                              aria-current={active ? "page" : undefined}
-                              className={`mb-0.5 flex min-h-10 items-center gap-3 rounded-lg px-3 py-2 text-xs transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring ${active ? "bg-primary text-primary-foreground shadow-sm" : "text-foreground/80 hover:bg-secondary hover:text-foreground"}`}
-                            >
-                              <Icon size={16} aria-hidden="true" />
-                              <span className="min-w-0 flex-1 truncate">{t(key)}</span>
-                            </Link>
-                          );
-                        })}
+                      {group.items.map(({ to, icon: Icon, key, exact }) => {
+                        const active = exact ? pathname === to : pathname.startsWith(to);
+                        return (
+                          <Link
+                            key={to}
+                            to={to as never}
+                            aria-current={active ? "page" : undefined}
+                            className={`mb-0.5 flex min-h-10 items-center gap-3 rounded-lg px-3 py-2 text-xs transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring ${active ? "bg-primary text-primary-foreground shadow-sm" : "text-foreground/80 hover:bg-secondary hover:text-foreground"}`}
+                          >
+                            <Icon size={16} aria-hidden="true" />
+                            <span className="min-w-0 flex-1 truncate">{t(key)}</span>
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
                 );
