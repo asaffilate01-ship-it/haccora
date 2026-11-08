@@ -726,11 +726,12 @@ function AppShell() {
             </div>
           </header>
 
-          <main className="flex-1 min-w-0">
+          <main className="flex-1 min-w-0 pb-20 md:pb-0">
             <Outlet />
           </main>
 
           <MobileBottomNav
+            role={user.role}
             visibleFlat={visibleFlat}
             visibleGroups={visibleGroups}
             pathname={pathname}
@@ -792,11 +793,13 @@ function AppShell() {
 }
 
 function MobileBottomNav({
+  role,
   visibleFlat,
   visibleGroups,
   pathname,
   t,
 }: {
+  role: Role;
   visibleFlat: NavItem[];
   visibleGroups: NavGroup[];
   pathname: string;
@@ -805,7 +808,16 @@ function MobileBottomNav({
   const [moreOpen, setMoreOpen] = useState(false);
 
   // Preferred order for the 4 pinned tabs; fall back to whatever the role has.
-  const PREFERRED = ["/app", "/app/routines", "/app/checks", "/app/alerts", "/app/inspection"];
+  const PREFERRED = ROLE_QUICK_PATHS[role];
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMoreOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [moreOpen]);
+
   const pinned: NavItem[] = [];
   for (const p of PREFERRED) {
     const item = visibleFlat.find((i) => i.to === p);
@@ -819,14 +831,19 @@ function MobileBottomNav({
 
   return (
     <>
-      <nav className="md:hidden sticky bottom-0 z-30 grid grid-cols-5 border-t border-border bg-card pb-safe">
+      <nav
+        aria-label="Mobile navigation"
+        className="md:hidden fixed inset-x-0 bottom-0 z-40 grid border-t border-border bg-card pb-safe shadow-lg"
+        style={{ gridTemplateColumns: `repeat(${pinned.length + 1}, minmax(0, 1fr))` }}
+      >
         {pinned.map(({ to, icon: Icon, key, exact }) => {
           const active = exact ? pathname === to : pathname.startsWith(to);
           return (
             <Link
               key={to}
               to={to as never}
-              className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
+              aria-current={active ? "page" : undefined}
+              className={`min-h-12 py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
                 active ? "text-primary" : "text-muted-foreground"
               }`}
             >
@@ -836,8 +853,10 @@ function MobileBottomNav({
           );
         })}
         <button
+          type="button"
           onClick={() => setMoreOpen(true)}
-          className={`py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
+          aria-expanded={moreOpen}
+          className={`min-h-12 py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-semibold transition ${
             moreOpen ? "text-primary" : "text-muted-foreground"
           }`}
           aria-label={t("nav.more")}
@@ -855,6 +874,9 @@ function MobileBottomNav({
           <div
             className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-card border-t border-border pb-safe"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("nav.more")}
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-card">
               <div className="font-display text-lg">{t("nav.more")}</div>
