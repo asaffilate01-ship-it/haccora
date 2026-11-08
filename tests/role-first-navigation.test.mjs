@@ -11,7 +11,9 @@ test("German role-first shell parses as TSX", () => {
     compilerOptions: { jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.ESNext },
     reportDiagnostics: true,
   });
-  const errors = (result.diagnostics ?? []).filter((entry) => entry.category === ts.DiagnosticCategory.Error);
+  const errors = (result.diagnostics ?? []).filter(
+    (entry) => entry.category === ts.DiagnosticCategory.Error,
+  );
   assert.equal(errors.length, 0, errors.map((entry) => entry.messageText).join("\n"));
 });
 
