@@ -5,6 +5,7 @@ import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } 
 import { uploadEvidence } from "@/lib/evidence-upload";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+import { useNativeLanguage } from "@/lib/native-language";
 import { canChangeCorrectiveAction, classifyCorrectiveActionRead } from "@/lib/corrective-action-read";
 
 type Action = {
@@ -16,7 +17,48 @@ type Action = {
   evidence: Array<{ document_id?: string; storage_path?: string }>;
 };
 
+const ACTION_COPY = {
+  de: {
+    eyebrow: "BETRIEB",
+    title: "Korrekturmaßnahmen",
+    intro: "Aufgaben übernehmen, Nachweise hinzufügen und Bearbeitungen dokumentieren.",
+    readOnly: "Prüfzugriff ist schreibgeschützt. Sie können Nachweise einsehen, aber nicht ändern.",
+    loading: "Korrekturmaßnahmen werden geladen…",
+    unavailable: "Maßnahmen nicht verfügbar",
+    unavailableBody: "Die Datensätze konnten nicht überprüft werden. Eine Entwarnung ist nicht möglich.",
+    retry: "Erneut laden",
+    empty: "Keine offenen Maßnahmen dokumentiert",
+    emptyNote: "Nur die zurückgegebenen Datensätze; keine Lebensmittelsicherheits-Freigabe.",
+    due: "Fällig",
+    evidence: "Nachweis(e)",
+    start: "Bearbeiten",
+    photo: "Foto hinzufügen",
+    working: "Wird verarbeitet…",
+    verify: "Prüfen",
+  },
+  en: {
+    eyebrow: "OPERATIONS",
+    title: "Corrective actions",
+    intro: "Claim work, attach evidence and keep every transition traceable.",
+    readOnly: "Inspector access is read-only. Review the evidence without changing records.",
+    loading: "Loading corrective-action records…",
+    unavailable: "Action records unavailable",
+    unavailableBody: "These records could not be verified. No safety clearance can be inferred.",
+    retry: "Retry records",
+    empty: "No open actions recorded",
+    emptyNote: "This describes returned records only; it is not a food-safety approval.",
+    due: "Due",
+    evidence: "evidence item(s)",
+    start: "Start",
+    photo: "Add photo",
+    working: "Working…",
+    verify: "Verify",
+  },
+} as const;
+
 export default function Actions() {
+  const { language } = useNativeLanguage();
+  const copy = ACTION_COPY[language];
   const { session, workspaceReady, organizationId, locationId, role, loading: sessionLoading } =
     useSession();
   const userId = session?.user.id ?? null;
@@ -153,31 +195,29 @@ export default function Actions() {
         />
       }
     >
-      <Text style={styles.eyebrow}>LIVE OPERATIONS</Text>
-      <Text style={styles.title}>Corrective actions</Text>
+      <Text style={styles.eyebrow}>{copy.eyebrow}</Text>
+      <Text style={styles.title}>{copy.title}</Text>
       <Text style={styles.intro}>
-        {canEdit
-          ? "Claim work, attach evidence and keep every transition traceable."
-          : "Inspector access is read-only. Review the evidence without changing records."}
+        {canEdit ? copy.intro : copy.readOnly}
       </Text>
       {readState === "loading" && (
         <View style={styles.empty} accessibilityLiveRegion="polite">
-          <Text style={styles.emptyTitle}>Loading corrective-action records…</Text>
+          <Text style={styles.emptyTitle}>{copy.loading}</Text>
         </View>
       )}
       {readState === "unavailable" && (
         <View style={styles.empty}>
-          <Text accessibilityRole="alert" style={styles.emptyTitle}>Action records unavailable</Text>
-          <Text>These records could not be verified. No safety clearance can be inferred.</Text>
+          <Text accessibilityRole="alert" style={styles.emptyTitle}>{copy.unavailable}</Text>
+          <Text>{copy.unavailableBody}</Text>
           <Pressable accessibilityRole="button" style={styles.secondary} onPress={() => void load()}>
-            <Text style={styles.secondaryText}>Retry records</Text>
+            <Text style={styles.secondaryText}>{copy.retry}</Text>
           </Pressable>
         </View>
       )}
       {readState === "empty" && (
         <View style={styles.empty}>
-          <Text style={styles.emptyTitle}>No open actions recorded</Text>
-          <Text>This describes returned records only; it is not a food-safety approval.</Text>
+          <Text style={styles.emptyTitle}>{copy.empty}</Text>
+          <Text>{copy.emptyNote}</Text>
         </View>
       )}
       {readState === "ready" && rows.map((action) => (
@@ -190,9 +230,13 @@ export default function Actions() {
           </View>
           <Text style={styles.cardTitle}>{action.description}</Text>
           {action.due_at && (
-            <Text style={styles.meta}>Due {new Date(action.due_at).toLocaleString()}</Text>
+            <Text style={styles.meta}>
+              {copy.due} {new Date(action.due_at).toLocaleString(language === "de" ? "de-DE" : "en-GB")}
+            </Text>
           )}
-          <Text style={styles.meta}>{action.evidence?.length ?? 0} evidence item(s)</Text>
+          <Text style={styles.meta}>
+            {action.evidence?.length ?? 0} {copy.evidence}
+          </Text>
           {canEdit && <View style={styles.actions}>
             {action.status === "open" && (
               <Pressable
@@ -200,7 +244,7 @@ export default function Actions() {
                 style={styles.secondary}
                 onPress={() => void transition(action, "in_progress")}
               >
-                <Text style={styles.secondaryText}>Start</Text>
+                <Text style={styles.secondaryText}>{copy.start}</Text>
               </Pressable>
             )}
             <Pressable
@@ -209,7 +253,7 @@ export default function Actions() {
               onPress={() => void addPhoto(action)}
             >
               <Text style={styles.primaryText}>
-                {busy === action.id ? "Working…" : "Add photo"}
+                {busy === action.id ? copy.working : copy.photo}
               </Text>
             </Pressable>
             {canVerify && action.evidence?.length > 0 && action.status === "in_progress" && (
@@ -218,7 +262,7 @@ export default function Actions() {
                 style={styles.verify}
                 onPress={() => void transition(action, "verified")}
               >
-                <Text style={styles.verifyText}>Verify</Text>
+                <Text style={styles.verifyText}>{copy.verify}</Text>
               </Pressable>
             )}
           </View>}
