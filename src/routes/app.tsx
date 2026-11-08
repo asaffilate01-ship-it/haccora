@@ -487,8 +487,7 @@ function AppShell() {
                       <span className="min-w-0 flex-1 truncate text-left">{t(group.labelKey)}</span>
                       <span className="text-[10px] font-normal">{group.items.length}</span>
                     </button>
-                    {expanded && (
-                      <div id={groupId} className="pl-2">
+                    <div id={groupId} hidden={!expanded} className="pl-2">
                         {group.items.map(({ to, icon: Icon, key, exact }) => {
                           const active = exact ? pathname === to : pathname.startsWith(to);
                           return (
@@ -503,8 +502,7 @@ function AppShell() {
                             </Link>
                           );
                         })}
-                      </div>
-                    )}
+                    </div>
                   </div>
                 );
               })}
