@@ -83,7 +83,9 @@ function AlertsPage() {
       if (error || !data?.id) throw new Error("Unconfirmed read");
       void load();
     } catch {
-      setWriteError(t("Lesestatus nicht bestätigt. Bitte erneut versuchen.", "Read status not confirmed. Retry."));
+      setWriteError(
+        t("Lesestatus nicht bestätigt. Bitte erneut versuchen.", "Read status not confirmed. Retry."),
+      );
     }
   };
   const markAllRead = async () => {
@@ -97,7 +99,10 @@ function AlertsPage() {
       void load();
     } catch {
       setWriteError(
-        t("Lesestatus nicht bestätigt. Bitte aktualisieren.", "Read status not confirmed. Refresh to verify."),
+        t(
+          "Lesestatus nicht bestätigt. Bitte aktualisieren.",
+          "Read status not confirmed. Refresh to verify.",
+        ),
       );
     }
   };
@@ -153,7 +158,11 @@ function AlertsPage() {
         </div>
       </div>
 
-      {writeError && <div role="alert" className="surface p-4 text-sm text-destructive">{writeError}</div>}
+      {writeError && (
+        <div role="alert" className="surface p-4 text-sm text-destructive">
+          {writeError}
+        </div>
+      )}
 
       <div className="surface overflow-hidden">
         {readState === "loading" ? (
@@ -163,15 +172,27 @@ function AlertsPage() {
           </div>
         ) : readState === "unavailable" ? (
           <div role="alert" className="p-10 space-y-3 text-sm">
-            <p>{t("Benachrichtigungen konnten nicht geladen werden. Keine Entwarnung möglich.", "Alert records are unavailable. No safety clearance can be inferred.")}</p>
-            <button type="button" onClick={() => void load()} className="rounded-lg border border-border px-4 py-3 font-semibold">
+            <p>
+              {t(
+                "Benachrichtigungen konnten nicht geladen werden. Keine Entwarnung möglich.",
+                "Alert records are unavailable. No safety clearance can be inferred.",
+              )}
+            </p>
+            <button
+              type="button"
+              onClick={() => void load()}
+              className="rounded-lg border border-border px-4 py-3 font-semibold"
+            >
               {t("Erneut laden", "Retry alerts")}
             </button>
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-10 text-center text-sm text-muted-foreground">
             <Bell size={20} className="inline mr-2 opacity-40" />
-            {t("Keine Benachrichtigungen in dieser Ansicht erfasst. Keine Sicherheitsfreigabe.", "No alerts recorded in this view. This is not safety clearance.")}
+            {t(
+              "Keine Benachrichtigungen in dieser Ansicht erfasst. Keine Sicherheitsfreigabe.",
+              "No alerts recorded in this view. This is not safety clearance.",
+            )}
           </div>
         ) : (
           <ul className="divide-y divide-border">
