@@ -27,7 +27,11 @@ export default defineConfig({
     },
     {
       name: "tablet-chromium",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1024, height: 768 }, hasTouch: true },
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1024, height: 768 },
+        hasTouch: true,
+      },
     },
   ],
   webServer: {
